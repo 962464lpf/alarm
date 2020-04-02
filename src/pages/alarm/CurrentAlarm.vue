@@ -108,6 +108,7 @@
 <script>
 import { getAlarmListApi } from '../../tools/api'
 import formatDate from '../../tools/formatDate'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -119,6 +120,9 @@ export default {
       currentPage: 1,
       total: 100
     }
+  },
+  computed: {
+    ...mapState(['newAlarmData'])
   },
   methods: {
     formatDate1(scope) {
@@ -163,13 +167,13 @@ export default {
         }
         return true
       }
-      this.currentAlarmList = list
       list.forEach(item => {
         item.ifNew = false
         if (ifNew(item.attack_time)) {
           item.ifNew = true
         }
       })
+      this.currentAlarmList = list
     },
     getAlarmList() {
       let fd = new FormData()
@@ -182,7 +186,7 @@ export default {
   mounted() {
     this.interval = setInterval(() => {
       this.getAlarmList()
-    }, 1000 * 10)
+    }, 1000 * 60 * 10)
     this.getAlarmList()
     let types = [
       'success',

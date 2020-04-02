@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    newAlarmData: [{ ip: 1 }]
+    newAlarmData: []
   },
   mutations: {
     changeNewAlarmData(state, data) {
@@ -14,7 +14,9 @@ export default new Vuex.Store({
   },
   actions: {
     WebSocketTest({ commit }) {
-      var source = new EventSource('http://192.168.100.2:5000/stream2')
+      let source = new EventSource('http://192.168.100.2:5000/stream2')
+      // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
+      console.log(source.readyState)
       source.onmessage = e => {
         commit('changeNewAlarmData', JSON.parse(e.data))
         console.log(JSON.parse(e.data))

@@ -51,27 +51,14 @@
         :equipData="equipData"
       ></UpdEquiqDialog>
     </div>
-
-    <el-table :data="newAlarmData" border style="width: 100%">
-      <el-table-column prop="ip" label="IP地址" width="180"> </el-table-column>
-    </el-table>
   </div>
 </template>
 
 <script>
 import UpdEquiqDialog from '../../components/objmgt/UpdEquipDialog'
-import { mapState } from 'vuex'
 export default {
   components: {
     UpdEquiqDialog
-  },
-  computed: {
-    ...mapState(['newAlarmData'])
-  },
-  watch: {
-    newAlarmData(val) {
-      console.log(val)
-    }
   },
   data() {
     return {
