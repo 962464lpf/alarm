@@ -21,7 +21,9 @@ export default {
     return {}
   },
   methods: {},
-  mounted() {}
+  mounted() {
+    this.$store.dispatch('WebSocketTest')
+  }
 }
 </script>
 
