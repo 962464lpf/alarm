@@ -21,7 +21,6 @@ export default {
   },
   watch: {
     $route (val) {
-      console.log(val)
       this.routes = val.matched
       this.routes.length > 0 ? this.isShow = true : this.isShow = false
     }

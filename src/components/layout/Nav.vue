@@ -8,9 +8,9 @@
              class="el-menu-vertical-demo"
              @open="handleOpen"
              @close="handleClose"
-             background-color="#545c64"
-             text-color="#fff"
-             active-text-color="#ffd04b">
+             background-color="#2f323a"
+             text-color="#aeb2b7"
+             active-text-color="#4ECDC4">
 
       <template v-for="(route, index) in routes">
 

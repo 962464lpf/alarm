@@ -56,6 +56,9 @@ export default {
   .right {
     height: 100%;
     overflow-y: auto;
+    padding: 0 15px 10px 15px;
+    box-sizing: border-box;
+    background: #eaeaea;
   }
 }
 </style>

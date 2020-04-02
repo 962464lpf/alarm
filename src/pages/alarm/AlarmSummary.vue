@@ -35,30 +35,39 @@
       </el-form>
     </div>
     <div class="alarm-summary-table">
-      <el-table :data="currentAlarmList"
+      <el-table :data="summaryAlarmList"
                 style="width: 100%">
-        <el-table-column prop='sourceIp'
+        <el-table-column prop='sip'
                          label=源IP>
         </el-table-column>
-        <el-table-column prop="sourceAddress"
+        <el-table-column prop="wuli_addr"
                          label="源物理地址">
         </el-table-column>
-        <el-table-column prop="purposeIp"
+        <el-table-column prop="dip"
                          label="目的地IP">
         </el-table-column>
-        <el-table-column prop="equip"
+        <el-table-column prop="device_ip"
                          label="设备">
         </el-table-column>
-        <el-table-column prop="desc"
-                         label="描述">
+        <el-table-column label="描述">
+          <template slot-scope="scope">
+            <el-tooltip class="item"
+                        effect="dark"
+                        :content="scope.row.con"
+                        placement="bottom">
+              <span class="curp">{{scope.row.con.slice(0, 15)+ '...'}}</span>
+            </el-tooltip>
+          </template>
         </el-table-column>
-        <el-table-column prop="time"
-                         label="攻击时间">
+        <el-table-column label="攻击时间">
+          <template slot-scope="scope">
+            <span>{{formatDate1(scope)}}</span>
+          </template>
         </el-table-column>
-        <el-table-column prop="type"
+        <el-table-column prop="attack_type"
                          label="攻击类型">
         </el-table-column>
-        <el-table-column prop="agreeMent"
+        <el-table-column prop="protocol"
                          width="80"
                          label="协议">
         </el-table-column>
@@ -95,6 +104,9 @@
 </template>
 
 <script>
+import { getAlarmListApi } from '../../tools/api'
+import formatDate from '../../tools/formatDate'
+
 export default {
   data () {
     return {
@@ -102,49 +114,15 @@ export default {
         user: '',
         region: ''
       },
-      currentAlarmList: [
-        {
-          sourceIp: '192.168.10.4:55555',
-          sourceAddress: '局域网',
-          purposeIp: '129.168.10.1:80',
-          equip: 'JIPS 192.168.100.100',
-          desc: 'WEB-MISC_/etc/passwd文件',
-          time: '04/01 10:24',
-          type: 'struts2',
-          agreeMent: 'TCP',
-          alarmType: 'low',
-          ifNew: false
-        },
-        {
-          sourceIp: '192.168.10.4:55555',
-          sourceAddress: '局域网',
-          purposeIp: '129.168.10.1:80',
-          equip: 'JIPS 192.168.100.100',
-          desc: 'WEB-MISC_/etc/passwd文件',
-          time: '04/01 10:24',
-          type: 'struts2',
-          agreeMent: 'TCP',
-          alarmType: 'middle',
-          ifNew: false
-        },
-        {
-          sourceIp: '192.168.10.4:66666',
-          sourceAddress: '局域网1',
-          purposeIp: '129.168.10.2:80',
-          equip: 'JIPS 192.168.100.100',
-          desc: 'WEB-MISC_/etc/passwd文件',
-          time: '04/01 12:24',
-          type: 'struts2',
-          agreeMent: 'TCP',
-          alarmType: 'hight',
-          ifNew: false
-        }
-      ],
+      summaryAlarmList: [],
       currentPage: 1,
       total: 100
     };
   },
   methods: {
+    formatDate1 (scope) {
+      return formatDate("YYYY-mm-dd HH:MM", scope.row.attack_time)
+    },
     operation (row, type) {
       console.log(row)
       console.log(type)
@@ -162,10 +140,18 @@ export default {
     },
     handleCurrentChange (val) {
       this.currentPage = val
+      this.getAlarmList()
+    },
+    getAlarmList () {
+      let fd = new FormData()
+      fd.append('page', this.currentPage)
+      getAlarmListApi(fd).then(res => {
+        this.summaryAlarmList = res
+      })
     }
   },
   mounted () {
-
+    this.getAlarmList()
   },
 };
 </script>

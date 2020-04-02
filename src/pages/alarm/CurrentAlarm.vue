@@ -14,31 +14,50 @@
         <el-table-column label=源IP>
           <template slot-scope="scope">
             <el-badge value="new"
-                      class="item">
-              <span>{{scope.row.sourceIp}}</span>
+                      class="item"
+                      v-if="scope.row.ifNew">
+              <span>{{scope.row.sip}}</span>
 
             </el-badge>
+            <span v-else>{{scope.row.sip}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="sourceAddress"
-                         label="源物理地址">
+        <el-table-column label="源物理地址">
+          <template slot-scope="scope">
+            <el-tooltip class="item"
+                        effect="dark"
+                        :content="scope.row.wuli_addr"
+                        placement="bottom">
+              <span class="curp">{{scope.row.wuli_addr.slice(0, 6) + '...'}}</span>
+            </el-tooltip>
+          </template>
         </el-table-column>
-        <el-table-column prop="purposeIp"
+        <el-table-column prop="dip"
                          label="目的地IP">
         </el-table-column>
-        <el-table-column prop="equip"
+        <el-table-column prop="device_ip"
                          label="设备">
         </el-table-column>
-        <el-table-column prop="desc"
+        <el-table-column prop=""
                          label="描述">
+          <template slot-scope="scope">
+            <el-tooltip class="item"
+                        effect="dark"
+                        :content="scope.row.con"
+                        placement="bottom">
+              <span class="curp">{{scope.row.con.slice(0, 15)+ '...'}}</span>
+            </el-tooltip>
+          </template>
         </el-table-column>
-        <el-table-column prop="time"
-                         label="攻击时间">
+        <el-table-column label="攻击时间">
+          <template slot-scope="scope">
+            <span>{{formatDate1(scope)}}</span>
+          </template>
         </el-table-column>
-        <el-table-column prop="type"
+        <el-table-column prop="attack_type"
                          label="攻击类型">
         </el-table-column>
-        <el-table-column prop="agreeMent"
+        <el-table-column prop="protocol"
                          width="80"
                          label="协议">
         </el-table-column>
@@ -59,7 +78,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination class="fr clearfix"
+      <el-pagination class="fr clearfix mt10"
                      background
                      @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
@@ -77,88 +96,41 @@
            loop>
       您的浏览器不支持 audio 标签。
     </audio>
-
   </div>
 </template>
 
 <script>
+import { getAlarmListApi } from '../../tools/api'
+import formatDate from '../../tools/formatDate'
 export default {
   components: {
   },
   data () {
     return {
+      interval: null,
       bellStatus: true,
       bellSrc: require('../../assets/audio/1.mp3'),
-      currentAlarmList: [
-        {
-          sourceIp: '192.168.10.4:55555',
-          sourceAddress: '局域网',
-          purposeIp: '129.168.10.1:80',
-          equip: 'JIPS 192.168.100.100',
-          desc: 'WEB-MISC_/etc/passwd文件',
-          time: '04/01 10:24',
-          type: 'struts2',
-          agreeMent: 'TCP',
-          alarmType: 'low',
-          ifNew: false
-        },
-        {
-          sourceIp: '192.168.10.4:55555',
-          sourceAddress: '局域网',
-          purposeIp: '129.168.10.1:80',
-          equip: 'JIPS 192.168.100.100',
-          desc: 'WEB-MISC_/etc/passwd文件',
-          time: '04/01 10:24',
-          type: 'struts2',
-          agreeMent: 'TCP',
-          alarmType: 'middle',
-          ifNew: false
-        },
-        {
-          sourceIp: '192.168.10.4:66666',
-          sourceAddress: '局域网1',
-          purposeIp: '129.168.10.2:80',
-          equip: 'JIPS 192.168.100.100',
-          desc: 'WEB-MISC_/etc/passwd文件',
-          time: '04/01 12:24',
-          type: 'struts2',
-          agreeMent: 'TCP',
-          alarmType: 'hight',
-          ifNew: false
-        }
-      ],
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
+      currentAlarmList: [],
       value: '',
       currentPage: 1,
       total: 100
-    };
+    }
   },
   methods: {
+
+    formatDate1 (scope) {
+      return formatDate("YYYY-mm-dd HH:MM", scope.row.attack_time)
+    },
     bell () {
       this.bellStatus = !this.bellStatus
     },
     addClass (row) {
       // 红色、橙色、黄色、蓝色
-      if (row.row.alarmType === 'hight') {
+      if (row.row.level === 'hight') {
         return 'cell-red'
-      } else if (row.row.alarmType === 'middle') {
+      } else if (row.row.level === 'middle') {
         return 'cell-orange'
-      } else if (row.row.alarmType === 'low') {
+      } else if (row.row.level === 'low') {
         return 'cell-yellow'
       } else {
         return ''
@@ -173,9 +145,44 @@ export default {
     },
     handleCurrentChange (val) {
       this.currentPage = val
+      this.getAlarmList()
+    },
+    formatData (list) {
+      // level: null
+
+      //     alarmType: 'low',
+      let ifNew = (date) => {
+
+        let attack_time = parseInt(date) * 1000
+        let currentDate = new Date().getTime()
+        let differTime = (currentDate - attack_time) / 1000 / 60
+        if (differTime > 10) {
+          return false
+        }
+        return true
+
+      }
+      this.currentAlarmList = list
+      list.forEach(item => {
+        item.ifNew = false
+        if (ifNew(item.attack_time)) {
+          item.ifNew = true
+        }
+      })
+    },
+    getAlarmList () {
+      let fd = new FormData()
+      fd.append('page', this.currentPage)
+      getAlarmListApi(fd).then(res => {
+        this.formatData(res)
+      })
     }
   },
   mounted () {
+    this.interval = setInterval(() => {
+      this.getAlarmList()
+    }, 1000 * 10)
+    this.getAlarmList()
     let types = [
       'success', 'warning', 'info', 'error',
       'success', 'warning', 'info', 'error'
@@ -208,8 +215,11 @@ export default {
       // });
       i++
     }, 3000)
+  },
+  beforeDestroy () {
+    clearInterval(this.interval)
   }
-};
+}
 </script>
 
 <style  lang="scss">
@@ -222,19 +232,30 @@ export default {
       color: red;
     }
   }
+
   .current-table {
     color: black;
     .cell-yellow {
-      background: yellow;
+      // background: #5bc0de;
+      .cell {
+        color: #5bc0de;
+      }
     }
     .cell-orange {
-      background: orange;
+      background: #f0ad4e;
     }
     .cell-red {
-      background: red;
+      background: #d9534f;
     }
     .el-table--enable-row-hover .el-table__body tr:hover > td {
       background-color: transparent !important;
+    }
+    .el-table td {
+      border-bottom: 1px solid transparent;
+    }
+    .el-table--mini td,
+    .el-table--mini th {
+      padding-top: 12px !important;
     }
     tbody {
       tr {
@@ -244,6 +265,19 @@ export default {
             .item {
               .is-fixed {
                 top: -5px;
+              }
+              .el-badge__content {
+                background-color: #f56c6c;
+                border-radius: 10px;
+                color: #fff;
+                display: inline-block;
+                font-size: 10px;
+                height: 14px;
+                line-height: 14px;
+                padding: 0 4px;
+                text-align: center;
+                white-space: nowrap;
+                border: 1px solid transparent;
               }
             }
           }

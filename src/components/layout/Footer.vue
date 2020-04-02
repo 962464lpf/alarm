@@ -1,20 +1,28 @@
 <template>
-  <div class="footer">footer</div>
+  <div class="footer">
+    <div>
+      © Copyrights JUMP. All Rights Reserved
+
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {}
   },
   methods: {},
-  mounted() {}
+  mounted () { }
 }
 </script>
 
 <style scoped lang="scss">
 .footer {
   height: 50px;
-  background: #efefef;
+  background: #22242a;
+  line-height: 50px;
+  text-align: center;
+  color: white;
 }
 </style>
