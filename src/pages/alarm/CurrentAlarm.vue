@@ -1,26 +1,23 @@
 <template>
   <div class="current-alarm">
     <span class="bell">
-      <i
-        class=" curp"
-        :class="{
+      <i class=" curp"
+         :class="{
           'el-icon-bell': bellStatus,
           'el-icon-close-notification': !bellStatus
         }"
-        @click="bell"
-      ></i>
+         @click="bell"></i>
     </span>
 
     <div class="current-table">
-      <el-table
-        :data="currentAlarmList"
-        style="width: 100%"
-        :row-class-name="addClass"
-      >
+      <el-table :data="currentAlarmList"
+                style="width: 100%"
+                :row-class-name="addClass">
         <el-table-column label="源IP">
           <template slot-scope="scope">
             <div>
-              <span class="triangle" v-if="scope.row.ifNew"></span>
+              <span class="triangle"
+                    v-if="scope.row.ifNew"></span>
               <span>
                 {{ scope.row.sip }}
               </span>
@@ -29,41 +26,46 @@
         </el-table-column>
         <el-table-column label="源物理地址">
           <template slot-scope="scope">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="scope.row.wuli_addr"
-              placement="bottom"
-            >
-              <span class="curp">{{
-                scope.row.wuli_addr.slice(0, 6) + '...'
+            <el-tooltip class="item"
+                        effect="dark"
+                        :content="scope.row.wuli_addr"
+                        placement="bottom">
+              <span class="curp omit">{{
+                scope.row.wuli_addr
               }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip" label="目的地IP"> </el-table-column>
-        <el-table-column prop="device_ip" label="设备"> </el-table-column>
-        <el-table-column prop="" label="描述">
+        <el-table-column prop="dip"
+                         label="目的地IP"> </el-table-column>
+        <el-table-column prop="device_ip"
+                         label="设备"> </el-table-column>
+        <el-table-column prop=""
+                         label="描述">
           <template slot-scope="scope">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="scope.row.con"
-              placement="bottom"
-            >
-              <span class="curp">{{ scope.row.con.slice(0, 15) + '...' }}</span>
+            <el-tooltip class="item"
+                        effect="dark"
+                        :content="scope.row.con"
+                        placement="bottom">
+              <span class="curp omit">{{ scope.row.con}}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="攻击时间">
+        <el-table-column label="攻击时间"
+                         prop='attack_time'>
+        </el-table-column>
+        <el-table-column prop="attack_type"
+                         label="攻击类型">
           <template slot-scope="scope">
-            <span>{{ formatDate1(scope) }}</span>
+            {{scope.row.attack_type ? scope.row.attack_type: '未知'}}
           </template>
         </el-table-column>
-        <el-table-column prop="attack_type" label="攻击类型"> </el-table-column>
-        <el-table-column prop="protocol" width="80" label="协议">
+        <el-table-column prop="protocol"
+                         width="80"
+                         label="协议">
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作"
+                         width="100">
           <template slot-scope="scope">
             <el-dropdown>
               <span class="el-dropdown-link el-button--lightblue dropbutton">
@@ -71,35 +73,30 @@
               </span>
 
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="operation(scope.row, 'detail')"
-                  >详情</el-dropdown-item
-                >
-                <el-dropdown-item @click.native="operation(scope.row, 'white')"
-                  >添加白名单</el-dropdown-item
-                >
-                <el-dropdown-item @click.native="operation(scope.row, 'black')"
-                  >添加黑名单</el-dropdown-item
-                >
+                <el-dropdown-item @click.native="operation(scope.row, 'detail')">详情</el-dropdown-item>
+                <el-dropdown-item @click.native="operation(scope.row, 'white')">添加白名单</el-dropdown-item>
+                <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        class="fr clearfix mt10"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      >
+      <el-pagination class="fr clearfix mt10"
+                     background
+                     @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="currentPage"
+                     :page-sizes="[10, 20, 30, 40]"
+                     :page-size="100"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="total">
       </el-pagination>
     </div>
 
-    <audio v-if="bellStatus" :src="bellSrc" autoplay loop>
+    <audio v-if="bellStatus"
+           :src="bellSrc"
+           autoplay
+           loop>
       您的浏览器不支持 audio 标签。
     </audio>
   </div>
@@ -107,31 +104,35 @@
 
 <script>
 import { getAlarmListApi } from '../../tools/api'
-import formatDate from '../../tools/formatDate'
 import { mapState } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
       interval: null,
       bellStatus: true,
-      bellSrc: require('../../assets/audio/1.mp3'),
+      bellSrc: '',
       currentAlarmList: [],
       value: '',
       currentPage: 1,
-      total: 100
+      total: 0
     }
   },
   computed: {
     ...mapState(['newAlarmData'])
   },
+  watch: {
+    newAlarmData (val) {
+      let length = val.length
+      this.hasAlarm(val)
+      this.currentAlarmList = [val[length - 1], ...this.currentAlarmList]
+      this.formatData(this.currentAlarmList)
+    }
+  },
   methods: {
-    formatDate1(scope) {
-      return formatDate('YYYY-mm-dd HH:MM', scope.row.attack_time)
-    },
-    bell() {
+    bell () {
       this.bellStatus = !this.bellStatus
     },
-    addClass(row) {
+    addClass (row) {
       // 红色、橙色、黄色、蓝色
       if (row.row.level === 'hight') {
         return 'cell-red'
@@ -143,90 +144,70 @@ export default {
         return ''
       }
     },
-    operation(row, type) {
+    operation (row, type) {
+      if (type === 'detail') {
+        window.open('')
+      }
       console.log(row)
       console.log(type)
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       console.log(val)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.currentPage = val
       this.getAlarmList()
     },
-    formatData(list) {
-      // level: null
+    // formatData (list) {
+    //   // level: null
 
-      //     alarmType: 'low',
-      let ifNew = date => {
-        let attack_time = parseInt(date) * 1000
-        let currentDate = new Date().getTime()
-        let differTime = (currentDate - attack_time) / 1000 / 60
-        if (differTime > 10) {
-          return false
-        }
-        return true
-      }
-      list.forEach(item => {
-        item.ifNew = false
-        if (ifNew(item.attack_time)) {
-          item.ifNew = true
-        }
-      })
-      this.currentAlarmList = list
+    //   //     alarmType: 'low',
+    //   let ifNew = d => {
+    //     let date = new Date(d).getTime()
+    //     let currentDate = new Date().getTime()
+    //     let differTime = (currentDate - date) / 1000 / 60
+    //     if (differTime > 10) {
+    //       return false
+    //     }
+    //     return true
+    //   }
+    //   list.forEach(item => {
+    //     item.ifNew = false
+    //     if (ifNew(item.attack_time)) {
+    //       item.ifNew = true
+    //     }
+    //   })
+    //   this.currentAlarmList = list
+    // },
+    hasAlarm (val) {
+      this.bellSrc = require('../../assets/audio/1.wav')
+      this.$notify({
+        title: '发现攻击',
+        message: `攻击类型：${val.attack_type}`,
+        type: 'warning',
+        duration: 3000
+      });
     },
-    getAlarmList() {
+    getAlarmList () {
       let fd = new FormData()
       fd.append('page', this.currentPage)
+      fd.append('start_time', '')
+      fd.append('end_time', '')
       getAlarmListApi(fd).then(res => {
-        this.formatData(res)
+        // this.formatData(res.data)
+        this.currentAlarmList = res.data
+        this.total = res.total
       })
     }
   },
-  mounted() {
+  mounted () {
+    // this.bellSrc = require('../../assets/audio/1.mp3')
     this.interval = setInterval(() => {
       this.getAlarmList()
     }, 1000 * 60 * 10)
     this.getAlarmList()
-    let types = [
-      'success',
-      'warning',
-      'info',
-      'error',
-      'success',
-      'warning',
-      'info',
-      'error'
-    ]
-    let i = 0
-    let interval = setInterval(() => {
-      if (i > types.length) clearInterval(interval)
-      switch (types[i]) {
-        case 'success':
-          this.bellSrc = require('../../assets/audio/1.mp3')
-          break
-        case 'warning':
-          this.bellSrc = require('../../assets/audio/2.mp3')
-          break
-        case 'info':
-          this.bellSrc = require('../../assets/audio/3.mp3')
-          break
-        case 'error':
-          this.bellSrc = require('../../assets/audio/4.mp3')
-          break
-        default:
-          this.bellSrc = require('../../assets/audio/1.mp3')
-      }
-      // this.$notify({
-      //   title: types[i],
-      //   message: '...警告',
-      //   type: types[i],
-      //   duration: 4000
-      // });
-      i++
-    }, 3000)
   },
-  beforeDestroy() {
+  beforeDestroy () {
     clearInterval(this.interval)
   }
 }
@@ -277,8 +258,8 @@ export default {
             .triangle {
               width: 0;
               height: 0;
-              border-top: 10px solid #d9534f;
-              border-right: 10px solid transparent;
+              border-top: 15px solid #d9534f;
+              border-right: 15px solid transparent;
             }
             .item {
               .is-fixed {

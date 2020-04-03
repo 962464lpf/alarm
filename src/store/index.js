@@ -18,8 +18,8 @@ export default new Vuex.Store({
       // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
       console.log(source.readyState)
       source.onmessage = e => {
-        commit('changeNewAlarmData', JSON.parse(e.data))
-        console.log(JSON.parse(e.data))
+        let data = JSON.parse(e.data)
+        commit('changeNewAlarmData', JSON.parse(data.alert_data))
       }
     }
   }

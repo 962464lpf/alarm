@@ -1,13 +1,12 @@
 <template>
   <div class="content">
     <el-row style="height: 100%;">
-      <el-col :span="4"
+      <el-col :span="3"
               class="left"
               v-bind:class="{ enter: mouseEnter }">
         <Nav @changeStyle='changeStyle'></Nav>
       </el-col>
-      <el-col :span="
-              20"
+      <el-col :span="21"
               class="right">
         <Breadcrumb></Breadcrumb>
         <router-view></router-view>

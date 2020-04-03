@@ -1,9 +1,9 @@
 <template>
   <div class="header">
     <el-row class="header-row">
-      <el-col :span="4"
+      <el-col :span="3"
               class="title">捷普告警系统</el-col>
-      <el-col :span="10"
+      <el-col :span="16"
               class="icon-box">
         <span>
           <el-badge :value="3"
@@ -48,6 +48,10 @@
         </span>
 
       </el-col>
+      <el-col :span="5"
+              class="icon-box">
+
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -63,10 +67,11 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../../assets/style/color.scss";
 .header {
   height: 50px;
   width: 100%;
-  background: #22242a;
+  background: $hfbg-color;
   .header-row {
     height: 50px;
     line-height: 50px;

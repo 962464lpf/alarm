@@ -152,3 +152,8 @@ img {
 .mt10 {
   margin-top: 10px;
 }
+.omit {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

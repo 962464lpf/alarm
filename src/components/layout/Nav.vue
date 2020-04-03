@@ -6,9 +6,7 @@
              style="width: 100%; height: 100%;"
              :default-active="defaultActive"
              class="el-menu-vertical-demo"
-             @open="handleOpen"
-             @close="handleClose"
-             background-color="#2f323a"
+             background-color="transparent"
              text-color="#aeb2b7"
              active-text-color="#4ECDC4">
 
@@ -54,24 +52,37 @@ export default {
   methods: {
     mouseMove (type) {
       this.$emit('changeStyle', type)
-    },
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
     }
+
   },
   mounted () {
+    console.log(this.$route)
+    console.log(this.defaultActive)
+    this.defaultActive = this.$route.fullPath
   }
 }
 </script>
 
 <style lang="scss">
+@import "../../assets/style/color.scss";
+
 .nav {
   height: 100%;
+  background: $navbg-color;
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 100%;
+  }
+  .el-menu-item:hover {
+    background: $hfbg-color !important;
+  }
+  .el-submenu__title:hover {
+    background: $hfbg-color !important;
+  }
+  .el-menu-item.is-active {
+    background: transparent !important;
+  }
+  .el-submenu__title.is-active {
+    background: transparent !important;
   }
 }
 </style>
