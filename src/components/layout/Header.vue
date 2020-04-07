@@ -12,7 +12,7 @@
                         effect="light"
                         content="告警"
                         placement="bottom-end">
-              <img src="../../assets/images/alarm.png"
+              <img src="../../assets/images/alarm6.png"
                    alt="">
             </el-tooltip>
           </el-badge>
@@ -26,7 +26,7 @@
                         effect="light"
                         content="告警"
                         placement="bottom-end">
-              <img src="../../assets/images/alarm.png"
+              <img src="../../assets/images/alarm5.png"
                    alt="">
             </el-tooltip>
           </el-badge>
@@ -40,7 +40,7 @@
                         effect="light"
                         content="告警"
                         placement="bottom-end">
-              <img src="../../assets/images/alarm.png"
+              <img src="../../assets/images/alarm3.png"
                    alt="">
             </el-tooltip>
           </el-badge>
@@ -83,11 +83,16 @@ export default {
       display: flex;
       align-items: center;
       height: 100%;
+      padding-left: 15px;
+      box-sizing: border-box;
+      .el-badge {
+        margin-top: 15px;
+      }
       span {
         margin-right: 30px;
         img {
-          height: 20px;
-          width: 20px;
+          height: 25px;
+          width: 25px;
         }
         .item {
           margin-right: 10px;

@@ -7,8 +7,8 @@
              :default-active="defaultActive"
              class="el-menu-vertical-demo"
              background-color="transparent"
-             text-color="#aeb2b7"
-             active-text-color="#4ECDC4">
+             text-color="#333"
+             active-text-color="#2285c6">
 
       <template v-for="(route, index) in routes">
 
@@ -73,16 +73,29 @@ export default {
     width: 100%;
   }
   .el-menu-item:hover {
-    background: $hfbg-color !important;
+    background: transparent !important;
+    span {
+      color: #2285c6;
+      font-weight: 700;
+    }
   }
   .el-submenu__title:hover {
-    background: $hfbg-color !important;
+    background: transparent !important;
+    span {
+      color: #2285c6;
+    }
   }
   .el-menu-item.is-active {
     background: transparent !important;
+    span {
+      font-weight: 700;
+    }
   }
   .el-submenu__title.is-active {
     background: transparent !important;
+    span {
+      font-weight: 700;
+    }
   }
 }
 </style>

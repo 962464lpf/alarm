@@ -1,5 +1,12 @@
 <template>
-  <div class="current-alarm">
+  <div class="current-alarm"
+       @click="changeNewAlarm">
+    <audio v-if="bellStatus"
+           :src="bellSrc"
+           autoplay
+           loop>
+      您的浏览器不支持 audio 标签。
+    </audio>
     <span class="bell">
       <i class=" curp"
          :class="{
@@ -16,8 +23,9 @@
         <el-table-column label="源IP">
           <template slot-scope="scope">
             <div>
+              <!-- 0 为新告警 -->
               <span class="triangle"
-                    v-if="scope.row.ifNew"></span>
+                    v-if="scope.row.is_new === 0"></span>
               <span>
                 {{ scope.row.sip }}
               </span>
@@ -87,34 +95,39 @@
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"
                      :page-sizes="[10, 20, 30, 40]"
-                     :page-size="100"
+                     :page-size="pgaeSize"
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
       </el-pagination>
     </div>
 
-    <audio v-if="bellStatus"
-           :src="bellSrc"
-           autoplay
-           loop>
-      您的浏览器不支持 audio 标签。
-    </audio>
+    <div v-if="blackTypeDialogStatus">
+      <ChooseBlackType v-model="blackTypeDialogStatus"
+                       @emitChooseType='emitChooseType'></ChooseBlackType>
+    </div>
   </div>
 </template>
 
 <script>
-import { getAlarmListApi } from '../../tools/api'
+import { getCurrentAlarmListApi, setIpApi, setCurrentAlarmNotNewApi } from '../../tools/api'
 import { mapState } from 'vuex'
+import ChooseBlackType from '../../components/alarm/ChooseBlackType'
 export default {
+  components: {
+    ChooseBlackType
+  },
   data () {
     return {
       interval: null,
       bellStatus: true,
       bellSrc: '',
       currentAlarmList: [],
-      value: '',
+      rowAlarmData: {},
       currentPage: 1,
-      total: 0
+      pgaeSize: 10,
+      total: 0,
+      blackTypeDialogStatus: false,
+      blackType: 2
     }
   },
   computed: {
@@ -123,33 +136,84 @@ export default {
   watch: {
     newAlarmData (val) {
       let length = val.length
-      this.hasAlarm(val)
+      this.hasAlarm(val[length - 1])
       this.currentAlarmList = [val[length - 1], ...this.currentAlarmList]
-      this.formatData(this.currentAlarmList)
     }
   },
   methods: {
+    changeNewAlarm () {
+      if (this.newAlarmData.length) {
+        setCurrentAlarmNotNewApi().then(res => {
+          if (res.state === 1) {
+            this.getCurrentAlarmList()
+            this.$store.commit('clearNewAlarmData')
+          }
+        })
+      }
+
+    },
     bell () {
       this.bellStatus = !this.bellStatus
     },
     addClass (row) {
-      // 红色、橙色、黄色、蓝色
-      if (row.row.level === 'hight') {
+      // level : 0 1 2 高 中 低
+      if (row.row.level === '0') {
         return 'cell-red'
-      } else if (row.row.level === 'middle') {
+      } else if (row.row.level === '1') {
         return 'cell-orange'
-      } else if (row.row.level === 'low') {
+      } else if (row.row.level === '2') {
         return 'cell-yellow'
       } else {
         return ''
       }
     },
+    emitChooseType (type) {
+      this.blackType = type
+      let fd = new FormData()
+      fd.append('ip_addr', this.rowAlarmData.sip)
+      fd.append('type', 'black')
+      fd.append('black_type', type)
+      setIpApi('black', fd).then(res => {
+        let type = 'success'
+        let message = '设置成功'
+        if (res.state !== 1) {
+          type = 'warning'
+          message = '设置失败'
+        }
+        this.$message({
+          type,
+          message
+        })
+        this.getAlarmList()
+      })
+    },
     operation (row, type) {
+      this.rowAlarmData = row
+      let fd = new FormData()
+      fd.append('ip_addr', row.sip)
       if (type === 'detail') {
         window.open('')
+        return
+      } else if (type === 'white') {
+        fd.append('type', 'white')
+        setIpApi(type, fd).then(res => {
+          let type = 'success'
+          let message = '设置成功'
+          if (res.state !== 1) {
+            type = 'warning'
+            message = '设置失败'
+          }
+          this.$message({
+            type,
+            message
+          })
+          this.getAlarmList()
+        })
+      } else {
+        fd.append('type', 'black')
+        fd.append('black_type', this.blackType)
+        this.blackTypeDialogStatus = true
       }
-      console.log(row)
-      console.log(type)
     },
     handleSizeChange (val) {
       console.log(val)
@@ -158,42 +222,31 @@ export default {
       this.currentPage = val
       this.getAlarmList()
     },
-    // formatData (list) {
-    //   // level: null
-
-    //   //     alarmType: 'low',
-    //   let ifNew = d => {
-    //     let date = new Date(d).getTime()
-    //     let currentDate = new Date().getTime()
-    //     let differTime = (currentDate - date) / 1000 / 60
-    //     if (differTime > 10) {
-    //       return false
-    //     }
-    //     return true
-    //   }
-    //   list.forEach(item => {
-    //     item.ifNew = false
-    //     if (ifNew(item.attack_time)) {
-    //       item.ifNew = true
-    //     }
-    //   })
-    //   this.currentAlarmList = list
-    // },
     hasAlarm (val) {
+      console.log(val)
       this.bellSrc = require('../../assets/audio/1.wav')
+      let type = ['error', 'warning', 'info']
+      let bellSrc = [
+        require('../../assets/audio/1.wav'),
+        require('../../assets/audio/red.wav'),
+        require('../../assets/audio/general.wav')
+      ]
+      let level = parseInt(val.level)
+      this.bellSrc = bellSrc[level]
+      let attack_type = val.attack_type ? val.attack_type : '未知'
       this.$notify({
         title: '发现攻击',
-        message: `攻击类型：${val.attack_type}`,
-        type: 'warning',
+        message: `攻击类型：${attack_type}`,
+        type: type[level],
         duration: 3000
-      });
+      })
     },
-    getAlarmList () {
+    getCurrentAlarmList () {
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('start_time', '')
       fd.append('end_time', '')
-      getAlarmListApi(fd).then(res => {
+      getCurrentAlarmListApi(fd).then(res => {
         // this.formatData(res.data)
         this.currentAlarmList = res.data
         this.total = res.total
@@ -201,11 +254,7 @@ export default {
     }
   },
   mounted () {
-    // this.bellSrc = require('../../assets/audio/1.mp3')
-    this.interval = setInterval(() => {
-      this.getAlarmList()
-    }, 1000 * 60 * 10)
-    this.getAlarmList()
+    this.getCurrentAlarmList()
   },
   beforeDestroy () {
     clearInterval(this.interval)

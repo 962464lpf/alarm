@@ -20,9 +20,9 @@ export default {
 <style scoped lang="scss">
 @import "../../assets/style/color.scss";
 .footer {
-  height: 50px;
+  height: 32px;
   background: $hfbg-color;
-  line-height: 50px;
+  line-height: 32px;
   text-align: center;
   color: white;
 }

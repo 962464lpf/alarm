@@ -1,9 +1,18 @@
 import { POST } from './request'
 const BASE_URL = 'http://192.168.100.2:5000'
 
-function getAlarmListApi(params) {
+function getSumAlarmListApi(params) {
+  let url = BASE_URL + '/jump/warning/summary'
+  return POST(url, params)
+}
+function getCurrentAlarmListApi(params) {
   let url = BASE_URL + '/jump/warning/index'
   return POST(url, params)
+}
+
+function setCurrentAlarmNotNewApi() {
+  let url = BASE_URL + '/jump/warning/read_new'
+  return POST(url)
 }
 
 function getSafeEquipListApi(params) {
@@ -26,10 +35,35 @@ function deleteSateEquipApi(params) {
   return POST(url, params)
 }
 
+function setIpApi(type, params) {
+  let url = ''
+  if (type === 'white') {
+    url = BASE_URL + '/jump/warning/set_whiteip'
+  } else {
+    url = BASE_URL + '/jump/warning/set_blackip'
+  }
+  return POST(url, params)
+}
+
+function getWhiteIPListApi(params) {
+  let url = BASE_URL + '/jump/warning/white_lst'
+  return POST(url, params)
+}
+
+function exportSumAlarmFileApi(paramas) {
+  let url = BASE_URL + '/jump/warning/export'
+  return POST(url, paramas)
+}
+
 export {
-  getAlarmListApi,
+  getSumAlarmListApi,
+  getCurrentAlarmListApi,
+  setCurrentAlarmNotNewApi,
   getSafeEquipListApi,
   editSafeEquipApi,
   addSafeEquipApi,
-  deleteSateEquipApi
+  deleteSateEquipApi,
+  setIpApi,
+  getWhiteIPListApi,
+  exportSumAlarmFileApi
 }

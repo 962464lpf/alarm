@@ -17,11 +17,11 @@ export default {
     Footer,
     Content
   },
-  data() {
+  data () {
     return {}
   },
   methods: {},
-  mounted() {
+  mounted () {
     this.$store.dispatch('WebSocketTest')
   }
 }
@@ -42,7 +42,7 @@ export default {
   }
   .app-content {
     top: 50px;
-    bottom: 50px;
+    bottom: 32px;
   }
   .app-footer {
     bottom: 0;

@@ -10,6 +10,9 @@ export default new Vuex.Store({
   mutations: {
     changeNewAlarmData(state, data) {
       state.newAlarmData.push(data)
+    },
+    clearNewAlarmData(state) {
+      state.newAlarmData = []
     }
   },
   actions: {

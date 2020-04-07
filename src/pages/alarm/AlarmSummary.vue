@@ -4,9 +4,33 @@
       <el-form :inline="true"
                :model="searchForm"
                ref="searchForm">
-        <el-form-item label="源IP">
-          <el-input v-model="searchForm.ip"
-                    placeholder="源IP"></el-input>
+        <el-form-item label-width="0">
+          <el-input placeholder="请输入内容"
+                    disabled
+                    v-model='searchContent'>
+            <el-button slot="append"
+                       icon="el-icon-caret-bottom"
+                       @click="moreSearch = !moreSearch"></el-button>
+          </el-input>
+          <div class="search-box"
+               v-if="moreSearch">
+            <el-form-item label="源IP">
+              <el-input v-model="searchForm.sip"
+                        placeholder="源IP"></el-input>
+            </el-form-item>
+            <el-form-item label="目的地IP">
+              <el-input v-model="searchForm.dip"
+                        placeholder="目的地IP"></el-input>
+            </el-form-item>
+            <el-form-item label="设备IP">
+              <el-input v-model="searchForm.device_ip"
+                        placeholder="设备IP"></el-input>
+            </el-form-item>
+            <el-form-item label="攻击类型">
+              <el-input v-model="searchForm.attack_type"
+                        placeholder="攻击类型"></el-input>
+            </el-form-item>
+          </div>
         </el-form-item>
         <el-form-item label="时间">
           <el-date-picker v-model="searchForm.time"
@@ -17,36 +41,48 @@
                           end-placeholder="结束日期">
           </el-date-picker>
         </el-form-item>
-        <div v-if="moreSearch">
-          <el-form-item label="目的地IP">
-            <el-input v-model="searchForm.ip"
-                      placeholder="目的地IP"></el-input>
-          </el-form-item>
-          <el-form-item label="设备IP">
-            <el-input v-model="searchForm.ip"
-                      placeholder="设备IP"></el-input>
-          </el-form-item>
-          <el-form-item label="攻击类型">
-            <el-input v-model="searchForm.ip"
-                      placeholder="攻击类型"></el-input>
-          </el-form-item>
-        </div>
 
         <el-form-item>
-          <el-button type="primary"
-                     @click="moreSearch = !moreSearch">更多搜索条件</el-button>
           <el-button type="primary"
                      @click="onSearch(true)">查询</el-button>
           <el-button type="primary"
                      @click="onSearch(false)">重置</el-button>
+          <el-dropdown split-button
+                       type="primary"
+                       @command='exportFile'
+                       class="ml10">
+            导出
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command='csv'>csv</el-dropdown-item>
+              <el-dropdown-item command='excel'>excel</el-dropdown-item>
+              <el-dropdown-item command='json'>json</el-dropdown-item>
+              <el-dropdown-item command='txt'>txt</el-dropdown-item>
+              <el-dropdown-item command='html'>html</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </el-form-item>
       </el-form>
     </div>
     <div class="alarm-summary-table">
       <el-table :data="summaryAlarmList"
                 style="width: 100%">
-        <el-table-column prop="sip"
-                         label="源IP"> </el-table-column>
+        <el-table-column label="源IP">
+          <template slot-scope="scope">
+            <el-tooltip class="item"
+                        effect="dark"
+                        :content="getToolTipContetn(scope.row.sip_black_type)"
+                        placement="bottom"
+                        v-if="scope.row.sip_black_type">
+              <span class="curp">{{
+                scope.row.sip
+              }}</span>
+            </el-tooltip>
+            <span class="curp"
+                  v-else>{{
+                scope.row.sip
+              }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="wuli_addr"
                          label="源物理地址">
           <template slot-scope="scope">
@@ -87,6 +123,10 @@
                          width="80"
                          label="协议">
         </el-table-column>
+        <el-table-column prop="summary_num"
+                         width="80"
+                         label="次数">
+        </el-table-column>
         <el-table-column label="操作"
                          width="100">
           <template slot-scope="scope">
@@ -110,42 +150,146 @@
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"
                      :page-sizes="[10, 20, 30, 40]"
-                     :page-size="100"
+                     :page-size="pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
       </el-pagination>
+    </div>
+    <div v-if="alarmListDialogStatus">
+      <AlarmListDialog v-model="alarmListDialogStatus"
+                       :data='alarmListDialogData'></AlarmListDialog>
+    </div>
+    <div v-if="blackTypeDialogStatus">
+      <ChooseBlackType v-model="blackTypeDialogStatus"
+                       @emitChooseType='emitChooseType'></ChooseBlackType>
     </div>
   </div>
 </template>
 
 <script>
-import { getAlarmListApi } from '../../tools/api'
+import { getSumAlarmListApi, setIpApi, exportSumAlarmFileApi } from '../../tools/api'
+import AlarmListDialog from '../../components/alarm/AlarmListDialog'
+import ChooseBlackType from '../../components/alarm/ChooseBlackType'
 
 export default {
+  components: {
+    AlarmListDialog,
+    ChooseBlackType
+  },
   data () {
     return {
       moreSearch: false,
       searchForm: {
-        ip: '',
-        time: ''
+        sip: '',
+        dip: '',
+        device_ip: '',
+        attack_type: '',
+        time: []
       },
       summaryAlarmList: [],
       currentPage: 1,
-      total: 0
+      total: 0,
+      pageSize: 10,
+      alarmListDialogStatus: false,
+      alarmListDialogData: [],
+      blackTypeDialogStatus: false,
+      rowAlarmData: {}
+    }
+  },
+  computed: {
+    searchContent () {
+      return this.searchForm.sip + ' ' + this.searchForm.dip + ' ' + this.searchForm.device_ip + ' ' + this.searchForm.attack_type
     }
   },
   methods: {
+    getToolTipContetn (type) {
+      let content = ''
+      if (type === 0) {
+        content = '红队IP'
+      } else if (type === 1) {
+        content = '蓝队IP'
+      } else if (type === 2) {
+        content = '重点监控IP'
+      }
+      return content
+    },
+    exportFile (type) {
+      let fd = new FormData()
+      fd.append('page', this.currentPage)
+      fd.append('type', type)
+      fd.append('export_fields', 'sip+dip+wuli_addr')
+      exportSumAlarmFileApi(fd).then(res => {
+        if (res.state !== 1) {
+          this.$message({
+            type: 'warning',
+            message: '导出失败'
+          })
+        } else {
+          let filePath = res.file_path
+          // downloadFileApi(filePath)
+          window.open(filePath)
+        }
+      })
+    },
+    emitChooseType (type) {
+      this.blackType = type
+      let fd = new FormData()
+      fd.append('ip_addr', this.rowAlarmData.sip)
+      fd.append('type', 'black')
+      fd.append('black_type', type)
+      fd.append('id', parseInt(this.rowAlarmData.id))
+      setIpApi('black', fd).then(res => {
+        let type = 'success'
+        let message = '设置成功'
+        if (res.state !== 1) {
+          type = 'warning'
+          message = '设置失败'
+        }
+        this.$message({
+          type,
+          message
+        })
+      })
+    },
     operation (row, type) {
-      console.log(row)
-      console.log(type)
+      this.rowAlarmData = row
+      let fd = new FormData()
+      fd.append('ip_addr', row.sip)
+      fd.append('id', parseInt(row.id))
+      if (type === 'detail') {
+        this.alarmListDialogData = row.sub
+        this.alarmListDialogStatus = true
+      } else if (type === 'white') {
+        fd.append('type', 'white')
+        setIpApi(type, fd).then(res => {
+          let type = 'success'
+          let message = '设置成功'
+          if (res.state !== 1) {
+            type = 'warning'
+            message = res.info
+          }
+          this.$message({
+            type,
+            message
+          })
+        })
+      } else {
+        fd.append('type', 'black')
+        fd.append('black_type', this.blackType)
+        this.blackTypeDialogStatus = true
+      }
     },
     onSearch (type) {
-      if (type) {
-        console.log(type)
-        console.log(this.searchForm)
-      } else {
-        this.searchForm = {}
+      if (!type) {
+        this.searchForm = {
+          sip: '',
+          dip: '',
+          device_ip: '',
+          attack_type: '',
+          time: []
+        }
       }
+      this.getAlarmList()
     },
     handleSizeChange (val) {
       console.log(val)
@@ -157,7 +301,12 @@ export default {
     getAlarmList () {
       let fd = new FormData()
       fd.append('page', this.currentPage)
-      getAlarmListApi(fd).then(res => {
+      for (let key in this.searchForm) {
+        fd.append(key, this.searchForm[key])
+      }
+      fd.append('start_time', this.searchForm.time[0])
+      fd.append('end_time', this.searchForm.time[1])
+      getSumAlarmListApi(fd).then(res => {
         this.summaryAlarmList = res.data
         this.total = res.total
       })
@@ -169,7 +318,25 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .alarm-summary {
+  .alarm-summary-search {
+    .search-box {
+      position: absolute;
+      background: white;
+      z-index: 10;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      width: 100%;
+      padding-top: 18px;
+      overflow: auto;
+      .el-form-item {
+        display: flex;
+        .el-form-item__label {
+          width: 95px;
+        }
+      }
+    }
+  }
 }
 </style>

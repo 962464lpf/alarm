@@ -28,15 +28,6 @@ const routes = [
     }
   },
   {
-    path: '/objmgt/black',
-    name: 'objmgt',
-    component: () => import('../pages/objmgt/BlackList.vue'),
-    meta: {
-      title: '红蓝对抗',
-      icon: ''
-    }
-  },
-  {
     path: '/objmgt/white',
     name: 'objmgt',
     component: () => import('../pages/objmgt/WhiteList.vue'),
@@ -46,9 +37,27 @@ const routes = [
     }
   },
   {
+    path: '/objmgt/black',
+    name: 'objmgt',
+    component: () => import('../pages/objmgt/BlackList.vue'),
+    meta: {
+      title: '黑名单',
+      icon: ''
+    }
+  },
+  {
+    path: '/objmgt/redblue',
+    name: 'objmgt',
+    component: () => import('../pages/objmgt/RedBlue.vue'),
+    meta: {
+      title: '红蓝对抗',
+      icon: ''
+    }
+  },
+  {
     path: '/mail',
     name: 'obgmgt',
-    component: () => import('../pages/Home.vue'),
+    component: () => import('../pages/mail/Mail.vue'),
     meta: {
       title: '邮件管理',
       icon: ''

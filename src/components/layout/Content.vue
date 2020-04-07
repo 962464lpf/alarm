@@ -8,7 +8,7 @@
       </el-col>
       <el-col :span="21"
               class="right">
-        <Breadcrumb></Breadcrumb>
+        <!-- <Breadcrumb></Breadcrumb> -->
         <router-view></router-view>
       </el-col>
     </el-row>
@@ -17,10 +17,11 @@
 
 <script>
 import Nav from '../layout/Nav'
-import Breadcrumb from '../common/Breadcrumb'
+// import Breadcrumb from '../common/Breadcrumb'
 export default {
   components: {
-    Nav, Breadcrumb
+    Nav
+    // Breadcrumb
   },
 
   data () {
@@ -55,9 +56,9 @@ export default {
   .right {
     height: 100%;
     overflow-y: auto;
-    padding: 0 15px 10px 15px;
+    padding: 15px;
     box-sizing: border-box;
-    background: #eaeaea;
+    background: white;
   }
 }
 </style>
