@@ -95,7 +95,7 @@
                      @current-change="handleCurrentChange"
                      :current-page="currentPage"
                      :page-sizes="[10, 20, 30, 40]"
-                     :page-size="pgaeSize"
+                     :page-size="pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
       </el-pagination>
@@ -124,7 +124,7 @@ export default {
       currentAlarmList: [],
       rowAlarmData: {},
       currentPage: 1,
-      pgaeSize: 10,
+      pageSize: 10,
       total: 0,
       blackTypeDialogStatus: false,
       blackType: 2
@@ -142,15 +142,18 @@ export default {
   },
   methods: {
     changeNewAlarm () {
-      if (this.newAlarmData.length) {
-        setCurrentAlarmNotNewApi().then(res => {
-          if (res.state === 1) {
-            this.getCurrentAlarmList()
-            this.$store.commit('clearNewAlarmData')
-          }
-        })
+      for (let i = 0; i < this.currentAlarmList.length; i++) {
+        if (this.currentAlarmList[i].is_new === 0) {
+          setCurrentAlarmNotNewApi().then(res => {
+            if (res.state === 1) {
+              this.getCurrentAlarmList()
+              this.$store.commit('clearNewAlarmData')
+              // this.bellSrc = ''
+            }
+          })
+          return
+        }
       }
-
     },
     bell () {
       this.bellStatus = !this.bellStatus
@@ -173,12 +176,13 @@ export default {
       fd.append('ip_addr', this.rowAlarmData.sip)
       fd.append('type', 'black')
       fd.append('black_type', type)
+      fd.append('id', parseInt(this.rowAlarmData.id))
       setIpApi('black', fd).then(res => {
         let type = 'success'
         let message = '设置成功'
         if (res.state !== 1) {
           type = 'warning'
-          message = '设置失败'
+          message = res.info
         }
         this.$message({
           type,
@@ -191,6 +195,7 @@ export default {
       this.rowAlarmData = row
       let fd = new FormData()
       fd.append('ip_addr', row.sip)
+      fd.append('id', parseInt(row.id))
       if (type === 'detail') {
         window.open('')
         return
@@ -201,7 +206,7 @@ export default {
           let message = '设置成功'
           if (res.state !== 1) {
             type = 'warning'
-            message = '设置失败'
+            message = res.info
           }
           this.$message({
             type,
@@ -214,13 +219,6 @@ export default {
         fd.append('black_type', this.blackType)
         this.blackTypeDialogStatus = true
       }
-    },
-    handleSizeChange (val) {
-      console.log(val)
-    },
-    handleCurrentChange (val) {
-      this.currentPage = val
-      this.getAlarmList()
     },
     hasAlarm (val) {
       console.log(val)
@@ -241,13 +239,21 @@ export default {
         duration: 3000
       })
     },
+    handleSizeChange (val) {
+      this.pageSize = val
+      this.getCurrentAlarmList()
+    },
+    handleCurrentChange (val) {
+      this.currentPage = val
+      this.getCurrentAlarmList()
+    },
     getCurrentAlarmList () {
       let fd = new FormData()
       fd.append('page', this.currentPage)
+      fd.append('per_page', this.pageSize)
       fd.append('start_time', '')
       fd.append('end_time', '')
       getCurrentAlarmListApi(fd).then(res => {
-        // this.formatData(res.data)
         this.currentAlarmList = res.data
         this.total = res.total
       })
@@ -280,14 +286,14 @@ export default {
     .cell-yellow {
       // background: #5bc0de;
       .cell {
-        color: #5bc0de;
+        color: #409eff;
       }
     }
     .cell-orange {
-      background: #f0ad4e;
+      background: #e6a23c;
     }
     .cell-red {
-      background: #d9534f;
+      background: #f56c6c;
     }
     .el-table--enable-row-hover .el-table__body tr:hover > td {
       background-color: transparent !important;

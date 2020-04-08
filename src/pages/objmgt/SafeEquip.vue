@@ -3,9 +3,9 @@
     <el-form :inline="true"
              v-model="searchForm"
              ref="searchForm">
-      <el-form-item label="审批人">
-        <el-input v-model="searchForm.user"
-                  placeholder="审批人"></el-input>
+      <el-form-item label="IP">
+        <el-input v-model="searchForm.ip"
+                  placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">查询</el-button>
@@ -59,7 +59,7 @@
                    @current-change="handleCurrentChange"
                    :current-page="currentPage"
                    :page-sizes="[10, 20, 30, 40]"
-                   :page-size="100"
+                   :page-size="pageSize"
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
@@ -81,9 +81,12 @@ export default {
   },
   data () {
     return {
-      searchForm: [],
+      searchForm: {
+        ip: ''
+      },
       safeEquip: [],
       currentPage: 1,
+      pageSize: 10,
       total: 100,
       updEqipDiaStatus: false,
       equipData: {},
@@ -91,13 +94,6 @@ export default {
     }
   },
   methods: {
-    handleSizeChange (val) {
-      console.log(val)
-    },
-    handleCurrentChange (val) {
-      this.currentPage = val
-      this.getAlarmList()
-    },
     deleteRow (row) {
       this.$confirm('此操作将永久删除该安全设备, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -131,9 +127,17 @@ export default {
       }
       this.updEqipDiaStatus = true
     },
+    handleSizeChange (val) {
+      this.pageSize = val
+    },
+    handleCurrentChange (val) {
+      this.currentPage = val
+      this.getAlarmList()
+    },
     getSateEquipList () {
       let params = {
-        page: 1
+        page: this.currentPage,
+        per_page: this.pageSize
       }
       getSafeEquipListApi(params).then(res => {
         this.safeEquip = res.data

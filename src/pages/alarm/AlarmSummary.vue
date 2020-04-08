@@ -154,6 +154,12 @@
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
       </el-pagination>
+      <div class="statistic">
+        <span>攻击总数：<b>123</b></span>
+        <span>高危次数：<b>23</b></span>
+        <span>中危次数：<b>50</b></span>
+        <span>低危次数：<b>50</b></span>
+      </div>
     </div>
     <div v-if="alarmListDialogStatus">
       <AlarmListDialog v-model="alarmListDialogStatus"
@@ -243,7 +249,7 @@ export default {
         let message = '设置成功'
         if (res.state !== 1) {
           type = 'warning'
-          message = '设置失败'
+          message = res.info
         }
         this.$message({
           type,
@@ -292,7 +298,8 @@ export default {
       this.getAlarmList()
     },
     handleSizeChange (val) {
-      console.log(val)
+      this.pageSize = val
+      this.getAlarmList()
     },
     handleCurrentChange (val) {
       this.currentPage = val
@@ -301,6 +308,7 @@ export default {
     getAlarmList () {
       let fd = new FormData()
       fd.append('page', this.currentPage)
+      fd.append('per_page', this.pageSize)
       for (let key in this.searchForm) {
         fd.append(key, this.searchForm[key])
       }
@@ -336,6 +344,13 @@ export default {
           width: 95px;
         }
       }
+    }
+  }
+  .statistic {
+    color: #606266;
+    line-height: 32px;
+    span {
+      padding: 5px 15px;
     }
   }
 }

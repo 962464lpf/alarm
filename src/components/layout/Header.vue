@@ -6,13 +6,26 @@
       <el-col :span="16"
               class="icon-box">
         <span>
-          <el-badge :value="3"
+          <el-badge :value="123"
                     class="item">
             <el-tooltip class="item"
                         effect="light"
-                        content="告警"
+                        content="攻击总数"
                         placement="bottom-end">
-              <img src="../../assets/images/alarm6.png"
+              <img src="../../assets/images/ALL1.png"
+                   alt="">
+            </el-tooltip>
+          </el-badge>
+
+        </span>
+        <span>
+          <el-badge :value="23"
+                    class="item">
+            <el-tooltip class="item"
+                        effect="light"
+                        content="高危次数"
+                        placement="bottom-end">
+              <img src="../../assets/images/hight.png"
                    alt="">
             </el-tooltip>
           </el-badge>
@@ -20,13 +33,13 @@
         </span>
 
         <span>
-          <el-badge :value="3"
+          <el-badge :value="50"
                     class="item">
             <el-tooltip class="item"
                         effect="light"
-                        content="告警"
+                        content="中危次数"
                         placement="bottom-end">
-              <img src="../../assets/images/alarm5.png"
+              <img src="../../assets/images/middle.png"
                    alt="">
             </el-tooltip>
           </el-badge>
@@ -34,13 +47,13 @@
         </span>
 
         <span>
-          <el-badge :value="3"
+          <el-badge :value="50"
                     class="item">
             <el-tooltip class="item"
                         effect="light"
-                        content="告警"
+                        content="低危次数"
                         placement="bottom-end">
-              <img src="../../assets/images/alarm3.png"
+              <img src="../../assets/images/low.png"
                    alt="">
             </el-tooltip>
           </el-badge>
@@ -98,6 +111,10 @@ export default {
           margin-right: 10px;
           .el-badge__content.is-fixed {
             top: 12px;
+          }
+          .el-badge__content {
+            background: #ef2929;
+            border: none;
           }
         }
       }
