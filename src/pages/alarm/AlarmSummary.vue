@@ -1,134 +1,121 @@
 <template>
   <div class="alarm-summary">
     <div class="alarm-summary-search">
-      <el-form :inline="true"
-               :model="searchForm"
-               ref="searchForm">
+      <el-form :inline="true" :model="searchForm" ref="searchForm">
         <el-form-item label-width="0">
-          <el-input placeholder="请输入内容"
-                    disabled
-                    v-model='searchContent'>
-            <el-button slot="append"
-                       icon="el-icon-caret-bottom"
-                       @click="moreSearch = !moreSearch"></el-button>
+          <el-input placeholder="请输入内容" disabled v-model="searchContent">
+            <el-button
+              slot="append"
+              icon="el-icon-caret-bottom"
+              @click="moreSearch = !moreSearch"
+            ></el-button>
           </el-input>
-          <div class="search-box"
-               v-if="moreSearch">
+          <div class="search-box" v-if="moreSearch">
             <el-form-item label="源IP">
-              <el-input v-model="searchForm.sip"
-                        placeholder="源IP"></el-input>
+              <el-input v-model="searchForm.sip" placeholder="源IP"></el-input>
             </el-form-item>
             <el-form-item label="目的地IP">
-              <el-input v-model="searchForm.dip"
-                        placeholder="目的地IP"></el-input>
+              <el-input
+                v-model="searchForm.dip"
+                placeholder="目的地IP"
+              ></el-input>
             </el-form-item>
             <el-form-item label="设备IP">
-              <el-input v-model="searchForm.device_ip"
-                        placeholder="设备IP"></el-input>
+              <el-input
+                v-model="searchForm.device_ip"
+                placeholder="设备IP"
+              ></el-input>
             </el-form-item>
             <el-form-item label="攻击类型">
-              <el-input v-model="searchForm.attack_type"
-                        placeholder="攻击类型"></el-input>
+              <el-input
+                v-model="searchForm.attack_type"
+                placeholder="攻击类型"
+              ></el-input>
             </el-form-item>
           </div>
         </el-form-item>
         <el-form-item label="时间">
-          <el-date-picker v-model="searchForm.time"
-                          type="datetimerange"
-                          value-format='yyyy-MM-dd HH-mm-ss'
-                          range-separator="至"
-                          start-placeholder="开始日期"
-                          end-placeholder="结束日期">
+          <el-date-picker
+            v-model="searchForm.time"
+            type="datetimerange"
+            value-format="yyyy-MM-dd HH-mm-ss"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          >
           </el-date-picker>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary"
-                     @click="onSearch(true)">查询</el-button>
-          <el-button type="primary"
-                     @click="onSearch(false)">重置</el-button>
-          <el-dropdown split-button
-                       type="primary"
-                       @command='exportFile'
-                       class="ml10">
+          <el-button type="primary" @click="onSearch(true)">查询</el-button>
+          <el-button type="primary" @click="onSearch(false)">重置</el-button>
+          <el-dropdown
+            split-button
+            type="primary"
+            @command="exportFile"
+            class="ml10"
+          >
             导出
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command='csv'>csv</el-dropdown-item>
-              <el-dropdown-item command='excel'>excel</el-dropdown-item>
-              <el-dropdown-item command='json'>json</el-dropdown-item>
-              <el-dropdown-item command='txt'>txt</el-dropdown-item>
-              <el-dropdown-item command='html'>html</el-dropdown-item>
+              <el-dropdown-item command="csv">csv</el-dropdown-item>
+              <el-dropdown-item command="excel">excel</el-dropdown-item>
+              <el-dropdown-item command="json">json</el-dropdown-item>
+              <el-dropdown-item command="txt">txt</el-dropdown-item>
+              <el-dropdown-item command="html">html</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-form-item>
       </el-form>
     </div>
     <div class="alarm-summary-table">
-      <el-table :data="summaryAlarmList"
-                style="width: 100%">
+      <el-table :data="summaryAlarmList" style="width: 100%" border>
         <el-table-column label="源IP">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        :content="getToolTipContetn(scope.row.sip_black_type)"
-                        placement="bottom"
-                        v-if="scope.row.sip_black_type">
-              <span class="curp">{{
-                scope.row.sip
-              }}</span>
-            </el-tooltip>
-            <span class="curp"
-                  v-else>{{
-                scope.row.sip
-              }}</span>
+            <span class="curp" v-if="scope.row.sip_black_type"
+              >{{ scope.row.sip }}({{
+                getToolTipContetn(scope.row.sip_black_type)
+              }})</span
+            >
+            <span class="curp" v-else>{{ scope.row.sip }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="wuli_addr"
-                         label="源物理地址">
+        <el-table-column prop="wuli_addr" label="源物理地址">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        :content="scope.row.wuli_addr"
-                        placement="bottom">
-              <span class="curp omit">{{
-                scope.row.wuli_addr
-              }}</span>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.wuli_addr"
+              placement="bottom"
+            >
+              <span class="curp omit">{{ scope.row.wuli_addr }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip"
-                         label="目的地IP"> </el-table-column>
-        <el-table-column prop="device_ip"
-                         label="设备"> </el-table-column>
+        <el-table-column prop="dip" label="目的地IP"> </el-table-column>
+        <el-table-column prop="device_ip" label="设备"> </el-table-column>
         <el-table-column label="描述">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        :content="scope.row.con"
-                        placement="bottom">
-              <span class="curp omit">{{ scope.row.con}}</span>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.con"
+              placement="bottom"
+            >
+              <span class="curp omit">{{ scope.row.con }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="攻击时间"
-                         prop='attack_time'>
-        </el-table-column>
-        <el-table-column prop="attack_type"
-                         label="攻击类型">
+        <el-table-column label="攻击时间" prop="attack_time"> </el-table-column>
+        <el-table-column prop="attack_type" label="攻击类型" width="80">
           <template slot-scope="scope">
-            {{scope.row.attack_type ? scope.row.attack_type : '未知'}}
+            {{ scope.row.attack_type ? scope.row.attack_type : '未知' }}
           </template>
         </el-table-column>
-        <el-table-column prop="protocol"
-                         width="80"
-                         label="协议">
+        <el-table-column prop="protocol" width="80" label="协议">
         </el-table-column>
-        <el-table-column prop="summary_num"
-                         width="80"
-                         label="次数">
+        <el-table-column prop="summary_num" width="80" label="次数">
         </el-table-column>
-        <el-table-column label="操作"
-                         width="100">
+        <el-table-column label="操作" width="100">
           <template slot-scope="scope">
             <el-dropdown>
               <span class="el-dropdown-link el-button--lightblue dropbutton">
@@ -136,53 +123,77 @@
               </span>
 
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="operation(scope.row, 'detail')">详情</el-dropdown-item>
-                <el-dropdown-item @click.native="operation(scope.row, 'white')">添加白名单</el-dropdown-item>
-                <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item>
+                <el-dropdown-item @click.native="operation(scope.row, 'detail')"
+                  >详情</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="operation(scope.row, 'white')"
+                  >添加白名单</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="operation(scope.row, 'black')"
+                  >添加黑名单</el-dropdown-item
+                >
               </el-dropdown-menu>
             </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination class="fr clearfix"
-                     background
-                     @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="[10, 20, 30, 40]"
-                     :page-size="pageSize"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="total">
+      <el-pagination
+        class="fr clearfix"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      >
       </el-pagination>
       <div class="statistic">
-        <span>攻击总数：<b>123</b></span>
-        <span>高危次数：<b>23</b></span>
-        <span>中危次数：<b>50</b></span>
-        <span>低危次数：<b>50</b></span>
+        <span
+          >攻击总数：<b>{{ attack_total }}</b></span
+        >
+        <span
+          >高危次数：<b>{{ attack_total_high }}</b></span
+        >
+        <span
+          >中危次数：<b>{{ attack_total_middle }}</b></span
+        >
+        <span
+          >低危次数：<b>{{ attack_total_low }}</b></span
+        >
       </div>
     </div>
     <div v-if="alarmListDialogStatus">
-      <AlarmListDialog v-model="alarmListDialogStatus"
-                       :data='alarmListDialogData'></AlarmListDialog>
+      <AlarmListDialog
+        v-model="alarmListDialogStatus"
+        :data="alarmListDialogData"
+      ></AlarmListDialog>
     </div>
     <div v-if="blackTypeDialogStatus">
-      <ChooseBlackType v-model="blackTypeDialogStatus"
-                       @emitChooseType='emitChooseType'></ChooseBlackType>
+      <ChooseBlackType
+        v-model="blackTypeDialogStatus"
+        @emitChooseType="emitChooseType"
+      ></ChooseBlackType>
     </div>
   </div>
 </template>
 
 <script>
-import { getSumAlarmListApi, setIpApi, exportSumAlarmFileApi } from '../../tools/api'
+import {
+  getSumAlarmListApi,
+  setIpApi,
+  exportSumAlarmFileApi,
+} from '../../tools/api'
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
 
 export default {
   components: {
     AlarmListDialog,
-    ChooseBlackType
+    ChooseBlackType,
   },
-  data () {
+  data() {
     return {
       moreSearch: false,
       searchForm: {
@@ -190,25 +201,37 @@ export default {
         dip: '',
         device_ip: '',
         attack_type: '',
-        time: []
+        time: [],
       },
       summaryAlarmList: [],
+      attack_total: 0,
+      attack_total_high: 0,
+      attack_total_low: 0,
+      attack_total_middle: 0,
       currentPage: 1,
       total: 0,
       pageSize: 10,
       alarmListDialogStatus: false,
       alarmListDialogData: [],
       blackTypeDialogStatus: false,
-      rowAlarmData: {}
+      rowAlarmData: {},
     }
   },
   computed: {
-    searchContent () {
-      return this.searchForm.sip + ' ' + this.searchForm.dip + ' ' + this.searchForm.device_ip + ' ' + this.searchForm.attack_type
-    }
+    searchContent() {
+      return (
+        this.searchForm.sip +
+        ' ' +
+        this.searchForm.dip +
+        ' ' +
+        this.searchForm.device_ip +
+        ' ' +
+        this.searchForm.attack_type
+      )
+    },
   },
   methods: {
-    getToolTipContetn (type) {
+    getToolTipContetn(type) {
       let content = ''
       if (type === 0) {
         content = '红队IP'
@@ -219,16 +242,16 @@ export default {
       }
       return content
     },
-    exportFile (type) {
+    exportFile(type) {
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('type', type)
       fd.append('export_fields', 'sip+dip+wuli_addr')
-      exportSumAlarmFileApi(fd).then(res => {
+      exportSumAlarmFileApi(fd).then((res) => {
         if (res.state !== 1) {
           this.$message({
             type: 'warning',
-            message: '导出失败'
+            message: '导出失败',
           })
         } else {
           let filePath = res.file_path
@@ -237,14 +260,14 @@ export default {
         }
       })
     },
-    emitChooseType (type) {
+    emitChooseType(type) {
       this.blackType = type
       let fd = new FormData()
       fd.append('ip_addr', this.rowAlarmData.sip)
       fd.append('type', 'black')
       fd.append('black_type', type)
       fd.append('id', parseInt(this.rowAlarmData.id))
-      setIpApi('black', fd).then(res => {
+      setIpApi('black', fd).then((res) => {
         let type = 'success'
         let message = '设置成功'
         if (res.state !== 1) {
@@ -253,11 +276,12 @@ export default {
         }
         this.$message({
           type,
-          message
+          message,
         })
+        this.getAlarmList()
       })
     },
-    operation (row, type) {
+    operation(row, type) {
       this.rowAlarmData = row
       let fd = new FormData()
       fd.append('ip_addr', row.sip)
@@ -267,7 +291,7 @@ export default {
         this.alarmListDialogStatus = true
       } else if (type === 'white') {
         fd.append('type', 'white')
-        setIpApi(type, fd).then(res => {
+        setIpApi(type, fd).then((res) => {
           let type = 'success'
           let message = '设置成功'
           if (res.state !== 1) {
@@ -276,8 +300,9 @@ export default {
           }
           this.$message({
             type,
-            message
+            message,
           })
+          this.getAlarmList()
         })
       } else {
         fd.append('type', 'black')
@@ -285,27 +310,27 @@ export default {
         this.blackTypeDialogStatus = true
       }
     },
-    onSearch (type) {
+    onSearch(type) {
       if (!type) {
         this.searchForm = {
           sip: '',
           dip: '',
           device_ip: '',
           attack_type: '',
-          time: []
+          time: [],
         }
       }
       this.getAlarmList()
     },
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.pageSize = val
       this.getAlarmList()
     },
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.currentPage = val
       this.getAlarmList()
     },
-    getAlarmList () {
+    getAlarmList() {
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
@@ -314,15 +339,19 @@ export default {
       }
       fd.append('start_time', this.searchForm.time[0])
       fd.append('end_time', this.searchForm.time[1])
-      getSumAlarmListApi(fd).then(res => {
+      getSumAlarmListApi(fd).then((res) => {
         this.summaryAlarmList = res.data
         this.total = res.total
+        this.attack_total = res.attack_total
+        this.attack_total_high = res.attack_total_high
+        this.attack_total_low = res.attack_total_low
+        this.attack_total_middle = res.attack_total_middle
       })
-    }
+    },
   },
-  mounted () {
+  mounted() {
     this.getAlarmList()
-  }
+  },
 }
 </script>
 

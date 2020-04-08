@@ -55,6 +55,21 @@ function exportSumAlarmFileApi(paramas) {
   return POST(url, paramas)
 }
 
+function setMailApi (params) {
+  let url = BASE_URL + '/jump/youjian/edit'
+  return POST(url, params)
+}
+
+function getAttackNumApi () {
+  let url = BASE_URL + '/jump/warning/get_attack_num'
+  return POST(url)
+}
+
+function addIPToWhiteBlackApi (params) {
+  let url = BASE_URL + '/jump/ip/add'
+  return POST(url, params)
+}
+
 export {
   getSumAlarmListApi,
   getCurrentAlarmListApi,
@@ -65,5 +80,8 @@ export {
   deleteSateEquipApi,
   setIpApi,
   getWhiteIPListApi,
-  exportSumAlarmFileApi
+  exportSumAlarmFileApi,
+  setMailApi,
+  getAttackNumApi,
+  addIPToWhiteBlackApi
 }

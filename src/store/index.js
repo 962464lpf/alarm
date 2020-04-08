@@ -6,6 +6,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     newAlarmData: [],
+    attackNum: 0,
+    attackNumHigh: 0,
+    attackNumMiddle: 0,
+    attackNumLow: 0
   },
   mutations: {
     changeNewAlarmData(state, data) {
@@ -14,6 +18,12 @@ export default new Vuex.Store({
     clearNewAlarmData(state) {
       state.newAlarmData = []
     },
+    changeAttackNum(state, data) {
+      state.attackNum = data.num
+      state.attackNumHigh = data.num_high
+      state.attackNumMiddle = data.num_middle
+      state.attackNumLow = data.num_low
+    }
   },
   actions: {
     WebSocketTest({ commit }) {
@@ -21,8 +31,10 @@ export default new Vuex.Store({
       // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
       source.onmessage = (e) => {
         let data = JSON.parse(e.data)
+        console.log(JSON.parse(data.alert_data))
         commit('changeNewAlarmData', JSON.parse(data.alert_data))
+        commit('changeAttackNum', JSON.parse(data.latest_attack_summary))
       }
-    },
-  },
+    }
+  }
 })

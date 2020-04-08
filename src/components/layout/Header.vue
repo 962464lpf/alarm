@@ -6,7 +6,7 @@
       <el-col :span="16"
               class="icon-box">
         <span>
-          <el-badge :value="123"
+          <el-badge :value="attackNum"
                     class="item">
             <el-tooltip class="item"
                         effect="light"
@@ -19,13 +19,13 @@
 
         </span>
         <span>
-          <el-badge :value="23"
+          <el-badge :value="attackNumHigh"
                     class="item">
             <el-tooltip class="item"
                         effect="light"
                         content="高危次数"
                         placement="bottom-end">
-              <img src="../../assets/images/hight.png"
+              <img src="../../assets/images/high.png"
                    alt="">
             </el-tooltip>
           </el-badge>
@@ -33,7 +33,7 @@
         </span>
 
         <span>
-          <el-badge :value="50"
+          <el-badge :value="attackNumMiddle"
                     class="item">
             <el-tooltip class="item"
                         effect="light"
@@ -47,7 +47,7 @@
         </span>
 
         <span>
-          <el-badge :value="50"
+          <el-badge :value="attackNumLow"
                     class="item">
             <el-tooltip class="item"
                         effect="light"
@@ -70,12 +70,27 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+import {getAttackNumApi} from '../../tools/api'
 export default {
   data () {
-    return {}
+    return {
+     
+    }
   },
-  methods: {},
-  mounted () { }
+  computed: {
+    ...mapState(['attackNum', 'attackNumHigh', 'attackNumMiddle', 'attackNumLow'])
+  },
+  methods: {
+    getAttackNum () {
+      getAttackNumApi().then(res => {
+       this.$store.commit('changeAttackNum', res)
+      })
+    }
+  },
+  mounted () { 
+    this.getAttackNum()
+  }
 }
 </script>
 

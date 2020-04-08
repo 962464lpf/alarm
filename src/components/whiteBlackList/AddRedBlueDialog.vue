@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import {addIPToWhiteBlackApi} from '../../tools/api'
 export default {
   props: {
     value: {
@@ -40,8 +41,7 @@ export default {
     return {
       dialogVisible: this.value,
       form: {
-        ip: '',
-        desc: ''
+        ip: ''
       }
     }
   },
@@ -50,8 +50,28 @@ export default {
       this.$emit('input', false)
     },
     onConfirm () {
-      this.$emit('getIP', this.form)
-      this.handleClose()
+      let fd = new FormData()
+      fd.append('ip_addr', this.form.ip)
+      fd.append('type', 'black')
+      // 0:红，1:蓝，2:重点监控
+      if (this.title === '添加红队IP') {
+        fd.append('black_type', 0)
+      } else {
+        fd.append('black_type', 1)
+      }
+      addIPToWhiteBlackApi(fd).then(res => {
+        let type = 'success'
+        if (res.state == 0) {
+          this.$emit('getIP', this.form)
+          this.handleClose()
+        } else {
+          type = 'warning'
+        }
+        this.$message({
+          message: res.info,
+          type
+        })
+      })
     }
   },
   mounted () {

@@ -20,6 +20,8 @@
       <el-table :data="currentAlarmList"
                 style="width: 100%"
                 :row-class-name="addClass">
+                <el-table-column prop="level"
+                         label="级别"> </el-table-column>
         <el-table-column label="源IP">
           <template slot-scope="scope">
             <div>
@@ -136,8 +138,10 @@ export default {
   watch: {
     newAlarmData (val) {
       let length = val.length
-      this.hasAlarm(val[length - 1])
-      this.currentAlarmList = [val[length - 1], ...this.currentAlarmList]
+      if (length){
+        this.hasAlarm(val[length - 1])
+        this.currentAlarmList = [val[length - 1], ...this.currentAlarmList]
+      }
     }
   },
   methods: {
@@ -159,12 +163,13 @@ export default {
       this.bellStatus = !this.bellStatus
     },
     addClass (row) {
+      let level = parseInt(row.row.level)
       // level : 0 1 2 高 中 低
-      if (row.row.level === '0') {
+      if (level === 0) {
         return 'cell-red'
-      } else if (row.row.level === '1') {
+      } else if (level === 1) {
         return 'cell-orange'
-      } else if (row.row.level === '2') {
+      } else if (level === 2) {
         return 'cell-yellow'
       } else {
         return ''
@@ -197,7 +202,7 @@ export default {
       fd.append('ip_addr', row.sip)
       fd.append('id', parseInt(row.id))
       if (type === 'detail') {
-        window.open('')
+        window.open('https://192.168.100.100:2000/index.html')
         return
       } else if (type === 'white') {
         fd.append('type', 'white')
