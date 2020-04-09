@@ -1,12 +1,7 @@
 <template>
   <div class="add-red-blue">
-    <el-dialog :title="title"
-               :visible.sync="dialogVisible"
-               width="30%"
-               :before-close="handleClose">
-      <el-form ref="form"
-               :model="form"
-               label-width="130px">
+    <el-dialog :title="title" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+      <el-form ref="form" :model="form" label-width="130px">
         <el-form-item label="请输入IP或IP范围">
           <el-input v-model="form.ip"></el-input>
         </el-form-item>
@@ -15,8 +10,7 @@
         </el-form-item>
       </el-form>
       <el-row class="fr clearfix">
-        <el-button type="primary"
-                   @click="onConfirm">确定</el-button>
+        <el-button type="primary" @click="onConfirm">确定</el-button>
         <el-button @click="handleClose">取消</el-button>
         <div class="clearfix"></div>
       </el-row>
@@ -25,7 +19,7 @@
 </template>
 
 <script>
-import {addIPToWhiteBlackApi} from '../../tools/api'
+import { addIPToWhiteBlackApi } from '../../tools/api'
 export default {
   props: {
     value: {
@@ -37,7 +31,7 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       dialogVisible: this.value,
       form: {
@@ -46,10 +40,10 @@ export default {
     }
   },
   methods: {
-    handleClose () {
+    handleClose() {
       this.$emit('input', false)
     },
-    onConfirm () {
+    onConfirm() {
       let fd = new FormData()
       fd.append('ip_addr', this.form.ip)
       fd.append('type', 'black')
@@ -74,10 +68,8 @@ export default {
       })
     }
   },
-  mounted () {
-
-  }
-};
+  mounted() {}
+}
 </script>
 
 <style scoped lang="scss">

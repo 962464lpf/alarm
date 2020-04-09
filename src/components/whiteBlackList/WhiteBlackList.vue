@@ -1,31 +1,37 @@
 <template>
   <div class="black-white-list">
-    <el-table :data="blackIPData"
-              style="width: 100%">
-      <el-table-column prop="ip_addr"
-                       label="IP"> </el-table-column>
-      <el-table-column prop="wuli_addr"
-                       label="物理地址"> </el-table-column>
-      <el-table-column prop="created_time"
-                       label="创建时间"> </el-table-column>
-      <el-table-column prop="updated_time"
-                       label="更新时间"> </el-table-column>
+    <el-table :data="blackIPData" style="width: 100%">
+      <el-table-column prop="ip_addr" label="IP"></el-table-column>
+      <el-table-column label="物理地址">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" :content="scope.row.wuli_addr" placement="bottom">
+            <span class="curp omit">
+              {{
+              scope.row.wuli_addr
+              }}
+            </span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="created_time" label="创建时间"></el-table-column>
+      <el-table-column prop="updated_time" label="更新时间"></el-table-column>
     </el-table>
-    <el-pagination class="fr clearfix mt10"
-                   background
-                   @size-change="handleSizeChange"
-                   @current-change="handleCurrentChange"
-                   :current-page="currentPage"
-                   :page-sizes="[10, 20, 30, 40]"
-                   :page-size="pageSize"
-                   layout="total, sizes, prev, pager, next, jumper"
-                   :total="total">
-    </el-pagination>
+    <el-pagination
+      class="fr clearfix mt10"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
   </div>
 </template>
 
 <script>
-import { getWhiteIPListApi } from '../../tools/api'
+import { getIPListApi } from '../../tools/api'
 export default {
   props: {
     type: {
@@ -33,7 +39,7 @@ export default {
       default: 'white'
     }
   },
-  data () {
+  data() {
     return {
       blackIPData: [],
       total: 0,
@@ -42,30 +48,51 @@ export default {
     }
   },
   methods: {
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.pageSize = val
       this.getWhiteIPList()
     },
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.currentPage = val
       this.getIPList()
     },
-    getIPList () {
-      let getListFun = getWhiteIPListApi
-      let params = {
-        page: 1
+    getIPList() {
+      let fd = new FormData()
+      fd.append('page', this.currentPage)
+      fd.append('per_page', this.pageSize)
+      let type = ''
+      // 0：白名单，1：红，2：蓝，3：重点监控 4: 黑名单
+      switch (this.type) {
+        case 'white':
+          type = 0
+          break
+        case 'black':
+          type = 4
+          break
+        case 'red':
+          type = 1
+          break
+        case 'blue':
+          type = 2
+          break
+        case 'importt':
+          type = 4
+          break
+        default:
+          type = 0
       }
-      if (this.type !== 'white') getListFun = getWhiteIPListApi
-      getListFun(params).then(res => {
+      fd.append('type', type)
+
+      getIPListApi(fd).then(res => {
         this.blackIPData = res.data
         this.total = res.total
       })
     }
   },
-  mounted () {
+  mounted() {
     this.getIPList()
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

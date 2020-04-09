@@ -1,4 +1,5 @@
 const routes = [
+
   {
     path: '/alarm/summary',
     name: 'log',

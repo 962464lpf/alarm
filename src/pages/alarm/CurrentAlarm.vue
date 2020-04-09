@@ -1,85 +1,64 @@
 <template>
-  <div class="current-alarm"
-       @click="changeNewAlarm">
-    <audio v-if="bellStatus"
-           :src="bellSrc"
-           autoplay
-           loop>
-      您的浏览器不支持 audio 标签。
-    </audio>
+  <div class="current-alarm" @click="changeNewAlarm">
+    <audio v-if="bellStatus" :src="bellSrc" autoplay loop>您的浏览器不支持 audio 标签。</audio>
     <span class="bell">
-      <i class=" curp"
-         :class="{
+      <i
+        class="curp"
+        :class="{
           'el-icon-bell': bellStatus,
           'el-icon-close-notification': !bellStatus
         }"
-         @click="bell"></i>
+        @click="bell"
+      ></i>
     </span>
 
     <div class="current-table">
-      <el-table :data="currentAlarmList"
-                style="width: 100%"
-                :row-class-name="addClass">
-                <el-table-column prop="level"
-                         label="级别"> </el-table-column>
+      <el-table :data="currentAlarmList" style="width: 100%" :row-class-name="addClass">
         <el-table-column label="源IP">
           <template slot-scope="scope">
             <div>
               <!-- 0 为新告警 -->
-              <span class="triangle"
-                    v-if="scope.row.is_new === 0"></span>
-              <span>
-                {{ scope.row.sip }}
-              </span>
+              <span class="triangle" v-if="scope.row.is_new === 0"></span>
+              <span>{{ scope.row.sip }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="源物理地址">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        :content="scope.row.wuli_addr"
-                        placement="bottom">
-              <span class="curp omit">{{
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.wuli_addr"
+              placement="bottom"
+            >
+              <span class="curp omit">
+                {{
                 scope.row.wuli_addr
-              }}</span>
+                }}
+              </span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip"
-                         label="目的地IP"> </el-table-column>
-        <el-table-column prop="device_ip"
-                         label="设备"> </el-table-column>
-        <el-table-column prop=""
-                         label="描述">
+        <el-table-column prop="dip" label="目的地IP"></el-table-column>
+        <el-table-column prop="device_ip" label="设备"></el-table-column>
+        <el-table-column prop label="描述">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        :content="scope.row.con"
-                        placement="bottom">
+            <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
               <span class="curp omit">{{ scope.row.con}}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="攻击时间"
-                         prop='attack_time'>
+        <el-table-column label="攻击时间" prop="attack_time"></el-table-column>
+        <el-table-column prop="attack_type" label="攻击类型">
+          <template slot-scope="scope">{{scope.row.attack_type ? scope.row.attack_type: '未知'}}</template>
         </el-table-column>
-        <el-table-column prop="attack_type"
-                         label="攻击类型">
-          <template slot-scope="scope">
-            {{scope.row.attack_type ? scope.row.attack_type: '未知'}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="protocol"
-                         width="80"
-                         label="协议">
-        </el-table-column>
-        <el-table-column label="操作"
-                         width="100">
+        <el-table-column prop="protocol" width="80" label="协议"></el-table-column>
+        <el-table-column label="操作" width="100">
           <template slot-scope="scope">
             <el-dropdown>
               <span class="el-dropdown-link el-button--lightblue dropbutton">
-                操 作<i class="el-icon-arrow-down el-icon--right"></i>
+                操 作
+                <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
 
               <el-dropdown-menu slot="dropdown">
@@ -91,34 +70,38 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination class="fr clearfix mt10"
-                     background
-                     @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="[10, 20, 30, 40]"
-                     :page-size="pageSize"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="total">
-      </el-pagination>
+      <el-pagination
+        class="fr clearfix mt10"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
     </div>
 
     <div v-if="blackTypeDialogStatus">
-      <ChooseBlackType v-model="blackTypeDialogStatus"
-                       @emitChooseType='emitChooseType'></ChooseBlackType>
+      <ChooseBlackType v-model="blackTypeDialogStatus" @emitChooseType="emitChooseType"></ChooseBlackType>
     </div>
   </div>
 </template>
 
 <script>
-import { getCurrentAlarmListApi, setIpApi, setCurrentAlarmNotNewApi } from '../../tools/api'
+import {
+  getCurrentAlarmListApi,
+  setIpApi,
+  setCurrentAlarmNotNewApi
+} from '../../tools/api'
 import { mapState } from 'vuex'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
 export default {
   components: {
     ChooseBlackType
   },
-  data () {
+  data() {
     return {
       interval: null,
       bellStatus: true,
@@ -136,16 +119,16 @@ export default {
     ...mapState(['newAlarmData'])
   },
   watch: {
-    newAlarmData (val) {
+    newAlarmData(val) {
       let length = val.length
-      if (length){
+      if (length) {
         this.hasAlarm(val[length - 1])
         this.currentAlarmList = [val[length - 1], ...this.currentAlarmList]
       }
     }
   },
   methods: {
-    changeNewAlarm () {
+    changeNewAlarm() {
       for (let i = 0; i < this.currentAlarmList.length; i++) {
         if (this.currentAlarmList[i].is_new === 0) {
           setCurrentAlarmNotNewApi().then(res => {
@@ -159,10 +142,10 @@ export default {
         }
       }
     },
-    bell () {
+    bell() {
       this.bellStatus = !this.bellStatus
     },
-    addClass (row) {
+    addClass(row) {
       let level = parseInt(row.row.level)
       // level : 0 1 2 高 中 低
       if (level === 0) {
@@ -175,7 +158,7 @@ export default {
         return ''
       }
     },
-    emitChooseType (type) {
+    emitChooseType(type) {
       this.blackType = type
       let fd = new FormData()
       fd.append('ip_addr', this.rowAlarmData.sip)
@@ -196,7 +179,7 @@ export default {
         this.getAlarmList()
       })
     },
-    operation (row, type) {
+    operation(row, type) {
       this.rowAlarmData = row
       let fd = new FormData()
       fd.append('ip_addr', row.sip)
@@ -205,27 +188,37 @@ export default {
         window.open('https://192.168.100.100:2000/index.html')
         return
       } else if (type === 'white') {
-        fd.append('type', 'white')
-        setIpApi(type, fd).then(res => {
-          let type = 'success'
-          let message = '设置成功'
-          if (res.state !== 1) {
-            type = 'warning'
-            message = res.info
-          }
-          this.$message({
-            type,
-            message
+        this.$confirm('您确定将此源IP设置为白名单吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          fd.append('type', 'white')
+          setIpApi(type, fd).then(res => {
+            let type = 'success'
+            let message = '设置成功'
+            if (res.state !== 1) {
+              type = 'warning'
+              message = res.info
+            }
+            this.$message({
+              type,
+              message
+            })
+            this.getAlarmList()
           })
-          this.getAlarmList()
         })
       } else {
-        fd.append('type', 'black')
-        fd.append('black_type', this.blackType)
-        this.blackTypeDialogStatus = true
+        this.$confirm('您确定将此源IP设置为黑名单吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.blackTypeDialogStatus = true
+        })
       }
     },
-    hasAlarm (val) {
+    hasAlarm(val) {
       console.log(val)
       this.bellSrc = require('../../assets/audio/1.wav')
       let type = ['error', 'warning', 'info']
@@ -244,15 +237,15 @@ export default {
         duration: 3000
       })
     },
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.pageSize = val
       this.getCurrentAlarmList()
     },
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.currentPage = val
       this.getCurrentAlarmList()
     },
-    getCurrentAlarmList () {
+    getCurrentAlarmList() {
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
@@ -264,10 +257,10 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted() {
     this.getCurrentAlarmList()
   },
-  beforeDestroy () {
+  beforeDestroy() {
     clearInterval(this.interval)
   }
 }
@@ -296,9 +289,15 @@ export default {
     }
     .cell-orange {
       background: #e6a23c;
+      .cell {
+        color: #3c352c;
+      }
     }
     .cell-red {
       background: #f56c6c;
+      .cell {
+        color: #3c352c;
+      }
     }
     .el-table--enable-row-hover .el-table__body tr:hover > td {
       background-color: transparent !important;

@@ -1,16 +1,11 @@
 <template>
   <div class="mail">
-    <el-form
-      :model="emailForm"
-      :rules="rules"
-      ref="emailForm"
-      label-width="100px"
-    >
+    <el-form :model="emailForm" :rules="rules" ref="emailForm" label-width="100px">
       <el-form-item label="邮件服务器" prop="email_server">
         <el-input v-model="emailForm.email_server"></el-input>
       </el-form-item>
       <el-form-item label="端口" prop="port">
-        <el-input v-model="emailForm.port"></el-input>
+        <el-input v-model.number="emailForm.port"></el-input>
       </el-form-item>
       <el-form-item label="发件箱" prop="from_addr">
         <el-input v-model="emailForm.from_addr"></el-input>
@@ -39,7 +34,7 @@
 </template>
 
 <script>
-import {setMailApi} from '../../tools/api'
+import { setMailApi } from '../../tools/api'
 export default {
   data() {
     return {
@@ -51,9 +46,22 @@ export default {
         to_addr: '',
         cc: '',
         subject: '',
-        content: '',
+        content: ''
       },
-      rules: {},
+      rules: {
+        email_server: [
+          { required: true, message: '请输入邮件服务器', trigger: 'blur' }
+        ],
+        port: [{ required: true, message: '端口', trigger: 'blur' }],
+        from_addr: [
+          { required: true, message: '请输入发件箱', trigger: 'blur' }
+        ],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        to_addr: [{ required: true, message: '请输入收件箱', trigger: 'blur' }],
+        cc: [{ required: true, message: '请输入抄送邮箱', trigger: 'blur' }],
+        subject: [{ required: true, message: '请输入主题', trigger: 'blur' }],
+        content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
+      }
     }
   },
   methods: {
@@ -61,19 +69,30 @@ export default {
       this.$refs[formName].resetFields()
     },
     confirm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           let params = this.emailForm
-          setMailApi(params).then(res => {
-            console.log(res)
+          let fd = new FormData()
+          for (let key in params) {
+            fd.append(key, params[key])
+          }
+          setMailApi(fd).then(res => {
+            let type = 'success'
+            if (res.state !== 1) {
+              type = 'warning'
+            }
+            this.$message({
+              type,
+              message: res.info
+            })
           })
         } else {
           return false
         }
       })
-    },
+    }
   },
-  mounted() {},
+  mounted() {}
 }
 </script>
 
