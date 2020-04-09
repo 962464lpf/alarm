@@ -1,101 +1,60 @@
 <template>
   <div class="header">
     <el-row class="header-row">
-      <el-col :span="3"
-              class="title">捷普告警系统</el-col>
-      <el-col :span="16"
-              class="icon-box">
+      <el-col :span="3" class="title">捷普告警系统</el-col>
+      <el-col :span="16" class="icon-box">
         <span>
-          <el-badge :value="attackNum"
-                    class="item">
-            <el-tooltip class="item"
-                        effect="light"
-                        content="攻击总数"
-                        placement="bottom-end">
-              <img src="../../assets/images/ALL1.png"
-                   alt="">
-            </el-tooltip>
-          </el-badge>
-
+          今日攻击总数：
+          <b>{{attackNum}}</b>
         </span>
         <span>
-          <el-badge :value="attackNumHigh"
-                    class="item">
-            <el-tooltip class="item"
-                        effect="light"
-                        content="高危次数"
-                        placement="bottom-end">
-              <img src="../../assets/images/high.png"
-                   alt="">
-            </el-tooltip>
-          </el-badge>
-
+          今日高危次数：
+          <b>{{attackNumHigh}}</b>
         </span>
-
         <span>
-          <el-badge :value="attackNumMiddle"
-                    class="item">
-            <el-tooltip class="item"
-                        effect="light"
-                        content="中危次数"
-                        placement="bottom-end">
-              <img src="../../assets/images/middle.png"
-                   alt="">
-            </el-tooltip>
-          </el-badge>
-
+          今日中危次数：
+          <b>{{attackNumMiddle}}</b>
         </span>
-
         <span>
-          <el-badge :value="attackNumLow"
-                    class="item">
-            <el-tooltip class="item"
-                        effect="light"
-                        content="低危次数"
-                        placement="bottom-end">
-              <img src="../../assets/images/low.png"
-                   alt="">
-            </el-tooltip>
-          </el-badge>
-
+          今日低危次数：
+          <b>{{attackNumLow}}</b>
         </span>
-
       </el-col>
-      <el-col :span="5"
-              class="icon-box">
-
-      </el-col>
+      <el-col :span="5" class="icon-box"></el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
-import {getAttackNumApi} from '../../tools/api'
+import { mapState } from 'vuex'
+import { getAttackNumApi } from '../../tools/api'
 export default {
-  data () {
-    return {
-     
-    }
+  data() {
+    return {}
   },
   computed: {
-    ...mapState(['attackNum', 'attackNumHigh', 'attackNumMiddle', 'attackNumLow'])
+    ...mapState([
+      'attackNum',
+      'attackNumHigh',
+      'attackNumMiddle',
+      'attackNumLow'
+    ])
   },
   methods: {
-    getAttackNum () {
+    getAttackNum() {
       getAttackNumApi().then(res => {
-       this.$store.commit('changeAttackNum', res)
+        this.$store.commit('changeAttackNum', res)
       })
     }
   },
-  mounted () { 
+  mounted() {
     this.getAttackNum()
   }
 }
 </script>
 
 <style lang="scss">
-@import "../../assets/style/color.scss";
+@import '../../assets/style/color.scss';
 .header {
   height: 50px;
   width: 100%;
@@ -113,25 +72,9 @@ export default {
       height: 100%;
       padding-left: 15px;
       box-sizing: border-box;
-      .el-badge {
-        margin-top: 15px;
-      }
       span {
         margin-right: 30px;
-        img {
-          height: 25px;
-          width: 25px;
-        }
-        .item {
-          margin-right: 10px;
-          .el-badge__content.is-fixed {
-            top: 12px;
-          }
-          .el-badge__content {
-            background: #ef2929;
-            border: none;
-          }
-        }
+        color: white;
       }
     }
   }

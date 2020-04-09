@@ -9,7 +9,8 @@ export default new Vuex.Store({
     attackNum: 0,
     attackNumHigh: 0,
     attackNumMiddle: 0,
-    attackNumLow: 0
+    attackNumLow: 0,
+    currentPath: '/'
   },
   mutations: {
     changeNewAlarmData(state, data) {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
       state.attackNumHigh = data.num_high
       state.attackNumMiddle = data.num_middle
       state.attackNumLow = data.num_low
+    },
+    changeCurrentPath(state, data) {
+      state.currentPath = data
     }
   },
   actions: {

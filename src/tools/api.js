@@ -1,5 +1,13 @@
-import { POST } from './request'
+import { POST, GET } from './request'
 const BASE_URL = 'http://192.168.100.2:5000'
+// const BASE_URL = window.location.origin
+
+
+
+function startRecveApi() {
+  let url = BASE_URL + '/jump/warning/start_recv'
+  POST(url)
+}
 
 function getSumAlarmListApi(params) {
   let url = BASE_URL + '/jump/warning/summary'
@@ -60,6 +68,11 @@ function setMailApi(params) {
   return POST(url, params)
 }
 
+function getMailApi(params) {
+  let url = BASE_URL + '/jump/youjian/edit'
+  return GET(url, params)
+}
+
 function getAttackNumApi() {
   let url = BASE_URL + '/jump/warning/get_attack_num'
   return POST(url)
@@ -76,6 +89,7 @@ function startListernApi() {
 }
 
 export {
+  startRecveApi,
   getSumAlarmListApi,
   getCurrentAlarmListApi,
   setCurrentAlarmNotNewApi,
@@ -87,6 +101,7 @@ export {
   getIPListApi,
   exportSumAlarmFileApi,
   setMailApi,
+  getMailApi,
   getAttackNumApi,
   addIPToWhiteBlackApi,
   startListernApi

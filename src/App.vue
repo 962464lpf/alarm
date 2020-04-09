@@ -17,11 +17,11 @@ export default {
     Footer,
     Content
   },
-  data () {
+  data() {
     return {}
   },
   methods: {},
-  mounted () {
+  mounted() {
     this.$store.dispatch('WebSocketTest')
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="mail">
+  <el-dialog title="邮件设置" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
     <el-form :model="emailForm" :rules="rules" ref="emailForm" label-width="100px">
       <el-form-item label="邮件服务器" prop="email_server">
         <el-input v-model="emailForm.email_server"></el-input>
@@ -26,17 +26,25 @@
         <el-input type="textarea" v-model="emailForm.content"></el-input>
       </el-form-item>
       <el-form-item>
+        <el-button @click="cancel('emailForm')">取消</el-button>
         <el-button type="primary" @click="confirm('emailForm')">确定</el-button>
       </el-form-item>
     </el-form>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
-import { getMailApi, setMailApi } from '../../tools/api'
+import { setMailApi } from '../../tools/api'
 export default {
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
+      dialogVisible: this.value,
       emailForm: {
         email_server: '',
         port: '',
@@ -64,6 +72,13 @@ export default {
     }
   },
   methods: {
+    handleClose() {
+      this.$emit('input', false)
+    },
+    cancel(formName) {
+      this.$refs[formName].resetFields()
+      this.handleClose()
+    },
     confirm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -81,24 +96,15 @@ export default {
               type,
               message: res.info
             })
-            this.getMailSetting()
           })
         } else {
           return false
         }
       })
-    },
-    getMailSetting() {
-      let params = {
-        id: 1
-      }
-      getMailApi(params).then(res => {
-        this.emailForm = res
-      })
     }
   },
   mounted() {
-    this.getMailSetting()
+    console.log(this.dialogVisible)
   }
 }
 </script>
