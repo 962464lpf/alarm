@@ -23,6 +23,7 @@
         </el-form-item>
         <el-form-item label="时间">
           <el-date-picker
+            :clearable="false"
             v-model="searchForm.time"
             type="datetimerange"
             value-format="yyyy-MM-dd HH-mm-ss"
@@ -294,6 +295,7 @@ export default {
           time: []
         }
       }
+      console.log(this.searchForm)
       this.getAlarmList()
     },
     handleSizeChange(val) {

@@ -88,6 +88,41 @@ function startListernApi() {
   return POST(url)
 }
 
+function getAttackTrendApi(params) {
+  let url = BASE_URL + '/jump/analyze/num'
+  return POST(url, params)
+}
+
+function getMaliciousSourceIPTop5Api() {
+  let url = BASE_URL + '/jump/analyze/top5_sip'
+  return POST(url)
+}
+
+function getAttackedIPTop5Api() {
+  let url = BASE_URL + '/jump/analyze/top5_dip'
+  return POST(url)
+}
+
+function getDeviceIPTop5Api() {
+  let url = BASE_URL + '/jump/analyze/top5_device'
+  return POST(url)
+}
+
+function getPhysicalIPTop5Api() {
+  let url = BASE_URL + '/jump/analyze/top5_wuli'
+  return POST(url)
+}
+
+function getAttackedTypeTop5Api() {
+  let url = BASE_URL + '/jump/analyze/top5_type'
+  return POST(url)
+}
+
+function getRedIPTop5Api() {
+  let url = BASE_URL + '/jump/analyze/top5_redip'
+  return POST(url)
+}
+
 export {
   startRecveApi,
   getSumAlarmListApi,
@@ -104,5 +139,12 @@ export {
   getMailApi,
   getAttackNumApi,
   addIPToWhiteBlackApi,
-  startListernApi
+  startListernApi,
+  getAttackTrendApi,
+  getMaliciousSourceIPTop5Api,
+  getAttackedIPTop5Api,
+  getDeviceIPTop5Api,
+  getPhysicalIPTop5Api,
+  getAttackedTypeTop5Api,
+  getRedIPTop5Api
 }

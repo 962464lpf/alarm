@@ -14,7 +14,6 @@
 
     <div class="current-table">
       <el-table :data="currentAlarmList" style="width: 100%" :row-class-name="addClass">
-        <el-table-column prop="id" label="id"></el-table-column>
         <el-table-column label="源IP">
           <template slot-scope="scope">
             <div>
@@ -138,15 +137,6 @@ export default {
     }
   },
   methods: {
-    open2() {
-      this.$notify({
-        title: '提示',
-        message: '这是一条不会自动关闭的消息',
-        duration: 0,
-        customClass: 'notify-red',
-        showClose: false
-      })
-    },
     changeNewAlarm() {
       for (let i = 0; i < this.currentAlarmList.length; i++) {
         if (this.currentAlarmList[i].is_new === 0) {
@@ -275,7 +265,6 @@ export default {
       this.$notify({
         title: '发现攻击',
         message: `攻击类型：${attack_type}`,
-        type: type[level],
         duration: 3000,
         showClose: false,
         customClass
@@ -328,19 +317,19 @@ export default {
     .cell-blue {
       background: rgb(160, 207, 255);
       .cell {
-        color: white;
+        color: black;
       }
     }
     .cell-black {
       background: rgb(144, 147, 153);
       .cell {
-        color: white;
+        color: black;
       }
     }
     .cell-red {
       background: rgb(253, 226, 226);
       .cell {
-        color: white;
+        color: black;
       }
     }
     .el-table--enable-row-hover .el-table__body tr:hover > td {
@@ -381,12 +370,15 @@ export default {
           }
           .hight {
             background: #f56c6c;
+            color: white;
           }
           .middle {
             background: #e6a23c;
+            color: white;
           }
           .low {
             background: #67c23a;
+            color: white;
           }
         }
       }
