@@ -1,6 +1,10 @@
 import { POST, GET } from './request'
-const BASE_URL = 'http://192.168.100.2:5000'
-// const BASE_URL = window.location.origin
+// let url = require('../public/URL.JS')
+// console.log(url.URL)
+// const BASE_URL = url.URL
+
+const BASE_URL = 'http://192.168.100.2:6000'
+// const BASE_URL = window.location.origin + ':5000'
 
 
 

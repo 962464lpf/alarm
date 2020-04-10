@@ -14,10 +14,10 @@
         <el-input type="password" v-model="emailForm.password"></el-input>
       </el-form-item>
       <el-form-item label="收件箱" prop="to_addr">
-        <el-input v-model="emailForm.to_addr"></el-input>
+        <el-input v-model="emailForm.to_addr" placeholder="多个邮箱时，请用逗号(,)分隔"></el-input>
       </el-form-item>
       <el-form-item label="抄送" prop="cc">
-        <el-input v-model="emailForm.cc"></el-input>
+        <el-input v-model="emailForm.cc" placeholder="多个邮箱时，请用逗号(,)分隔"></el-input>
       </el-form-item>
       <el-form-item label="主题" prop="subject">
         <el-input v-model="emailForm.subject"></el-input>

@@ -93,7 +93,6 @@
     <div v-if="blackTypeDialogStatus">
       <ChooseBlackType v-model="blackTypeDialogStatus" @emitChooseType="emitChooseType"></ChooseBlackType>
     </div>
-    <el-button plain @click="open2">不会自动关闭</el-button>
   </div>
 </template>
 
@@ -237,14 +236,27 @@ export default {
     },
     hasAlarm(val) {
       this.bellSrc = require('../../assets/audio/1.wav')
-      let type = ['error', 'warning', 'info']
       let bellSrc = [
         require('../../assets/audio/1.wav'),
         require('../../assets/audio/red.wav'),
         require('../../assets/audio/general.wav')
       ]
-      let level = parseInt(val.level)
+      // sip_black_type: null 黑名单 0:红，1:蓝，2:重点监控
+      // sip_type: "black" 黑。白
+      if (val.attack_type !== 'black') {
+        if (val.sip_black_type === 0) {
+          this.bellSrc = bellSrc[1]
+        } else if (val.sip_black_type === 2) {
+          this.bellSrc = bellSrc[0]
+        } else {
+          this.bellSrc = bellSrc[2]
+        }
+      } else {
+        this.bellSrc = bellSrc[2]
+      }
+
       this.bellSrc = bellSrc[level]
+      let level = parseInt(val.level)
       let attack_type = val.attack_type ? val.attack_type : '未知'
       // level : 0 1 2 高 中 低
       let customClass
