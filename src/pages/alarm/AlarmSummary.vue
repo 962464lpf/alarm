@@ -57,9 +57,12 @@
               class="curp"
               v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 "
             >
-              {{ scope.row.sip }}:{{scope.row.sport}}({{
-              getToolTipContetn(scope.row.sip_black_type)
-              }})
+              {{ scope.row.sip }}
+              <b v-html="getToolTipContetn(scope.row.sip_black_type)">
+                <!-- ({{
+                getToolTipContetn(scope.row.sip_black_type)
+                }})-->
+              </b>
             </span>
             <span class="curp" v-else>{{ scope.row.sip }}</span>
           </template>
@@ -76,7 +79,11 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip" label="目的IP"></el-table-column>
+        <el-table-column prop="dip" label="目的IP">
+          <template slot-scope="scope">
+            <span>{{ scope.row.dip }}: {{scope.row.dport}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="device_ip" label="告警来源"></el-table-column>
         <el-table-column label="描述">
           <template slot-scope="scope">
@@ -147,6 +154,9 @@
     <div v-if="blackTypeDialogStatus">
       <ChooseBlackType v-model="blackTypeDialogStatus" @emitChooseType="emitChooseType"></ChooseBlackType>
     </div>
+    <div v-if="selectTypeDialogStatus">
+      <AddSelectType v-model="selectTypeDialogStatus" @emitSelectTyepe="emitSelectTyepe"></AddSelectType>
+    </div>
   </div>
 </template>
 
@@ -154,19 +164,25 @@
 import {
   getSumAlarmListApi,
   setIpApi,
-  exportSumAlarmFileApi
+  exportSumAlarmFileApi,
+  BASE_URL
 } from '../../tools/api'
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
+import AddSelectType from '../../components/alarm/AddSelectType'
 
 export default {
   components: {
     AlarmListDialog,
-    ChooseBlackType
+    ChooseBlackType,
+    AddSelectType
   },
   data() {
     return {
       moreSearch: false,
+      selectType: '',
+
+      selectTypeDialogStatus: false,
       searchForm: {
         sip: '',
         dip: '',
@@ -217,19 +233,24 @@ export default {
     getToolTipContetn(type) {
       let content = ''
       if (type === 0) {
-        content = '红队IP'
+        content = '<a class="red-team">红队</a>'
       } else if (type === 1) {
-        content = '蓝队IP'
+        content = '<a class="blue-team">蓝队</a>'
       } else if (type === 2) {
         content = ''
       }
       return content
     },
-    exportFile(type) {
+    emitSelectTyepe(data) {
       let fd = new FormData()
       fd.append('page', this.currentPage)
-      fd.append('type', type)
-      fd.append('export_fields', 'sip+dip+wuli_addr')
+      fd.append('type', this.selectType)
+      // this.selectType
+      let st = data.join('%2B').toString()
+      fd.append('export_fields', st)
+      for (let key of data) {
+        if (key === '') fd.append('export_fields', '')
+      }
       exportSumAlarmFileApi(fd).then(res => {
         if (res.state !== 1) {
           this.$message({
@@ -237,11 +258,15 @@ export default {
             message: '导出失败'
           })
         } else {
-          let filePath = res.file_path
+          let filePath = BASE_URL + res.file_path
           // downloadFileApi(filePath)
           window.open(filePath)
         }
       })
+    },
+    exportFile(type) {
+      this.selectTypeDialogStatus = true
+      this.selectType = type
     },
     emitChooseType(type) {
       this.blackType = type
@@ -378,6 +403,18 @@ export default {
     span {
       padding: 5px 15px;
     }
+  }
+  .red-team,
+  .blue-team {
+    color: white;
+    padding: 2px;
+    border-radius: 2px;
+  }
+  .red-team {
+    background: rgb(245, 108, 108);
+  }
+  .blue-team {
+    background: rgb(102, 177, 255);
   }
 }
 </style>

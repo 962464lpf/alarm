@@ -201,7 +201,7 @@ export default {
         }
         this.attackTrend.columns = [
           'time',
-          '攻击次数',
+          '攻击总数',
           '高危次数',
           '中危次数',
           '低危次数'

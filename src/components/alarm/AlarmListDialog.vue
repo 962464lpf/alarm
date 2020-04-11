@@ -10,6 +10,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
+
       <el-table-column label="攻击时间" prop="attack_time"></el-table-column>
       <el-table-column prop="attack_type" label="攻击类型">
         <template slot-scope="scope">{{scope.row.attack_type ? scope.row.attack_type : '未知'}}</template>

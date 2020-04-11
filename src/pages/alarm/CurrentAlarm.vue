@@ -1,6 +1,5 @@
 <template>
   <div class="current-alarm" @click="changeNewAlarm">
-    <span class="triangle">fs</span>
     <audio
       v-if="bellStatus && bellSrc === 'general'"
       src="../../assets/audio/general.wav"
@@ -13,21 +12,22 @@
     >您的浏览器不支持 audio 标签。</audio>
     <span class="bell">
       <span class="fr">
-        <el-switch v-model="bellStatus" active-text="声音开" inactive-text="声音关"></el-switch>
+        <span>告警开关：</span>
+        <el-switch v-model="bellStatus" active-text inactive-text></el-switch>
       </span>
       <div class="clearfloat"></div>
       <div class="sub-bell" v-if="subBellStatus" @mouseleave="subBellStatus = false">
         <p>
-          <span>高危开关：</span>
-          <el-switch v-model="hightBellStatus" active-text="声音开" inactive-text="声音关"></el-switch>
+          <span>高危：</span>
+          <el-switch v-model="hightBellStatus" active-text inactive-text></el-switch>
         </p>
         <p>
-          <span>中危开关：</span>
-          <el-switch v-model="middleBellStatus" active-text="声音开" inactive-text="声音关"></el-switch>
+          <span>中危：</span>
+          <el-switch v-model="middleBellStatus" active-text inactive-text></el-switch>
         </p>
         <p>
-          <span>低危开关：</span>
-          <el-switch v-model="lowBellStatus" active-text="声音开" inactive-text="声音关"></el-switch>
+          <span>低危：</span>
+          <el-switch v-model="lowBellStatus" active-text inactive-text></el-switch>
         </p>
       </div>
     </span>
@@ -39,8 +39,8 @@
             <div>
               <!-- 0 为新告警 -->
               <span class="triangle" v-if="scope.row.is_new === 0"></span>
-              <span class="no-triangle" v-else>{{ scope.row.sip }}:{{scope.row.sport}}</span>
-              <span v-if="scope.row.is_new === 0">{{ scope.row.sip }}:{{scope.row.sport}}</span>
+              <span class="no-triangle" v-else>{{ scope.row.sip }}</span>
+              <span v-if="scope.row.is_new === 0">{{ scope.row.sip }}</span>
             </div>
           </template>
         </el-table-column>
@@ -60,7 +60,11 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip" label="目的IP" width="100"></el-table-column>
+        <el-table-column prop="dip" label="目的IP" width="100">
+          <template slot-scope="scope">
+            <span>{{ scope.row.dip }}: {{scope.row.dport}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="device_ip" label="告警来源"></el-table-column>
         <el-table-column prop label="描述">
           <template slot-scope="scope">

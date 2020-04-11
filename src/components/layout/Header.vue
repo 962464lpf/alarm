@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <el-row class="header-row">
-      <el-col :span="3" class="title">谛听Discover</el-col>
+      <el-col :span="3" class="title">谛听 Discover</el-col>
       <el-col :span="16" class="icon-box">
         <span>
           {{cycleName}}攻击总数：
