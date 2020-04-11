@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <el-row class="header-row">
-      <el-col :span="3" class="title">谛听告警系统</el-col>
+      <el-col :span="3" class="title">谛听Discover</el-col>
       <el-col :span="16" class="icon-box">
         <span>
           {{cycleName}}攻击总数：
@@ -19,18 +19,11 @@
           低危次数：
           <b>{{attackNumLow}}</b>
         </span>
-      </el-col>
-      <el-col :span="5" class="icon-box">
         <span>
-          <i
-            class="el-icon-s-tools curp"
-            style="font-size: 25px;    font-size: 22px;
-                  position: relative;
-                  top: 3px;"
-            @click="changeCycle"
-          ></i>
+          <i class="el-icon-s-tools curp" style="font-size: 14px;" @click="changeCycle"></i>
         </span>
       </el-col>
+      <el-col :span="5" class="icon-box"></el-col>
     </el-row>
     <el-dialog title="设置统计时间" :visible.sync="dialogVisible" width="30%">
       <el-radio-group v-model="radio">
@@ -114,6 +107,7 @@ export default {
       height: 100%;
       padding-left: 15px;
       box-sizing: border-box;
+      justify-content: center;
       span {
         margin-right: 30px;
         color: white;

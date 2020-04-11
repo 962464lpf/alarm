@@ -137,7 +137,8 @@ export default {
         ]
       },
       attackTrendSettings: {
-        stack: { 次数: ['攻击次数', '高危次数', '中危次数', '低危次数'] },
+        // stack: { 次数: ['攻击次数', '高危次数', '中危次数', '低危次数'] },
+        // area: true
         area: true
       },
       attackTrendExtend: {},

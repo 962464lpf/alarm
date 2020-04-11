@@ -7,26 +7,30 @@
       loop
     >您的浏览器不支持 audio 标签。</audio>
     <audio
-      v-if="bellStatus && bellSrc === '1'"
-      src="../../assets/audio/1.wav"
-      autoplay
-      loop
-    >您的浏览器不支持 audio 标签。</audio>
-    <audio
       v-if="bellStatus && bellSrc === 'red'"
       src="../../assets/audio/red.wav"
       autoplay
       loop
     >您的浏览器不支持 audio 标签。</audio>
     <span class="bell">
-      <i
-        class="curp"
-        :class="{
-          'el-icon-bell': bellStatus,
-          'el-icon-close-notification': !bellStatus
-        }"
-        @click="bell"
-      ></i>
+      <span class="fr">
+        <el-switch v-model="bellStatus" active-text="声音开" inactive-text="声音关"></el-switch>
+      </span>
+      <div class="clearfloat"></div>
+      <div class="sub-bell" v-if="subBellStatus" @mouseleave="subBellStatus = false">
+        <p>
+          <span>高危开关：</span>
+          <el-switch v-model="hightBellStatus" active-text="声音开" inactive-text="声音关"></el-switch>
+        </p>
+        <p>
+          <span>中危开关：</span>
+          <el-switch v-model="middleBellStatus" active-text="声音开" inactive-text="声音关"></el-switch>
+        </p>
+        <p>
+          <span>低危开关：</span>
+          <el-switch v-model="lowBellStatus" active-text="声音开" inactive-text="声音关"></el-switch>
+        </p>
+      </div>
     </span>
 
     <div class="current-table">
@@ -90,6 +94,7 @@
                 <el-dropdown-item @click.native="operation(scope.row, 'white')">添加至白名单</el-dropdown-item>
                 <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
                 <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
+                <el-dropdown-item @click.native="blocked(scope.row)">一键封禁</el-dropdown-item>
                 <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
               </el-dropdown-menu>
             </el-dropdown>
@@ -131,6 +136,10 @@ export default {
     return {
       interval: null,
       bellStatus: true,
+      subBellStatus: false,
+      hightBellStatus: true,
+      middleBellStatus: true,
+      lowBellStatus: true,
       bellSrc: '',
       currentAlarmList: [],
       rowAlarmData: {},
@@ -151,6 +160,9 @@ export default {
         this.hasAlarm(val[length - 1])
         this.currentAlarmList = [val[length - 1], ...this.currentAlarmList]
       }
+    },
+    bellStatus(val) {
+      val ? (this.subBellStatus = true) : (this.subBellStatus = false)
     }
   },
   methods: {
@@ -235,6 +247,9 @@ export default {
         })
       }
     },
+    blocked(row) {
+      console.log(row)
+    },
     // 根据红，蓝，恶意，普通的进行添加不同类名，进行颜色区分
     addClass(row) {
       // level : 0 1 2 高 中 低
@@ -265,33 +280,32 @@ export default {
       // ]
       // sip_black_type: null 黑名单 0:红，1:蓝，2:重点监控
       // sip_type: "black" 黑。白
-      if (val.attack_type === 'black') {
-        if (val.sip_black_type === 0) {
-          this.bellSrc = 'red'
-        } else if (val.sip_black_type === 2) {
-          this.bellSrc = '1'
-        } else {
-          this.bellSrc = 'general'
-        }
-      } else {
-        this.bellSrc = 'general'
-      }
+      this.bellSrc = 'general'
+      if (val.sip_black_type === 0) this.bellSrc = 'red'
+      if (val.sip_type === 'white') this.bellSrc = 'general'
       let level = parseInt(val.level)
       let attack_type = val.attack_type ? val.attack_type : '未知'
       // level : 0 1 2 高 中 低
+
       let customClass
+      let addClassBell = (c, level) => {
+        customClass = c
+        if (level === 0 && !this.hightBellStatus) this.bellSrc = ''
+        if (level === 1 && !this.middleBellStatus) this.bellSrc = ''
+        if (level === 2 && !this.lowBellStatus) this.bellSrc = ''
+      }
       switch (level) {
         case 0:
-          customClass = 'notify-red'
+          addClassBell('notify-red', 0)
           break
         case 1:
-          customClass = 'notify-yellow'
+          addClassBell('notify-yellow', 1)
           break
         case 2:
-          customClass = 'notify-green'
+          addClassBell('notify-green', 2)
           break
         default:
-          customClass = ''
+          addClassBell('', 3)
           break
       }
       this.$notify({
@@ -335,19 +349,30 @@ export default {
 .current-alarm {
   .bell {
     position: absolute;
-    top: 6px;
+    top: 0px;
     right: 32px;
     z-index: 10;
-    i {
-      color: red;
-      font-size: 30px;
+    .sub-bell {
+      border: 1px solid #eee;
+      padding: 5px;
+      border-radius: 5px;
+      background: #eee;
+      margin-top: 5px;
+      p {
+        padding: 5px;
+        font-size: 13px;
+        span {
+          line-height: 20px;
+          vertical-align: middle;
+        }
+      }
     }
   }
 
   .current-table {
     color: black;
     .cell-blue {
-      background: rgb(160, 207, 255);
+      background: rgb(198, 226, 255);
       .cell {
         color: black;
       }
@@ -365,7 +390,7 @@ export default {
       }
     }
     .cell-white {
-      background: rgb(250, 236, 216);
+      background: #fff9f0;
       .cell {
         color: black;
       }

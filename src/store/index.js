@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { linkServer } from '../tools/api'
+import { BASE_URL } from '../tools/api'
 
 Vue.use(Vuex)
 
@@ -56,7 +56,8 @@ export default new Vuex.Store({
   },
   actions: {
     WebSocketTest({ commit }) {
-      let source = linkServer()
+      let source = new EventSource(BASE_URL + '/jump/warning/stream_new')
+
       // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
       source.onmessage = (e) => {
         let data = JSON.parse(e.data)

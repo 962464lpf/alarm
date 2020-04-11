@@ -104,6 +104,7 @@
                 <el-dropdown-item @click.native="operation(scope.row, 'white')">添加至白名单</el-dropdown-item>
                 <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
                 <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
+                <el-dropdown-item @click.native="blocked(scope.row)">一键封禁</el-dropdown-item>
                 <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
               </el-dropdown-menu>
             </el-dropdown>
@@ -201,6 +202,18 @@ export default {
     }
   },
   methods: {
+    onSearch(type) {
+      if (!type) {
+        this.searchForm = {
+          sip: '',
+          dip: '',
+          device_ip: '',
+          attack_type: '',
+          time: []
+        }
+      }
+      this.getAlarmList()
+    },
     getToolTipContetn(type) {
       let content = ''
       if (type === 0) {
@@ -303,18 +316,8 @@ export default {
       //   })
       // }
     },
-    onSearch(type) {
-      if (!type) {
-        this.searchForm = {
-          sip: '',
-          dip: '',
-          device_ip: '',
-          attack_type: '',
-          time: []
-        }
-      }
-      console.log(this.searchForm)
-      this.getAlarmList()
+    blocked(row) {
+      console.log(row)
     },
     handleSizeChange(val) {
       this.pageSize = val

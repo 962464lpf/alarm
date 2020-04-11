@@ -3,11 +3,11 @@ import { POST, GET } from './request'
 // console.log(url.URL)
 // const BASE_URL = url.URL
 
-// const BASE_URL = 'http://192.168.100.2:2020'
-const BASE_URL = window.location.origin
+const BASE_URL = 'http://192.168.100.2:2020'
+// const BASE_URL = window.location.origin
 
 function linkServer() {
-  let source = new EventSource(BASE_URL + '/stream2')
+  let source = new EventSource(BASE_URL + '/jump/warning/stream_new')
   return source
 }
 
@@ -148,6 +148,7 @@ function getAlarmSourceApi(type = 'get', params) {
 }
 
 export {
+  BASE_URL,
   linkServer,
   startRecveApi,
   getSumAlarmListApi,
