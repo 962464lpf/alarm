@@ -56,7 +56,7 @@ export default new Vuex.Store({
   },
   actions: {
     WebSocketTest({ commit }) {
-      let source = new EventSource(BASE_URL + '/jump/warning/stream_new')
+      let source = new EventSource(BASE_URL + '/stream2')
 
       // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
       source.onmessage = (e) => {

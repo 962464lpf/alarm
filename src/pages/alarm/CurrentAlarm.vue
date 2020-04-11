@@ -4,13 +4,11 @@
       v-if="bellStatus && bellSrc === 'general'"
       src="../../assets/audio/general.wav"
       autoplay
-      loop
     >您的浏览器不支持 audio 标签。</audio>
     <audio
       v-if="bellStatus && bellSrc === 'red'"
       src="../../assets/audio/red.wav"
       autoplay
-      loop
     >您的浏览器不支持 audio 标签。</audio>
     <span class="bell">
       <span class="fr">
