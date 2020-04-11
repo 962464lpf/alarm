@@ -1,5 +1,6 @@
 <template>
   <div class="current-alarm" @click="changeNewAlarm">
+    <span class="triangle">fs</span>
     <audio
       v-if="bellStatus && bellSrc === 'general'"
       src="../../assets/audio/general.wav"
@@ -38,7 +39,8 @@
             <div>
               <!-- 0 为新告警 -->
               <span class="triangle" v-if="scope.row.is_new === 0"></span>
-              <span>{{ scope.row.sip }}</span>
+              <span class="no-triangle" v-else>{{ scope.row.sip }}:{{scope.row.sport}}</span>
+              <span v-if="scope.row.is_new === 0">{{ scope.row.sip }}:{{scope.row.sport}}</span>
             </div>
           </template>
         </el-table-column>
@@ -58,7 +60,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip" label="目的IP"></el-table-column>
+        <el-table-column prop="dip" label="目的IP" width="100"></el-table-column>
         <el-table-column prop="device_ip" label="告警来源"></el-table-column>
         <el-table-column prop label="描述">
           <template slot-scope="scope">
@@ -68,10 +70,10 @@
           </template>
         </el-table-column>
         <el-table-column label="攻击时间" prop="attack_time"></el-table-column>
-        <el-table-column prop="attack_type" label="攻击类型" width="80">
+        <el-table-column prop="attack_type" label="攻击类型" width="70">
           <template slot-scope="scope">{{scope.row.attack_type ? scope.row.attack_type: '未知'}}</template>
         </el-table-column>
-        <el-table-column prop="attack_type" label="攻击等级" width="80">
+        <el-table-column prop="attack_type" label="攻击等级" width="70">
           <template slot-scope="scope">
             <span v-if="scope.row.level == 0" class="hight">高</span>
             <span v-if="scope.row.level == 1" class="middle">中</span>
@@ -280,17 +282,33 @@ export default {
       // sip_type: "black" 黑。白
       this.bellSrc = 'general'
       if (val.sip_black_type === 0) this.bellSrc = 'red'
-      if (val.sip_type === 'white') this.bellSrc = 'general'
+      if (val.sip_type === 'white') this.bellSrc = ''
       let level = parseInt(val.level)
       let attack_type = val.attack_type ? val.attack_type : '未知'
       // level : 0 1 2 高 中 低
 
       let customClass
+      let levelTile = ''
       let addClassBell = (c, level) => {
         customClass = c
-        if (level === 0 && !this.hightBellStatus) this.bellSrc = ''
-        if (level === 1 && !this.middleBellStatus) this.bellSrc = ''
-        if (level === 2 && !this.lowBellStatus) this.bellSrc = ''
+        if (
+          (level === 0 && !this.hightBellStatus) ||
+          val.sip_type === 'white'
+        ) {
+          this.bellSrc = ''
+          levelTile = '高危'
+        }
+        if (
+          (level === 1 && !this.middleBellStatus) ||
+          val.sip_type === 'white'
+        ) {
+          this.bellSrc = ''
+          levelTile = '中危'
+        }
+        if ((level === 2 && !this.lowBellStatus) || val.sip_type === 'white') {
+          this.bellSrc = ''
+          levelTile = '低危'
+        }
       }
       switch (level) {
         case 0:
@@ -303,11 +321,10 @@ export default {
           addClassBell('notify-green', 2)
           break
         default:
-          addClassBell('', 3)
           break
       }
       this.$notify({
-        title: '发现攻击',
+        title: `发现${levelTile}攻击`,
         message: `攻击类型：${attack_type}`,
         duration: 3000,
         showClose: false,
@@ -413,6 +430,10 @@ export default {
               height: 0;
               border-top: 20px solid #d9534f;
               border-right: 20px solid transparent;
+            }
+            .no-triangle {
+              display: inline-block;
+              text-indent: 20px;
             }
             .item {
               .is-fixed {
