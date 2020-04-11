@@ -3,10 +3,13 @@ import { POST, GET } from './request'
 // console.log(url.URL)
 // const BASE_URL = url.URL
 
-const BASE_URL = 'http://192.168.100.2:6000'
-// const BASE_URL = window.location.origin + ':5000'
+// const BASE_URL = 'http://192.168.100.2:2020'
+const BASE_URL = window.location.origin
 
-
+function linkServer() {
+  let source = new EventSource(BASE_URL + '/stream2')
+  return source
+}
 
 function startRecveApi() {
   let url = BASE_URL + '/jump/warning/start_recv'
@@ -127,7 +130,25 @@ function getRedIPTop5Api() {
   return POST(url)
 }
 
+function startSendMailApi(paramas) {
+  // 1告警开关 2 汇总开关
+  let url = BASE_URL + '/jump/youjian/switch'
+  return POST(url, paramas)
+}
+
+function getAlarmSourceApi(type = 'get', params) {
+  let url = BASE_URL + '/jump/youjian/edit_alertlog'
+
+  if (type === 'get') {
+    return GET(url)
+  } else {
+    return POST(url, params)
+  }
+
+}
+
 export {
+  linkServer,
   startRecveApi,
   getSumAlarmListApi,
   getCurrentAlarmListApi,
@@ -150,5 +171,7 @@ export {
   getDeviceIPTop5Api,
   getPhysicalIPTop5Api,
   getAttackedTypeTop5Api,
-  getRedIPTop5Api
+  getRedIPTop5Api,
+  startSendMailApi,
+  getAlarmSourceApi
 }

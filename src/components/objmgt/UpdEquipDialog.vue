@@ -58,8 +58,8 @@ export default {
         ip: [{ required: true, message: '请输入IP地址', trigger: 'blur' }],
         name: [{ required: true, message: '请输入设备名称', trigger: 'blur' }],
         link: [{ required: true, message: '请输入跳转链接', trigger: 'blur' }],
-        username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        // username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+        // password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
         desc: [{ required: true, message: '请输入描述内容', trigger: 'blur' }]
       }
     }

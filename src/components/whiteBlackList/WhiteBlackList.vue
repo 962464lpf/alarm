@@ -37,6 +37,10 @@ export default {
     type: {
       type: String,
       default: 'white'
+    },
+    ifGetIP: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -45,6 +49,13 @@ export default {
       total: 0,
       currentPage: 1,
       pageSize: 10
+    }
+  },
+  watch: {
+    ifGetIP(val) {
+      if (val) {
+        this.getIPList()
+      }
     }
   },
   methods: {

@@ -1,27 +1,48 @@
 <template>
   <div class="header">
     <el-row class="header-row">
-      <el-col :span="3" class="title">捷普告警系统</el-col>
+      <el-col :span="3" class="title">谛听告警系统</el-col>
       <el-col :span="16" class="icon-box">
         <span>
-          今日攻击总数：
+          {{cycleName}}攻击总数：
           <b>{{attackNum}}</b>
         </span>
         <span>
-          今日高危次数：
+          高危次数：
           <b>{{attackNumHigh}}</b>
         </span>
         <span>
-          今日中危次数：
+          中危次数：
           <b>{{attackNumMiddle}}</b>
         </span>
         <span>
-          今日低危次数：
+          低危次数：
           <b>{{attackNumLow}}</b>
         </span>
       </el-col>
-      <el-col :span="5" class="icon-box"></el-col>
+      <el-col :span="5" class="icon-box">
+        <span>
+          <i
+            class="el-icon-s-tools curp"
+            style="font-size: 25px;    font-size: 22px;
+                  position: relative;
+                  top: 3px;"
+            @click="changeCycle"
+          ></i>
+        </span>
+      </el-col>
     </el-row>
+    <el-dialog title="设置统计时间" :visible.sync="dialogVisible" width="30%">
+      <el-radio-group v-model="radio">
+        <el-radio label="day">天</el-radio>
+        <el-radio label="week">周</el-radio>
+        <el-radio label="month">月</el-radio>
+      </el-radio-group>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirm">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -30,17 +51,38 @@ import { mapState } from 'vuex'
 import { getAttackNumApi } from '../../tools/api'
 export default {
   data() {
-    return {}
+    return {
+      radio: 'day',
+      dialogVisible: false
+    }
   },
   computed: {
     ...mapState([
       'attackNum',
       'attackNumHigh',
       'attackNumMiddle',
-      'attackNumLow'
-    ])
+      'attackNumLow',
+      'cycle'
+    ]),
+    cycleName() {
+      if (this.cycle === 'day') {
+        return '今日'
+      } else if (this.cycle === 'week') {
+        return '本周'
+      } else {
+        return '本月'
+      }
+    }
   },
   methods: {
+    changeCycle() {
+      this.dialogVisible = true
+    },
+    confirm() {
+      this.$store.commit('cahngeCycle', this.radio)
+      this.getAttackNum()
+      this.dialogVisible = false
+    },
     getAttackNum() {
       getAttackNumApi().then(res => {
         this.$store.commit('changeAttackNum', res)

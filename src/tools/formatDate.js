@@ -2,9 +2,6 @@ function formatDate(fmt, d) {
   let ret
   // new Date(parseInt(param) * 1000)
   let date = new Date(parseInt(d) * 1000)
-  let d1 = new Date()
-  console.log(d1.getTime())
-  console.log(d * 1000)
   const opt = {
     'Y+': date.getFullYear().toString(), // 年
     'm+': (date.getMonth() + 1).toString(), // 月

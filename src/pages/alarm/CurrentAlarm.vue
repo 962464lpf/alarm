@@ -1,6 +1,23 @@
 <template>
   <div class="current-alarm" @click="changeNewAlarm">
-    <audio v-if="bellStatus" :src="bellSrc" autoplay loop>您的浏览器不支持 audio 标签。</audio>
+    <audio
+      v-if="bellStatus && bellSrc === 'general'"
+      src="../../assets/audio/general.wav"
+      autoplay
+      loop
+    >您的浏览器不支持 audio 标签。</audio>
+    <audio
+      v-if="bellStatus && bellSrc === '1'"
+      src="../../assets/audio/1.wav"
+      autoplay
+      loop
+    >您的浏览器不支持 audio 标签。</audio>
+    <audio
+      v-if="bellStatus && bellSrc === 'red'"
+      src="../../assets/audio/red.wav"
+      autoplay
+      loop
+    >您的浏览器不支持 audio 标签。</audio>
     <span class="bell">
       <i
         class="curp"
@@ -14,7 +31,7 @@
 
     <div class="current-table">
       <el-table :data="currentAlarmList" style="width: 100%" :row-class-name="addClass">
-        <el-table-column label="源IP">
+        <el-table-column label="恶意IP">
           <template slot-scope="scope">
             <div>
               <!-- 0 为新告警 -->
@@ -23,7 +40,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="源物理地址">
+        <el-table-column label="位置">
           <template slot-scope="scope">
             <el-tooltip
               class="item"
@@ -39,8 +56,8 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip" label="目的地IP"></el-table-column>
-        <el-table-column prop="device_ip" label="设备"></el-table-column>
+        <el-table-column prop="dip" label="目的IP"></el-table-column>
+        <el-table-column prop="device_ip" label="告警来源"></el-table-column>
         <el-table-column prop label="描述">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
@@ -70,8 +87,10 @@
 
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="operation(scope.row, 'detail')">详情</el-dropdown-item>
-                <el-dropdown-item @click.native="operation(scope.row, 'white')">添加白名单</el-dropdown-item>
-                <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item>
+                <el-dropdown-item @click.native="operation(scope.row, 'white')">添加至白名单</el-dropdown-item>
+                <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
+                <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
+                <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -131,7 +150,6 @@ export default {
       if (length) {
         this.hasAlarm(val[length - 1])
         this.currentAlarmList = [val[length - 1], ...this.currentAlarmList]
-        this.bellSrc = ''
       }
     }
   },
@@ -143,7 +161,7 @@ export default {
             if (res.state === 1) {
               this.getCurrentAlarmList()
               this.$store.commit('clearNewAlarmData')
-              // this.bellSrc = ''
+              this.bellSrc = ''
             }
           })
           return
@@ -180,15 +198,27 @@ export default {
       fd.append('ip_addr', row.sip)
       fd.append('id', parseInt(row.id))
       if (type === 'detail') {
-        window.open('https://192.168.100.100:2000/index.html')
+        window.open(row.link)
         return
-      } else if (type === 'white') {
-        this.$confirm('您确定将此源IP设置为白名单吗?', '提示', {
+      } else {
+        let IpName = ''
+        if (type === 'white') {
+          IpName = '白名单'
+          fd.append('type', 'white')
+        } else if (type === 'red') {
+          IpName = '红队IP'
+          fd.append('type', 'black')
+          fd.append('black_type', 0)
+        } else {
+          IpName = '蓝队IP'
+          fd.append('type', 'black')
+          fd.append('black_type', 1)
+        }
+        this.$confirm(`您确定将此源IP设置为${IpName}吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          fd.append('type', 'white')
           setIpApi(type, fd).then(res => {
             let type = 'success'
             let message = '设置成功'
@@ -200,16 +230,8 @@ export default {
               type,
               message
             })
-            this.getAlarmList()
+            this.getCurrentAlarmList()
           })
-        })
-      } else {
-        this.$confirm('您确定将此源IP设置为黑名单吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.blackTypeDialogStatus = true
         })
       }
     },
@@ -221,41 +243,39 @@ export default {
       let sipType = row.row.sip_type
       let sipBlackType = row.row.sip_black_type
       if (sipType === 'white') {
-        return ''
+        return 'cell-white'
       } else {
         if (sipBlackType === 0) {
           return 'cell-red'
         } else if (sipBlackType === 1) {
           return 'cell-blue'
         } else if (sipBlackType === 2) {
-          return 'cell-black'
+          return ''
         } else {
           return ''
         }
       }
     },
     hasAlarm(val) {
-      this.bellSrc = require('../../assets/audio/1.wav')
-      let bellSrc = [
-        require('../../assets/audio/1.wav'),
-        require('../../assets/audio/red.wav'),
-        require('../../assets/audio/general.wav')
-      ]
+      // this.bellSrc = require('../../assets/audio/1.wav')
+      // let bellSrc = [
+      //   require('../../assets/audio/1.wav'),
+      //   require('../../assets/audio/red.wav'),
+      //   require('../../assets/audio/general.wav')
+      // ]
       // sip_black_type: null 黑名单 0:红，1:蓝，2:重点监控
       // sip_type: "black" 黑。白
-      if (val.attack_type !== 'black') {
+      if (val.attack_type === 'black') {
         if (val.sip_black_type === 0) {
-          this.bellSrc = bellSrc[1]
+          this.bellSrc = 'red'
         } else if (val.sip_black_type === 2) {
-          this.bellSrc = bellSrc[0]
+          this.bellSrc = '1'
         } else {
-          this.bellSrc = bellSrc[2]
+          this.bellSrc = 'general'
         }
       } else {
-        this.bellSrc = bellSrc[2]
+        this.bellSrc = 'general'
       }
-
-      this.bellSrc = bellSrc[level]
       let level = parseInt(val.level)
       let attack_type = val.attack_type ? val.attack_type : '未知'
       // level : 0 1 2 高 中 低
@@ -344,6 +364,12 @@ export default {
         color: black;
       }
     }
+    .cell-white {
+      background: rgb(250, 236, 216);
+      .cell {
+        color: black;
+      }
+    }
     .el-table--enable-row-hover .el-table__body tr:hover > td {
       background-color: transparent !important;
     }
@@ -362,8 +388,8 @@ export default {
             .triangle {
               width: 0;
               height: 0;
-              border-top: 15px solid #d9534f;
-              border-right: 15px solid transparent;
+              border-top: 20px solid #d9534f;
+              border-right: 20px solid transparent;
             }
             .item {
               .is-fixed {

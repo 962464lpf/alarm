@@ -8,13 +8,13 @@
       <el-col :span="12" class="first-col">
         <div class="title">
           蓝队IP
-          <WhiteBlackList type="blue" class="mt10"></WhiteBlackList>
+          <WhiteBlackList type="blue" class="mt10" :ifGetIP="ifGetIP"></WhiteBlackList>
         </div>
       </el-col>
       <el-col :span="12">
         <div class="title">
           红队IP
-          <WhiteBlackList type="red" class="mt10"></WhiteBlackList>
+          <WhiteBlackList type="red" class="mt10" :ifGetIP="ifGetIP"></WhiteBlackList>
         </div>
       </el-col>
     </el-row>
@@ -36,7 +36,8 @@ export default {
   data() {
     return {
       addDialogStatus: false,
-      addDialogTitle: ''
+      addDialogTitle: '',
+      ifGetIP: false
     }
   },
   methods: {
@@ -48,8 +49,11 @@ export default {
       }
       this.addDialogStatus = true
     },
-    getIP(ip) {
-      console.log(ip)
+    getIP() {
+      this.ifGetIP = true
+      setTimeout(() => {
+        this.ifGetIP = false
+      })
     }
   },
   mounted() {}

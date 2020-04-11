@@ -7,13 +7,13 @@
             <el-button slot="append" icon="el-icon-caret-bottom" @click="moreSearch = !moreSearch"></el-button>
           </el-input>
           <div class="search-box" v-if="moreSearch">
-            <el-form-item label="源IP">
-              <el-input v-model="searchForm.sip" placeholder="源IP"></el-input>
+            <el-form-item label="恶意IP">
+              <el-input v-model="searchForm.sip" placeholder="恶意IP"></el-input>
             </el-form-item>
-            <el-form-item label="目的地IP">
+            <el-form-item label="目的IP">
               <el-input v-model="searchForm.dip" placeholder="目的地IP"></el-input>
             </el-form-item>
-            <el-form-item label="设备IP">
+            <el-form-item label="告警来源">
               <el-input v-model="searchForm.device_ip" placeholder="设备IP"></el-input>
             </el-form-item>
             <el-form-item label="攻击类型">
@@ -51,9 +51,12 @@
     </div>
     <div class="alarm-summary-table">
       <el-table :data="summaryAlarmList" style="width: 100%" border>
-        <el-table-column label="源IP">
+        <el-table-column label="恶意IP">
           <template slot-scope="scope">
-            <span class="curp" v-if="scope.row.sip_black_type">
+            <span
+              class="curp"
+              v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 "
+            >
               {{ scope.row.sip }}({{
               getToolTipContetn(scope.row.sip_black_type)
               }})
@@ -61,7 +64,7 @@
             <span class="curp" v-else>{{ scope.row.sip }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="wuli_addr" label="源物理地址">
+        <el-table-column prop="wuli_addr" label="位置">
           <template slot-scope="scope">
             <el-tooltip
               class="item"
@@ -73,8 +76,8 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip" label="目的地IP"></el-table-column>
-        <el-table-column prop="device_ip" label="设备"></el-table-column>
+        <el-table-column prop="dip" label="目的IP"></el-table-column>
+        <el-table-column prop="device_ip" label="告警来源"></el-table-column>
         <el-table-column label="描述">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
@@ -98,8 +101,10 @@
 
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="operation(scope.row, 'detail')">详情</el-dropdown-item>
-                <el-dropdown-item @click.native="operation(scope.row, 'white')">添加白名单</el-dropdown-item>
-                <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item>
+                <el-dropdown-item @click.native="operation(scope.row, 'white')">添加至白名单</el-dropdown-item>
+                <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
+                <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
+                <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -203,7 +208,7 @@ export default {
       } else if (type === 1) {
         content = '蓝队IP'
       } else if (type === 2) {
-        content = '重点监控IP'
+        content = ''
       }
       return content
     },
@@ -254,13 +259,25 @@ export default {
       if (type === 'detail') {
         this.alarmListDialogData = row.sub
         this.alarmListDialogStatus = true
-      } else if (type === 'white') {
-        this.$confirm('您确定将此源IP设置为白名单吗?', '提示', {
+      } else {
+        let IpName = ''
+        if (type === 'white') {
+          IpName = '白名单'
+          fd.append('type', 'white')
+        } else if (type === 'red') {
+          IpName = '红队IP'
+          fd.append('type', 'black')
+          fd.append('black_type', 0)
+        } else {
+          IpName = '蓝队IP'
+          fd.append('type', 'black')
+          fd.append('black_type', 1)
+        }
+        this.$confirm(`您确定将此源IP设置为${IpName}吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          fd.append('type', 'white')
           setIpApi(type, fd).then(res => {
             let type = 'success'
             let message = '设置成功'
@@ -275,15 +292,16 @@ export default {
             this.getAlarmList()
           })
         })
-      } else {
-        this.$confirm('您确定将此源IP设置为黑名单吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.blackTypeDialogStatus = true
-        })
       }
+      // else {
+      //   this.$confirm('您确定将此源IP设置为黑名单吗?', '提示', {
+      //     confirmButtonText: '确定',
+      //     cancelButtonText: '取消',
+      //     type: 'warning'
+      //   }).then(() => {
+      //     this.blackTypeDialogStatus = true
+      //   })
+      // }
     },
     onSearch(type) {
       if (!type) {

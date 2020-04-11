@@ -136,7 +136,10 @@ export default {
           }
         ]
       },
-      attackTrendSettings: {},
+      attackTrendSettings: {
+        stack: { 次数: ['攻击次数', '高危次数', '中危次数', '低危次数'] },
+        area: true
+      },
       attackTrendExtend: {},
       maliciousSourceIPTop5: {},
       attackedIPTop5: {},
@@ -195,7 +198,13 @@ export default {
           columns: [],
           rows: []
         }
-        this.attackTrend.columns = ['time', '攻击次数']
+        this.attackTrend.columns = [
+          'time',
+          '攻击次数',
+          '高危次数',
+          '中危次数',
+          '低危次数'
+        ]
         let time = ''
         switch (this.cycle) {
           case 'day':
@@ -211,10 +220,18 @@ export default {
             time = ':00'
             break
         }
-        for (let key in res) {
+        let all = res.all
+        let high = res.high
+        let middle = res.middle
+        let low = res.low
+
+        for (let k in all) {
           let obj = {
-            time: key + time,
-            攻击次数: res[key]
+            time: k + time,
+            攻击次数: all[k],
+            高危次数: high[k],
+            中危次数: middle[k],
+            低危次数: low[k]
           }
           this.attackTrend.rows.push(obj)
         }

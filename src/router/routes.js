@@ -45,15 +45,15 @@ const routes = [
       icon: 'el-icon-document'
     }
   },
-  {
-    path: '/objmgt/black',
-    name: 'objmgt',
-    component: () => import('../pages/objmgt/BlackList.vue'),
-    meta: {
-      title: '黑名单',
-      icon: 'el-icon-document'
-    }
-  },
+  // {
+  //   path: '/objmgt/black',
+  //   name: 'objmgt',
+  //   component: () => import('../pages/objmgt/BlackList.vue'),
+  //   meta: {
+  //     title: '重点监控',
+  //     icon: 'el-icon-document'
+  //   }
+  // },
   {
     path: '/objmgt/redblue',
     name: 'objmgt',
@@ -64,13 +64,33 @@ const routes = [
     }
   },
   {
-    path: '/mail',
-    name: 'obgmgt',
-    component: () => import('../pages/mail/Mail.vue'),
+    path: '/sys',
+    name: 'sux',
+    component: () => import('../components/layout/RouterView.vue'),
     meta: {
-      title: '邮件管理',
+      title: '系统设置',
       icon: 'el-icon-document'
-    }
+    },
+    children: [
+      {
+        path: '/sys/mail',
+        name: 'obgmgt',
+        component: () => import('../pages/mail/Mail.vue'),
+        meta: {
+          title: '邮件管理',
+          icon: 'el-icon-document'
+        }
+      },
+      {
+        path: '/sys/alarmSource',
+        name: 'obgmgt',
+        component: () => import('../pages/objmgt/AlarmSource.vue'),
+        meta: {
+          title: '告警源',
+          icon: 'el-icon-document'
+        }
+      }
+    ]
   }
 ]
 
