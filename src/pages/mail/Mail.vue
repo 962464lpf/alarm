@@ -144,7 +144,7 @@ export default {
           let params = this.emailForm
           let fd = new FormData()
           for (let key in params) {
-            fd.append(key, params[key])
+            if (key !== 'summary_set') fd.append(key, params[key])
           }
           let summaryTime = []
           this.selectTime.forEach(item => {
