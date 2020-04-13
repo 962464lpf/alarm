@@ -225,11 +225,10 @@ export default {
         let high = res.high
         let middle = res.middle
         let low = res.low
-
         for (let k in all) {
           let obj = {
             time: k + time,
-            攻击次数: all[k],
+            攻击总数: all[k],
             高危次数: high[k],
             中危次数: middle[k],
             低危次数: low[k]

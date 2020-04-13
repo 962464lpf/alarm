@@ -246,7 +246,7 @@ export default {
       fd.append('page', this.currentPage)
       fd.append('type', this.selectType)
       // this.selectType
-      let st = data.join('%2B').toString()
+      let st = data.join(',').toString()
       fd.append('export_fields', st)
       for (let key of data) {
         if (key === '') fd.append('export_fields', '')
