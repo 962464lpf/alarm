@@ -18,7 +18,11 @@
       :collapse-transition="false"
     >
       <template v-for="(route, index) in routes">
-        <el-submenu :index="route.path" v-if="route.children && route.children.length" :key="index">
+        <el-submenu
+          :index="route.path"
+          v-if="route.children && route.children.length && route.meta"
+          :key="index"
+        >
           <template slot="title">
             <i :class="route.meta.icon"></i>
             <span>{{route.meta.title}}</span>
@@ -32,7 +36,11 @@
           </el-menu-item-group>
         </el-submenu>
 
-        <el-menu-item :index="route.path" :key="route.path" v-else-if="!route.children">
+        <el-menu-item
+          :index="route.path"
+          :key="route.path"
+          v-else-if="!route.children && route.meta"
+        >
           <i :class="route.meta.icon"></i>
           <span slot="title">{{route.meta.title}}</span>
         </el-menu-item>

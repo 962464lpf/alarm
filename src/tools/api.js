@@ -130,10 +130,10 @@ function getRedIPTop5Api() {
   return POST(url)
 }
 
-function startSendMailApi(paramas) {
+function startSendMailApi(params) {
   // 1告警开关 2 汇总开关
   let url = BASE_URL + '/jump/youjian/switch'
-  return POST(url, paramas)
+  return POST(url, params)
 }
 
 function getAlarmSourceApi(type = 'get', params) {
@@ -144,7 +144,11 @@ function getAlarmSourceApi(type = 'get', params) {
   } else {
     return POST(url, params)
   }
+}
 
+function loginApi(paramas) {
+  let url = BASE_URL + '/jump/auth/login'
+  return POST(url, paramas)
 }
 
 export {
@@ -174,5 +178,6 @@ export {
   getAttackedTypeTop5Api,
   getRedIPTop5Api,
   startSendMailApi,
-  getAlarmSourceApi
+  getAlarmSourceApi,
+  loginApi
 }

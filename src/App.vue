@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header class="app-header"></Header>
-    <Content class="app-content"></Content>
+    <component v-bind:is="contentCmp" class="app-content"></component>
     <Footer class="app-footer"></Footer>
   </div>
 </template>
@@ -10,14 +10,28 @@
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import Content from './components/layout/Content'
+import Login from './pages/user/Login'
 export default {
   components: {
     Header,
     Footer,
-    Content
+    Content,
+    Login
+  },
+  watch: {
+    $route(val) {
+      if (val.path === '/' || val.path === '/register') {
+        this.contentCmp = 'Login'
+      } else {
+        this.contentCmp = Content
+      }
+      this.$store.commit('changeCurrentPath', val.path)
+    }
   },
   data() {
-    return {}
+    return {
+      contentCmp: Content
+    }
   },
   methods: {},
   mounted() {

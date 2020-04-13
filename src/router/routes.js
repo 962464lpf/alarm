@@ -1,6 +1,16 @@
 const routes = [
   {
     path: '/',
+    name: 'login',
+    component: () => import('../pages/user/Login.vue'),
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('../pages/user/Login.vue'),
+  },
+  {
+    path: '/index',
     name: 'index',
     component: () => import('../pages/home/Home.vue'),
     meta: {
