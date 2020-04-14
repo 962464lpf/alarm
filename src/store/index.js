@@ -12,7 +12,8 @@ export default new Vuex.Store({
     attackNumMiddle: 0,
     attackNumLow: 0,
     currentPath: '/',
-    cycle: 'day'
+    cycle: 'day',
+    userInfo: JSON.parse(sessionStorage.getItem('userInfo'))
   },
   mutations: {
     changeNewAlarmData(state, data) {
@@ -52,6 +53,9 @@ export default new Vuex.Store({
     },
     cahngeCycle(state, data) {
       state.cycle = data
+    },
+    changeUserInfo(state, userInfo) {
+      state.userInfo = userInfo
     }
   },
   actions: {

@@ -10,6 +10,11 @@
             @click="changeCycle('day')"
           >日</el-button>
           <el-button
+            :type="cycle === 'week' ? 'primary' : ''"
+            size="mini"
+            @click="changeCycle('week')"
+          >周</el-button>
+          <el-button
             :type="cycle === 'month' ? 'primary' : ''"
             size="mini"
             @click="changeCycle('month')"
@@ -25,88 +30,37 @@
       ></ve-line>
     </div>
     <el-row :gutter="20">
-      <el-col :span="12">
+      <el-col :span="12" v-for="(item, index) in top5ChartsList" :key="index">
         <div class="chart-box">
           <div class="title">
-            <span>恶意源IP Top5</span>
+            <span>{{item.title}}</span>
             <div class="setting fr">
-              <span>
+              <span class="curp" @click="settingCycleTop(item.fun)">
                 <i class="el-icon-setting"></i>
               </span>
-              <span class="ml10">
+              <span class="ml10 curp" @click="refreshTop(item.fun)">
                 <i class="el-icon-refresh"></i>
+              </span>
+              <span class="ml10 curp" @click="fullScreenTop()">
+                <i class="el-icon-full-screen"></i>
+              </span>
+              <span class="ml10 curp" @click="toTop(index)">
+                <i class="el-icon-top"></i>
               </span>
             </div>
           </div>
           <ve-histogram
-            :data="maliciousSourceIPTop5"
-            :colors="['#c23531']"
+            :data="item.data()"
+            :colors="item.colors"
             height="300px"
             :legend-visible="false"
           ></ve-histogram>
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="chart-box">
-          <div class="title">
-            <span>目的IP Top5</span>
-          </div>
-          <ve-histogram
-            :data="attackedIPTop5"
-            :colors="['#61a0a8']"
-            height="300px"
-            :legend-visible="false"
-          ></ve-histogram>
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="chart-box">
-          <div class="title">
-            <span>设备来源 Top5</span>
-          </div>
-          <ve-histogram
-            :data="deviceIPTop5"
-            :colors="['#d48265']"
-            height="300px"
-            :legend-visible="false"
-          ></ve-histogram>
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="chart-box">
-          <div class="title">
-            <span>物理地址 Top5</span>
-          </div>
-          <ve-histogram
-            :data="physicalIPTop5"
-            :colors="['#bda29a']"
-            height="300px"
-            :legend-visible="false"
-          ></ve-histogram>
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="chart-box">
-          <div class="title">
-            <span>攻击类型 Top5</span>
-          </div>
-          <ve-histogram
-            :data="attackedTypeTop5"
-            :colors="['#bda29a']"
-            height="300px"
-            :legend-visible="false"
-          ></ve-histogram>
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="chart-box">
-          <div class="title">
-            <span>红队IP Top5</span>
-          </div>
-          <ve-histogram :data="redIpTop5" height="300px" :legend-visible="false"></ve-histogram>
         </div>
       </el-col>
     </el-row>
+    <div v-if="topSettingDialogStatus">
+      <TopSettingDialog v-model="topSettingDialogStatus" @getTopSetting="getTopSetting"></TopSettingDialog>
+    </div>
   </div>
 </template>
 
@@ -120,16 +74,20 @@ import {
   getAttackedTypeTop5Api,
   getRedIPTop5Api
 } from '../../tools/api'
+import TopSettingDialog from '../../components/home/TopSettingDialog'
 export default {
+  components: {
+    TopSettingDialog
+  },
   data() {
     return {
       cycle: 'day',
       attackTrend: {
-        columns: ['日期', '攻击次数', '高危次数', '中危次数', '低危次数'],
+        columns: ['日期', '攻击总数', '高危次数', '中危次数', '低危次数'],
         rows: [
           {
             日期: '1/1',
-            攻击次数: 1393,
+            攻击总数: 1393,
             高危次数: 393,
             中危次数: 400,
             低危次数: 600
@@ -137,11 +95,52 @@ export default {
         ]
       },
       attackTrendSettings: {
-        // stack: { 次数: ['攻击次数', '高危次数', '中危次数', '低危次数'] },
-        // area: true
+        // stack: { 数量: ['攻击总数', '低危次数', '中危次数', '高危次数'] },
         area: true
+        // area: true
       },
       attackTrendExtend: {},
+
+      top5ChartsList: [
+        {
+          title: '恶意源IP Top5',
+          fun: 'getMaliciousSourceIPTop',
+          data: () => this.maliciousSourceIPTop5,
+          colors: ['#c23531']
+        },
+        {
+          title: '目的IP Top5',
+          fun: 'getAttackedIPTop5',
+          data: () => this.attackedIPTop5,
+          colors: ['#61a0a8']
+        },
+        {
+          title: '设备来源 Top5',
+          fun: 'getDeviceIPTop5',
+          data: () => this.deviceIPTop5,
+          colors: ['#d48265']
+        },
+        {
+          title: '物理地址 Top5',
+          fun: 'getPhysicalIPTop5',
+          data: () => this.physicalIPTop5,
+          colors: ['#bda29a']
+        },
+        {
+          title: '攻击类型 Top5',
+          fun: 'getAttackedTypeTop5',
+          data: () => this.attackedTypeTop5,
+          colors: ['#bda29a']
+        },
+        {
+          title: '红队IP Top5',
+          fun: 'getAttackedTypeTop5',
+          data: () => this.redIpTop5,
+          colors: ['#d48265']
+        }
+      ],
+      selectSettingTop: '',
+      topSettingDialogStatus: false,
       maliciousSourceIPTop5: {},
       attackedIPTop5: {},
       deviceIPTop5: {},
@@ -149,27 +148,32 @@ export default {
       attackedTypeTop5: {},
       redIpTop5: {},
       chartData: {
-        columns: ['名称', '攻击次数'],
+        columns: ['名称', '攻击次数', '高危'],
         rows: [
           {
             名称: '192.168.1.3',
-            攻击次数: 1393
+            攻击次数: 1393,
+            高危: 1200
           },
           {
             名称: '192.168.1.4',
-            攻击次数: 1000
+            攻击次数: 1000,
+            高危: 1221
           },
           {
             名称: '192.168.1.5',
-            攻击次数: 800
+            攻击次数: 800,
+            高危: 1235
           },
           {
             名称: '192.168.1.6',
-            攻击次数: 600
+            攻击次数: 600,
+            高危: 1278
           },
           {
             名称: '192.168.1.7',
-            攻击次数: 400
+            攻击次数: 400,
+            高危: 1212
           }
         ]
       }
@@ -181,10 +185,30 @@ export default {
     }
   },
   methods: {
+    getTopSetting(form) {
+      this[this.selectSettingTop](form.cycle)
+    },
+    settingCycleTop(top) {
+      this.selectSettingTop = top
+      this.topSettingDialogStatus = true
+    },
+    refreshTop(method) {
+      this[method]()
+    },
+    fullScreenTop() {
+      // let dom =maliciousSource
+    },
+    toTop(index) {
+      let currentChart = this.top5ChartsList[index]
+      this.top5ChartsList.splice(index, 1)
+      this.top5ChartsList.unshift(currentChart)
+    },
     changeCycle(type) {
       this.cycle = type
       if (type === 'day') {
         this.getAttackTrend('hour')
+      } else if (type === 'week') {
+        this.getAttackTrend('week')
       } else if (type === 'month') {
         this.getAttackTrend('day')
       } else {
@@ -213,6 +237,9 @@ export default {
             break
           case 'month':
             time = '号'
+            break
+          case 'week':
+            time = ''
             break
           case 'year':
             time = '月'
@@ -252,34 +279,40 @@ export default {
       }
     },
 
-    getMaliciousSourceIPTop() {
+    getMaliciousSourceIPTop(cycle = 'day') {
       getMaliciousSourceIPTop5Api().then(res => {
-        this.formatChartData('maliciousSourceIPTop5', res, ['IP', '攻击次数'])
+        this.formatChartData('maliciousSourceIPTop5', res[cycle], [
+          'IP',
+          '攻击次数'
+        ])
       })
     },
-    getAttackedIPTop5() {
+    getAttackedIPTop5(cycle = 'day') {
       getAttackedIPTop5Api().then(res => {
-        this.formatChartData('attackedIPTop5', res, ['IP', '攻击次数'])
+        this.formatChartData('attackedIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
-    getDeviceIPTop5() {
+    getDeviceIPTop5(cycle = 'day') {
       getDeviceIPTop5Api().then(res => {
-        this.formatChartData('deviceIPTop5', res, ['IP', '攻击次数'])
+        this.formatChartData('deviceIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
-    getPhysicalIPTop5() {
+    getPhysicalIPTop5(cycle = 'day') {
       getPhysicalIPTop5Api().then(res => {
-        this.formatChartData('physicalIPTop5', res, ['IP', '攻击次数'])
+        this.formatChartData('physicalIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
-    getAttackedTypeTop5() {
+    getAttackedTypeTop5(cycle = 'day') {
       getAttackedTypeTop5Api().then(res => {
-        this.formatChartData('attackedTypeTop5', res, ['类型', '攻击次数'])
+        this.formatChartData('attackedTypeTop5', res[cycle], [
+          '类型',
+          '攻击次数'
+        ])
       })
     },
-    getRedIPTop5() {
+    getRedIPTop5(cycle = 'day') {
       getRedIPTop5Api().then(res => {
-        this.formatChartData('redIpTop5', res, ['IP', '攻击次数'])
+        this.formatChartData('redIpTop5', res[cycle], ['IP', '攻击次数'])
       })
     }
   },

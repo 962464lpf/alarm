@@ -1,4 +1,9 @@
 import axios from 'axios'
+let Router
+if (process.env.NODE_ENV != "development") {
+  Router = require('../router/index')
+}
+
 
 function GET(url, params) {
   return new Promise((resolve, reject) => {
@@ -20,6 +25,9 @@ function POST(url, params) {
     axios
       .post(url, params)
       .then(res => {
+        if (process.env.NODE_ENV != "development") {
+          if (res.data.state === -1) Router.push('/')
+        }
         resolve(res.data)
       })
       .catch(error => {

@@ -1,6 +1,6 @@
 <template>
-  <div class="black-white-list">
-    <el-table :data="blackIPData" style="width: 100%">
+  <div class="mt10">
+    <el-table :data="blackIPData" style="width: 100%" border>
       <el-table-column prop="ip_addr" label="IP"></el-table-column>
       <el-table-column label="物理地址">
         <template slot-scope="scope">
@@ -15,6 +15,11 @@
       </el-table-column>
       <el-table-column prop="created_time" label="创建时间"></el-table-column>
       <el-table-column prop="updated_time" label="更新时间"></el-table-column>
+      <el-table-column label="操作" width="50">
+        <template slot-scope="scope">
+          <el-button type="text" @click.native="removeIP(scope.row)">移除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       class="fr clearfix mt10"
@@ -97,6 +102,15 @@ export default {
       getIPListApi(fd).then(res => {
         this.blackIPData = res.data
         this.total = res.total
+      })
+    },
+    removeIP(row) {
+      this.$confirm('您确定要移除此IP?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$emit('removeIP', row)
       })
     }
   },

@@ -31,7 +31,7 @@
         </p>
       </div>
     </span>
-
+    <SearchForm @getSearchForm="getSearchForm"></SearchForm>
     <div class="current-table">
       <el-table :data="currentAlarmList" style="width: 100%" :row-class-name="addClass">
         <el-table-column label="恶意IP">
@@ -132,9 +132,12 @@ import {
 } from '../../tools/api'
 import { mapState } from 'vuex'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
+import SearchForm from '../../components/alarm/SearchForm'
+
 export default {
   components: {
-    ChooseBlackType
+    ChooseBlackType,
+    SearchForm
   },
   data() {
     return {
@@ -151,7 +154,8 @@ export default {
       pageSize: 10,
       total: 0,
       blackTypeDialogStatus: false,
-      blackType: 2
+      blackType: 2,
+      searchForm: {}
     }
   },
   computed: {
@@ -343,12 +347,22 @@ export default {
       this.currentPage = val
       this.getCurrentAlarmList()
     },
+    getSearchForm(form) {
+      this.searchForm = form
+      this.getCurrentAlarmList()
+    },
     getCurrentAlarmList() {
       let fd = new FormData()
+      for (let k in this.searchForm) {
+        if (k === 'time') {
+          fd.append('start_time', this.searchForm[k][0])
+          fd.append('end_time', this.searchForm[k][1])
+        } else {
+          fd.append(k, this.searchForm[k])
+        }
+      }
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
-      fd.append('start_time', '')
-      fd.append('end_time', '')
       getCurrentAlarmListApi(fd).then(res => {
         this.currentAlarmList = res.data
         this.total = res.total

@@ -10,7 +10,7 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="userForm.password" placeholder="请输入密码">
+          <el-input v-model="userForm.password" placeholder="请输入密码" type="password">
             <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-form-item>
@@ -79,6 +79,7 @@ export default {
             if (res.state === 1) {
               if (this.currentPath === '/') {
                 this.$router.push('/index')
+                sessionStorage.setItem('userInfo', JSON.stringify(res.userinfo))
               } else {
                 this.$router.push('/')
               }

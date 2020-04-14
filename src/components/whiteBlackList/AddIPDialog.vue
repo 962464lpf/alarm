@@ -9,17 +9,16 @@
           <el-input v-model="form.desc"></el-input>
         </el-form-item>
       </el-form>
-      <el-row class="fr clearfix">
+      <el-row class="fr clearfloat">
         <el-button type="primary" @click="onConfirm">确定</el-button>
         <el-button @click="handleClose">取消</el-button>
-        <div class="clearfix"></div>
       </el-row>
+      <div class="clearfloat"></div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { addIPToWhiteBlackApi } from '../../tools/api'
 export default {
   props: {
     value: {
@@ -44,28 +43,30 @@ export default {
       this.$emit('input', false)
     },
     onConfirm() {
-      let fd = new FormData()
-      fd.append('ip_addr', this.form.ip)
-      fd.append('type', 'black')
-      // 0:红，1:蓝，2:重点监控
-      if (this.title === '添加红队IP') {
-        fd.append('black_type', 0)
-      } else {
-        fd.append('black_type', 1)
-      }
-      addIPToWhiteBlackApi(fd).then(res => {
-        let type = 'success'
-        if (res.state == 0) {
-          this.$emit('getIP', this.form)
-          this.handleClose()
-        } else {
-          type = 'warning'
-        }
-        this.$message({
-          message: res.info,
-          type
-        })
-      })
+      this.$emit('getIP', this.form)
+      this.handleClose()
+      // let fd = new FormData()
+      // fd.append('ip_addr', this.form.ip)
+      // fd.append('type', 'black')
+      // // 0:红，1:蓝，2:重点监控
+      // if (this.title === '添加红队IP') {
+      //   fd.append('black_type', 0)
+      // } else {
+      //   fd.append('black_type', 1)
+      // }
+      // addIPToWhiteBlackApi(fd).then(res => {
+      //   let type = 'success'
+      //   if (res.state == 0) {
+      //     this.$emit('getIP', this.form)
+      //     this.handleClose()
+      //   } else {
+      //     type = 'warning'
+      //   }
+      //   this.$message({
+      //     message: res.info,
+      //     type
+      //   })
+      // })
     }
   },
   mounted() {}

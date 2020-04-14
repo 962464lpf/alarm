@@ -2,9 +2,12 @@ import { POST, GET } from './request'
 // let url = require('../public/URL.JS')
 // console.log(url.URL)
 // const BASE_URL = url.URL
-
-const BASE_URL = 'http://192.168.100.2:2020'
-// const BASE_URL = window.location.origin
+let BASE_URL = ''
+if (process.env.NODE_ENV == "development") {
+  BASE_URL = 'http://192.168.100.2:2020'
+} else {
+  BASE_URL = window.location.origin
+}
 
 function linkServer() {
   let source = new EventSource(BASE_URL + '/jump/warning/stream_new')
@@ -90,6 +93,11 @@ function addIPToWhiteBlackApi(params) {
   return POST(url, params)
 }
 
+function deleteIpApi(params) {
+  let url = BASE_URL + '/jump/ip/delete'
+  return POST(url, params)
+}
+
 function startListernApi() {
   let url = BASE_URL + '/jump/warning/start_listen'
   return POST(url)
@@ -156,6 +164,12 @@ function registerApi(params) {
   return POST(url, params)
 }
 
+function logoutApi() {
+  let url = BASE_URL + '/jump/auth/logout'
+  return POST(url)
+}
+
+
 export {
   BASE_URL,
   linkServer,
@@ -174,6 +188,7 @@ export {
   getMailApi,
   getAttackNumApi,
   addIPToWhiteBlackApi,
+  deleteIpApi,
   startListernApi,
   getAttackTrendApi,
   getMaliciousSourceIPTop5Api,
@@ -185,5 +200,6 @@ export {
   startSendMailApi,
   getAlarmSourceApi,
   loginApi,
-  registerApi
+  registerApi,
+  logoutApi
 }

@@ -1,54 +1,20 @@
 <template>
   <div class="alarm-summary">
-    <div class="alarm-summary-search">
-      <el-form :inline="true" :model="searchForm" ref="searchForm">
-        <el-form-item label-width="0">
-          <el-input placeholder="请输入内容" disabled v-model="searchContent">
-            <el-button slot="append" icon="el-icon-caret-bottom" @click="moreSearch = !moreSearch"></el-button>
-          </el-input>
-          <div class="search-box" v-if="moreSearch">
-            <el-form-item label="恶意IP">
-              <el-input v-model="searchForm.sip" placeholder="恶意IP"></el-input>
-            </el-form-item>
-            <el-form-item label="目的IP">
-              <el-input v-model="searchForm.dip" placeholder="目的地IP"></el-input>
-            </el-form-item>
-            <el-form-item label="告警来源">
-              <el-input v-model="searchForm.device_ip" placeholder="设备IP"></el-input>
-            </el-form-item>
-            <el-form-item label="攻击类型">
-              <el-input v-model="searchForm.attack_type" placeholder="攻击类型"></el-input>
-            </el-form-item>
-          </div>
-        </el-form-item>
-        <el-form-item label="时间">
-          <el-date-picker
-            :clearable="false"
-            v-model="searchForm.time"
-            type="datetimerange"
-            value-format="yyyy-MM-dd HH-mm-ss"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          ></el-date-picker>
-        </el-form-item>
+    <SearchForm @getSearchForm="getSearchForm">
+      <el-form-item>
+        <el-dropdown split-button type="primary" @command="exportFile" class="ml10">
+          导出
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="csv">csv</el-dropdown-item>
+            <el-dropdown-item command="excel">excel</el-dropdown-item>
+            <el-dropdown-item command="json">json</el-dropdown-item>
+            <el-dropdown-item command="txt">txt</el-dropdown-item>
+            <el-dropdown-item command="html">html</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-form-item>
+    </SearchForm>
 
-        <el-form-item>
-          <el-button type="primary" @click="onSearch(true)">查询</el-button>
-          <el-button type="primary" @click="onSearch(false)">重置</el-button>
-          <el-dropdown split-button type="primary" @command="exportFile" class="ml10">
-            导出
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="csv">csv</el-dropdown-item>
-              <el-dropdown-item command="excel">excel</el-dropdown-item>
-              <el-dropdown-item command="json">json</el-dropdown-item>
-              <el-dropdown-item command="txt">txt</el-dropdown-item>
-              <el-dropdown-item command="html">html</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-form-item>
-      </el-form>
-    </div>
     <div class="alarm-summary-table">
       <el-table :data="summaryAlarmList" style="width: 100%" border>
         <el-table-column label="恶意IP">
@@ -58,11 +24,7 @@
               v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 "
             >
               {{ scope.row.sip }}
-              <b v-html="getToolTipContetn(scope.row.sip_black_type)">
-                <!-- ({{
-                getToolTipContetn(scope.row.sip_black_type)
-                }})-->
-              </b>
+              <b v-html="getToolTipContetn(scope.row.sip_black_type)"></b>
             </span>
             <span class="curp" v-else>{{ scope.row.sip }}</span>
           </template>
@@ -170,12 +132,14 @@ import {
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
 import AddSelectType from '../../components/alarm/AddSelectType'
+import SearchForm from '../../components/alarm/SearchForm'
 
 export default {
   components: {
     AlarmListDialog,
     ChooseBlackType,
-    AddSelectType
+    AddSelectType,
+    SearchForm
   },
   data() {
     return {
@@ -204,30 +168,9 @@ export default {
       rowAlarmData: {}
     }
   },
-  computed: {
-    searchContent() {
-      return (
-        this.searchForm.sip +
-        ' ' +
-        this.searchForm.dip +
-        ' ' +
-        this.searchForm.device_ip +
-        ' ' +
-        this.searchForm.attack_type
-      )
-    }
-  },
   methods: {
-    onSearch(type) {
-      if (!type) {
-        this.searchForm = {
-          sip: '',
-          dip: '',
-          device_ip: '',
-          attack_type: '',
-          time: []
-        }
-      }
+    getSearchForm(form) {
+      this.searchForm = form
       this.getAlarmList()
     },
     getToolTipContetn(type) {
@@ -250,6 +193,14 @@ export default {
       fd.append('export_fields', st)
       for (let key of data) {
         if (key === '') fd.append('export_fields', '')
+      }
+      for (let k in this.searchForm) {
+        if (k === 'time') {
+          fd.append('start_time', this.searchForm[k][0])
+          fd.append('end_time', this.searchForm[k][1])
+        } else {
+          fd.append(k, this.searchForm[k])
+        }
       }
       exportSumAlarmFileApi(fd).then(res => {
         if (res.state !== 1) {
@@ -331,15 +282,6 @@ export default {
           })
         })
       }
-      // else {
-      //   this.$confirm('您确定将此源IP设置为黑名单吗?', '提示', {
-      //     confirmButtonText: '确定',
-      //     cancelButtonText: '取消',
-      //     type: 'warning'
-      //   }).then(() => {
-      //     this.blackTypeDialogStatus = true
-      //   })
-      // }
     },
     blocked(row) {
       console.log(row)
@@ -379,24 +321,6 @@ export default {
 
 <style lang="scss">
 .alarm-summary {
-  .alarm-summary-search {
-    .search-box {
-      position: absolute;
-      background: white;
-      z-index: 10;
-      border: 1px solid #cccccc;
-      border-radius: 4px;
-      width: 100%;
-      padding-top: 18px;
-      overflow: auto;
-      .el-form-item {
-        display: flex;
-        .el-form-item__label {
-          width: 95px;
-        }
-      }
-    }
-  }
   .statistic {
     color: #606266;
     line-height: 32px;
