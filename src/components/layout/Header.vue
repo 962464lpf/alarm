@@ -2,7 +2,11 @@
   <div class="header">
     <el-row class="header-row">
       <el-col :span="3" class="title">谛听 Discover</el-col>
-      <el-col :span="16" class="icon-box" v-if="attackNUmShow">
+      <el-col
+        :span="16"
+        class="icon-box"
+        v-if="!(currentPath === '/' || currentPath === '/register')"
+      >
         <span>
           {{cycleName}}攻击总数：
           <b>{{attackNum}}</b>
@@ -46,17 +50,7 @@ export default {
   data() {
     return {
       radio: 'day',
-      dialogVisible: false,
-      attackNUmShow: true
-    }
-  },
-  watch: {
-    $route(val) {
-      if (val.path === '/' || val.path === '/register') {
-        this.attackNUmShow = false
-      } else {
-        this.attackNUmShow = true
-      }
+      dialogVisible: false
     }
   },
   computed: {
@@ -65,7 +59,8 @@ export default {
       'attackNumHigh',
       'attackNumMiddle',
       'attackNumLow',
-      'cycle'
+      'cycle',
+      'currentPath'
     ]),
     cycleName() {
       if (this.cycle === 'day') {

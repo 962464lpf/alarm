@@ -146,9 +146,14 @@ function getAlarmSourceApi(type = 'get', params) {
   }
 }
 
-function loginApi(paramas) {
+function loginApi(params) {
   let url = BASE_URL + '/jump/auth/login'
-  return POST(url, paramas)
+  return POST(url, params)
+}
+
+function registerApi(params) {
+  let url = BASE_URL + '/jump/user/add'
+  return POST(url, params)
 }
 
 export {
@@ -179,5 +184,6 @@ export {
   getRedIPTop5Api,
   startSendMailApi,
   getAlarmSourceApi,
-  loginApi
+  loginApi,
+  registerApi
 }

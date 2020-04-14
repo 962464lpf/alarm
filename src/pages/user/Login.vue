@@ -15,7 +15,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <div class="btn curp" @click="submitForm('userForm')">登录</div>
+          <div class="btn curp" @click="submitForm('userForm')">{{immediateTitle('btn')}}</div>
           <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
         </el-form-item>
       </el-form>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { loginApi } from '../../tools/api'
+import { loginApi, registerApi } from '../../tools/api'
 import { mapState } from 'vuex'
 export default {
   data() {
@@ -34,7 +34,7 @@ export default {
         name: '',
         password: ''
       },
-      // immediateTitle: '立即注册',
+      btnName: '登录',
       rules: {
         userName: [
           // { required: true, message: '请输入活动名称', trigger: 'blur' }
@@ -45,11 +45,23 @@ export default {
   computed: {
     ...mapState(['currentPath'])
   },
+  watch: {
+    currentPath() {
+      this.userForm = {
+        name: '',
+        password: ''
+      }
+    }
+  },
   methods: {
-    immediateTitle() {
+    immediateTitle(type) {
       if (this.currentPath === '/') {
+        if (type) {
+          return '登录'
+        }
         return '立即注册'
       } else if (this.currentPath === '/register') {
+        if (type) return '注册'
         return '立即登录'
       }
     },
@@ -60,13 +72,20 @@ export default {
           for (let key in this.userForm) {
             fd.append(key, this.userForm[key])
           }
-          loginApi(fd).then(res => {
+          let handleSubmit = null
+          if (this.currentPath === '/') handleSubmit = loginApi
+          if (this.currentPath === '/register') handleSubmit = registerApi
+          handleSubmit(fd).then(res => {
             if (res.state === 1) {
-              this.$router.push('/index')
+              if (this.currentPath === '/') {
+                this.$router.push('/index')
+              } else {
+                this.$router.push('/')
+              }
             } else {
               this.$message({
                 type: 'warning',
-                message: '登陆失败'
+                message: '操作失败'
               })
             }
           })
@@ -76,11 +95,17 @@ export default {
         }
       })
     },
-    jump() {}
+    jump() {
+      let path
+      if (this.currentPath === '/') {
+        path = 'register'
+      } else {
+        path = '/'
+      }
+      this.$router.push(path)
+    }
   },
-  mounted() {
-    console.log(this.currentPath)
-  }
+  mounted() {}
 }
 </script>
 
