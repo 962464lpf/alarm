@@ -127,7 +127,8 @@ import {
   getSumAlarmListApi,
   setIpApi,
   exportSumAlarmFileApi,
-  BASE_URL
+  BASE_URL,
+  downloadFileApi
 } from '../../tools/api'
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -184,6 +185,17 @@ export default {
       }
       return content
     },
+    downloadFile(filePath, type) {
+      downloadFileApi(filePath).then(res => {
+        let blob = new Blob([res], { type })
+        let url = window.URL.createObjectURL(blob)
+        let a = document.createElement('a')
+        a.setAttribute('download', 'text')
+        a.setAttribute('href', url)
+        a.click()
+      })
+    },
+
     emitSelectTyepe(data) {
       let fd = new FormData()
       fd.append('page', this.currentPage)
@@ -211,7 +223,22 @@ export default {
         } else {
           let filePath = BASE_URL + res.file_path
           // downloadFileApi(filePath)
-          window.open(filePath)
+          if (
+            this.selectType === 'txt' ||
+            this.selectType === 'json' ||
+            this.selectType === 'html'
+          ) {
+            // 'text/plain'
+            // application/json
+            // text/html
+            let type = ''
+            if (this.selectType === 'txt') type = 'text/plain'
+            if (this.selectType === 'json') type = 'application/json'
+            if (this.selectType === 'html') type = 'text/html'
+            this.downloadFile(filePath, type)
+          } else {
+            window.open(filePath)
+          }
         }
       })
     },

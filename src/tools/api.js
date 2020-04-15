@@ -1,12 +1,14 @@
-import { POST, GET } from './request'
-// let url = require('../public/URL.JS')
-// console.log(url.URL)
-// const BASE_URL = url.URL
+import { POST, GET, downloadFile } from './request'
+
 let BASE_URL = ''
 if (process.env.NODE_ENV == "development") {
   BASE_URL = 'http://192.168.100.2:2020'
 } else {
   BASE_URL = window.location.origin
+}
+
+function downloadFileApi(url) {
+  return downloadFile(url)
 }
 
 function linkServer() {
@@ -172,6 +174,7 @@ function logoutApi() {
 
 export {
   BASE_URL,
+  downloadFileApi,
   linkServer,
   startRecveApi,
   getSumAlarmListApi,

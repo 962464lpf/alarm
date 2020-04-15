@@ -2,6 +2,7 @@
   <div class="header">
     <el-row class="header-row">
       <el-col :span="3" class="title">谛听 Discover</el-col>
+
       <el-col
         :span="16"
         class="icon-box"
@@ -113,6 +114,7 @@ export default {
         if (res.state === 1) {
           this.$router.push('/')
           sessionStorage.removeItem('userInfo')
+          this.$store.commit('changeUserInfo', {})
         } else {
           this.$message({
             type: 'warning',

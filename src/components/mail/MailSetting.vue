@@ -103,9 +103,7 @@ export default {
       })
     }
   },
-  mounted() {
-    console.log(this.dialogVisible)
-  }
+  mounted() {}
 }
 </script>
 

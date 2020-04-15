@@ -1,9 +1,25 @@
 import axios from 'axios'
-let Router
+import Router from '../router/index'
+// eslint-disable-next-line no-unused-vars
+let router
 if (process.env.NODE_ENV != "development") {
-  Router = require('../router/index')
+  router = Router
 }
 
+function downloadFile(url) {
+  return new Promise((resolve, reject) => {
+    axios.get(url, {
+      responseType: 'arraybuffer'
+    })
+      .then(res => {
+        resolve(res.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+
+}
 
 function GET(url, params) {
   return new Promise((resolve, reject) => {
@@ -26,7 +42,7 @@ function POST(url, params) {
       .post(url, params)
       .then(res => {
         if (process.env.NODE_ENV != "development") {
-          if (res.data.state === -1) Router.push('/')
+          if (res.data.state === -1) router.push('/')
         }
         resolve(res.data)
       })
@@ -36,4 +52,4 @@ function POST(url, params) {
   })
 }
 
-export { GET, POST }
+export { GET, POST, downloadFile }

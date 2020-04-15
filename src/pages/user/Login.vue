@@ -80,6 +80,7 @@ export default {
               if (this.currentPath === '/') {
                 this.$router.push('/index')
                 sessionStorage.setItem('userInfo', JSON.stringify(res.userinfo))
+                this.$store.commit('changeUserInfo', res.userinfo)
               } else {
                 this.$router.push('/')
               }
@@ -91,7 +92,6 @@ export default {
             }
           })
         } else {
-          console.log('error submit!!')
           return false
         }
       })

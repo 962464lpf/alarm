@@ -13,7 +13,7 @@ export default new Vuex.Store({
     attackNumLow: 0,
     currentPath: '/',
     cycle: 'day',
-    userInfo: JSON.parse(sessionStorage.getItem('userInfo'))
+    userInfo: JSON.parse(sessionStorage.getItem('userInfo')) ? JSON.parse(sessionStorage.getItem('userInfo')) : {}
   },
   mutations: {
     changeNewAlarmData(state, data) {

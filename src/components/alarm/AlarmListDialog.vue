@@ -61,7 +61,6 @@ export default {
       this.$emit('input', false)
     },
     handleCurrentChange(val) {
-      console.log(this.currentPage)
       this.currentPage = val
       this.sliceAlarmData()
     },
