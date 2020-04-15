@@ -171,6 +171,16 @@ function logoutApi() {
   return POST(url)
 }
 
+function getUserListApi() {
+  let url = BASE_URL + '/jump/user/index'
+  return POST(url)
+}
+
+function userAllotEquipApi(params) {
+  let url = BASE_URL + '/jump/user/dist_device'
+  return POST(url, params)
+}
+
 
 export {
   BASE_URL,
@@ -204,5 +214,7 @@ export {
   getAlarmSourceApi,
   loginApi,
   registerApi,
-  logoutApi
+  logoutApi,
+  getUserListApi,
+  userAllotEquipApi
 }

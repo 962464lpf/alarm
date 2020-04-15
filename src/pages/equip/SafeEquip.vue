@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import UpdEquiqDialog from '../../components/objmgt/UpdEquipDialog'
+import UpdEquiqDialog from '../../components/equip/UpdEquipDialog'
 import { getSafeEquipListApi, deleteSateEquipApi } from '../../tools/api'
 export default {
   components: {
@@ -111,17 +111,18 @@ export default {
     },
     handleSizeChange(val) {
       this.pageSize = val
+      this.getSateEquipList()
     },
     handleCurrentChange(val) {
       this.currentPage = val
-      this.getAlarmList()
+      this.getSateEquipList()
     },
     getSateEquipList() {
-      let params = {
-        page: this.currentPage,
-        per_page: this.pageSize
-      }
-      getSafeEquipListApi(params).then(res => {
+      let fd = new FormData()
+      fd.append('page', this.currentPage)
+      fd.append('per_page', this.pageSize)
+
+      getSafeEquipListApi(fd).then(res => {
         this.safeEquip = res.data
         this.total = res.total
       })

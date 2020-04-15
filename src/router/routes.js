@@ -15,7 +15,8 @@ const routes = [
     component: () => import('../pages/home/Home.vue'),
     meta: {
       title: '首页',
-      icon: 'el-icon-document'
+      icon: 'el-icon-s-home',
+      level: 1
     }
   },
   {
@@ -24,7 +25,8 @@ const routes = [
     component: () => import('../pages/alarm/AlarmSummary.vue'),
     meta: {
       title: '告警汇总',
-      icon: 'el-icon-document'
+      icon: 'el-icon-document',
+      level: 1
     }
   },
   {
@@ -33,7 +35,8 @@ const routes = [
     component: () => import('../pages/alarm/CurrentAlarm.vue'),
     meta: {
       title: '实时告警',
-      icon: 'el-icon-document'
+      icon: 'el-icon-document',
+      level: 1
     }
   },
 
@@ -43,7 +46,8 @@ const routes = [
     component: () => import('../pages/equip/SafeEquip.vue'),
     meta: {
       title: '设备录入',
-      icon: 'el-icon-document'
+      icon: 'el-icon-document',
+      level: 1
     }
   },
   {
@@ -52,7 +56,8 @@ const routes = [
     component: () => import('../pages/white/WhiteList.vue'),
     meta: {
       title: '白名单',
-      icon: 'el-icon-document'
+      icon: 'el-icon-document',
+      level: 1
     }
   },
   // {
@@ -70,7 +75,8 @@ const routes = [
     component: () => import('../pages/redblue/RedBlue.vue'),
     meta: {
       title: '红蓝对抗',
-      icon: 'el-icon-document'
+      icon: 'el-icon-document',
+      level: 1
     }
   },
   {
@@ -79,7 +85,8 @@ const routes = [
     component: () => import('../components/layout/RouterView.vue'),
     meta: {
       title: '系统设置',
-      icon: 'el-icon-document'
+      icon: 'el-icon-setting',
+      level: 0
     },
     children: [
       {
@@ -88,16 +95,27 @@ const routes = [
         component: () => import('../pages/sys/Mail.vue'),
         meta: {
           title: '邮件管理',
-          icon: 'el-icon-document'
+          icon: 'el-icon-document',
+          level: 0
         }
       },
+      // {
+      //   path: '/sys/alarmSource',
+      //   name: 'obgmgt',
+      //   component: () => import('../pages/sys/AlarmSource.vue'),
+      //   meta: {
+      //     title: '告警源',
+      //     icon: 'el-icon-document'
+      //   }
+      // },
       {
-        path: '/sys/alarmSource',
+        path: '/sys/user',
         name: 'obgmgt',
-        component: () => import('../pages/sys/AlarmSource.vue'),
+        component: () => import('../pages/sys/User.vue'),
         meta: {
-          title: '告警源',
-          icon: 'el-icon-document'
+          title: '用户管理',
+          icon: 'el-icon-document',
+          level: 0
         }
       }
     ]

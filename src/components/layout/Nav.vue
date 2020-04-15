@@ -20,10 +20,10 @@
       <template v-for="(route, index) in routes">
         <el-submenu
           :index="route.path"
-          v-if="route.children && route.children.length && route.meta"
+          v-if="route.children && route.children.length && route.meta && isPermission(route) "
           :key="index"
         >
-          <template slot="title">
+          <template slot="title" v-if="isPermission(route)">
             <i :class="route.meta.icon"></i>
             <span>{{route.meta.title}}</span>
           </template>
@@ -32,6 +32,7 @@
               :key="todo.path"
               :index="todo.path"
               v-for="todo in route.children"
+              v-show="isPermission"
             >{{todo.meta.title}}</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
@@ -39,9 +40,11 @@
         <el-menu-item
           :index="route.path"
           :key="route.path"
-          v-else-if="!route.children && route.meta"
+          v-else-if="!route.children && route.meta && isPermission(route)"
         >
-          <i :class="route.meta.icon"></i>
+          <i :class="route.meta.icon">
+            <!-- <img src="../../assets/images/ALL1.png" alt /> -->
+          </i>
           <span slot="title">{{route.meta.title}}</span>
         </el-menu-item>
       </template>
@@ -51,6 +54,7 @@
 
 <script>
 import ROUTES from '../../router/routes'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -60,8 +64,22 @@ export default {
       scaling: false
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(['userInfo'])
+  },
   methods: {
+    isPermission(page) {
+      console.log('user' + this.userInfo.level)
+      console.log('page' + page.meta.level)
+      // 超级管理员为0  普通用户为1
+      let permission = this.userInfo.level
+      let pagePermission = page.meta.level
+      if (permission <= pagePermission) {
+        return true
+      } else {
+        return false
+      }
+    },
     mouseMove(type) {
       this.$emit('changeStyle', type)
     },

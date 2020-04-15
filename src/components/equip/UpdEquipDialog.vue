@@ -1,24 +1,48 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
     <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="120px">
-      <el-form-item label="IP地址" prop="ip">
-        <el-input v-model="form.ip"></el-input>
-      </el-form-item>
-      <el-form-item label="设备名称" prop="name">
-        <el-input v-model="form.name"></el-input>
-      </el-form-item>
-      <el-form-item label="跳转链接" prop="link">
-        <el-input v-model="form.link"></el-input>
-      </el-form-item>
-      <el-form-item label="账号" prop="username">
-        <el-input v-model="form.username"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password" type="password"></el-input>
-      </el-form-item>
-      <el-form-item label="描述" prop="desc">
-        <el-input v-model="form.desc" type="textarea"></el-input>
-      </el-form-item>
+      <div>
+        <p>告警设备</p>
+        <el-form-item label="IP地址" prop="ip">
+          <el-input v-model="form.ip"></el-input>
+        </el-form-item>
+        <el-form-item label="设备名称" prop="name">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="跳转链接" prop="link">
+          <el-input v-model="form.link"></el-input>
+        </el-form-item>
+        <el-form-item label="账号" prop="username">
+          <el-input v-model="form.username"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="form.password" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="desc">
+          <el-input v-model="form.desc" type="textarea"></el-input>
+        </el-form-item>
+      </div>
+      <div>
+        <p>告警日志设置</p>
+        <el-form-item label="恶意IP" prop="sip">
+          <el-input v-model="form.sip"></el-input>
+        </el-form-item>
+        <el-form-item label="恶意IP端口" prop="sport">
+          <el-input v-model="form.sport"></el-input>
+        </el-form-item>
+        <el-form-item label="目的IP" prop="dip">
+          <el-input v-model="form.dip"></el-input>
+        </el-form-item>
+        <el-form-item label="目的IP端口" prop="dport">
+          <el-input v-model="form.dport"></el-input>
+        </el-form-item>
+        <el-form-item label="协议" prop="protocol">
+          <el-input v-model="form.protocol"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="con">
+          <el-input v-model="form.con"></el-input>
+        </el-form-item>
+      </div>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="handleClose">取 消</el-button>
@@ -52,15 +76,25 @@ export default {
         link: '',
         username: '',
         password: '',
-        desc: ''
+        desc: '',
+        sip: '',
+        sport: '',
+        dip: '',
+        dport: '',
+        protocol: '',
+        con: ''
       },
       rules: {
         ip: [{ required: true, message: '请输入IP地址', trigger: 'blur' }],
         name: [{ required: true, message: '请输入设备名称', trigger: 'blur' }],
         link: [{ required: true, message: '请输入跳转链接', trigger: 'blur' }],
-        // username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-        // password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-        desc: [{ required: true, message: '请输入描述内容', trigger: 'blur' }]
+        desc: [{ required: true, message: '请输入描述内容', trigger: 'blur' }],
+        sip: [{ required: true, message: '', trigger: 'blur' }],
+        sport: [{ required: true, message: '', trigger: 'blur' }],
+        dip: [{ required: true, message: '', trigger: 'blur' }],
+        dport: [{ required: true, message: '', trigger: 'blur' }],
+        protocol: [{ required: true, message: '', trigger: 'blur' }],
+        con: [{ required: true, message: '', trigger: 'blur' }]
       }
     }
   },
