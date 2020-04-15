@@ -38,18 +38,18 @@ const routes = [
   },
 
   {
-    path: '/objmgt/safeequip',
-    name: 'objmgt',
-    component: () => import('../pages/objmgt/SafeEquip.vue'),
+    path: '/safeequip',
+    name: 'safeequip',
+    component: () => import('../pages/equip/SafeEquip.vue'),
     meta: {
       title: '设备录入',
       icon: 'el-icon-document'
     }
   },
   {
-    path: '/objmgt/white',
-    name: 'objmgt',
-    component: () => import('../pages/objmgt/WhiteList.vue'),
+    path: '/whitelist',
+    name: 'whitelist',
+    component: () => import('../pages/white/WhiteList.vue'),
     meta: {
       title: '白名单',
       icon: 'el-icon-document'
@@ -65,9 +65,9 @@ const routes = [
   //   }
   // },
   {
-    path: '/objmgt/redblue',
-    name: 'objmgt',
-    component: () => import('../pages/objmgt/RedBlue.vue'),
+    path: '/redblue',
+    name: 'redblue',
+    component: () => import('../pages/redblue/RedBlue.vue'),
     meta: {
       title: '红蓝对抗',
       icon: 'el-icon-document'
@@ -85,7 +85,7 @@ const routes = [
       {
         path: '/sys/mail',
         name: 'obgmgt',
-        component: () => import('../pages/mail/Mail.vue'),
+        component: () => import('../pages/sys/Mail.vue'),
         meta: {
           title: '邮件管理',
           icon: 'el-icon-document'
@@ -94,7 +94,7 @@ const routes = [
       {
         path: '/sys/alarmSource',
         name: 'obgmgt',
-        component: () => import('../pages/objmgt/AlarmSource.vue'),
+        component: () => import('../pages/sys/AlarmSource.vue'),
         meta: {
           title: '告警源',
           icon: 'el-icon-document'

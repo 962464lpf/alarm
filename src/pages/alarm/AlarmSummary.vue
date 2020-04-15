@@ -123,6 +123,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import {
   getSumAlarmListApi,
   setIpApi,
@@ -167,6 +168,14 @@ export default {
       alarmListDialogData: [],
       blackTypeDialogStatus: false,
       rowAlarmData: {}
+    }
+  },
+  computed: {
+    ...mapState(['newAlarmData'])
+  },
+  watch: {
+    newAlarmData() {
+      this.getAlarmList()
     }
   },
   methods: {
