@@ -12,25 +12,74 @@
     >您的浏览器不支持 audio 标签。</audio>
     <span class="bell">
       <span class="fr">
-        <span>告警声音开关：</span>
-        <el-switch v-model="bellStatus" active-text inactive-text></el-switch>
+        <el-button @click="alarmSettingShow = !alarmSettingShow">告警配置</el-button>
       </span>
-      <div class="clearfloat"></div>
-      <div class="sub-bell" v-if="subBellStatus" @mouseleave="subBellStatus = false">
-        <p>
-          <span>高危：</span>
-          <el-switch v-model="hightBellStatus" active-text inactive-text></el-switch>
-        </p>
-        <p>
-          <span>中危：</span>
-          <el-switch v-model="middleBellStatus" active-text inactive-text></el-switch>
-        </p>
-        <p>
-          <span>低危：</span>
-          <el-switch v-model="lowBellStatus" active-text inactive-text></el-switch>
-        </p>
-      </div>
     </span>
+    <transition name="el-zoom-in-top">
+      <div v-show="alarmSettingShow" class="alarm-setting" @mouseleave="alarmSettingShow = false">
+        <div class="list">
+          <div class="content">
+            <span class="name">
+              声音提醒
+              <i></i>
+            </span>
+
+            <a></a>
+            <el-switch v-model="bellStatus" class="fr"></el-switch>
+          </div>
+          <div class="content" v-if="bellStatus">
+            <p>
+              <span>高危：</span>
+              <el-switch v-model="highBellStatus" active-color="#f56c6c"></el-switch>
+            </p>
+            <p>
+              <span>中危：</span>
+              <el-switch v-model="middleBellStatus" active-color="#e6a23c"></el-switch>
+            </p>
+            <p>
+              <span>低危：</span>
+              <el-switch v-model="lowBellStatus" active-color="#67c23a"></el-switch>
+            </p>
+          </div>
+        </div>
+        <div class="list">
+          <div class="content">
+            <span class="name">
+              文字提醒
+              <i></i>
+            </span>
+
+            <a></a>
+            <el-switch v-model="characterStatus"></el-switch>
+          </div>
+          <div class="content" v-if="characterStatus">
+            <p>
+              <span>高危：</span>
+              <el-switch v-model="highCharacterStatus" active-color="#f56c6c"></el-switch>
+            </p>
+            <p>
+              <span>中危：</span>
+              <el-switch v-model="middleCharacterStatus" active-color="#e6a23c"></el-switch>
+            </p>
+            <p>
+              <span>低危：</span>
+              <el-switch v-model="lowCharacterStatus" active-color="#67c23a"></el-switch>
+            </p>
+          </div>
+        </div>
+        <div class="list">
+          <div class="content">
+            <span class="name">
+              白名单提醒
+              <i></i>
+            </span>
+
+            <a></a>
+            <el-switch v-model="whitePushAlarm" @change="handleWhitePush"></el-switch>
+          </div>
+        </div>
+      </div>
+    </transition>
     <SearchForm @getSearchForm="getSearchForm"></SearchForm>
     <div class="current-table">
       <el-table :data="currentAlarmList" style="width: 100%" :row-class-name="addClass">
@@ -79,7 +128,7 @@
         </el-table-column>
         <el-table-column prop="attack_type" label="攻击等级" width="70">
           <template slot-scope="scope">
-            <span v-if="scope.row.level == 0" class="hight">高</span>
+            <span v-if="scope.row.level == 0" class="high">高</span>
             <span v-if="scope.row.level == 1" class="middle">中</span>
             <span v-if="scope.row.level == 2" class="low">低</span>
           </template>
@@ -128,7 +177,8 @@
 import {
   getCurrentAlarmListApi,
   setIpApi,
-  setCurrentAlarmNotNewApi
+  setCurrentAlarmNotNewApi,
+  whiteIfPushAlarmApi
 } from '../../tools/api'
 import { mapState } from 'vuex'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -142,11 +192,16 @@ export default {
   data() {
     return {
       interval: null,
+      alarmSettingShow: false,
       bellStatus: true,
-      subBellStatus: false,
-      hightBellStatus: true,
+      highBellStatus: true,
       middleBellStatus: true,
       lowBellStatus: true,
+      characterStatus: true,
+      highCharacterStatus: true,
+      middleCharacterStatus: true,
+      lowCharacterStatus: true,
+      whitePushAlarm: true,
       bellSrc: '',
       currentAlarmList: [],
       rowAlarmData: {},
@@ -168,12 +223,23 @@ export default {
         this.hasAlarm(val[length - 1])
         this.currentAlarmList = [val[length - 1], ...this.currentAlarmList]
       }
-    },
-    bellStatus(val) {
-      val ? (this.subBellStatus = true) : (this.subBellStatus = false)
     }
   },
   methods: {
+    handleWhitePush(val) {
+      let fd = new FormData()
+      fd.append('white_show', Number(val))
+      whiteIfPushAlarmApi(fd).then(res => {
+        let type = 'success'
+        if (res.state !== 1) {
+          type = 'warning'
+        }
+        this.$message({
+          type,
+          message: res.info
+        })
+      })
+    },
     changeNewAlarm() {
       for (let i = 0; i < this.currentAlarmList.length; i++) {
         if (this.currentAlarmList[i].is_new === 0) {
@@ -280,57 +346,38 @@ export default {
       }
     },
     hasAlarm(val) {
-      // this.bellSrc = require('../../assets/audio/1.wav')
-      // let bellSrc = [
-      //   require('../../assets/audio/1.wav'),
-      //   require('../../assets/audio/red.wav'),
-      //   require('../../assets/audio/general.wav')
-      // ]
       // sip_black_type: null 黑名单 0:红，1:蓝，2:重点监控
       // sip_type: "black" 黑。白
       this.bellSrc = 'general'
       if (val.sip_black_type === 0) this.bellSrc = 'red'
       if (val.sip_type === 'white') this.bellSrc = ''
+      // level : 0 1 2 高 中 低
       let level = parseInt(val.level)
       let attack_type = val.attack_type ? val.attack_type : '未知'
-      // level : 0 1 2 高 中 低
 
       let customClass
       let levelTile = ''
-      let addClassBell = (c, level) => {
-        customClass = c
-        if (
-          (level === 0 && !this.hightBellStatus) ||
-          val.sip_type === 'white'
-        ) {
-          this.bellSrc = ''
-          levelTile = '高危'
-        }
-        if (
-          (level === 1 && !this.middleBellStatus) ||
-          val.sip_type === 'white'
-        ) {
-          this.bellSrc = ''
-          levelTile = '中危'
-        }
-        if ((level === 2 && !this.lowBellStatus) || val.sip_type === 'white') {
-          this.bellSrc = ''
-          levelTile = '低危'
-        }
+      if (level === 0) {
+        levelTile = '高危'
+        customClass = 'notify-red'
       }
-      switch (level) {
-        case 0:
-          addClassBell('notify-red', 0)
-          break
-        case 1:
-          addClassBell('notify-yellow', 1)
-          break
-        case 2:
-          addClassBell('notify-green', 2)
-          break
-        default:
-          break
+      if (level === 1) {
+        levelTile = '中危'
+        customClass = 'notify-yellow'
       }
+      if (level === 2) {
+        levelTile = '低危'
+        customClass = 'notify-green'
+      }
+      // level
+      if (this.characterStatus && level === 0 && this.highCharacterStatus)
+        this.showNotify(levelTile, attack_type, customClass)
+      if (this.characterStatus && level === 1 && this.middleCharacterStatus)
+        this.showNotify(levelTile, attack_type, customClass)
+      if (this.characterStatus && level === 2 && this.lowCharacterStatus)
+        this.showNotify(levelTile, attack_type, customClass)
+    },
+    showNotify(levelTile, attack_type, customClass) {
       this.$notify({
         title: `发现${levelTile}攻击`,
         message: `攻击类型：${attack_type}`,
@@ -380,26 +427,65 @@ export default {
 
 <style lang="scss">
 .current-alarm {
+  position: relative;
+  .alarm-setting {
+    width: 200px;
+    background: #e8e8e8;
+    position: fixed;
+    right: 0;
+    top: 50px;
+    bottom: 32px;
+    z-index: 100;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: all 0.5s ease-in;
+    .list {
+      margin-bottom: 15px;
+      .content {
+        background: white;
+        padding: 5px;
+        display: flex;
+        height: 50px;
+        align-items: center;
+        box-sizing: border-box;
+        font-size: 14px;
+        // justify-content: space-between;
+        border: 1px dashed #f9e9e9;
+        .name {
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          background: #409eff;
+          color: white;
+          padding-left: 5px;
+          i {
+            display: inline-block;
+            height: 7px;
+            width: 7px;
+            background: white;
+            border-radius: 50%;
+          }
+        }
+        a {
+          display: inline-block;
+          width: 0;
+          height: 0;
+          border-width: 15px;
+          border-style: solid dashed dashed dashed;
+          border-color: transparent transparent transparent #409eff;
+          margin-right: 20px;
+        }
+      }
+      .content:nth-child(2) {
+        border-top: none;
+      }
+    }
+  }
   .bell {
     position: absolute;
     top: 0px;
     right: 32px;
     z-index: 10;
-    .sub-bell {
-      border: 1px solid #eee;
-      padding: 5px;
-      border-radius: 5px;
-      background: #eee;
-      margin-top: 5px;
-      p {
-        padding: 5px;
-        font-size: 13px;
-        span {
-          line-height: 20px;
-          vertical-align: middle;
-        }
-      }
-    }
   }
 
   .current-table {
@@ -461,14 +547,14 @@ export default {
           }
         }
         .cell {
-          .hight,
+          .high,
           .middle,
           .low {
             display: inline-block;
             padding: 0px 10px;
             border-radius: 7px;
           }
-          .hight {
+          .high {
             background: #f56c6c;
             color: white;
           }

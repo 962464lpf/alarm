@@ -14,7 +14,7 @@ const routes = [
     name: 'index',
     component: () => import('../pages/home/Home.vue'),
     meta: {
-      title: '首页',
+      title: '趋势统计',
       icon: 'el-icon-s-home',
       level: 1
     }
@@ -118,16 +118,16 @@ const routes = [
           level: 0
         }
       },
-      {
-        path: '/sys/setting',
-        name: 'setting',
-        component: () => import('../pages/sys/SysSetting.vue'),
-        meta: {
-          title: '系统配置',
-          icon: 'el-icon-document',
-          level: 0
-        }
-      }
+      // {
+      //   path: '/sys/setting',
+      //   name: 'setting',
+      //   component: () => import('../pages/sys/SysSetting.vue'),
+      //   meta: {
+      //     title: '系统配置',
+      //     icon: 'el-icon-document',
+      //     level: 0
+      //   }
+      // }
     ]
   }
 ]
