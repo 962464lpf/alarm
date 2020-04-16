@@ -181,6 +181,11 @@ function userAllotEquipApi(params) {
   return POST(url, params)
 }
 
+function whiteIfPushAlarmApi(params) {
+  let url = BASE_URL + '/jump/globalSet/white_show'
+  return POST(url, params)
+}
+
 
 export {
   BASE_URL,
@@ -216,5 +221,6 @@ export {
   registerApi,
   logoutApi,
   getUserListApi,
-  userAllotEquipApi
+  userAllotEquipApi,
+  whiteIfPushAlarmApi
 }

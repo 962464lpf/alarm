@@ -67,18 +67,27 @@ export default {
       })
     },
     allotEquip(row) {
+      console.log(row)
       this.selectRowUser = row
       this.allotEquipStatus = true
     },
     getSelectEquip(data) {
-      console.log(data)
       this.userAllotEquip(data.join(','))
     },
     userAllotEquip(equips) {
       let fd = new FormData()
-      fd.append('id', this.allotEquipStatus.id)
+      fd.append('id', this.selectRowUser.id)
       fd.append('device_auth', equips)
-      userAllotEquipApi(fd)
+      userAllotEquipApi(fd).then(res => {
+        let type = 'success'
+        if (res.state !== 1) {
+          type = 'warning'
+        }
+        this.$message({
+          type,
+          message: res.info
+        })
+      })
     },
     getUserList() {
       getUserListApi().then(res => {

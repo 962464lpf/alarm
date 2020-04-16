@@ -91,7 +91,7 @@ const routes = [
     children: [
       {
         path: '/sys/mail',
-        name: 'obgmgt',
+        name: 'mail',
         component: () => import('../pages/sys/Mail.vue'),
         meta: {
           title: '邮件管理',
@@ -110,10 +110,20 @@ const routes = [
       // },
       {
         path: '/sys/user',
-        name: 'obgmgt',
+        name: 'user',
         component: () => import('../pages/sys/User.vue'),
         meta: {
           title: '用户管理',
+          icon: 'el-icon-document',
+          level: 0
+        }
+      },
+      {
+        path: '/sys/setting',
+        name: 'setting',
+        component: () => import('../pages/sys/SysSetting.vue'),
+        meta: {
+          title: '系统配置',
           icon: 'el-icon-document',
           level: 0
         }

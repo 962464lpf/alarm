@@ -69,8 +69,6 @@ export default {
   },
   methods: {
     isPermission(page) {
-      console.log('user' + this.userInfo.level)
-      console.log('page' + page.meta.level)
       // 超级管理员为0  普通用户为1
       let permission = this.userInfo.level
       let pagePermission = page.meta.level

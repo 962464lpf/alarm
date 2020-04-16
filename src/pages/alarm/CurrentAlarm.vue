@@ -12,7 +12,7 @@
     >您的浏览器不支持 audio 标签。</audio>
     <span class="bell">
       <span class="fr">
-        <span>告警开关：</span>
+        <span>告警声音开关：</span>
         <el-switch v-model="bellStatus" active-text inactive-text></el-switch>
       </span>
       <div class="clearfloat"></div>

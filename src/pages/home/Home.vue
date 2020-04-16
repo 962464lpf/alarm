@@ -31,17 +31,17 @@
     </div>
     <el-row :gutter="20">
       <el-col :span="12" v-for="(item, index) in top5ChartsList" :key="index">
-        <div class="chart-box">
+        <div class="chart-box" :id="item.id">
           <div class="title">
             <span>{{item.title}}</span>
             <div class="setting fr">
               <span class="curp" @click="settingCycleTop(item.fun)">
                 <i class="el-icon-setting"></i>
               </span>
-              <span class="ml10 curp" @click="refreshTop(item.fun)">
+              <span class="ml10 curp" @click="refreshTop(item.fun, item.dataKey)">
                 <i class="el-icon-refresh"></i>
               </span>
-              <span class="ml10 curp" @click="fullScreenTop()">
+              <span class="ml10 curp" @click="fullScreenTop(item.id)">
                 <i class="el-icon-full-screen"></i>
               </span>
               <span class="ml10 curp" @click="toTop(index)">
@@ -106,37 +106,49 @@ export default {
           title: '恶意源IP Top5',
           fun: 'getMaliciousSourceIPTop',
           data: () => this.maliciousSourceIPTop5,
-          colors: ['#c23531']
+          colors: ['#c23531'],
+          id: 'maliciousSource',
+          dataKey: 'maliciousSourceIPTop5'
         },
         {
           title: '目的IP Top5',
           fun: 'getAttackedIPTop5',
           data: () => this.attackedIPTop5,
-          colors: ['#61a0a8']
+          colors: ['#61a0a8'],
+          id: 'attacked',
+          dataKey: 'attackedIPTop5'
         },
         {
           title: '设备来源 Top5',
           fun: 'getDeviceIPTop5',
           data: () => this.deviceIPTop5,
-          colors: ['#d48265']
+          colors: ['#d48265'],
+          id: 'device',
+          dataKey: 'deviceIPTop5'
         },
         {
           title: '物理地址 Top5',
           fun: 'getPhysicalIPTop5',
           data: () => this.physicalIPTop5,
-          colors: ['#bda29a']
+          colors: ['#bda29a'],
+          id: 'physical',
+          dataKey: 'physicalIPTop5'
         },
         {
           title: '攻击类型 Top5',
           fun: 'getAttackedTypeTop5',
           data: () => this.attackedTypeTop5,
-          colors: ['#bda29a']
+          colors: ['#bda29a'],
+          id: 'attackedType',
+          dataKey: 'attackedTypeTop5'
         },
         {
           title: '红队IP Top5',
-          fun: 'getAttackedTypeTop5',
+          fun: 'getRedIPTop5',
           data: () => this.redIpTop5,
-          colors: ['#d48265']
+          colors: ['#d48265'],
+          id: 'red',
+          dataKey: 'redIpTop5'
         }
       ],
       selectSettingTop: '',
@@ -192,11 +204,30 @@ export default {
       this.selectSettingTop = top
       this.topSettingDialogStatus = true
     },
-    refreshTop(method) {
+    refreshTop(method, dataKey) {
+      this[dataKey] = {}
       this[method]()
     },
-    fullScreenTop() {
-      // let dom =maliciousSource
+    fullScreenTop(id) {
+      let dom = document.getElementById(id)
+      //W3C
+      if (dom.requestFullscreen) {
+        dom.requestFullscreen()
+      }
+      //FireFox
+      else if (dom.mozRequestFullScreen) {
+        dom.mozRequestFullScreen()
+      }
+      //Chrome等
+      else if (dom.webkitRequestFullScreen) {
+        dom.webkitRequestFullScreen()
+      }
+      //IE11
+      else if (dom.msRequestFullscreen) {
+        dom.msRequestFullscreen()
+      }
+      dom.style.backgroundColor = 'white'
+      // dom.webkitRequestFullScreen()
     },
     toTop(index) {
       let currentChart = this.top5ChartsList[index]

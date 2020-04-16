@@ -13,7 +13,7 @@
             <el-input v-model="searchForm.dip" placeholder="目的地IP"></el-input>
           </el-form-item>
           <el-form-item label="告警来源">
-            <el-input v-model="searchForm.device_ip" placeholder="设备IP"></el-input>
+            <el-input v-model="searchForm.device_ip" placeholder="告警来源"></el-input>
           </el-form-item>
           <el-form-item label="攻击类型">
             <el-input v-model="searchForm.attack_type" placeholder="攻击类型"></el-input>
