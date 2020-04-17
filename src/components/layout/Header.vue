@@ -163,5 +163,8 @@ export default {
       }
     }
   }
+  .el-dialog {
+    // height: 40% !important;
+  }
 }
 </style>

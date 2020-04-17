@@ -160,3 +160,23 @@ img {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.el-dialog {
+  max-height: 70%;
+  overflow-y: auto;
+  .el-dialog__header {
+    background: #f6f6f6;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid #dadada;
+    padding: 15px !important;
+  }
+  .el-dialog__body {
+    // max-height: calc(100% - 60px);
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  .el-dialog__footer {
+    background-color: #f5f5f5;
+    border-top: 1px solid #dddddd;
+    padding: 15px !important;
+  }
+}

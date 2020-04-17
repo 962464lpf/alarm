@@ -362,8 +362,8 @@ export default {
 <style scoped lang="scss">
 .home {
   .chart-box {
-    border: 1px solid #eee;
-    padding: 0 15px;
+    border: 1px solid #dadada;
+    // padding: 0 15px;
     box-sizing: border-box;
     margin-bottom: 15px;
     .trend-title {
@@ -375,10 +375,14 @@ export default {
     }
     .trend-title,
     .title {
-      border-bottom: 1px solid #ececec;
-      color: #333;
-      font-weight: 600;
-      padding: 0 5px;
+      // border-bottom: 1px solid #ececec;
+      // color: #333;
+      // font-weight: 600;
+      // padding: 0 5px;
+      background: #f6f6f6;
+      border-radius: 5px 5px 0 0;
+      border-bottom: 1px solid #dadada;
+      padding: 8px;
     }
   }
 }

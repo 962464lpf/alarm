@@ -18,7 +18,7 @@
       <el-table-column prop="protocol" width="80" label="协议"></el-table-column>
     </el-table>
     <el-pagination
-      class="fr clearfix"
+      class="fr mt10"
       background
       @current-change="handleCurrentChange"
       :current-page="currentPage"
@@ -26,6 +26,7 @@
       layout="total,  prev, pager, next"
       :total="total"
     ></el-pagination>
+    <div class="clearfloat"></div>
   </el-dialog>
 </template>
 

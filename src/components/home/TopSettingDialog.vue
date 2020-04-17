@@ -1,5 +1,11 @@
 <template>
-  <el-dialog title="请选择统计周期" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+  <el-dialog
+    title="请选择统计周期"
+    class="top-setting-dialog"
+    :visible.sync="dialogVisible"
+    width="30%"
+    :before-close="handleClose"
+  >
     <el-form>
       <el-form-item label="请选择统计周期：">
         <el-radio-group v-model="form.cycle">
@@ -9,11 +15,10 @@
         </el-radio-group>
       </el-form-item>
     </el-form>
-    <div class="fr">
+    <span slot="footer" class="dialog-footer">
       <el-button @click="handleClose">取消</el-button>
       <el-button type="primary" @click="confirm">确定</el-button>
-    </div>
-    <div class="clearfloat"></div>
+    </span>
   </el-dialog>
 </template>
 
@@ -46,5 +51,10 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss">
+.top-setting-dialog {
+  .el-dialog {
+    // height: 40% !important;
+  }
+}
 </style>
