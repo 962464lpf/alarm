@@ -253,9 +253,9 @@ export default {
 
 <style  lang="scss">
 .mail {
+  padding: 0 10%;
   .item {
     // height: 80px;
-    width: 70%;
     border: 1px solid #e6e6e6;
     box-sizing: border-box;
     border-right: none;
