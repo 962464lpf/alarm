@@ -1,17 +1,14 @@
 <template>
   <div class="alarm-summary-search">
     <el-form :inline="true" :model="searchForm" ref="searchForm">
-      <div class="more-search">
-        <!-- <el-input placeholder disabled v-model="searchContent">
-          <el-button slot="append" icon="el-icon-caret-bottom" @click="moreSearch = !moreSearch"></el-button>
-        </el-input>-->
+      <div class="more-search" @mouseenter="moreSearch = true">
         <el-button
           slot="append"
           class="more-search-btn"
           icon="el-icon-caret-bottom"
           @click="moreSearch = !moreSearch"
         >全部</el-button>
-        <div class="search-box" v-if="moreSearch">
+        <div class="search-box" v-if="moreSearch" @mouseleave="moreSearch = false">
           <el-form-item label="恶意IP">
             <el-input v-model="searchForm.sip" placeholder="恶意IP"></el-input>
           </el-form-item>

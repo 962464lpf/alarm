@@ -1,89 +1,146 @@
 <template>
   <div class="mail">
-    <el-form :model="emailForm" :rules="rules" ref="emailForm" label-width="100px">
-      <p class="prompt">
-        <span>电子邮件的发送服务器</span>
-      </p>
-      <el-form-item label="邮件服务器" prop="email_server">
-        <el-input v-model="emailForm.email_server"></el-input>
-      </el-form-item>
-      <p class="prompt">
-        <span>电子邮件的发送服务器端口</span>
-      </p>
-      <el-form-item label="端口" prop="port">
-        <el-input v-model.number="emailForm.port"></el-input>
-      </el-form-item>
-      <p class="prompt">
-        <span>电子邮件的发件箱</span>
-      </p>
-      <el-form-item label="发件箱" prop="from_addr">
-        <el-input v-model="emailForm.from_addr"></el-input>
-      </el-form-item>
-      <p class="prompt">
-        <span>发件箱的密码</span>
-      </p>
-      <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="emailForm.password"></el-input>
-      </el-form-item>
-      <p class="prompt">
-        <span>接收电子邮件的邮箱</span>
-      </p>
-      <el-form-item label="收件箱" prop="to_addr">
-        <el-input v-model="emailForm.to_addr" placeholder="多个邮箱时，请用逗号(,)分隔"></el-input>
-      </el-form-item>
-      <p class="prompt">
-        <span>接收电子邮件的邮箱</span>
-      </p>
-      <el-form-item label="抄送" prop="cc">
-        <el-input v-model="emailForm.cc" placeholder="多个邮箱时，请用逗号(,)分隔"></el-input>
-      </el-form-item>
-      <p class="prompt">
-        <span>电子邮件的主题</span>
-      </p>
-      <el-form-item label="主题" prop="subject">
-        <el-input v-model="emailForm.subject"></el-input>
-      </el-form-item>
-      <p class="prompt">
-        <span>电子邮件的内容</span>
-      </p>
-      <el-form-item label="内容" prop="content">
-        <el-input type="textarea" v-model="emailForm.content"></el-input>
-      </el-form-item>
-      <p class="prompt">
-        <span>邮件告警通知开关</span>
-      </p>
-      <el-form-item label="告警通知">
-        <el-radio-group v-model="mailAlarm" @change="startSendMail">
-          <el-radio :label="1">开</el-radio>
-          <el-radio :label="0">关</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <p class="prompt">
-        <span>邮件汇总通知开关</span>
-      </p>
-      <el-form-item label="汇总通知">
-        <el-radio-group v-model="mailAlarmSummary" @change="startSendMail">
-          <el-radio :label="1">开</el-radio>
-          <el-radio :label="0">关</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <p class="prompt">
-        <span>选择邮件汇总发送时间</span>
-      </p>
-      <el-form-item label="选择时间">
-        <el-time-picker
-          v-for="(item, index) in selectTime"
-          :key="index"
-          v-model="item.time"
-          placeholder
-          class="ml10"
-        ></el-time-picker>
-        <el-button @click="changeSelecttime('add')">添加</el-button>
-        <el-button @click="changeSelecttime('delete')">删除</el-button>
-      </el-form-item>
-      <el-form-item>
+    <el-form :model="emailForm" inline :rules="rules" ref="emailForm" label-width="100px">
+      <el-row class="item">
+        <el-col :span="4" class="name">邮件服务器：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>
+              电子邮件的发送服务器
+            </span>
+          </p>
+          <el-input v-model="emailForm.email_server"></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4" class="name">端口：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>电子邮件的发送服务器端口
+            </span>
+          </p>
+          <el-input v-model="emailForm.port"></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4" class="name">发件箱：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>电子邮件的发件箱
+            </span>
+          </p>
+          <el-input v-model="emailForm.from_addr"></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4" class="name">密码：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>发件箱的密码
+            </span>
+          </p>
+          <el-input v-model="emailForm.password"></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4" class="name">收件箱：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>接收电子邮件的邮箱
+            </span>
+          </p>
+          <el-input v-model="emailForm.to_addr"></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4" class="name">抄送：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>接收电子邮件的邮箱
+            </span>
+          </p>
+          <el-input v-model="emailForm.cc"></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4" class="name">主题：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>电子邮件的主题
+            </span>
+          </p>
+          <el-input v-model="emailForm.subject"></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4" class="name">内容：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>电子邮件的内容
+            </span>
+          </p>
+          <el-input type="textarea" v-model="emailForm.content"></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4" class="name">告警通知：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>邮件告警通知开关
+            </span>
+          </p>
+          <el-radio-group v-model="mailAlarm" @change="startSendMail">
+            <el-radio :label="1">开</el-radio>
+            <el-radio :label="0">关</el-radio>
+          </el-radio-group>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4" class="name">汇总通知：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>邮件汇总通知开关
+            </span>
+          </p>
+          <el-radio-group v-model="mailAlarmSummary" @change="startSendMail">
+            <el-radio :label="1">开</el-radio>
+            <el-radio :label="0">关</el-radio>
+          </el-radio-group>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4" class="name">选择时间：</el-col>
+        <el-col :span="20" class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>选择邮件汇总发送时间
+            </span>
+          </p>
+          <el-time-picker
+            v-for="(item, index) in selectTime"
+            :key="index"
+            v-model="item.time"
+            placeholder
+            class="mr10"
+          ></el-time-picker>
+          <el-button @click="changeSelecttime('add')" style="padding: 10px 15px">添加</el-button>
+          <el-button @click="changeSelecttime('delete')" style="padding: 10px 15px">删除</el-button>
+        </el-col>
+      </el-row>
+
+      <div class="mt10 confirm-btn">
         <el-button type="primary" @click="confirm('emailForm')">确定</el-button>
-      </el-form-item>
+      </div>
     </el-form>
   </div>
 </template>
@@ -194,22 +251,66 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss">
 .mail {
-  .prompt {
-    padding-left: 100px;
+  .item {
+    // height: 80px;
+    width: 70%;
+    border: 1px solid #e6e6e6;
     box-sizing: border-box;
-    span {
-      line-height: 34px;
+    border-right: none;
+    border-bottom: none;
+    .name {
+      line-height: 80px;
+      text-align: center;
+      font-weight: 400;
       font-size: 14px;
-      display: inline-block;
-      background: #d2eef7;
-      width: 100%;
-      color: #333;
-      border-radius: 5px;
-      padding-left: 5px;
-      box-sizing: border-box;
+      border-right: 1px solid #e6e6e6;
     }
+    .input {
+      padding: 5px;
+      padding-right: 0;
+      box-sizing: border-box;
+      .el-input__inner {
+        height: 34px;
+        line-height: 34px;
+        margin-top: 3px;
+      }
+      .prompt {
+        span {
+          line-height: 34px;
+          font-size: 14px;
+          display: inline-block;
+          background: #d2eef7;
+          width: 100%;
+          color: #333;
+          border-radius: 5px;
+          padding-left: 5px;
+          box-sizing: border-box;
+          i {
+            margin-right: 2px;
+            color: #137298;
+          }
+        }
+      }
+    }
+  }
+  .item:nth-last-child(even) {
+    .name {
+      background: #eee;
+    }
+  }
+  .item:nth-last-child(odd) {
+    .name {
+      background: none;
+    }
+  }
+  .item:last-child {
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .confirm-btn {
+    width: 70%;
+    text-align: center;
   }
 }
 </style>
