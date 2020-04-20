@@ -17,13 +17,23 @@ const routes = [
   {
     path: '/index',
     name: 'index',
-    component: () => import('../pages/home/Home.vue'),
+    component: () => import('../pages/home/NewHome.vue'),
     meta: {
       title: '趋势统计',
       icon: 'el-icon-s-home',
       level: 1
     }
   },
+  // {
+  //   path: '/newindex',
+  //   name: 'newindex',
+  //   component: () => import('../pages/home/NewHome.vue'),
+  //   meta: {
+  //     title: '新趋势统计',
+  //     icon: 'el-icon-s-home',
+  //     level: 1
+  //   }
+  // },
   {
     path: '/alarm/summary',
     name: 'log',

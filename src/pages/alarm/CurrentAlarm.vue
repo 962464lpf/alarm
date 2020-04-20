@@ -155,7 +155,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        class="fr clearfix mt10"
+        class="fr mt10"
         background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -166,7 +166,7 @@
         :total="total"
       ></el-pagination>
     </div>
-
+    <div class="clearfloat"></div>
     <div v-if="blackTypeDialogStatus">
       <ChooseBlackType v-model="blackTypeDialogStatus" @emitChooseType="emitChooseType"></ChooseBlackType>
     </div>

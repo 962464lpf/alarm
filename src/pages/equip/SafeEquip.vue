@@ -35,7 +35,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      class="fr clearfix mt10"
+      class="fr mt10"
       background
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -45,6 +45,7 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
     ></el-pagination>
+    <div class="clearfloat"></div>
     <div v-if="updEqipDiaStatus">
       <UpdEquiqDialog
         v-model="updEqipDiaStatus"

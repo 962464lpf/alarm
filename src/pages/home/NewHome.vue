@@ -1,8 +1,39 @@
 <template>
-  <div class="home">
+  <div class="new-alarm">
+    <p class="title">告警信息</p>
+    <el-row :gutter="20">
+      <el-col :span="6" class="data-card-col">
+        <div class="data-card first">
+          <p>攻击总数</p>
+          <p>同比昨天减少20%</p>
+          <p>1212</p>
+        </div>
+      </el-col>
+      <el-col :span="6" class="data-card-col">
+        <div class="data-card second">
+          <p>高危次数</p>
+          <p>同比昨天减少20%</p>
+          <p>1212</p>
+        </div>
+      </el-col>
+      <el-col :span="6" class="data-card-col">
+        <div class="data-card third">
+          <p>中危次数</p>
+          <p>同比昨天减少20%</p>
+          <p>1212</p>
+        </div>
+      </el-col>
+      <el-col :span="6" class="data-card-col">
+        <div class="data-card forth">
+          <p>低危次数</p>
+          <p>同比昨天减少20%</p>
+          <p>1212</p>
+        </div>
+      </el-col>
+    </el-row>
+    <p class="title">趋势统计</p>
     <div class="chart-box">
-      <div class="trend-title">
-        <span>攻击趋势图</span>
+      <div class="trend-title" style="height: 34px;">
         <div class="fr">
           <el-button
             :type="cycle === 'day' ? 'primary' : ''"
@@ -29,7 +60,7 @@
         :extend="attackTrendExtend"
       ></ve-line>
     </div>
-    <el-row :gutter="20">
+    <el-row :gutter="20" class="mt10">
       <el-col :span="8" v-for="(item, index) in top5ChartsList" :key="index">
         <div class="chart-box" :id="item.id">
           <div class="title">
@@ -106,6 +137,7 @@ export default {
           title: '恶意源IP Top5',
           fun: 'getMaliciousSourceIPTop',
           data: () => this.maliciousSourceIPTop5,
+          // data: () => this.chartData,
           colors: ['#c23531'],
           id: 'maliciousSource',
           dataKey: 'maliciousSourceIPTop5'
@@ -122,6 +154,7 @@ export default {
           title: '设备来源 Top5',
           fun: 'getDeviceIPTop5',
           data: () => this.deviceIPTop5,
+          // data: () => this.chartData,
           colors: ['#d48265'],
           id: 'device',
           dataKey: 'deviceIPTop5'
@@ -130,6 +163,7 @@ export default {
           title: '物理地址 Top5',
           fun: 'getPhysicalIPTop5',
           data: () => this.physicalIPTop5,
+          // data: () => this.chartData,
           colors: ['#bda29a'],
           id: 'physical',
           dataKey: 'physicalIPTop5'
@@ -138,6 +172,7 @@ export default {
           title: '攻击类型 Top5',
           fun: 'getAttackedTypeTop5',
           data: () => this.attackedTypeTop5,
+          // data: () => this.chartData,
           colors: ['#bda29a'],
           id: 'attackedType',
           dataKey: 'attackedTypeTop5'
@@ -146,6 +181,7 @@ export default {
           title: '红队IP Top5',
           fun: 'getRedIPTop5',
           data: () => this.redIpTop5,
+          // data: () => this.chartData,
           colors: ['#d48265'],
           id: 'red',
           dataKey: 'redIpTop5'
@@ -189,11 +225,6 @@ export default {
           }
         ]
       }
-    }
-  },
-  computed: {
-    getType() {
-      return this.cycle === 'day' ? 'primary' : ''
     }
   },
   methods: {
@@ -360,7 +391,46 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.home {
+.new-alarm {
+  .title {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 48px;
+  }
+  .data-card-col {
+    display: flex;
+    justify-content: center;
+    .data-card {
+      // height: 120px;
+      width: 100%;
+      border-radius: 10px;
+      padding: 10px 0 10px 20px;
+      box-sizing: border-box;
+      color: white;
+      font-size: 12px;
+      line-height: 24px;
+      p:nth-of-type(3) {
+        font-size: 24px;
+        line-height: 48px;
+      }
+    }
+    .first {
+      background: #8693f3;
+      box-shadow: 0 0 8px #8693f3;
+    }
+    .second {
+      background: #bc8dee;
+      box-shadow: 0 0 8px #bc8dee;
+    }
+    .third {
+      background: #ffa897;
+      box-shadow: 0 0 8px #ffa897;
+    }
+    .forth {
+      background: #89c3f8;
+      box-shadow: 0 0 8px #89c3f8;
+    }
+  }
   .chart-box {
     // border: 1px solid #dadada;
     // padding: 0 15px;

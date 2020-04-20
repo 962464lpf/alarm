@@ -16,6 +16,7 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
     ></el-pagination>
+    <div class="clearfloat"></div>
   </div>
 </template>
 

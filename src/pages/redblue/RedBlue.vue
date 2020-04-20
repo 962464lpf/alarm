@@ -103,7 +103,7 @@ export default {
 <style scoped lang="scss">
 .red-blue {
   .list-content {
-    background: #e8e8e8;
+    // background: #e8e8e8;
     padding: 10px 0;
     box-sizing: border-box;
     .first-col {

@@ -6,7 +6,7 @@
       </el-col>
       <el-col :span="!isCollapse ? 21 : 23" class="right">
         <!-- <Breadcrumb></Breadcrumb> -->
-        <router-view></router-view>
+        <router-view class="right-view"></router-view>
       </el-col>
     </el-row>
   </div>
@@ -59,9 +59,17 @@ export default {
   .right {
     height: 100%;
     overflow-y: auto;
-    padding: 15px;
+    padding: 10px 15px;
+    border-radius: 5px;
     box-sizing: border-box;
-    background: white;
+    background: #e7ebf1;
+    .right-view {
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-sizing: border-box;
+      // height: 100%;
+    }
   }
 }
 </style>
