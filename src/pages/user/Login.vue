@@ -14,6 +14,11 @@
             <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-form-item>
+        <el-form-item prop="checkpassword" v-if="currentPath === '/edituser'">
+          <el-input v-model="userForm.password2" placeholder="请再次输入密码" type="password">
+            <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+          </el-input>
+        </el-form-item>
         <el-form-item>
           <div class="btn curp" @click="submitForm('userForm')">{{immediateTitle('btn')}}</div>
           <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
@@ -38,6 +43,11 @@ export default {
       rules: {
         userName: [
           // { required: true, message: '请输入活动名称', trigger: 'blur' }
+        ],
+        name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        checkpassword: [
+          { required: true, message: '请再次输入密码', trigger: 'blur' }
         ]
       }
     }
@@ -62,6 +72,9 @@ export default {
         return '立即注册'
       } else if (this.currentPath === '/register') {
         if (type) return '注册'
+        return '立即登录'
+      } else if (this.currentPath === '/edituser') {
+        if (type) return '确定'
         return '立即登录'
       }
     },

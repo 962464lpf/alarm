@@ -10,6 +10,11 @@ const routes = [
     component: () => import('../pages/user/Login.vue'),
   },
   {
+    path: '/edituser',
+    name: 'edituser',
+    component: () => import('../pages/user/Login.vue'),
+  },
+  {
     path: '/index',
     name: 'index',
     component: () => import('../pages/home/Home.vue'),

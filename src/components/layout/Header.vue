@@ -6,7 +6,7 @@
       <el-col
         :span="16"
         class="icon-box"
-        v-if="!(currentPath === '/' || currentPath === '/register')"
+        v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )"
       >
         <span>
           {{cycleName}}攻击总数：
@@ -31,7 +31,7 @@
       <el-col
         :span="5"
         class="user-setting"
-        v-if="!(currentPath === '/' || currentPath === '/register')"
+        v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )"
       >
         <span>
           <i class="el-icon-user"></i>

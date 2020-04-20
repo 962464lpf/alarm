@@ -20,7 +20,11 @@ export default {
   },
   watch: {
     $route(val) {
-      if (val.path === '/' || val.path === '/register') {
+      if (
+        val.path === '/' ||
+        val.path === '/register' ||
+        val.path === '/edituser'
+      ) {
         this.contentCmp = 'Login'
       } else {
         this.contentCmp = Content

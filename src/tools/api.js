@@ -171,6 +171,11 @@ function logoutApi() {
   return POST(url)
 }
 
+function editUserApi(params) {
+  let url = BASE_URL + '/jump/user/edit'
+  return POST(url, params)
+}
+
 function getUserListApi() {
   let url = BASE_URL + '/jump/user/index'
   return POST(url)
@@ -220,6 +225,7 @@ export {
   loginApi,
   registerApi,
   logoutApi,
+  editUserApi,
   getUserListApi,
   userAllotEquipApi,
   whiteIfPushAlarmApi
