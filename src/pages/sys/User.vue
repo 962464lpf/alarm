@@ -7,7 +7,7 @@
       <el-table-column label="权限">
         <template slot-scope="scope">{{getLevel(scope)}}</template>
       </el-table-column>
-      <el-table-column prop label="当前分配设备"></el-table-column>
+      <el-table-column prop="iplst" label="当前分配设备"></el-table-column>
       <el-table-column label="操作" width="180">
         <template slot-scope="scope">
           <el-button @click="deleteUser(scope.row)" type="text" size="small">删除用户</el-button>

@@ -15,6 +15,7 @@
 <script>
 import Nav from '../layout/Nav'
 // import Breadcrumb from '../common/Breadcrumb'
+import { getUserInfo } from '../../tools/api'
 export default {
   components: {
     Nav
@@ -40,7 +41,12 @@ export default {
       }
     }
   },
-  mounted() {}
+  mounted() {
+    getUserInfo().then(res => {
+      this.$store.commit('changeUserInfo', res)
+      this.$store.dispatch('WebSocketTest', res)
+    })
+  }
 }
 </script>
 

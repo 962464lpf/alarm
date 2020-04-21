@@ -178,7 +178,8 @@ import {
   getCurrentAlarmListApi,
   setIpApi,
   setCurrentAlarmNotNewApi,
-  whiteIfPushAlarmApi
+  whiteIfPushAlarmApi,
+  aKeyBlockedApi
 } from '../../tools/api'
 import { mapState } from 'vuex'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -322,7 +323,16 @@ export default {
       }
     },
     blocked(row) {
-      console.log(row)
+      let fd = new FormData()
+      fd.append('ip', row.sip)
+      aKeyBlockedApi(fd).then(res => {
+        let type = 'success'
+        if (res.state !== 1) type = 'warning'
+        this.$message({
+          type,
+          message: res.info
+        })
+      })
     },
     // 根据红，蓝，恶意，普通的进行添加不同类名，进行颜色区分
     addClass(row) {

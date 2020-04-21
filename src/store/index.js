@@ -59,9 +59,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    WebSocketTest({ commit }) {
-      let source = new EventSource(BASE_URL + '/stream2')
-
+    WebSocketTest({ commit }, data = {}) {
+      let source = new EventSource(BASE_URL + '/stream2?uid =' + data.id)
       // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
       source.onmessage = (e) => {
         let data = JSON.parse(e.data)

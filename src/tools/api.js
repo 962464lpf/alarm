@@ -176,6 +176,11 @@ function editUserApi(params) {
   return POST(url, params)
 }
 
+function getUserInfo() {
+  let url = BASE_URL + '/jump/user/get_userinfo'
+  return POST(url)
+}
+
 function getUserListApi() {
   let url = BASE_URL + '/jump/user/index'
   return POST(url)
@@ -188,6 +193,11 @@ function userAllotEquipApi(params) {
 
 function whiteIfPushAlarmApi(params) {
   let url = BASE_URL + '/jump/globalSet/white_show'
+  return POST(url, params)
+}
+
+function aKeyBlockedApi(params) {
+  let url = BASE_URL + '/jump/warning/forbidden'
   return POST(url, params)
 }
 
@@ -226,7 +236,9 @@ export {
   registerApi,
   logoutApi,
   editUserApi,
+  getUserInfo,
   getUserListApi,
   userAllotEquipApi,
-  whiteIfPushAlarmApi
+  whiteIfPushAlarmApi,
+  aKeyBlockedApi
 }

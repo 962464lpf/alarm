@@ -129,7 +129,8 @@ import {
   setIpApi,
   exportSumAlarmFileApi,
   BASE_URL,
-  downloadFileApi
+  downloadFileApi,
+  aKeyBlockedApi
 } from '../../tools/api'
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -320,7 +321,16 @@ export default {
       }
     },
     blocked(row) {
-      console.log(row)
+      let fd = new FormData()
+      fd.append('ip', row.sip)
+      aKeyBlockedApi(fd).then(res => {
+        let type = 'success'
+        if (res.state !== 1) type = 'warning'
+        this.$message({
+          type,
+          message: res.info
+        })
+      })
     },
     handleSizeChange(val) {
       this.pageSize = val

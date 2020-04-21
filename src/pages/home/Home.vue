@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import {
   getAttackTrendApi,
   getMaliciousSourceIPTop5Api,
@@ -194,7 +196,13 @@ export default {
   computed: {
     getType() {
       return this.cycle === 'day' ? 'primary' : ''
-    }
+    },
+    ...mapState([
+      'attackNum',
+      'attackNumHigh',
+      'attackNumMiddle',
+      'attackNumLow'
+    ])
   },
   methods: {
     getTopSetting(form) {

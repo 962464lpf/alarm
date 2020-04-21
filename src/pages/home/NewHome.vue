@@ -6,28 +6,28 @@
         <div class="data-card first">
           <p>攻击总数</p>
           <p>同比昨天减少20%</p>
-          <p>1212</p>
+          <p>{{attackNum}}</p>
         </div>
       </el-col>
       <el-col :span="6" class="data-card-col">
         <div class="data-card second">
           <p>高危次数</p>
           <p>同比昨天减少20%</p>
-          <p>1212</p>
+          <p>{{attackNumHigh}}</p>
         </div>
       </el-col>
       <el-col :span="6" class="data-card-col">
         <div class="data-card third">
           <p>中危次数</p>
           <p>同比昨天减少20%</p>
-          <p>1212</p>
+          <p>{{attackNumMiddle}}</p>
         </div>
       </el-col>
       <el-col :span="6" class="data-card-col">
         <div class="data-card forth">
           <p>低危次数</p>
           <p>同比昨天减少20%</p>
-          <p>1212</p>
+          <p>{{attackNumLow}}</p>
         </div>
       </el-col>
     </el-row>
@@ -96,6 +96,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import {
   getAttackTrendApi,
   getMaliciousSourceIPTop5Api,
@@ -226,6 +228,17 @@ export default {
         ]
       }
     }
+  },
+  computed: {
+    getType() {
+      return this.cycle === 'day' ? 'primary' : ''
+    },
+    ...mapState([
+      'attackNum',
+      'attackNumHigh',
+      'attackNumMiddle',
+      'attackNumLow'
+    ])
   },
   methods: {
     getTopSetting(form) {
