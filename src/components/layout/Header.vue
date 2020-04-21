@@ -44,6 +44,9 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
+                <span @click="resetUser">重置密码</span>
+              </el-dropdown-item>
+              <el-dropdown-item>
                 <span @click="logout">退出</span>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -62,17 +65,25 @@
         <el-button type="primary" @click="confirm">确 定</el-button>
       </span>
     </el-dialog>
+    <div v-if="resetPasswordStatus">
+      <ResetPassword v-model="resetPasswordStatus" @getResetform="getResetform"></ResetPassword>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { getAttackNumApi, logoutApi } from '../../tools/api'
+import { getAttackNumApi, logoutApi, resetPassword } from '../../tools/api'
+import ResetPassword from '../../components/common/ResetPassword'
 export default {
+  components: {
+    ResetPassword
+  },
   data() {
     return {
       radio: 'day',
-      dialogVisible: false
+      dialogVisible: false,
+      resetPasswordStatus: false
     }
   },
   computed: {
@@ -109,12 +120,55 @@ export default {
         this.$store.commit('changeAttackNum', res)
       })
     },
+    resetUser() {
+      this.resetPasswordStatus = true
+    },
+    getResetform(form) {
+      let fd = new FormData()
+      let user = this.userInfo
+      fd.append('id', user.id)
+      fd.append('name', user.name)
+      fd.append('password', form.password)
+      fd.append('password2', form.password2)
+      resetPassword(fd).then(res => {
+        let type = 'success'
+        if (res.state === 1) {
+          this.$confirm('密码已重置, 是否重新登录?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          })
+            .then(() => {
+              this.$router.push('/')
+            })
+            .catch(() => {})
+        } else {
+          type = 'warning'
+          this.$message({
+            type,
+            message: res.info
+          })
+        }
+      })
+    },
+    delAllCookie() {
+      let myDate = new Date()
+      myDate.setTime(-1000) //设置时间
+      let data = document.cookie
+      let dataArray = data.split('; ')
+      for (let i = 0; i < dataArray.length; i++) {
+        let varName = dataArray[i].split('=')
+        document.cookie = varName[0] + "=''; expires=" + myDate.toGMTString()
+      }
+    },
     logout() {
       logoutApi().then(res => {
         if (res.state === 1) {
           this.$router.push('/')
           sessionStorage.removeItem('userInfo')
           this.$store.commit('changeUserInfo', {})
+          this.delAllCookie()
+          this.$store.dispatch('disconnectEventSource')
         } else {
           this.$message({
             type: 'warning',

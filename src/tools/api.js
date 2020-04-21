@@ -171,7 +171,7 @@ function logoutApi() {
   return POST(url)
 }
 
-function editUserApi(params) {
+function resetPassword(params) {
   let url = BASE_URL + '/jump/user/edit'
   return POST(url, params)
 }
@@ -235,7 +235,7 @@ export {
   loginApi,
   registerApi,
   logoutApi,
-  editUserApi,
+  resetPassword,
   getUserInfo,
   getUserListApi,
   userAllotEquipApi,

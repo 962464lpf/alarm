@@ -27,14 +27,14 @@ export default {
       ) {
         this.contentCmp = 'Login'
       } else {
-        this.contentCmp = Content
+        this.contentCmp = 'Content'
       }
       this.$store.commit('changeCurrentPath', val.path)
     }
   },
   data() {
     return {
-      contentCmp: Content
+      contentCmp: ''
     }
   },
   methods: {},

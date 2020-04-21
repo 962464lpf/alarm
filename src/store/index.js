@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    eventSource: null,
     newAlarmData: [],
     attackNum: 0,
     attackNumHigh: 0,
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     userInfo: JSON.parse(sessionStorage.getItem('userInfo')) ? JSON.parse(sessionStorage.getItem('userInfo')) : {}
   },
   mutations: {
+    saveSourceObj(state, data) {
+      state.eventSource = data
+    },
     changeNewAlarmData(state, data) {
       state.newAlarmData.push(data)
     },
@@ -56,18 +60,27 @@ export default new Vuex.Store({
     },
     changeUserInfo(state, userInfo) {
       state.userInfo = userInfo
+    },
+    closeEventSource(state) {
+      state.eventSource.close()
     }
   },
   actions: {
-    WebSocketTest({ commit }, data = {}) {
-      let source = new EventSource(BASE_URL + '/stream2?uid =' + data.id)
+    connectEventSource({ commit }, data = {}) {
+      let source = new EventSource(BASE_URL + '/stream2?device_ipstr=' + data.device_ipstr + '&uid=' + data.id + '&level=' + data.level)
       // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
+      source.onopen = () => {
+        commit('saveSourceObj', source)
+      }
       source.onmessage = (e) => {
         let data = JSON.parse(e.data)
         console.log(JSON.parse(data.alert_data))
         commit('changeNewAlarmData', JSON.parse(data.alert_data))
         commit('changeAttackNum', JSON.parse(data.latest_attack_summary))
       }
+    },
+    disconnectEventSource({ commit }) {
+      commit('closeEventSource')
     }
   }
 })
