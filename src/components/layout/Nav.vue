@@ -12,9 +12,9 @@
       style="width: 100%;"
       :default-active="defaultActive"
       :collapse="isCollapse"
-      background-color="transparent"
-      text-color="#333"
-      active-text-color="#2285c6"
+      background-color="#001529"
+      text-color="#6e7888"
+      active-text-color="white"
       :collapse-transition="false"
     >
       <template v-for="(route, index) in routes">
@@ -109,34 +109,30 @@ export default {
       font-size: 20px;
     }
   }
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 100%;
-  }
-  .el-menu-item:hover {
-    background: transparent !important;
-    span {
-      color: #2285c6;
-      font-weight: 700;
+  .el-menu {
+    .el-menu-vertical-demo:not(.el-menu--collapse) {
+      width: 100%;
     }
-  }
-  .el-submenu__title:hover {
-    background: transparent !important;
-    span {
-      color: #2285c6;
+    .el-menu-item:hover {
+      background: #2b3c53 !important;
+      span {
+        color: white;
+        font-weight: 700;
+      }
     }
-  }
-  .el-menu-item.is-active {
-    background: #41a7ea38 !important;
-    border-left: 5px solid #2285c6;
-    box-sizing: border-box;
-    span {
-      font-weight: 700;
+    .is-active {
+      background: #2b3c53 !important;
+      box-sizing: border-box;
+      span {
+        font-weight: 700;
+      }
     }
-  }
-  .el-submenu__title.is-active {
-    background: transparent !important;
-    span {
-      font-weight: 700;
+
+    .el-submenu__title:hover {
+      background: #2b3c53 !important;
+      span {
+        color: white;
+      }
     }
   }
 }
