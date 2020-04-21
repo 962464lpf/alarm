@@ -197,7 +197,7 @@ function whiteIfPushAlarmApi(params) {
 }
 
 function aKeyBlockedApi(params) {
-  let url = BASE_URL + '/jump/warning/forbidden'
+  let url = BASE_URL + '/jump/forbiddenIp/forbidden'
   return POST(url, params)
 }
 

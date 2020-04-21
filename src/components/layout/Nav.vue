@@ -65,7 +65,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo', 'currentPath'])
   },
   methods: {
     isPermission(page) {
@@ -88,7 +88,9 @@ export default {
       this.$emit('changeStyle', scaling)
     }
   },
-  mounted() {}
+  mounted() {
+    this.defaultActive = this.currentPath
+  }
 }
 </script>
 
@@ -124,7 +126,9 @@ export default {
     }
   }
   .el-menu-item.is-active {
-    background: transparent !important;
+    background: #41a7ea38 !important;
+    border-left: 5px solid #2285c6;
+    box-sizing: border-box;
     span {
       font-weight: 700;
     }
