@@ -63,6 +63,9 @@ export default {
     }
   },
   methods: {
+    submit() {
+      alert(1)
+    },
     immediateTitle(type) {
       if (this.currentPath === '/') {
         if (type) {
@@ -116,9 +119,19 @@ export default {
         path = '/'
       }
       this.$router.push(path)
+    },
+    keyDown(e) {
+      if (e.keyCode == 13) {
+        this.submitForm('userForm')
+      }
     }
   },
-  mounted() {}
+  mounted() {
+    window.addEventListener('keydown', this.keyDown)
+  },
+  destroyed() {
+    window.removeEventListener('keydown', this.keyDown, false)
+  }
 }
 </script>
 
