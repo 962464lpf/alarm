@@ -1,7 +1,8 @@
 <template>
   <div class="user">
     <div class="head"></div>
-    <div class="head-cover"></div>
+    <!-- <div class="head-cover"></div> -->
+    <!-- <img src="../../assets/images/Background.png" alt /> -->
     <div class="form">
       <el-form :model="userForm" status-icon :rules="rules" ref="userForm">
         <el-form-item label prop="name">
@@ -141,26 +142,27 @@ export default {
   // position: relative;
   background: #eee;
   .head {
-    height: 50%;
+    height: 100%;
     width: 100%;
-    background-color: #3b8ad4;
+    // background-color: #3b8ad4;
     background-image: url('../../assets/images/Background.png');
-    background-position-y: -423px;
+    background-repeat: no-repeat;
+    background-size: cover;
     position: absolute;
     top: 0;
   }
   .head-cover {
-    height: 50%;
-    width: 100%;
-    background-color: #3b8ad4;
-    position: absolute;
-    top: 0;
-    opacity: 0.7;
+    // height: 50%;
+    // width: 100%;
+    // background-color: #3b8ad4;
+    // position: absolute;
+    // top: 0;
+    // opacity: 0.7;
   }
   .form {
     width: 500px;
     position: absolute;
-    top: 30%;
+    top: 20%;
     left: calc(50% - 250px);
     border-radius: 20px;
     padding: 55px 40px;
@@ -177,13 +179,22 @@ export default {
           .el-input--mini .el-input__inner {
             height: 40px;
             line-height: 40px;
+            border-color: #2addfb;
+          }
+          .el-form-item__error {
+            color: #2addfb;
+          }
+          .el-input__suffix {
+            .el-icon-circle-close {
+              color: #2addfb;
+            }
           }
         }
         .btn {
           width: 100%;
           border-radius: 10px;
           height: 50px;
-          background: #46a5fe;
+          background: #05336f;
           line-height: 50px;
           text-align: center;
           color: white;
