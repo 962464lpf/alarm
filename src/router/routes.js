@@ -17,7 +17,7 @@ const routes = [
   {
     path: '/index',
     name: 'index',
-    component: () => import('../pages/home/NewHome.vue'),
+    component: () => import('../pages/home/Home.vue'),
     meta: {
       title: '趋势统计',
       icon: 'el-icon-s-home',
@@ -90,6 +90,16 @@ const routes = [
     component: () => import('../pages/redblue/RedBlue.vue'),
     meta: {
       title: '红蓝对抗',
+      icon: 'el-icon-document',
+      level: 1
+    }
+  },
+  {
+    path: '/blocked',
+    name: 'blocked',
+    component: () => import('../pages/blockedIP/BlockedIP.vue'),
+    meta: {
+      title: '封禁',
       icon: 'el-icon-document',
       level: 1
     }

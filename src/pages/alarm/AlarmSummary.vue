@@ -172,7 +172,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['newAlarmData'])
+    ...mapState(['newAlarmData', 'userInfo'])
   },
   watch: {
     newAlarmData() {
@@ -321,16 +321,23 @@ export default {
       }
     },
     blocked(row) {
-      let fd = new FormData()
-      fd.append('ip', row.sip)
-      aKeyBlockedApi(fd).then(res => {
-        let type = 'success'
-        if (res.state !== 1) type = 'warning'
-        this.$message({
-          type,
-          message: res.info
+      if (this.userInfo.level === 0) {
+        let fd = new FormData()
+        fd.append('ip', row.sip)
+        aKeyBlockedApi(fd).then(res => {
+          let type = 'success'
+          if (res.state !== 1) type = 'warning'
+          this.$message({
+            type,
+            message: res.info
+          })
         })
-      })
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '您没有权限执行此操作，请与管理员联系。'
+        })
+      }
     },
     handleSizeChange(val) {
       this.pageSize = val

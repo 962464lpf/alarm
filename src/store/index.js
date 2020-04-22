@@ -9,9 +9,13 @@ export default new Vuex.Store({
     eventSource: null,
     newAlarmData: [],
     attackNum: 0,
+    attackNumDesc: '',
     attackNumHigh: 0,
+    attackNumHighDesc: '',
     attackNumMiddle: 0,
+    attackNumMiddleDesc: '',
     attackNumLow: 0,
+    attackNumLowDesc: '',
     currentPath: '/',
     cycle: 'day',
     userInfo: JSON.parse(sessionStorage.getItem('userInfo')) ? JSON.parse(sessionStorage.getItem('userInfo')) : {}
@@ -27,24 +31,23 @@ export default new Vuex.Store({
       state.newAlarmData = []
     },
     changeAttackNum(state, data) {
-      if (data.day) {
-        if (state.cycle === 'day') {
-          state.attackNum = data.day.num
-          state.attackNumHigh = data.day.num_high
-          state.attackNumMiddle = data.day.num_middle
-          state.attackNumLow = data.day.num_low
-        } else if (state.cycle === 'week') {
-          state.attackNum = data.week.num
-          state.attackNumHigh = data.week.num_high
-          state.attackNumMiddle = data.week.num_middle
-          state.attackNumLow = data.week.num_low
-        } else {
-          state.attackNum = data.month.num
-          state.attackNumHigh = data.month.num_high
-          state.attackNumMiddle = data.month.num_middle
-          state.attackNumLow = data.month.num_low
+      let enumData = {
+        attackNum: 'num',
+        attackNumHigh: 'num_high',
+        attackNumMiddle: 'num_middle',
+        attackNumLow: 'num_low',
+        attackNumDesc: 'desc',
+        attackNumHighDesc: 'desc_high',
+        attackNumMiddleDesc: 'desc_middle',
+        attackNumLowDesc: 'desc_low'
+      }
+      let setData = (data) => {
+        for (let key in enumData) {
+          state[key] = data[enumData[key]]
         }
-
+      }
+      if (data.day) {
+        setData(data[state.cycle])
       } else {
         state.attackNum = data.num
         state.attackNumHigh = data.num_high

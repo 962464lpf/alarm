@@ -83,13 +83,14 @@
     <SearchForm @getSearchForm="getSearchForm"></SearchForm>
     <div class="current-table">
       <el-table :data="currentAlarmList" style="width: 100%" :row-class-name="addClass">
-        <el-table-column label="恶意IP">
+        <el-table-column label="恶意IP" width="170">
           <template slot-scope="scope">
             <div>
               <!-- 0 为新告警 -->
               <span class="triangle" v-if="scope.row.is_new === 0"></span>
-              <span class="no-triangle" v-else>{{ scope.row.sip }}</span>
               <span v-if="scope.row.is_new === 0">{{ scope.row.sip }}</span>
+              <span class="no-triangle" v-else>{{ scope.row.sip }}</span>
+              <span class="high" v-if="scope.row.forbidden" style="margin-left: 5px;">已封禁</span>
             </div>
           </template>
         </el-table-column>
@@ -215,7 +216,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['newAlarmData'])
+    ...mapState(['newAlarmData', 'userInfo'])
   },
   watch: {
     newAlarmData(val) {
@@ -323,16 +324,23 @@ export default {
       }
     },
     blocked(row) {
-      let fd = new FormData()
-      fd.append('ip', row.sip)
-      aKeyBlockedApi(fd).then(res => {
-        let type = 'success'
-        if (res.state !== 1) type = 'warning'
-        this.$message({
-          type,
-          message: res.info
+      if (this.userInfo.level === 0) {
+        let fd = new FormData()
+        fd.append('ip', row.sip)
+        aKeyBlockedApi(fd).then(res => {
+          let type = 'success'
+          if (res.state !== 1) type = 'warning'
+          this.$message({
+            type,
+            message: res.info
+          })
         })
-      })
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '您没有权限执行此操作，请与管理员联系。'
+        })
+      }
     },
     // 根据红，蓝，恶意，普通的进行添加不同类名，进行颜色区分
     addClass(row) {
@@ -561,19 +569,23 @@ export default {
           .middle,
           .low {
             display: inline-block;
-            padding: 0px 10px;
-            border-radius: 7px;
+            // padding: 0px 10px;
+            text-align-last: center;
+            width: 50px;
+            height: 25px;
+            line-height: 25px;
+            border-radius: 2px;
           }
           .high {
-            background: #f56c6c;
+            background: #ed3f14;
             color: white;
           }
           .middle {
-            background: #e6a23c;
+            background: #ff9900;
             color: white;
           }
           .low {
-            background: #67c23a;
+            background: #19be6b;
             color: white;
           }
         }

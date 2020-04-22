@@ -201,6 +201,17 @@ function aKeyBlockedApi(params) {
   return POST(url, params)
 }
 
+function getBlockedIApi(params) {
+  let url = BASE_URL + '/jump/forbiddenIp/index'
+  return POST(url, params)
+}
+
+function unBlockedIPApi(params) {
+  let url = BASE_URL + '/jump/forbiddenIp/release_forbidden'
+  return POST(url, params)
+}
+
+
 
 export {
   BASE_URL,
@@ -240,5 +251,7 @@ export {
   getUserListApi,
   userAllotEquipApi,
   whiteIfPushAlarmApi,
-  aKeyBlockedApi
+  aKeyBlockedApi,
+  getBlockedIApi,
+  unBlockedIPApi
 }
