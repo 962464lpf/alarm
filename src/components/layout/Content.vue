@@ -15,7 +15,8 @@
 <script>
 import Nav from '../layout/Nav'
 // import Breadcrumb from '../common/Breadcrumb'
-import { getUserInfo } from '../../tools/api'
+
+import { getUserInfo, startListernApi, startRecveApi } from '../../tools/api'
 export default {
   components: {
     Nav
@@ -42,6 +43,8 @@ export default {
     }
   },
   mounted() {
+    startListernApi()
+    startRecveApi()
     getUserInfo().then(res => {
       this.$store.commit('changeUserInfo', res)
       this.$store.dispatch('connectEventSource', res)

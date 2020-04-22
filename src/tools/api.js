@@ -11,14 +11,20 @@ function downloadFileApi(url) {
   return downloadFile(url)
 }
 
-function linkServer() {
-  let source = new EventSource(BASE_URL + '/jump/warning/stream_new')
-  return source
-}
 
 function startRecveApi() {
   let url = BASE_URL + '/jump/warning/start_recv'
   POST(url)
+}
+
+function startListernApi() {
+  let url = BASE_URL + '/jump/warning/start_listen'
+  return POST(url)
+}
+
+function verifyAuthApi() {
+  let url = BASE_URL + '/jump/warning/verify_auth'
+  return POST(url)
 }
 
 function getSumAlarmListApi(params) {
@@ -100,10 +106,6 @@ function deleteIpApi(params) {
   return POST(url, params)
 }
 
-function startListernApi() {
-  let url = BASE_URL + '/jump/warning/start_listen'
-  return POST(url)
-}
 
 function getAttackTrendApi(params) {
   let url = BASE_URL + '/jump/analyze/num'
@@ -216,8 +218,8 @@ function unBlockedIPApi(params) {
 export {
   BASE_URL,
   downloadFileApi,
-  linkServer,
   startRecveApi,
+  verifyAuthApi,
   getSumAlarmListApi,
   getCurrentAlarmListApi,
   setCurrentAlarmNotNewApi,

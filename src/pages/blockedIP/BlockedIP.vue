@@ -82,18 +82,24 @@ export default {
       })
     },
     unBlockedIP(row) {
-      let fd = new FormData()
-      fd.append('ip', row.ip)
-      unBlockedIPApi(fd).then(res => {
-        let type = 'success'
-        if (res.state !== this.successFlag) {
-          type = 'warning'
-        } else {
-          this.getBlockedIP()
-        }
-        this.$message({
-          type,
-          message: res.info
+      this.$confirm('您确定要将此IP进行解封吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let fd = new FormData()
+        fd.append('ip', row.ip)
+        unBlockedIPApi(fd).then(res => {
+          let type = 'success'
+          if (res.state !== this.successFlag) {
+            type = 'warning'
+          } else {
+            this.getBlockedIP()
+          }
+          this.$message({
+            type,
+            message: res.info
+          })
         })
       })
     },
