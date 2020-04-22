@@ -42,7 +42,6 @@ export default {
     }
   },
   mounted() {
-    console.log(1)
     getUserInfo().then(res => {
       this.$store.commit('changeUserInfo', res)
       this.$store.dispatch('connectEventSource', res)

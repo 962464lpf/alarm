@@ -233,7 +233,7 @@ export default {
       fd.append('white_show', Number(val))
       whiteIfPushAlarmApi(fd).then(res => {
         let type = 'success'
-        if (res.state !== 1) {
+        if (res.state !== this.successFlag) {
           type = 'warning'
         }
         this.$message({
@@ -269,7 +269,7 @@ export default {
       setIpApi('black', fd).then(res => {
         let type = 'success'
         let message = '设置成功'
-        if (res.state !== 1) {
+        if (res.state !== this.successFlag) {
           type = 'warning'
           message = res.info
         }
@@ -310,7 +310,7 @@ export default {
           setIpApi(type, fd).then(res => {
             let type = 'success'
             let message = '设置成功'
-            if (res.state !== 1) {
+            if (res.state !== this.successFlag) {
               type = 'warning'
               message = res.info
             }
@@ -329,7 +329,7 @@ export default {
         fd.append('ip', row.sip)
         aKeyBlockedApi(fd).then(res => {
           let type = 'success'
-          if (res.state !== 1) type = 'warning'
+          if (res.state !== this.successFlag) type = 'warning'
           this.$message({
             type,
             message: res.info

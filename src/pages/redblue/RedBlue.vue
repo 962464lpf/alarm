@@ -81,7 +81,7 @@ export default {
       fd.append('id', row.id)
       deleteIpApi(fd).then(res => {
         let type = 'success'
-        if (res.state !== 1) {
+        if (res.state !== this.successFlag) {
           type = 'warning'
         } else {
           this.ifGetIP = true

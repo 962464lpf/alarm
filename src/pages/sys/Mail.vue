@@ -212,7 +212,7 @@ export default {
           fd.append('summary_set', summaryTime.join(','))
           setMailApi(fd).then(res => {
             let type = 'success'
-            if (res.state !== 1) {
+            if (res.state !== this.successFlag) {
               type = 'warning'
             }
             this.$message({

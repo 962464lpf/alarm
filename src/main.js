@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/style/common.scss'
 import { startListernApi, startRecveApi } from './tools/api'
 import VCharts from 'v-charts'
+import myMixin from './myMixin'
 
 Vue.use(VCharts)
 
@@ -19,6 +20,9 @@ router.beforeEach((to, from, next) => {
   startRecveApi()
   next()
 })
+
+
+Vue.mixin(myMixin)
 
 new Vue({
   router,

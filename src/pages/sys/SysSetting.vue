@@ -23,7 +23,7 @@ export default {
       fd.append('white_show', Number(val))
       whiteIfPushAlarmApi(fd).then(res => {
         let type = 'success'
-        if (res.state !== 1) {
+        if (res.state !== this.successFlag) {
           type = 'warning'
         }
         this.$message({

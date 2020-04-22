@@ -70,7 +70,7 @@ export default {
       fd.append('ip', form.ip)
       aKeyBlockedApi(fd).then(res => {
         let type = 'success'
-        if (res.state !== 1) {
+        if (res.state !== this.successFlag) {
           type = 'warning'
         } else {
           this.getBlockedIP()
@@ -86,7 +86,7 @@ export default {
       fd.append('ip', row.ip)
       unBlockedIPApi(fd).then(res => {
         let type = 'success'
-        if (res.state !== 1) {
+        if (res.state !== this.successFlag) {
           type = 'warning'
         } else {
           this.getBlockedIP()
