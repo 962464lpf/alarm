@@ -35,7 +35,7 @@
       >
         <span>
           <i class="el-icon-user"></i>
-          {{userInfo.name}}
+          {{userInfo.name}}({{getRoleName()}})
         </span>
         <span>
           <el-dropdown>
@@ -107,6 +107,19 @@ export default {
     }
   },
   methods: {
+    getRoleName() {
+      let level = this.userInfo.level
+      switch (level) {
+        case 0:
+          return '超级管理员'
+        case 1:
+          return '普通用户'
+        case 2:
+          return '管理员'
+        default:
+          break
+      }
+    },
     changeCycle() {
       this.dialogVisible = true
     },

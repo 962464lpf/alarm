@@ -1,6 +1,9 @@
 <template>
-  <div class="user">
-    <el-table :data="userData" stripe border style="width: 100%">
+  <div class="user-manage">
+    <el-row>
+      <el-button type="primary" @click="addUser">添加用户</el-button>
+    </el-row>
+    <el-table :data="userData" stripe border style="width: 100%" class="mt10">
       <el-table-column prop="name" label="用户名"></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
       <el-table-column prop="email" label="邮箱"></el-table-column>
@@ -15,8 +18,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <div v-if="allotEquipStatus">
-      <TopSettingDialog v-model="allotEquipStatus"></TopSettingDialog>
+    <div v-if="addUserStatus">
+      <Adduser v-model="addUserStatus" @getUserForm="getUserForm"></Adduser>
     </div>
     <div v-if="allotEquipStatus">
       <AllotEquip v-model="allotEquipStatus" @getSelectEquip="getSelectEquip"></AllotEquip>
@@ -26,12 +29,17 @@
 
 <script>
 import AllotEquip from '../../components/sys/AllotEquip'
-import TopSettingDialog from '../../components/home/TopSettingDialog'
-import { getUserListApi, userAllotEquipApi } from '../../tools/api'
+import Adduser from '../../components/sys/AddUser'
+import {
+  getUserListApi,
+  userAllotEquipApi,
+  registerApi,
+  deleteUserApi
+} from '../../tools/api'
 export default {
   components: {
     AllotEquip,
-    TopSettingDialog
+    Adduser
   },
   data() {
     return {
@@ -46,10 +54,30 @@ export default {
         }
       ],
       allotEquipStatus: false,
-      selectRowUser: ''
+      selectRowUser: '',
+      addUserStatus: false
     }
   },
   methods: {
+    addUser() {
+      this.addUserStatus = true
+    },
+    getUserForm(form) {
+      let fd = new FormData()
+      for (let key in form) {
+        fd.append(key, form[key])
+      }
+      registerApi(fd).then(res => {
+        let type = 'success'
+        if (res.state !== this.successFlag) {
+          type = 'warning'
+        }
+        this.$message({
+          type,
+          message: res.info
+        })
+      })
+    },
     getLevel(scope) {
       if (scope.row.level === 0) {
         return '超级管理员'
@@ -63,11 +91,22 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log(row)
+        let fd = new FormData()
+        fd.append('id', row.id)
+        deleteUserApi(fd).then(res => {
+          let type = 'success'
+          if (res.state !== this.successFlag) {
+            type = 'warning'
+          }
+          this.$message({
+            type,
+            message: res.info
+          })
+        })
+        this.getUserList()
       })
     },
     allotEquip(row) {
-      console.log(row)
       this.selectRowUser = row
       this.allotEquipStatus = true
     },

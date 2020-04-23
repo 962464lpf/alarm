@@ -1,8 +1,8 @@
 <template>
   <div class="blocked-ip">
     <el-form :inline="true" :model="form">
-      <el-form-item label="IP">
-        <el-input v-model="form.ip" placeholder="IP"></el-input>
+      <el-form-item label="IP地址">
+        <el-input v-model="form.ip" placeholder="请输入IP地址"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSearch">查询</el-button>

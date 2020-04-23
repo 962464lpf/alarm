@@ -11,9 +11,9 @@
         <el-form-item label="请输入IP或IP范围">
           <el-input v-model="form.ip"></el-input>
         </el-form-item>
-        <el-form-item label="描述">
+        <!-- <el-form-item label="描述">
           <el-input v-model="form.desc"></el-input>
-        </el-form-item>
+        </el-form-item>-->
       </el-form>
 
       <span slot="footer" class="dialog-footer">

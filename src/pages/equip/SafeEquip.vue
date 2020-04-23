@@ -1,12 +1,12 @@
 <template>
   <div class="sage-equip">
     <el-form :inline="true" v-model="searchForm" ref="searchForm">
-      <el-form-item label="IP">
-        <el-input v-model="searchForm.ip" placeholder></el-input>
+      <el-form-item label="IP地址">
+        <el-input v-model="searchForm.ip" placeholder="请输入IP地址"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">查询</el-button>
-        <el-button type="primary">重置</el-button>
+        <el-button type="primary" @click="getSateEquipList">查询</el-button>
+        <el-button type="primary" @click="onReset">重置</el-button>
         <el-button type="success" @click="updateEqp('add')">新增</el-button>
       </el-form-item>
     </el-form>
@@ -79,6 +79,10 @@ export default {
     }
   },
   methods: {
+    onReset() {
+      this.searchForm.ip = ''
+      this.getSateEquipList()
+    },
     deleteRow(row) {
       this.$confirm('此操作将永久删除该安全设备, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -122,6 +126,7 @@ export default {
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
+      fd.append('ip', this.searchForm.ip)
 
       getSafeEquipListApi(fd).then(res => {
         this.safeEquip = res.data

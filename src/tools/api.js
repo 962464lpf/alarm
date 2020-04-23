@@ -168,6 +168,11 @@ function registerApi(params) {
   return POST(url, params)
 }
 
+function deleteUserApi(params) {
+  let url = BASE_URL + '/jump/user/delete'
+  return POST(url, params)
+}
+
 function logoutApi() {
   let url = BASE_URL + '/jump/auth/logout'
   return POST(url)
@@ -247,6 +252,7 @@ export {
   getAlarmSourceApi,
   loginApi,
   registerApi,
+  deleteUserApi,
   logoutApi,
   resetPassword,
   getUserInfo,
