@@ -83,7 +83,7 @@
     <SearchForm @getSearchForm="getSearchForm"></SearchForm>
     <div class="current-table">
       <el-table :data="currentAlarmList" style="width: 100%" :row-class-name="addClass">
-        <el-table-column label="恶意IP" width="170">
+        <el-table-column label="恶意IP" width="180">
           <template slot-scope="scope">
             <div>
               <!-- 0 为新告警 -->
@@ -325,14 +325,21 @@ export default {
     },
     blocked(row) {
       if (this.userInfo.level === 0) {
-        let fd = new FormData()
-        fd.append('ip', row.sip)
-        aKeyBlockedApi(fd).then(res => {
-          let type = 'success'
-          if (res.state !== this.successFlag) type = 'warning'
-          this.$message({
-            type,
-            message: res.info
+        this.$confirm('您确定要将此IP进行封禁吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let fd = new FormData()
+          fd.append('ip', row.sip)
+          aKeyBlockedApi(fd).then(res => {
+            let type = 'success'
+            if (res.state !== this.successFlag) type = 'warning'
+            this.$message({
+              type,
+              message: res.info
+            })
+            this.getCurrentAlarmList()
           })
         })
       } else {

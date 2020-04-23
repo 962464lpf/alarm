@@ -43,6 +43,7 @@
 <script>
 import { getBlockedIApi, unBlockedIPApi, aKeyBlockedApi } from '../../tools/api'
 import addBlockedIP from '../../components/blockedIP/AddBlockedIP'
+import { mapState } from 'vuex'
 export default {
   components: {
     addBlockedIP
@@ -58,6 +59,9 @@ export default {
       total: 0,
       addBlockedIPStatus: false
     }
+  },
+  computed: {
+    ...mapState(['userInfo'])
   },
   methods: {
     onSearch() {},
@@ -82,26 +86,33 @@ export default {
       })
     },
     unBlockedIP(row) {
-      this.$confirm('您确定要将此IP进行解封吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        let fd = new FormData()
-        fd.append('ip', row.ip)
-        unBlockedIPApi(fd).then(res => {
-          let type = 'success'
-          if (res.state !== this.successFlag) {
-            type = 'warning'
-          } else {
-            this.getBlockedIP()
-          }
-          this.$message({
-            type,
-            message: res.info
+      if (this.userInfo.level === 0) {
+        this.$confirm('您确定要将此IP进行解封吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let fd = new FormData()
+          fd.append('ip', row.ip)
+          unBlockedIPApi(fd).then(res => {
+            let type = 'success'
+            if (res.state !== this.successFlag) {
+              type = 'warning'
+            } else {
+              this.getBlockedIP()
+            }
+            this.$message({
+              type,
+              message: res.info
+            })
           })
         })
-      })
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '您没有权限执行此操作，请与管理员联系。'
+        })
+      }
     },
     handleSizeChange(val) {
       this.pageSize = val

@@ -126,13 +126,18 @@
               <i class="el-icon-info"></i>选择邮件汇总发送时间
             </span>
           </p>
-          <el-time-picker
+          <el-time-select
             v-for="(item, index) in selectTime"
             :key="index"
             v-model="item.time"
             placeholder
             class="mr10"
-          ></el-time-picker>
+            :picker-options="{
+              start: '06:00',
+              step: '01:00',
+              end: '22:00'
+            }"
+          ></el-time-select>
           <el-button @click="changeSelecttime('add')" style="padding: 10px 15px">添加</el-button>
           <el-button @click="changeSelecttime('delete')" style="padding: 10px 15px">删除</el-button>
         </el-col>
@@ -162,11 +167,7 @@ export default {
       },
       mailAlarm: 1,
       mailAlarmSummary: 1,
-      selectTime: [
-        {
-          time: ''
-        }
-      ],
+      selectTime: [],
       rules: {
         email_server: [
           { required: true, message: '请输入邮件服务器', trigger: 'blur' }
@@ -205,10 +206,9 @@ export default {
           }
           let summaryTime = []
           this.selectTime.forEach(item => {
-            let hour = item.time.getHours().toString()
+            let hour = parseInt(item.time.slice(0, 2))
             summaryTime.push(hour)
           })
-
           fd.append('summary_set', summaryTime.join(','))
           setMailApi(fd).then(res => {
             let type = 'success'
@@ -219,7 +219,8 @@ export default {
               type,
               message: res.info
             })
-            this.getMailSetting()
+            // this.selectTime = []
+            // this.getMailSetting()
           })
         } else {
           return false
@@ -232,6 +233,21 @@ export default {
       }
       getMailApi(params).then(res => {
         this.emailForm = res
+        // this.selectTime = res.summary_set
+        //   selectTime: [
+        //   {
+        //     time: ''
+        //   }
+        // ],
+        let selectTimeArr = res.summary_set.split(',')
+        for (let i in selectTimeArr) {
+          if (selectTimeArr[i] < 10) selectTimeArr[i] = '0' + selectTimeArr[i]
+          let time = selectTimeArr[i] + ': 00'
+          let obj = {
+            time
+          }
+          this.selectTime.push(obj)
+        }
       })
     },
     startSendMail() {
