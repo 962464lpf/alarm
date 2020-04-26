@@ -98,7 +98,7 @@
               <i class="el-icon-info"></i>邮件告警通知开关
             </span>
           </p>
-          <el-radio-group v-model="mailAlarm" @change="startSendMail">
+          <el-radio-group v-model="emailForm.alarm_switch">
             <el-radio :label="1">开</el-radio>
             <el-radio :label="0">关</el-radio>
           </el-radio-group>
@@ -112,7 +112,7 @@
               <i class="el-icon-info"></i>邮件汇总通知开关
             </span>
           </p>
-          <el-radio-group v-model="mailAlarmSummary" @change="startSendMail">
+          <el-radio-group v-model="emailForm.summary_switch">
             <el-radio :label="1">开</el-radio>
             <el-radio :label="0">关</el-radio>
           </el-radio-group>
@@ -163,7 +163,9 @@ export default {
         to_addr: '',
         cc: '',
         subject: '',
-        content: ''
+        content: '',
+        alarm_switch: 1,
+        summary_switch: 1
       },
       mailAlarm: 1,
       mailAlarmSummary: 1,
@@ -219,8 +221,6 @@ export default {
               type,
               message: res.info
             })
-            // this.selectTime = []
-            // this.getMailSetting()
           })
         } else {
           return false
@@ -233,12 +233,6 @@ export default {
       }
       getMailApi(params).then(res => {
         this.emailForm = res
-        // this.selectTime = res.summary_set
-        //   selectTime: [
-        //   {
-        //     time: ''
-        //   }
-        // ],
         let selectTimeArr = res.summary_set.split(',')
         for (let i in selectTimeArr) {
           if (selectTimeArr[i] < 10) selectTimeArr[i] = '0' + selectTimeArr[i]
@@ -256,8 +250,8 @@ export default {
       //   alarm_switch: 1,
       //   summary_switch: 1
       // }
-      fd.append('alarm_switch', this.mailAlarm)
-      fd.append('summary_switch', this.mailAlarmSummary)
+      // fd.append('alarm_switch', this.mailAlarm)
+      // fd.append('summary_switch', this.mailAlarmSummary)
       startSendMailApi(fd)
     }
   },

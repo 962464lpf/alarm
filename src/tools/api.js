@@ -218,6 +218,25 @@ function unBlockedIPApi(params) {
   return POST(url, params)
 }
 
+function factoryDataReset() {
+  let url = BASE_URL + '/jump/globalSet/ini_db'
+  return POST(url)
+}
+
+function getNetWorkManageApi() {
+  let url = BASE_URL + '/jump/networkSet/set_network'
+  return POST(url)
+}
+
+function postNetWorkManageApi(params) {
+  let url = BASE_URL + '/jump/networkSet/set_network_do'
+  return POST(url, params)
+}
+
+function restartNetWork() {
+  let url = BASE_URL + '/jump/networkSet/restart_network'
+  return POST(url)
+}
 
 
 export {
@@ -261,5 +280,9 @@ export {
   whiteIfPushAlarmApi,
   aKeyBlockedApi,
   getBlockedIApi,
-  unBlockedIPApi
+  unBlockedIPApi,
+  factoryDataReset,
+  getNetWorkManageApi,
+  postNetWorkManageApi,
+  restartNetWork
 }

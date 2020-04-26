@@ -124,15 +124,6 @@ const routes = [
           level: 0
         }
       },
-      // {
-      //   path: '/sys/alarmSource',
-      //   name: 'obgmgt',
-      //   component: () => import('../pages/sys/AlarmSource.vue'),
-      //   meta: {
-      //     title: '告警源',
-      //     icon: 'el-icon-document'
-      //   }
-      // },
       {
         path: '/sys/user',
         name: 'user',
@@ -143,6 +134,16 @@ const routes = [
           level: 0
         }
       },
+      {
+        path: '/sys/networkManage',
+        name: 'networkManage',
+        component: () => import('../pages/sys/NetworkManage.vue'),
+        meta: {
+          title: '网络管理',
+          icon: 'el-icon-document',
+          level: 0
+        }
+      }
       // {
       //   path: '/sys/setting',
       //   name: 'setting',
