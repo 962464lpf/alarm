@@ -99,7 +99,7 @@ const routes = [
     name: 'blocked',
     component: () => import('../pages/blockedIP/BlockedIP.vue'),
     meta: {
-      title: '封禁',
+      title: '封禁列表',
       icon: 'el-icon-document',
       level: 1
     }

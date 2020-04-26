@@ -105,7 +105,8 @@ import {
   getDeviceIPTop5Api,
   getPhysicalIPTop5Api,
   getAttackedTypeTop5Api,
-  getRedIPTop5Api
+  getRedIPTop5Api,
+  getAttackNumApi
 } from '../../tools/api'
 import TopSettingDialog from '../../components/home/TopSettingDialog'
 export default {
@@ -403,6 +404,9 @@ export default {
     this.getPhysicalIPTop5()
     this.getAttackedTypeTop5()
     this.getRedIPTop5()
+    getAttackNumApi().then(res => {
+      this.$store.commit('changeAttackNum', res)
+    })
   }
 }
 </script>

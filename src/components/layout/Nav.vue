@@ -1,5 +1,5 @@
 <template>
-  <div class="nav" @mouseenter="mouseMove('enter')" @mouseleave="mouseMove('leave')">
+  <div class="nav">
     <div class="scaling">
       <i
         class="curp fr"
@@ -78,9 +78,6 @@ export default {
         return false
       }
     },
-    mouseMove(type) {
-      this.$emit('changeStyle', type)
-    },
     handleScaling() {
       this.isCollapse = !this.isCollapse
       this.isCollapse ? 'open' : 'close'
@@ -110,6 +107,7 @@ export default {
     }
   }
   .el-menu {
+    border-right: none;
     .el-menu-vertical-demo:not(.el-menu--collapse) {
       width: 100%;
     }

@@ -73,7 +73,9 @@ export default {
     //   this.$refs[formName].resetFields()
     // },
     getNetWorkManage() {
-      getNetWorkManageApi('get')
+      getNetWorkManageApi().then(res => {
+        this.networkForm = res
+      })
     },
     postNetWorkManage() {
       let fd = new FormData()

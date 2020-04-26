@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <el-row style="height: 100%;">
-      <el-col :span="isCollapse ? 1 : 3" class="left" v-bind:class="{ enter: mouseEnter }">
+      <el-col :span="isCollapse ? 1 : 3" class="left">
         <Nav @changeStyle="changeStyle"></Nav>
       </el-col>
       <el-col :span="!isCollapse ? 21 : 23" class="right">
@@ -25,17 +25,12 @@ export default {
 
   data() {
     return {
-      mouseEnter: false,
       isCollapse: false
     }
   },
   methods: {
     changeStyle(type) {
-      if (type === 'enter') {
-        this.mouseEnter = true
-      } else if (type === 'leave') {
-        this.mouseEnter = false
-      } else if (type === 'open') {
+      if (type === 'open') {
         this.isCollapse = true
       } else if (type === 'close') {
         this.isCollapse = false
@@ -59,11 +54,8 @@ export default {
   overflow: hidden;
   .left {
     height: 100%;
-    overflow: hidden;
-    background: $navbg-color;
-  }
-  .enter {
     overflow: auto;
+    background: $navbg-color;
   }
   .right {
     height: 100%;
