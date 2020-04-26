@@ -144,7 +144,7 @@
       </el-row>
 
       <div class="mt10 confirm-btn">
-        <el-button type="primary" @click="confirm('emailForm')">确定</el-button>
+        <el-button type="primary" :loading="mailBtnLoading" @click="confirm('emailForm')">确定</el-button>
       </div>
     </el-form>
   </div>
@@ -170,6 +170,7 @@ export default {
       mailAlarm: 1,
       mailAlarmSummary: 1,
       selectTime: [],
+      mailBtnLoading: false,
       rules: {
         email_server: [
           { required: true, message: '请输入邮件服务器', trigger: 'blur' }
@@ -200,6 +201,7 @@ export default {
     },
     confirm(formName) {
       this.$refs[formName].validate(valid => {
+        this.mailBtnLoading = true
         if (valid) {
           let params = this.emailForm
           let fd = new FormData()
@@ -213,6 +215,7 @@ export default {
           })
           fd.append('summary_set', summaryTime.join(','))
           setMailApi(fd).then(res => {
+            this.mailBtnLoading = false
             let type = 'success'
             if (res.state !== this.successFlag) {
               type = 'warning'

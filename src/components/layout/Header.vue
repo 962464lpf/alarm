@@ -49,6 +49,9 @@
               <el-dropdown-item>
                 <span @click="logout">退出</span>
               </el-dropdown-item>
+              <el-dropdown-item v-if="userInfo.level === 0">
+                <span @click="factoryDataReset">恢复出厂设置</span>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </span>
@@ -73,7 +76,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getAttackNumApi, logoutApi, resetPassword } from '../../tools/api'
+import {
+  getAttackNumApi,
+  logoutApi,
+  resetPassword,
+  factoryDataResetApi
+} from '../../tools/api'
 import ResetPassword from '../../components/common/ResetPassword'
 export default {
   components: {
@@ -188,6 +196,15 @@ export default {
             message: res.info
           })
         }
+      })
+    },
+    factoryDataReset() {
+      this.$confirm('您确定要执行恢复出厂化?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        factoryDataResetApi()
       })
     }
   },

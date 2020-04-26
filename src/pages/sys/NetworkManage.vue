@@ -28,8 +28,8 @@
       </el-row>
     </el-form>
     <div class="mt10" style="text-align: center;">
-      <el-button type="primary" @click="submitForm('networkForm')">立即更改</el-button>
-      <el-button type="primary" @click="restartNetWork">重启</el-button>
+      <el-button type="primary" :loading="submitBtnLoading" @click="submitForm('networkForm')">立即更改</el-button>
+      <el-button type="primary" :loading="restartBtnLoading" @click="restartNetWork">重启</el-button>
     </div>
   </div>
 </template>
@@ -49,6 +49,8 @@ export default {
         GATEWAY: '192.168.100.254',
         DNS1: '61.134.1.4'
       },
+      submitBtnLoading: false,
+      restartBtnLoading: false,
       rules: {}
     }
   },
@@ -61,17 +63,14 @@ export default {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
+            this.submitBtnLoading = true
             this.postNetWorkManage()
           })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
     },
-    // resetForm(formName) {
-    //   this.$refs[formName].resetFields()
-    // },
     getNetWorkManage() {
       getNetWorkManageApi().then(res => {
         this.networkForm = res
@@ -83,6 +82,9 @@ export default {
         fd.append(key, this.networkForm[key])
       }
       postNetWorkManageApi(fd).then(res => {
+        setTimeout(() => {
+          this.submitBtnLoading = false
+        }, 1000)
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
@@ -99,7 +101,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.restartBtnLoading = true
         restartNetWork().then(res => {
+          this.restartBtnLoading = false
           let type = 'success'
           if (res.state !== this.successFlag) {
             type = 'warning'

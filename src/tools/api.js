@@ -218,7 +218,7 @@ function unBlockedIPApi(params) {
   return POST(url, params)
 }
 
-function factoryDataReset() {
+function factoryDataResetApi() {
   let url = BASE_URL + '/jump/globalSet/ini_db'
   return POST(url)
 }
@@ -281,7 +281,7 @@ export {
   aKeyBlockedApi,
   getBlockedIApi,
   unBlockedIPApi,
-  factoryDataReset,
+  factoryDataResetApi,
   getNetWorkManageApi,
   postNetWorkManageApi,
   restartNetWork

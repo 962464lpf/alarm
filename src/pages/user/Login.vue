@@ -21,7 +21,11 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <div class="btn curp" @click="submitForm('userForm')">{{immediateTitle('btn')}}</div>
+          <el-button
+            class="btn curp"
+            :loading="loginBtnLoading"
+            @click="submitForm('userForm')"
+          >{{immediateTitle('btn')}}</el-button>
           <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
         </el-form-item>
       </el-form>
@@ -40,6 +44,7 @@ export default {
         password: ''
       },
       btnName: '登录',
+      loginBtnLoading: false,
       rules: {
         userName: [
           // { required: true, message: '请输入活动名称', trigger: 'blur' }
@@ -82,6 +87,7 @@ export default {
       }
     },
     submitForm(formName) {
+      this.loginBtnLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
           let fd = new FormData()
@@ -92,6 +98,7 @@ export default {
           if (this.currentPath === '/') handleSubmit = loginApi
           if (this.currentPath === '/register') handleSubmit = registerApi
           handleSubmit(fd).then(res => {
+            this.loginBtnLoading = false
             if (res.state === 1) {
               if (this.currentPath === '/') {
                 this.$router.push('/index')
@@ -199,6 +206,8 @@ export default {
           text-align: center;
           color: white;
           font-size: 18px;
+          border: none;
+          padding: 0 !important;
         }
       }
     }
