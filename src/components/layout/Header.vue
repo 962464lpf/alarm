@@ -199,12 +199,21 @@ export default {
       })
     },
     factoryDataReset() {
-      this.$confirm('您确定要执行恢复出厂化?', '提示', {
+      this.$confirm('您确定要将此系统恢复出厂设置吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        factoryDataResetApi()
+        factoryDataResetApi().then(res => {
+          let type = 'success'
+          if (res.state === this.successFlag) {
+            type = 'warning'
+          }
+          this.$message({
+            type,
+            message: res.info
+          })
+        })
       })
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="mt10">
-    <el-table :data="blackIPData" style="width: 100%" border>
+    <el-table v-loading="tableLoading" :data="blackIPData" style="width: 100%" border>
       <el-table-column prop="ip_addr" label="IP"></el-table-column>
       <el-table-column label="物理地址">
         <template slot-scope="scope">
@@ -51,6 +51,7 @@ export default {
   },
   data() {
     return {
+      tableLoading: false,
       blackIPData: [],
       total: 0,
       currentPage: 1,
@@ -74,6 +75,7 @@ export default {
       this.getIPList()
     },
     getIPList() {
+      this.tableLoading = true
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
@@ -101,6 +103,7 @@ export default {
       fd.append('type', type)
 
       getIPListApi(fd).then(res => {
+        this.tableLoading = false
         this.blackIPData = res.data
         this.total = res.total
       })

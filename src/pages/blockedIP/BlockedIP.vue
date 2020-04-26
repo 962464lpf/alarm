@@ -12,7 +12,7 @@
         <el-button type="success" @click="onAdd">新增</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="blockedIP" border style="width: 100%">
+    <el-table v-loading="tableLoading" :data="blockedIP" border style="width: 100%">
       <el-table-column prop="ip" label="IP地址"></el-table-column>
       <el-table-column prop="created_time" label="封禁时间"></el-table-column>
       <el-table-column label="操作" width="100">
@@ -53,6 +53,7 @@ export default {
       form: {
         ip: ''
       },
+      tableLoading: false,
       blockedIP: [],
       currentPage: 1,
       pageSize: 10,
@@ -64,8 +65,13 @@ export default {
     ...mapState(['userInfo'])
   },
   methods: {
-    onSearch() {},
-    onReset() {},
+    onSearch() {
+      this.getBlockedIP()
+    },
+    onReset() {
+      this.form.ip = ''
+      this.getBlockedIP()
+    },
     onAdd() {
       this.addBlockedIPStatus = true
     },
@@ -123,10 +129,13 @@ export default {
       this.getBlockedIP()
     },
     getBlockedIP() {
+      this.tableLoading = true
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
+      fd.append('ip', this.form.ip)
       getBlockedIApi(fd).then(res => {
+        this.tableLoading = false
         this.blockedIP = res.data
         this.total = res.total
       })

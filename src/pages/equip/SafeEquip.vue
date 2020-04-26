@@ -10,7 +10,7 @@
         <el-button type="success" @click="updateEqp('add')">新增</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="safeEquip" border style="width: 100%">
+    <el-table v-loading="tableLoading" :data="safeEquip" border style="width: 100%">
       <el-table-column prop="ip" label="IP地址" width="140"></el-table-column>
       <el-table-column prop="name" label="名称" width="180"></el-table-column>
       <el-table-column prop="link" label="连接">
@@ -69,6 +69,7 @@ export default {
       searchForm: {
         ip: ''
       },
+      tableLoading: false,
       safeEquip: [],
       currentPage: 1,
       pageSize: 10,
@@ -123,12 +124,14 @@ export default {
       this.getSateEquipList()
     },
     getSateEquipList() {
+      this.tableLoading = true
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
       fd.append('ip', this.searchForm.ip)
 
       getSafeEquipListApi(fd).then(res => {
+        this.tableLoading = false
         this.safeEquip = res.data
         this.total = res.total
       })

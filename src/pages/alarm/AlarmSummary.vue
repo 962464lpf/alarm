@@ -16,7 +16,7 @@
     </SearchForm>
 
     <div class="alarm-summary-table">
-      <el-table :data="summaryAlarmList" style="width: 100%" border>
+      <el-table v-loading="tableLoading" :data="summaryAlarmList" style="width: 100%" border>
         <el-table-column label="恶意IP">
           <template slot-scope="scope">
             <span
@@ -148,7 +148,6 @@ export default {
     return {
       moreSearch: false,
       selectType: '',
-
       selectTypeDialogStatus: false,
       searchForm: {
         sip: '',
@@ -157,6 +156,7 @@ export default {
         attack_type: '',
         time: []
       },
+      tableLoading: false,
       summaryAlarmList: [],
       attack_total: 0,
       attack_total_high: 0,
@@ -354,6 +354,7 @@ export default {
       this.getAlarmList()
     },
     getAlarmList() {
+      this.tableLoading = true
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
@@ -363,6 +364,7 @@ export default {
       fd.append('start_time', this.searchForm.time[0])
       fd.append('end_time', this.searchForm.time[1])
       getSumAlarmListApi(fd).then(res => {
+        this.tableLoading = false
         this.summaryAlarmList = res.data
         this.total = res.total
         this.attack_total = res.attack_total

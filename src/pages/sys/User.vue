@@ -3,7 +3,14 @@
     <el-row>
       <el-button type="primary" @click="addUser">添加用户</el-button>
     </el-row>
-    <el-table :data="userData" stripe border style="width: 100%" class="mt10">
+    <el-table
+      v-loading="tableLoading"
+      :data="userData"
+      stripe
+      border
+      style="width: 100%"
+      class="mt10"
+    >
       <el-table-column prop="name" label="用户名"></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
       <el-table-column prop="email" label="邮箱"></el-table-column>
@@ -43,16 +50,8 @@ export default {
   },
   data() {
     return {
-      userData: [
-        {
-          username: '123',
-          level: 0
-        },
-        {
-          username: 'admin',
-          level: 1
-        }
-      ],
+      tableLoading: false,
+      userData: [],
       allotEquipStatus: false,
       selectRowUser: '',
       addUserStatus: false
@@ -129,7 +128,9 @@ export default {
       })
     },
     getUserList() {
+      this.tableLoading = true
       getUserListApi().then(res => {
+        this.tableLoading = false
         this.userData = res
       })
     }

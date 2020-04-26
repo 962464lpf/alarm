@@ -82,7 +82,12 @@
     </transition>
     <SearchForm @getSearchForm="getSearchForm"></SearchForm>
     <div class="current-table">
-      <el-table :data="currentAlarmList" style="width: 100%" :row-class-name="addClass">
+      <el-table
+        v-loading="tableLoading"
+        :data="currentAlarmList"
+        style="width: 100%"
+        :row-class-name="addClass"
+      >
         <el-table-column label="恶意IP" width="180">
           <template slot-scope="scope">
             <div>
@@ -205,6 +210,7 @@ export default {
       lowCharacterStatus: true,
       whitePushAlarm: true,
       bellSrc: '',
+      tableLoading: false,
       currentAlarmList: [],
       rowAlarmData: {},
       currentPage: 1,
@@ -424,6 +430,7 @@ export default {
       this.getCurrentAlarmList()
     },
     getCurrentAlarmList() {
+      this.tableLoading = true
       let fd = new FormData()
       for (let k in this.searchForm) {
         if (k === 'time') {
@@ -436,6 +443,7 @@ export default {
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
       getCurrentAlarmListApi(fd).then(res => {
+        this.tableLoading = false
         this.currentAlarmList = res.data
         this.total = res.total
       })
