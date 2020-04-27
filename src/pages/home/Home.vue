@@ -368,12 +368,15 @@ export default {
         this[data].rows.push(obj)
       }
     },
-
+    isDataEmpth(res, funName) {
+      let keyLens = Object.keys(res).length
+      this.top5ChartsList.forEach(item => {
+        if (item.fun === funName && keyLens) item.dataEmpty = false
+      })
+    },
     getMaliciousSourceIPTop(cycle = 'day') {
       getMaliciousSourceIPTop5Api().then(res => {
-        this.top5ChartsList.forEach(item => {
-          if (item.fun === 'getMaliciousSourceIPTop') item.dataEmpty = false
-        })
+        this.isDataEmpth(res[cycle], 'getMaliciousSourceIPTop')
         this.formatChartData('maliciousSourceIPTop5', res[cycle], [
           'IP',
           '攻击次数'
@@ -382,33 +385,25 @@ export default {
     },
     getAttackedIPTop5(cycle = 'day') {
       getAttackedIPTop5Api().then(res => {
-        this.top5ChartsList.forEach(item => {
-          if (item.fun === 'getAttackedIPTop5') item.dataEmpty = false
-        })
+        this.isDataEmpth(res[cycle], 'getAttackedIPTop5')
         this.formatChartData('attackedIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
     getDeviceIPTop5(cycle = 'day') {
       getDeviceIPTop5Api().then(res => {
-        this.top5ChartsList.forEach(item => {
-          if (item.fun === 'getDeviceIPTop5') item.dataEmpty = false
-        })
+        this.isDataEmpth(res[cycle], 'getDeviceIPTop5')
         this.formatChartData('deviceIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
     getPhysicalIPTop5(cycle = 'day') {
       getPhysicalIPTop5Api().then(res => {
-        this.top5ChartsList.forEach(item => {
-          if (item.fun === 'getPhysicalIPTop5') item.dataEmpty = false
-        })
+        this.isDataEmpth(res[cycle], 'getPhysicalIPTop5')
         this.formatChartData('physicalIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
     getAttackedTypeTop5(cycle = 'day') {
       getAttackedTypeTop5Api().then(res => {
-        this.top5ChartsList.forEach(item => {
-          if (item.fun === 'getAttackedTypeTop5') item.dataEmpty = false
-        })
+        this.isDataEmpth(res[cycle], 'getAttackedTypeTop5')
         this.formatChartData('attackedTypeTop5', res[cycle], [
           '类型',
           '攻击次数'
@@ -417,9 +412,7 @@ export default {
     },
     getRedIPTop5(cycle = 'day') {
       getRedIPTop5Api().then(res => {
-        this.top5ChartsList.forEach(item => {
-          if (item.fun === 'getRedIPTop5') item.dataEmpty = false
-        })
+        this.isDataEmpth(res[cycle], 'getRedIPTop5')
         this.formatChartData('redIpTop5', res[cycle], ['IP', '攻击次数'])
       })
     }

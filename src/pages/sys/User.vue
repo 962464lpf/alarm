@@ -75,6 +75,7 @@ export default {
           type,
           message: res.info
         })
+        this.getUserList()
       })
     },
     getLevel(scope) {
@@ -103,7 +104,6 @@ export default {
           })
           this.getUserList()
         })
-        this.getUserList()
       })
     },
     allotEquip(row) {
@@ -126,6 +126,7 @@ export default {
           type,
           message: res.info
         })
+        this.getUserList()
       })
     },
     getUserList() {
