@@ -330,7 +330,7 @@ export default {
       }
     },
     blocked(row) {
-      if (this.userInfo.level === 0) {
+      if (this.userInfo.level === 0 || this.userInfo.level === 1) {
         this.$confirm('您确定要将此IP进行封禁吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

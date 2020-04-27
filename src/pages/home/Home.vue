@@ -3,7 +3,7 @@
     <p class="title">告警信息</p>
     <el-row :gutter="20">
       <el-col :span="6" class="data-card-col">
-        <div class="data-card first">
+        <div class="data-card first curp" @click="jumpTo()">
           <p>攻击总数</p>
           <p>{{attackNumDesc}}</p>
           <p>{{attackNum}}</p>
@@ -246,6 +246,9 @@ export default {
     ])
   },
   methods: {
+    jumpTo() {
+      this.$router.push('/alarm/summary')
+    },
     getTopSetting(form) {
       this[this.selectSettingTop](form.cycle)
     },
