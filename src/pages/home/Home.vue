@@ -85,6 +85,7 @@
             :colors="item.colors"
             height="300px"
             :legend-visible="false"
+            :data-empty="item.dataEmpty"
           ></ve-histogram>
         </div>
       </el-col>
@@ -143,7 +144,8 @@ export default {
           // data: () => this.chartData,
           colors: ['#c23531'],
           id: 'maliciousSource',
-          dataKey: 'maliciousSourceIPTop5'
+          dataKey: 'maliciousSourceIPTop5',
+          dataEmpty: true
         },
         {
           title: '目的IP Top5',
@@ -151,7 +153,8 @@ export default {
           data: () => this.attackedIPTop5,
           colors: ['#61a0a8'],
           id: 'attacked',
-          dataKey: 'attackedIPTop5'
+          dataKey: 'attackedIPTop5',
+          dataEmpty: true
         },
         {
           title: '设备来源 Top5',
@@ -160,7 +163,8 @@ export default {
           // data: () => this.chartData,
           colors: ['#d48265'],
           id: 'device',
-          dataKey: 'deviceIPTop5'
+          dataKey: 'deviceIPTop5',
+          dataEmpty: true
         },
         {
           title: '物理地址 Top5',
@@ -169,7 +173,8 @@ export default {
           // data: () => this.chartData,
           colors: ['#bda29a'],
           id: 'physical',
-          dataKey: 'physicalIPTop5'
+          dataKey: 'physicalIPTop5',
+          dataEmpty: true
         },
         {
           title: '攻击类型 Top5',
@@ -178,7 +183,8 @@ export default {
           // data: () => this.chartData,
           colors: ['#bda29a'],
           id: 'attackedType',
-          dataKey: 'attackedTypeTop5'
+          dataKey: 'attackedTypeTop5',
+          dataEmpty: true
         },
         {
           title: '红队IP Top5',
@@ -187,7 +193,8 @@ export default {
           // data: () => this.chartData,
           colors: ['#d48265'],
           id: 'red',
-          dataKey: 'redIpTop5'
+          dataKey: 'redIpTop5',
+          dataEmpty: true
         }
       ],
       selectSettingTop: '',
@@ -364,6 +371,9 @@ export default {
 
     getMaliciousSourceIPTop(cycle = 'day') {
       getMaliciousSourceIPTop5Api().then(res => {
+        this.top5ChartsList.forEach(item => {
+          if (item.fun === 'getMaliciousSourceIPTop') item.dataEmpty = false
+        })
         this.formatChartData('maliciousSourceIPTop5', res[cycle], [
           'IP',
           '攻击次数'
@@ -372,21 +382,33 @@ export default {
     },
     getAttackedIPTop5(cycle = 'day') {
       getAttackedIPTop5Api().then(res => {
+        this.top5ChartsList.forEach(item => {
+          if (item.fun === 'getAttackedIPTop5') item.dataEmpty = false
+        })
         this.formatChartData('attackedIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
     getDeviceIPTop5(cycle = 'day') {
       getDeviceIPTop5Api().then(res => {
+        this.top5ChartsList.forEach(item => {
+          if (item.fun === 'getDeviceIPTop5') item.dataEmpty = false
+        })
         this.formatChartData('deviceIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
     getPhysicalIPTop5(cycle = 'day') {
       getPhysicalIPTop5Api().then(res => {
+        this.top5ChartsList.forEach(item => {
+          if (item.fun === 'getPhysicalIPTop5') item.dataEmpty = false
+        })
         this.formatChartData('physicalIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
     getAttackedTypeTop5(cycle = 'day') {
       getAttackedTypeTop5Api().then(res => {
+        this.top5ChartsList.forEach(item => {
+          if (item.fun === 'getAttackedTypeTop5') item.dataEmpty = false
+        })
         this.formatChartData('attackedTypeTop5', res[cycle], [
           '类型',
           '攻击次数'
@@ -395,6 +417,9 @@ export default {
     },
     getRedIPTop5(cycle = 'day') {
       getRedIPTop5Api().then(res => {
+        this.top5ChartsList.forEach(item => {
+          if (item.fun === 'getRedIPTop5') item.dataEmpty = false
+        })
         this.formatChartData('redIpTop5', res[cycle], ['IP', '攻击次数'])
       })
     }
@@ -414,7 +439,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss">
 .new-alarm {
   .title {
     font-size: 16px;
@@ -471,6 +496,19 @@ export default {
       border-bottom: 1px solid #dadada;
       padding: 8px;
       line-height: 34px;
+    }
+    .v-charts-data-empty {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: hsla(0, 0%, 100%, 0.9);
+      color: #888;
+      font-size: 14px;
     }
   }
 }

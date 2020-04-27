@@ -38,7 +38,7 @@
           {{userInfo.name}}({{getRoleName()}})
         </span>
         <span>
-          <el-dropdown>
+          <el-dropdown trigger="click">
             <span class="el-dropdown-link">
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
