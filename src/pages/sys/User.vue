@@ -101,6 +101,7 @@ export default {
             type,
             message: res.info
           })
+          this.getUserList()
         })
         this.getUserList()
       })
