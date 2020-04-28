@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <el-row class="header-row">
-      <el-col :span="3" class="title">谛听 Discover</el-col>
+      <el-col :span="3" class="title">
+        <img src="../../assets/images/logo.png" class="curp" @click="jumpTo" />
+      </el-col>
 
       <el-col
         :span="16"
@@ -115,6 +117,9 @@ export default {
     }
   },
   methods: {
+    jumpTo() {
+      this.$router.push('/index')
+    },
     getRoleName() {
       let level = this.userInfo.level
       switch (level) {
@@ -233,8 +238,10 @@ export default {
     height: 50px;
     line-height: 50px;
     .title {
-      color: white;
       text-align: center;
+      img {
+        height: 50px;
+      }
     }
     .icon-box,
     .user-setting {

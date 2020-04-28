@@ -67,6 +67,11 @@ export default {
   computed: {
     ...mapState(['userInfo', 'currentPath'])
   },
+  watch: {
+    currentPath(val) {
+      this.defaultActive = val
+    }
+  },
   methods: {
     isPermission(page) {
       // 超级管理员为0  普通用户为1
