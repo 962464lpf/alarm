@@ -2,17 +2,6 @@
   <div class="mt10">
     <el-table v-loading="tableLoading" :data="blackIPData" style="width: 100%" border>
       <el-table-column prop="ip_addr" label="IP"></el-table-column>
-      <el-table-column label="物理地址">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :content="scope.row.wuli_addr" placement="bottom">
-            <span class="curp omit">
-              {{
-              scope.row.wuli_addr
-              }}
-            </span>
-          </el-tooltip>
-        </template>
-      </el-table-column>
       <el-table-column prop="created_time" label="创建时间"></el-table-column>
       <el-table-column prop="updated_time" label="更新时间"></el-table-column>
       <el-table-column label="操作" width="50">

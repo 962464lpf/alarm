@@ -382,6 +382,7 @@ export default {
       this.bellSrc = 'general'
       if (val.sip_black_type === 0) this.bellSrc = 'red'
       if (val.sip_type === 'white') this.bellSrc = ''
+      console.log(this.bellSrc)
       // level : 0 1 2 高 中 低
       let level = parseInt(val.level)
       let attack_type = val.attack_type ? val.attack_type : '未知'
@@ -446,6 +447,7 @@ export default {
         this.tableLoading = false
         this.currentAlarmList = res.data
         this.total = res.total
+        this.whitePushAlarm = res.white_show === 1 ? true : false
       })
     }
   },
