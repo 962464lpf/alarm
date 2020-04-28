@@ -1,15 +1,11 @@
 <template>
   <div class="current-alarm" @click="changeNewAlarm">
     <audio
-      v-if="bellStatus && bellSrc === 'general'"
+      v-if="bellSrc === 'general'"
       src="../../assets/audio/general.wav"
       autoplay
     >您的浏览器不支持 audio 标签。</audio>
-    <audio
-      v-if="bellStatus && bellSrc === 'red'"
-      src="../../assets/audio/red.wav"
-      autoplay
-    >您的浏览器不支持 audio 标签。</audio>
+    <audio v-if="bellSrc === 'red'" src="../../assets/audio/red.wav" autoplay>您的浏览器不支持 audio 标签。</audio>
     <span class="bell">
       <span class="fr">
         <el-button @click="alarmSettingShow = !alarmSettingShow">告警配置</el-button>
@@ -210,6 +206,8 @@ export default {
       lowCharacterStatus: true,
       whitePushAlarm: true,
       bellSrc: '',
+      bellSrcArr: [],
+      intervalId: null,
       tableLoading: false,
       currentAlarmList: [],
       rowAlarmData: {},
@@ -255,7 +253,6 @@ export default {
             if (res.state === 1) {
               this.getCurrentAlarmList()
               this.$store.commit('clearNewAlarmData')
-              this.bellSrc = ''
             }
           })
           return
@@ -379,10 +376,9 @@ export default {
     hasAlarm(val) {
       // sip_black_type: null 黑名单 0:红，1:蓝，2:重点监控
       // sip_type: "black" 黑。白
-      this.bellSrc = 'general'
-      if (val.sip_black_type === 0) this.bellSrc = 'red'
-      if (val.sip_type === 'white') this.bellSrc = ''
-      console.log(this.bellSrc)
+      let bellSrc = 'general'
+      if (val.sip_black_type === 0) bellSrc = 'red'
+      if (val.sip_type === 'white') bellSrc = ''
       // level : 0 1 2 高 中 低
       let level = parseInt(val.level)
       let attack_type = val.attack_type ? val.attack_type : '未知'
@@ -408,7 +404,28 @@ export default {
         this.showNotify(levelTile, attack_type, customClass)
       if (this.characterStatus && level === 2 && this.lowCharacterStatus)
         this.showNotify(levelTile, attack_type, customClass)
+      if (this.bellStatus && level === 0 && this.highBellStatus)
+        this.pushBellSrc(bellSrc)
+      if (this.bellStatus && level === 1 && this.middleBellStatus)
+        this.pushBellSrc(bellSrc)
+      if (this.bellStatus && level === 2 && this.lowBellStatus)
+        this.pushBellSrc(bellSrc)
     },
+    pushBellSrc(bellSrc) {
+      this.bellSrcArr.push(bellSrc)
+      this.ringBell()
+    },
+    ringBell() {
+      this.bellSrc = this.bellSrcArr[0]
+      this.bellSrcArr.forEach(item => {
+        this.bellSrc = ''
+        setTimeout(() => {
+          this.bellSrc = item
+          this.bellSrcArr.shift()
+        }, 1000)
+      })
+    },
+
     showNotify(levelTile, attack_type, customClass) {
       this.$notify({
         title: `发现${levelTile}攻击`,
