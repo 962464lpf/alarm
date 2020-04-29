@@ -83,6 +83,7 @@
         :data="currentAlarmList"
         style="width: 100%"
         :row-class-name="addClass"
+        @row-click="rowClick"
       >
         <el-table-column label="恶意IP" width="180">
           <template slot-scope="scope">
@@ -232,6 +233,9 @@ export default {
     }
   },
   methods: {
+    rowClick(row) {
+      console.log(row)
+    },
     handleWhitePush(val) {
       let fd = new FormData()
       fd.append('white_show', Number(val))

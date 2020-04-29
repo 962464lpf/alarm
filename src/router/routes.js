@@ -20,7 +20,7 @@ const routes = [
     component: () => import('../pages/home/Home.vue'),
     meta: {
       title: '趋势统计',
-      icon: 'el-icon-s-home',
+      icon: 'qushitongji',
       level: 1
     }
   },
@@ -40,7 +40,7 @@ const routes = [
     component: () => import('../pages/alarm/AlarmSummary.vue'),
     meta: {
       title: '告警汇总',
-      icon: 'el-icon-document',
+      icon: 'huizong',
       level: 1
     }
   },
@@ -50,7 +50,7 @@ const routes = [
     component: () => import('../pages/alarm/CurrentAlarm.vue'),
     meta: {
       title: '实时告警',
-      icon: 'el-icon-document',
+      icon: 'shishi',
       level: 1
     }
   },
@@ -61,7 +61,7 @@ const routes = [
     component: () => import('../pages/equip/SafeEquip.vue'),
     meta: {
       title: '设备录入',
-      icon: 'el-icon-document',
+      icon: 'luru',
       level: 1
     }
   },
@@ -71,7 +71,7 @@ const routes = [
     component: () => import('../pages/white/WhiteList.vue'),
     meta: {
       title: '白名单',
-      icon: 'el-icon-document',
+      icon: 'baimingdan',
       level: 1
     }
   },
@@ -90,7 +90,7 @@ const routes = [
     component: () => import('../pages/redblue/RedBlue.vue'),
     meta: {
       title: '红蓝对抗',
-      icon: 'el-icon-document',
+      icon: 'duikang',
       level: 1
     }
   },
@@ -100,7 +100,7 @@ const routes = [
     component: () => import('../pages/blockedIP/BlockedIP.vue'),
     meta: {
       title: '封禁列表',
-      icon: 'el-icon-document',
+      icon: 'fengjin',
       level: 1
     }
   },

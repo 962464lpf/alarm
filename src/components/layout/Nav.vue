@@ -116,6 +116,42 @@ export default {
     .el-menu-vertical-demo:not(.el-menu--collapse) {
       width: 100%;
     }
+    .el-menu-item {
+      i {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        margin-right: 3px;
+      }
+      .baimingdan {
+        background: url('../../assets/images/baimingdan.png') no-repeat;
+        background-size: contain;
+      }
+      .duikang {
+        background: url('../../assets/images/duikang.png') no-repeat;
+        background-size: contain;
+      }
+      .fengjin {
+        background: url('../../assets/images/fengjin.png') no-repeat;
+        background-size: contain;
+      }
+      .huizong {
+        background: url('../../assets/images/huizong.png') no-repeat;
+        background-size: contain;
+      }
+      .luru {
+        background: url('../../assets/images/luru.png') no-repeat;
+        background-size: contain;
+      }
+      .qushitongji {
+        background: url('../../assets/images/qushitongji.png') no-repeat;
+        background-size: contain;
+      }
+      .shishi {
+        background: url('../../assets/images/shishi.png') no-repeat;
+        background-size: contain;
+      }
+    }
     .el-menu-item:hover {
       background: #2b3c53 !important;
       span {

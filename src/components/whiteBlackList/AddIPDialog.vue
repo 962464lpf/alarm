@@ -8,6 +8,7 @@
       :before-close="handleClose"
     >
       <el-form ref="form" :model="form" label-width="130px">
+        <p class="ip-rules">IP范围请用-进行分割</p>
         <el-form-item label="请输入IP或IP范围">
           <el-input v-model="form.ip"></el-input>
         </el-form-item>
@@ -61,6 +62,10 @@ export default {
 .add-red-blue {
   .el-dialog {
     // height: 40% !important;
+    .ip-rules {
+      text-indent: 130px;
+      line-height: 24px;
+    }
   }
 }
 </style>

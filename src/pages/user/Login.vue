@@ -4,6 +4,7 @@
     <!-- <div class="head-cover"></div> -->
     <!-- <img src="../../assets/images/Background.png" alt /> -->
     <div class="form">
+      <div class="title">用 户 登 录</div>
       <el-form :model="userForm" status-icon :rules="rules" ref="userForm">
         <el-form-item label prop="name">
           <el-input v-model="userForm.name" placeholder="请输入用户名">
@@ -172,10 +173,16 @@ export default {
     top: 20%;
     left: calc(50% - 250px);
     border-radius: 20px;
-    padding: 55px 40px;
+    padding: 20px 40px 55px 40px;
     box-shadow: -3px -3px 4px #e0e2e5, 3px 3px 4px #e0e2e5;
     background: rgba(255, 255, 255, 0.4);
     box-sizing: border-box;
+    .title {
+      text-align: center;
+      line-height: 50px;
+      font-size: 24px;
+      color: white;
+    }
     .el-form {
       .el-form-item {
         display: flex;
