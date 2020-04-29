@@ -2,28 +2,43 @@
   <div class="network-manage">
     <el-form :model="networkForm" :rules="rules" ref="networkForm" label-width="100px">
       <el-row class="item">
-        <el-col :span="4" class="name">IP地址：</el-col>
+        <el-col :span="4" class="name">
+          <span></span>
+          IP地址：
+        </el-col>
         <el-col :span="20" class="input">
-          <el-input v-model="networkForm.IPADDR"></el-input>
+          <el-form-item prop="IPADDR">
+            <el-input v-model="networkForm.IPADDR"></el-input>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row class="item">
-        <el-col :span="4" class="name">子网掩码：</el-col>
+        <el-col :span="4" class="name">
+          <span></span>子网掩码：
+        </el-col>
         <el-col :span="20" class="input">
-          <el-input v-model="networkForm.NETMASK"></el-input>
+          <el-form-item prop="NETMASK">
+            <el-input v-model="networkForm.NETMASK"></el-input>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row class="item">
-        <el-col :span="4" class="name">默认网关：</el-col>
+        <el-col :span="4" class="name">
+          <span></span>默认网关：
+        </el-col>
         <el-col :span="20" class="input">
-          <el-input v-model="networkForm.GATEWAY"></el-input>
+          <el-form-item prop="GATEWAY">
+            <el-input v-model="networkForm.GATEWAY"></el-input>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-divider></el-divider>
       <el-row class="item">
         <el-col :span="4" class="name">DNS服务器：</el-col>
         <el-col :span="20" class="input">
-          <el-input v-model="networkForm.DNS1"></el-input>
+          <el-form-item>
+            <el-input v-model="networkForm.DNS1"></el-input>
+          </el-form-item>
         </el-col>
       </el-row>
     </el-form>
@@ -51,7 +66,15 @@ export default {
       },
       submitBtnLoading: false,
       resetBtnLoading: false,
-      rules: {}
+      rules: {
+        IPADDR: [{ required: true, message: '请输入IP地址', trigger: 'blur' }],
+        NETMASK: [
+          { required: true, message: '请输入子网掩码', trigger: 'blur' }
+        ],
+        GATEWAY: [
+          { required: true, message: '请输入默认网关', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -137,17 +160,29 @@ export default {
       font-weight: 400;
       font-size: 14px;
       border-right: 1px solid #e6e6e6;
+      span:before {
+        content: '*';
+        color: #f56c6c;
+        margin-right: 4px;
+      }
     }
     .input {
-      padding: 5px;
+      // padding: 5px;
       padding-right: 0;
       box-sizing: border-box;
-      .el-input__inner {
-        border: none;
-        height: 34px;
-        line-height: 34px;
-        margin-top: 3px;
+      .el-form-item {
+        margin-bottom: 0 !important;
+        .el-form-item__content {
+          margin-bottom: 0 !important;
+          margin-left: 10px !important;
+          .el-input__inner {
+            border: none;
+            height: 34px;
+            line-height: 34px;
+          }
+        }
       }
+
       .prompt {
         span {
           line-height: 34px;
