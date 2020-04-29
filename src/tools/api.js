@@ -233,8 +233,8 @@ function postNetWorkManageApi(params) {
   return POST(url, params)
 }
 
-function restartNetWork() {
-  let url = BASE_URL + '/jump/networkSet/restart_network'
+function resetNetWorkApi() {
+  let url = BASE_URL + '/jump/networkSet/reset_network'
   return POST(url)
 }
 
@@ -284,5 +284,5 @@ export {
   factoryDataResetApi,
   getNetWorkManageApi,
   postNetWorkManageApi,
-  restartNetWork
+  resetNetWorkApi
 }

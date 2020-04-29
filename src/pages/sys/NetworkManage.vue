@@ -28,8 +28,8 @@
       </el-row>
     </el-form>
     <div class="mt10" style="text-align: center;">
-      <el-button type="primary" :loading="submitBtnLoading" @click="submitForm('networkForm')">立即更改</el-button>
-      <el-button type="primary" :loading="restartBtnLoading" @click="restartNetWork">重启</el-button>
+      <el-button type="primary" :loading="submitBtnLoading" @click="submitForm('networkForm')">更改网卡</el-button>
+      <el-button type="primary" :loading="resetBtnLoading" @click="resetNetWork">重置网卡</el-button>
     </div>
   </div>
 </template>
@@ -38,19 +38,19 @@
 import {
   getNetWorkManageApi,
   postNetWorkManageApi,
-  restartNetWork
+  resetNetWorkApi
 } from '../../tools/api'
 export default {
   data() {
     return {
       networkForm: {
-        IPADDR: '192.168.3.3',
-        NETMASK: '255.255.255.0',
-        GATEWAY: '192.168.100.254',
-        DNS1: '61.134.1.4'
+        IPADDR: '0.0.0.0',
+        NETMASK: '0.0.0.0',
+        GATEWAY: '0.0.0.0',
+        DNS1: '0.0.0.0'
       },
       submitBtnLoading: false,
-      restartBtnLoading: false,
+      resetBtnLoading: false,
       rules: {}
     }
   },
@@ -95,15 +95,15 @@ export default {
         })
       })
     },
-    restartNetWork() {
-      this.$confirm('网络配置已经修改成功，是否立即重启网卡服务?', '提示', {
+    resetNetWork() {
+      this.$confirm('您确定要重置网卡吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.restartBtnLoading = true
-        restartNetWork().then(res => {
-          this.restartBtnLoading = false
+        this.resetBtnLoading = true
+        resetNetWorkApi().then(res => {
+          this.resetBtnLoading = false
           let type = 'success'
           if (res.state !== this.successFlag) {
             type = 'warning'
@@ -112,6 +112,7 @@ export default {
             type,
             message: res.info
           })
+          this.getNetWorkManage()
         })
       })
     }
