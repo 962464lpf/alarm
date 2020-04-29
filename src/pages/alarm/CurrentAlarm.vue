@@ -529,7 +529,7 @@ export default {
           border-width: 15px;
           border-style: solid dashed dashed dashed;
           border-color: transparent transparent transparent #409eff;
-          margin-right: 20px;
+          margin-right: 0px;
         }
       }
       .content:nth-child(2) {
@@ -539,7 +539,7 @@ export default {
   }
   .bell {
     position: absolute;
-    top: 0px;
+    top: 2px;
     right: 32px;
     z-index: 10;
   }
