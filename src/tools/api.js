@@ -22,11 +22,6 @@ function startListernApi() {
   return POST(url)
 }
 
-function verifyAuthApi() {
-  let url = BASE_URL + '/jump/warning/verify_auth'
-  return POST(url)
-}
-
 function getSumAlarmListApi(params) {
   let url = BASE_URL + '/jump/warning/summary'
   return POST(url, params)
@@ -39,6 +34,11 @@ function getCurrentAlarmListApi(params) {
 function setCurrentAlarmNotNewApi() {
   let url = BASE_URL + '/jump/warning/read_new'
   return POST(url)
+}
+
+function setSingleAlarmNotNewApi(params) {
+  let url = BASE_URL + '/jump/warning/read_new_single'
+  return POST(url, params)
 }
 
 function getSafeEquipListApi(params) {
@@ -243,10 +243,10 @@ export {
   BASE_URL,
   downloadFileApi,
   startRecveApi,
-  verifyAuthApi,
   getSumAlarmListApi,
   getCurrentAlarmListApi,
   setCurrentAlarmNotNewApi,
+  setSingleAlarmNotNewApi,
   getSafeEquipListApi,
   editSafeEquipApi,
   addSafeEquipApi,

@@ -1,5 +1,5 @@
 <template>
-  <div class="current-alarm" @click="changeNewAlarm">
+  <div class="current-alarm">
     <audio
       v-if="bellSrc === 'general'"
       src="../../assets/audio/general.wav"
@@ -76,7 +76,9 @@
         </div>
       </div>
     </transition>
-    <SearchForm @getSearchForm="getSearchForm"></SearchForm>
+    <SearchForm @getSearchForm="getSearchForm">
+      <el-button type="primary" @click="changeNewAlarm">取消新告警标志</el-button>
+    </SearchForm>
     <div class="current-table">
       <el-table
         v-loading="tableLoading"
@@ -181,6 +183,7 @@ import {
   getCurrentAlarmListApi,
   setIpApi,
   setCurrentAlarmNotNewApi,
+  setSingleAlarmNotNewApi,
   whiteIfPushAlarmApi,
   aKeyBlockedApi
 } from '../../tools/api'
@@ -213,7 +216,7 @@ export default {
       currentAlarmList: [],
       rowAlarmData: {},
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 20,
       total: 0,
       blackTypeDialogStatus: false,
       blackType: 2,
@@ -234,7 +237,15 @@ export default {
   },
   methods: {
     rowClick(row) {
-      console.log(row)
+      if (row.is_new === 0) {
+        let fd = new FormData()
+        fd.append('id', row.id)
+        setSingleAlarmNotNewApi(fd).then(res => {
+          if (res.state === this.successFlag) {
+            row.is_new = 1
+          }
+        })
+      }
     },
     handleWhitePush(val) {
       let fd = new FormData()

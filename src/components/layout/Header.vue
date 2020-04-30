@@ -46,13 +46,13 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <span @click="resetUser">重置密码</span>
+                <p @click="resetUser">重置密码</p>
               </el-dropdown-item>
               <el-dropdown-item>
-                <span @click="logout">退出</span>
+                <p @click="logout">退出</p>
               </el-dropdown-item>
               <el-dropdown-item v-if="userInfo.level === 0">
-                <span @click="factoryDataReset">恢复出厂设置</span>
+                <p @click="factoryDataReset">恢复出厂设置</p>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -223,7 +223,7 @@ export default {
     }
   },
   mounted() {
-    this.getAttackNum()
+    // this.getAttackNum()
   }
 }
 </script>
