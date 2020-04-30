@@ -329,6 +329,7 @@ export default {
         }).then(() => {
           let fd = new FormData()
           fd.append('ip', row.sip)
+          fd.append('id', this.userInfo.id)
           aKeyBlockedApi(fd).then(res => {
             let type = 'success'
             if (res.state !== this.successFlag) type = 'warning'

@@ -15,6 +15,7 @@
     <el-table v-loading="tableLoading" :data="blockedIP" border style="width: 100%">
       <el-table-column prop="ip" label="IP地址"></el-table-column>
       <el-table-column prop="created_time" label="封禁时间"></el-table-column>
+      <el-table-column prop="uname" label="封禁人"></el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="unBlockedIP(scope.row)">解封</el-button>
@@ -78,6 +79,7 @@ export default {
     getAddBlockedIP(form) {
       let fd = new FormData()
       fd.append('ip', form.ip)
+      fd.append('id', this.userInfo.id)
       aKeyBlockedApi(fd).then(res => {
         let type = 'success'
         if (res.state !== this.successFlag) {
