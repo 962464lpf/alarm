@@ -41,20 +41,6 @@ export default {
     startListernApi()
     startRecveApi()
     getUserInfo().then(res => {
-      res = {
-        device_auth: null,
-        email: '258369258@qq.com',
-        id: 1,
-        level: 0,
-        login_ip: '127.0.0.1',
-        login_num: 724,
-        login_time: 1588058540,
-        name: 'admin',
-        password: 'd499171761a94a75a53c135874f21ec7',
-        phone: '15188888888',
-        staff: 0,
-        state: 1
-      }
       this.$store.commit('changeUserInfo', res)
       this.$store.dispatch('connectEventSource', res)
     })
