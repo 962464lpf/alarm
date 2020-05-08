@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { loginApi, registerApi } from '../../tools/api'
+import { loginApi, registerApi, verifyLoginApi } from '../../tools/api'
 import { mapState } from 'vuex'
 export default {
   data() {
@@ -134,6 +134,11 @@ export default {
         this.submitForm('userForm')
       }
     }
+  },
+  beforeMount() {
+    verifyLoginApi().then(res => {
+      if (res.state !== -1) this.$router.push('/index')
+    })
   },
   mounted() {
     window.addEventListener('keydown', this.keyDown)

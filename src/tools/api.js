@@ -2,7 +2,7 @@ import { POST, GET, downloadFile } from './request'
 
 let BASE_URL = ''
 if (process.env.NODE_ENV == "development") {
-  BASE_URL = 'http://192.168.100.8:2020'
+  BASE_URL = 'http://192.168.100.2:2020'
 } else {
   BASE_URL = window.location.origin
 }
@@ -163,6 +163,12 @@ function loginApi(params) {
   return POST(url, params)
 }
 
+function verifyLoginApi() {
+  let url = BASE_URL + '/jump/warning/verify_login'
+  return POST(url)
+}
+
+
 function registerApi(params) {
   let url = BASE_URL + '/jump/user/add'
   return POST(url, params)
@@ -270,6 +276,7 @@ export {
   startSendMailApi,
   getAlarmSourceApi,
   loginApi,
+  verifyLoginApi,
   registerApi,
   deleteUserApi,
   logoutApi,
