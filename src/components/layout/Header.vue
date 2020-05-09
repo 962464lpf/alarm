@@ -2,7 +2,9 @@
   <div class="header">
     <el-row class="header-row">
       <el-col :span="3" class="title">
-        <img src="../../assets/images/logo.png" class="curp" @click="jumpTo" />
+        <!-- <img src="../../assets/images/logo.png" class="curp" @click="jumpTo" /> -->
+        <!-- 护网工具箱 -->
+        {{name}}
       </el-col>
 
       <el-col
@@ -91,6 +93,7 @@ export default {
   },
   data() {
     return {
+      name: this.$NAME,
       radio: 'day',
       dialogVisible: false,
       resetPasswordStatus: false
@@ -239,6 +242,7 @@ export default {
     line-height: 50px;
     .title {
       text-align: center;
+      color: white;
       img {
         height: 50px;
       }

@@ -8,43 +8,22 @@ import './assets/style/common.scss'
 import VCharts from 'v-charts'
 import myMixin from './myMixin'
 // import { Message } from 'element-ui'
-
 Vue.use(VCharts)
 
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, { size: 'mini' })
 
-// router.beforeEach((to, from, next) => {
-//   console.log(from)
-//   if (to.fullPath !== '/') {
-//     setTimeout(() => {
-//       // setTimeout(() => {
-//       let cookie = document.cookie
-//       console.log(cookie)
-//       if (cookie) {
-//         next()
-//       } else {
-//         if (from.fullPath !== '/') {
-//           Message({
-//             type: 'warning',
-//             message: '登录状态已失效，请重新登录。'
-//           })
-//         }
-//         next('/')
-//       }
-//     }, 0)
-
-//   } else {
-//     next()
-//   }
-
-// })
-
 Vue.mixin(myMixin)
+// eslint-disable-next-line no-undef
+Vue.prototype.$NAME = $NAME
 
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  mounted() {
+    // eslint-disable-next-line no-undef
+    document.title = $NAME
+  }
 }).$mount('#app')
