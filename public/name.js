@@ -1,2 +1,2 @@
 // eslint-disable-next-line no-unused-vars
-let $NAME = '护网工具'
+let $NAME = '护网工具箱'
