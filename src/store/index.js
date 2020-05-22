@@ -18,7 +18,9 @@ export default new Vuex.Store({
     attackNumLowDesc: '',
     currentPath: '/',
     cycle: 'day',
-    userInfo: JSON.parse(sessionStorage.getItem('userInfo')) ? JSON.parse(sessionStorage.getItem('userInfo')) : {}
+    userInfo: JSON.parse(sessionStorage.getItem('userInfo'))
+      ? JSON.parse(sessionStorage.getItem('userInfo'))
+      : {},
   },
   mutations: {
     saveSourceObj(state, data) {
@@ -39,7 +41,7 @@ export default new Vuex.Store({
         attackNumDesc: 'desc',
         attackNumHighDesc: 'desc_high',
         attackNumMiddleDesc: 'desc_middle',
-        attackNumLowDesc: 'desc_low'
+        attackNumLowDesc: 'desc_low',
       }
       let setData = (data) => {
         for (let key in enumData) {
@@ -66,24 +68,34 @@ export default new Vuex.Store({
     },
     closeEventSource(state) {
       state.eventSource.close()
-    }
+    },
   },
   actions: {
     connectEventSource({ commit }, data = {}) {
-      let source = new EventSource(BASE_URL + '/jump/api/stream2?device_ipstr=' + data.device_ipstr + '&uid=' + data.id + '&level=' + data.level)
+      let source = new EventSource(
+        BASE_URL +
+          '/jump/api/stream2?device_ipstr=' +
+          data.device_ipstr +
+          '&uid=' +
+          data.id +
+          '&level=' +
+          data.level
+      )
       // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
       source.onopen = () => {
         commit('saveSourceObj', source)
       }
       source.onmessage = (e) => {
         let data = JSON.parse(e.data)
+        let alert_data = JSON.parse(data.alert_data)
         console.log(JSON.parse(data.alert_data))
-        commit('changeNewAlarmData', JSON.parse(data.alert_data))
+        alert_data.device_ip = alert_data.device_ip + alert_data.device_type
+        commit('changeNewAlarmData', alert_data)
         commit('changeAttackNum', JSON.parse(data.latest_attack_summary))
       }
     },
     disconnectEventSource({ commit }) {
       commit('closeEventSource')
-    }
-  }
+    },
+  },
 })

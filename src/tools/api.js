@@ -1,8 +1,8 @@
 import { POST, GET, downloadFile } from './request'
 
 let BASE_URL = ''
-if (process.env.NODE_ENV == "development") {
-  BASE_URL = 'http://192.168.100.2:2020'
+if (process.env.NODE_ENV == 'development') {
+  BASE_URL = 'http://172.16.26.114:2020'
 } else {
   BASE_URL = window.location.origin
 }
@@ -10,7 +10,6 @@ if (process.env.NODE_ENV == "development") {
 function downloadFileApi(url) {
   return downloadFile(url)
 }
-
 
 function startRecveApi() {
   let url = BASE_URL + '/jump/warning/start_recv'
@@ -106,7 +105,6 @@ function deleteIpApi(params) {
   return POST(url, params)
 }
 
-
 function getAttackTrendApi(params) {
   let url = BASE_URL + '/jump/analyze/num'
   return POST(url, params)
@@ -167,7 +165,6 @@ function verifyLoginApi() {
   let url = BASE_URL + '/jump/warning/verify_login'
   return POST(url)
 }
-
 
 function registerApi(params) {
   let url = BASE_URL + '/jump/user/add'
@@ -244,7 +241,6 @@ function resetNetWorkApi() {
   return POST(url)
 }
 
-
 export {
   BASE_URL,
   downloadFileApi,
@@ -291,5 +287,5 @@ export {
   factoryDataResetApi,
   getNetWorkManageApi,
   postNetWorkManageApi,
-  resetNetWorkApi
+  resetNetWorkApi,
 }
