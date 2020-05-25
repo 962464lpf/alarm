@@ -30,6 +30,11 @@ function getCurrentAlarmListApi(params) {
   return POST(url, params)
 }
 
+function exportCurrentAlarmFlieApi(params) {
+  let url = BASE_URL + '/jump/warning/export_shishi'
+  return POST(url, params)
+}
+
 function setCurrentAlarmNotNewApi() {
   let url = BASE_URL + '/jump/warning/read_new'
   return POST(url)
@@ -247,6 +252,7 @@ export {
   startRecveApi,
   getSumAlarmListApi,
   getCurrentAlarmListApi,
+  exportCurrentAlarmFlieApi,
   setCurrentAlarmNotNewApi,
   setSingleAlarmNotNewApi,
   getSafeEquipListApi,

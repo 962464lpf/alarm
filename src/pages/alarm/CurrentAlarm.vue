@@ -90,8 +90,24 @@
     </transition>
     <SearchForm :levelStatus='true'
                 @getSearchForm="getSearchForm">
-      <el-button type="primary"
-                 @click="changeNewAlarm">取消新告警标志</el-button>
+      <span>
+        <el-dropdown split-button
+                     type="primary"
+                     @command="exportFile"
+                     class="ml10">
+          导出
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="csv">.csv</el-dropdown-item>
+            <el-dropdown-item command="excel">.excel</el-dropdown-item>
+            <el-dropdown-item command="json">.json</el-dropdown-item>
+            <el-dropdown-item command="txt">.txt</el-dropdown-item>
+            <el-dropdown-item command="html">.html</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-button type="primary"
+                   class="ml10"
+                   @click="changeNewAlarm">取消新告警标志</el-button>
+      </span>
     </SearchForm>
     <div class="current-table">
       <el-table v-loading="tableLoading"
@@ -217,7 +233,10 @@ import {
   setCurrentAlarmNotNewApi,
   setSingleAlarmNotNewApi,
   whiteIfPushAlarmApi,
-  aKeyBlockedApi
+  aKeyBlockedApi,
+  exportCurrentAlarmFlieApi,
+  BASE_URL,
+  downloadFileApi
 } from '../../tools/api'
 import { mapState } from 'vuex'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -252,7 +271,14 @@ export default {
       total: 0,
       blackTypeDialogStatus: false,
       blackType: 2,
-      searchForm: {}
+      searchForm: {
+        sip: '',
+        dip: '',
+        device_ip: '',
+        attack_type: '',
+        time: [],
+        level: ''
+      }
     }
   },
   computed: {
@@ -494,6 +520,57 @@ export default {
     getSearchForm (form) {
       this.searchForm = form
       this.getCurrentAlarmList()
+    },
+    exportFile (selectType) {
+      let fd = new FormData()
+      fd.append('type', selectType)
+      fd.append('attack_type', this.searchForm.attack_type)
+      fd.append('device_ip', this.searchForm.device_ip)
+      fd.append('dip', this.searchForm.dip)
+      fd.append('level', this.searchForm.level)
+      fd.append('sip', this.searchForm.sip)
+      // if (this.searchForm.time.length) {
+      fd.append('start_time', this.searchForm.time[0])
+      fd.append('end_time', this.searchForm.time[1])
+      // }
+
+      exportCurrentAlarmFlieApi(fd).then(res => {
+        if (res.state !== this.successFlag) {
+          this.$message({
+            type: 'warning',
+            message: '导出失败'
+          })
+        } else {
+          let filePath = BASE_URL + res.file_path
+          // downloadFileApi(filePath)
+          if (
+            selectType === 'txt' ||
+            selectType === 'json' ||
+            selectType === 'html'
+          ) {
+            // 'text/plain'
+            // application/json
+            // text/html
+            let type = ''
+            if (selectType === 'txt') type = 'text/plain'
+            if (selectType === 'json') type = 'application/json'
+            if (selectType === 'html') type = 'text/html'
+            this.downloadFile(filePath, type)
+          } else {
+            window.open(filePath)
+          }
+        }
+      })
+    },
+    downloadFile (filePath, type) {
+      downloadFileApi(filePath).then(res => {
+        let blob = new Blob([res], { type })
+        let url = window.URL.createObjectURL(blob)
+        let a = document.createElement('a')
+        a.setAttribute('download', 'text')
+        a.setAttribute('href', url)
+        a.click()
+      })
     },
     getCurrentAlarmList () {
       this.tableLoading = true
