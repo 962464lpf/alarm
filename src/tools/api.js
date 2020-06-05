@@ -2,7 +2,7 @@ import { POST, GET, downloadFile } from './request'
 
 let BASE_URL = ''
 if (process.env.NODE_ENV == 'development') {
-  BASE_URL = 'http://172.16.26.114:2020'
+  BASE_URL = 'http://192.168.10.241:2020'
 } else {
   BASE_URL = window.location.origin
 }

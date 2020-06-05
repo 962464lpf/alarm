@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/register',
     name: 'register',
-    component: () => import('../pages/user/Login.vue'),
+    component: () => import('../pages/user/Register.vue'),
   },
   {
     path: '/edituser',

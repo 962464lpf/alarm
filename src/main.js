@@ -17,6 +17,10 @@ Vue.use(ElementUI, { size: 'mini' })
 Vue.mixin(myMixin)
 // eslint-disable-next-line no-undef
 Vue.prototype.$NAME = $NAME
+// router.beforeEach((to, from, next) => {
+//   if (from.fullPath === '/' && to.fullPath === '/index') location.reload()
+//   next()
+// })
 
 new Vue({
   router,

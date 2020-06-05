@@ -5,39 +5,28 @@
     <!-- <img src="../../assets/images/Background.png" alt /> -->
     <div class="form">
       <div class="title">用 户 登 录</div>
-      <el-form :model="userForm"
-               status-icon
-               :rules="rules"
-               ref="userForm">
-        <el-form-item label
-                      prop="name">
-          <el-input v-model="userForm.name"
-                    placeholder="请输入用户名">
-            <i slot="prefix"
-               class="el-input__icon el-icon-user"></i>
+      <el-form :model="userForm" status-icon :rules="rules" ref="userForm">
+        <el-form-item label prop="name">
+          <el-input v-model="userForm.name" placeholder="请输入用户名">
+            <i slot="prefix" class="el-input__icon el-icon-user"></i>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="userForm.password"
-                    placeholder="请输入密码"
-                    type="password">
-            <i slot="prefix"
-               class="el-input__icon el-icon-lock"></i>
+          <el-input v-model="userForm.password" placeholder="请输入密码" type="password">
+            <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-form-item>
-        <el-form-item prop="checkpassword"
-                      v-if="currentPath === '/edituser'">
-          <el-input v-model="userForm.password2"
-                    placeholder="请再次输入密码"
-                    type="password">
-            <i slot="prefix"
-               class="el-input__icon el-icon-lock"></i>
+        <el-form-item prop="checkpassword" v-if="currentPath === '/edituser'">
+          <el-input v-model="userForm.password2" placeholder="请再次输入密码" type="password">
+            <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="btn curp"
-                     :loading="loginBtnLoading"
-                     @click="submitForm('userForm')">{{immediateTitle('btn')}}</el-button>
+          <el-button
+            class="btn curp"
+            :loading="loginBtnLoading"
+            @click="submitForm('userForm')"
+          >{{immediateTitle('btn')}}</el-button>
           <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
         </el-form-item>
       </el-form>
@@ -46,10 +35,10 @@
 </template>
 
 <script>
-import { loginApi, registerApi, verifyLoginApi } from '../../tools/api'
+import { loginApi, verifyLoginApi } from '../../tools/api'
 import { mapState } from 'vuex'
 export default {
-  data () {
+  data() {
     return {
       userForm: {
         name: '',
@@ -73,7 +62,7 @@ export default {
     ...mapState(['currentPath'])
   },
   watch: {
-    currentPath () {
+    currentPath() {
       this.userForm = {
         name: '',
         password: ''
@@ -81,10 +70,10 @@ export default {
     }
   },
   methods: {
-    submit () {
+    submit() {
       alert(1)
     },
-    immediateTitle (type) {
+    immediateTitle(type) {
       if (this.currentPath === '/') {
         if (type) {
           return '登录'
@@ -98,7 +87,7 @@ export default {
         return '立即登录'
       }
     },
-    submitForm (formName) {
+    submitForm(formName) {
       this.loginBtnLoading = true
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -106,23 +95,17 @@ export default {
           for (let key in this.userForm) {
             fd.append(key, this.userForm[key])
           }
-          let handleSubmit = null
-          if (this.currentPath === '/') handleSubmit = loginApi
-          if (this.currentPath === '/register') handleSubmit = registerApi
+          let handleSubmit = loginApi
           handleSubmit(fd).then(res => {
             this.loginBtnLoading = false
-            if (res.state === 1) {
-              if (this.currentPath === '/') {
-                this.$router.push('/index')
-                sessionStorage.setItem('userInfo', JSON.stringify(res.userinfo))
-                this.$store.commit('changeUserInfo', res.userinfo)
-              } else {
-                this.$router.push('/')
-              }
+            if (res.state == 1) {
+              this.$router.push('/index')
+              sessionStorage.setItem('userInfo', JSON.stringify(res.userinfo))
+              this.$store.commit('changeUserInfo', res.userinfo)
             } else {
               this.$message({
                 type: 'warning',
-                message: '操作失败'
+                message: res.info
               })
             }
           })
@@ -131,36 +114,26 @@ export default {
         }
       })
     },
-    jump () {
-      let path
-      if (this.currentPath === '/') {
-        path = 'register'
-      } else {
-        path = '/'
-      }
-      this.$router.push(path)
-    },
-    keyDown (e) {
+    keyDown(e) {
       if (e.keyCode == 13) {
         this.submitForm('userForm')
       }
     }
   },
-  beforeMount () {
+  beforeMount() {
     verifyLoginApi().then(res => {
       if (res.state !== -1) this.$router.push('/index')
     })
   },
-  mounted () {
+  mounted() {
     window.addEventListener('keydown', this.keyDown)
+    sessionStorage.setItem('refresh', false)
   },
-  destroyed () {
+  destroyed() {
     window.removeEventListener('keydown', this.keyDown, false)
-    location.reload()
   }
 }
 </script>
-
 <style  lang="scss">
 .user {
   overflow: hidden;
@@ -170,7 +143,7 @@ export default {
     height: 100%;
     width: 100%;
     // background-color: #3b8ad4;
-    background-image: url("../../assets/images/Background.png");
+    background-image: url('../../assets/images/Background.png');
     background-repeat: no-repeat;
     background-size: cover;
     position: absolute;
