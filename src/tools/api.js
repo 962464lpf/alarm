@@ -2,7 +2,7 @@ import { POST, GET, downloadFile } from './request'
 
 let BASE_URL = ''
 if (process.env.NODE_ENV == 'development') {
-  BASE_URL = 'http://192.168.10.241:2020'
+  BASE_URL = 'http://192.168.10.240:2020'
 } else {
   BASE_URL = window.location.origin
 }
@@ -65,6 +65,11 @@ function deleteSateEquipApi(params) {
   return POST(url, params)
 }
 
+function setWhiteIPApi(params) {
+  let url = BASE_URL + '/jump/warning/add_white '
+  return POST(url, params)
+}
+
 function setIpApi(type, params) {
   let url = ''
   if (type === 'white') {
@@ -77,6 +82,11 @@ function setIpApi(type, params) {
 
 function getIPListApi(params) {
   let url = BASE_URL + '/jump/warning/ip_lst'
+  return POST(url, params)
+}
+
+function getWhiteIpBytype(params) {
+  let url = BASE_URL + '/jump/warning/white_lst'
   return POST(url, params)
 }
 
@@ -105,10 +115,14 @@ function addIPToWhiteBlackApi(params) {
   return POST(url, params)
 }
 
-function deleteIpApi(params) {
+function deleteIpApi(params, type) {
+
   let url = BASE_URL + '/jump/ip/delete'
+  if (type === 'white') url = BASE_URL + '/jump/warning/delete_white'
   return POST(url, params)
 }
+
+
 
 function getAttackTrendApi(params) {
   let url = BASE_URL + '/jump/analyze/num'
@@ -246,6 +260,11 @@ function resetNetWorkApi() {
   return POST(url)
 }
 
+function getReportListApi(params) {
+  let url = BASE_URL + '/jump/networkSet/reset_network'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   downloadFileApi,
@@ -259,8 +278,10 @@ export {
   editSafeEquipApi,
   addSafeEquipApi,
   deleteSateEquipApi,
+  setWhiteIPApi,
   setIpApi,
   getIPListApi,
+  getWhiteIpBytype,
   exportSumAlarmFileApi,
   setMailApi,
   getMailApi,
@@ -294,4 +315,5 @@ export {
   getNetWorkManageApi,
   postNetWorkManageApi,
   resetNetWorkApi,
+  getReportListApi
 }

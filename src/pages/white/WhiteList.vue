@@ -1,7 +1,26 @@
 <template>
   <div class="white-ip">
-    <el-button type="primary" @click="changAddDigIpVis">添加白名单</el-button>
-    <WhiteBlackList type="white" :ifGetIP="ifGetIP" @removeIP="removeIP"></WhiteBlackList>
+    <!-- <el-button type="primary" @click="changAddDigIpVis">添加白名单</el-button> -->
+    <el-tabs type="border-card" v-model="tabsName">
+      <el-tab-pane label="恶意IP" name="sip">
+        <WhiteIpList type="sip" label="恶意IP" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+      </el-tab-pane>
+      <el-tab-pane label="目的IP" name="dip">
+        <WhiteIpList type="dip" label="目的IP" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+      </el-tab-pane>
+      <el-tab-pane label="告警来源" name="device_ip">
+        <WhiteIpList type="device_ip" label="告警来源" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+      </el-tab-pane>
+      <el-tab-pane label="描述" name="con">
+        <WhiteIpList type="con" label="描述" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+      </el-tab-pane>
+      <el-tab-pane label="攻击类型" name="attack_type">
+        <WhiteIpList type="attack_type" label="攻击类型" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+      </el-tab-pane>
+      <el-tab-pane label="攻击等级" name="level">
+        <WhiteIpList type="level" label="攻击等级" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+      </el-tab-pane>
+    </el-tabs>
     <div v-if="addIpDialogVis">
       <AddIPDialog v-model="addIpDialogVis" title="添加白队IP" @getIP="getIP"></AddIPDialog>
     </div>
@@ -9,66 +28,62 @@
 </template>
 
 <script>
-import WhiteBlackList from '../../components/whiteBlackList/WhiteBlackList.vue'
 import AddIPDialog from '../../components/whiteBlackList/AddIPDialog'
-import { addIPToWhiteBlackApi, deleteIpApi } from '../../tools/api'
+import WhiteIpList from '../../components/whiteBlackList/WhiteIpList'
+import { deleteIpApi, getWhiteIpBytype } from '../../tools/api'
 
 export default {
   components: {
-    WhiteBlackList,
-    AddIPDialog
+    AddIPDialog,
+    WhiteIpList
   },
   data() {
     return {
       addIpDialogVis: false,
-      ifGetIP: false
+      ifGetIP: false,
+      tabsName: 'sip',
+      tableData: []
     }
   },
   methods: {
     changAddDigIpVis() {
       this.addIpDialogVis = true
     },
+    //
     getIP(form) {
-      let fd = new FormData()
-      fd.append('ip_addr', form.ip)
-      fd.append('type', 'white')
-      addIPToWhiteBlackApi(fd).then(res => {
-        let type = 'success'
-        if (res.state == 1) {
-          this.ifGetIP = true
-          setTimeout(() => {
-            this.ifGetIP = false
-          })
-        } else {
-          type = 'warning'
-        }
-        this.$message({
-          message: res.info,
-          type
-        })
-      })
+      console.log(form)
     },
     removeIP(row) {
       let fd = new FormData()
       fd.append('id', row.id)
-      deleteIpApi(fd).then(res => {
+      deleteIpApi(fd, 'white').then(res => {
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
         } else {
-          this.ifGetIP = true
-          setTimeout(() => {
-            this.ifGetIP = false
-          })
+          this.getIPList()
         }
         this.$message({
           type,
           message: res.info
         })
       })
+    },
+    getIPList() {
+      this.tableLoading = true
+      let fd = new FormData()
+      fd.append('page', this.currentPage)
+      fd.append('per_page', this.pageSize)
+
+      getWhiteIpBytype(fd).then(res => {
+        this.tableData = res
+        console.log(res)
+      })
     }
   },
-  mounted() {}
+  mounted() {
+    this.getIPList()
+  }
 }
 </script>
 
