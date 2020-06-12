@@ -1,7 +1,10 @@
 <template>
   <div class="report">
     <div class="fr mb10">
-      <el-button>导出日报</el-button>
+      <el-checkbox v-model="notsee_white">
+        <span style="font-size: 12px;">不导出白名单数据</span>
+      </el-checkbox>
+      <el-button class="ml10">导出日报</el-button>
       <el-button>导出周报</el-button>
     </div>
     <div class="clearfloat"></div>
@@ -35,6 +38,7 @@ import { getReportListApi } from '../../tools/api'
 export default {
   data() {
     return {
+      notsee_white: false,
       tableLoading: false,
       reportData: [],
       pageSize: 10,
@@ -56,7 +60,7 @@ export default {
     }
   },
   mounted() {
-    this.getReportList()
+    // this.getReportList()
   }
 }
 </script>

@@ -265,6 +265,26 @@ function getReportListApi(params) {
   return POST(url, params)
 }
 
+function getAssetsListApi(params) {
+  let url = BASE_URL + '/jump/ipmap/index'
+  return POST(url, params)
+}
+
+function AddAssetsApi(params) {
+  let url = BASE_URL + '/jump/ipmap/add'
+  return POST(url, params)
+}
+
+function editAssetsApi(params) {
+  let url = BASE_URL + '/jump/ipmap/edit'
+  return POST(url, params)
+}
+
+function deleteAssetsApi(params) {
+  let url = BASE_URL + '/jump/ipmap/delete'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   downloadFileApi,
@@ -315,5 +335,9 @@ export {
   getNetWorkManageApi,
   postNetWorkManageApi,
   resetNetWorkApi,
-  getReportListApi
+  getReportListApi,
+  getAssetsListApi,
+  AddAssetsApi,
+  editAssetsApi,
+  deleteAssetsApi
 }

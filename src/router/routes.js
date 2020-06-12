@@ -107,12 +107,34 @@ const routes = [
   {
     path: '/report',
     name: 'report',
-    component: () => import('../pages/report/Report.vue'),
+    component: () => import('../components/layout/RouterView.vue'),
     meta: {
-      title: '日报周报',
-      icon: '',
+      title: '报告管理',
+      icon: 'baogao',
       level: 1
-    }
+    },
+    children: [
+      {
+        path: '/report/report',
+        name: 'report',
+        component: () => import('../pages/report/Report.vue'),
+        meta: {
+          title: '日报周报',
+          icon: '',
+          level: 1
+        },
+      },
+      {
+        path: '/report/assets',
+        name: 'report',
+        component: () => import('../pages/report/AssetsEntry.vue'),
+        meta: {
+          title: '日报周报',
+          icon: '',
+          level: 1
+        },
+      }
+    ]
   },
   {
     path: '/sys',
