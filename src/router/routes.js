@@ -110,7 +110,7 @@ const routes = [
     component: () => import('../components/layout/RouterView.vue'),
     meta: {
       title: '报告管理',
-      icon: 'baogao',
+      icon: 'el-icon-document',
       level: 1
     },
     children: [
@@ -129,7 +129,7 @@ const routes = [
         name: 'report',
         component: () => import('../pages/report/AssetsEntry.vue'),
         meta: {
-          title: '日报周报',
+          title: '资产录入',
           icon: '',
           level: 1
         },
