@@ -17,11 +17,13 @@
         <el-radio :label="getLable('attack_type')">攻击类型: {{row.attack_type}}</el-radio>
       </el-row>
       <el-row class="mt10">
-        <el-radio :label="getLable('level')">攻击等级: {{row.level}}</el-radio>
+        <el-radio
+          :label="getLable('level')"
+        >攻击等级: {{row.level == 0 ? '高' : row.level == 1 ? '中' : '低'}}</el-radio>
       </el-row>
     </el-radio-group>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = comm">取 消</el-button>
+      <el-button @click="handleClose">取 消</el-button>
       <el-button type="primary" @click="submit">确 定</el-button>
     </span>
   </el-dialog>

@@ -81,11 +81,11 @@
         <el-dropdown split-button type="primary" @command="exportFile" class="ml10">
           导出
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="csv">.csv</el-dropdown-item>
-            <el-dropdown-item command="excel">.excel</el-dropdown-item>
-            <el-dropdown-item command="json">.json</el-dropdown-item>
-            <el-dropdown-item command="txt">.txt</el-dropdown-item>
-            <el-dropdown-item command="html">.html</el-dropdown-item>
+            <el-dropdown-item command="csv">csv</el-dropdown-item>
+            <el-dropdown-item command="excel">excel</el-dropdown-item>
+            <el-dropdown-item command="json">json</el-dropdown-item>
+            <el-dropdown-item command="txt">txt</el-dropdown-item>
+            <el-dropdown-item command="html">html</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <el-button type="primary" class="ml10" @click="changeNewAlarm">取消新告警标志</el-button>
