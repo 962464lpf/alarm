@@ -2,11 +2,11 @@
   <div class="alarm-summary">
     <SearchForm @getSearchForm="getSearchForm">
       <span>
-        <span class="ml10">
+        <!-- <span class="ml10">
           <el-checkbox v-model="notsee_white" @change="getAlarmList">
             <span style="font-size: 12px;">不显示白名单数据</span>
           </el-checkbox>
-        </span>
+        </span>-->
         <el-form-item>
           <el-dropdown split-button type="primary" @command="exportFile" class="ml10">
             导出
@@ -366,7 +366,7 @@ export default {
       this.tableLoading = true
       let fd = new FormData()
       fd.append('page', this.currentPage)
-      fd.append('notsee_white', this.notsee_white ? 1 : 0)
+      // fd.append('notsee_white', this.notsee_white ? 1 : 0)
 
       fd.append('per_page', this.pageSize)
       for (let key in this.searchForm) {

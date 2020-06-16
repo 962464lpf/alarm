@@ -225,6 +225,11 @@ function whiteIfPushAlarmApi(params) {
   return POST(url, params)
 }
 
+function whiteIfStatisticalApi(params) {
+  let url = BASE_URL + '/jump/globalSet/white_switch'
+  return POST(url, params)
+}
+
 function aKeyBlockedApi(params) {
   let url = BASE_URL + '/jump/forbiddenIp/forbidden'
   return POST(url, params)
@@ -261,7 +266,7 @@ function resetNetWorkApi() {
 }
 
 function getReportListApi(params) {
-  let url = BASE_URL + '/jump/networkSet/reset_network'
+  let url = BASE_URL + '/jump/report/index'
   return POST(url, params)
 }
 
@@ -328,6 +333,7 @@ export {
   getUserListApi,
   userAllotEquipApi,
   whiteIfPushAlarmApi,
+  whiteIfStatisticalApi,
   aKeyBlockedApi,
   getBlockedIApi,
   unBlockedIPApi,

@@ -63,7 +63,7 @@
             </p>
           </div>
         </div>
-        <div class="list">
+        <!-- <div class="list">
           <div class="content">
             <span class="name">
               白名单提醒
@@ -73,7 +73,7 @@
             <a></a>
             <el-switch v-model="whitePushAlarm" @change="handleWhitePush"></el-switch>
           </div>
-        </div>
+        </div>-->
       </div>
     </transition>
     <SearchForm :levelStatus="true" @getSearchForm="getSearchForm">

@@ -61,12 +61,21 @@
         </span>
       </el-col>
     </el-row>
-    <el-dialog title="设置统计时间" :visible.sync="dialogVisible" width="30%">
-      <el-radio-group v-model="radio">
-        <el-radio label="day">天</el-radio>
-        <el-radio label="week">周</el-radio>
-        <el-radio label="month">月</el-radio>
-      </el-radio-group>
+    <el-dialog title="系统配置" :visible.sync="dialogVisible" width="30%">
+      <div>
+        <span>告警统计周期：</span>
+        <el-radio-group v-model="radio">
+          <el-radio label="day">天</el-radio>
+          <el-radio label="week">周</el-radio>
+          <el-radio label="month">月</el-radio>
+        </el-radio-group>
+      </div>
+      <div class="mt10">
+        <el-checkbox v-model="statisticalWhite">
+          <span style="font-size: 12px;">统计白名单数据</span>
+        </el-checkbox>
+      </div>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="confirm">确 定</el-button>
@@ -84,7 +93,8 @@ import {
   getAttackNumApi,
   logoutApi,
   resetPassword,
-  factoryDataResetApi
+  factoryDataResetApi,
+  whiteIfStatisticalApi
 } from '../../tools/api'
 import ResetPassword from '../../components/common/ResetPassword'
 export default {
@@ -95,6 +105,7 @@ export default {
     return {
       name: this.$NAME,
       radio: 'day',
+      statisticalWhite: true,
       dialogVisible: false,
       resetPasswordStatus: false
     }
@@ -140,6 +151,20 @@ export default {
       this.dialogVisible = true
     },
     confirm() {
+      let fd = new FormData()
+      fd.append('white_show', Number(this.statisticalWhite))
+      whiteIfStatisticalApi(fd).then(res => {
+        let type = 'success'
+        let message = '设置成功'
+        if (res.state !== this.successFlag) {
+          type = 'warning'
+          message = res.info
+        }
+        this.$message({
+          type,
+          message
+        })
+      })
       this.$store.commit('cahngeCycle', this.radio)
       this.getAttackNum()
       this.dialogVisible = false
