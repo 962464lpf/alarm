@@ -10,6 +10,8 @@
           <el-checkbox label="attack_time" name="attack_time">攻击时间</el-checkbox>
           <el-checkbox label="device_ip" name="device_ip">告警来源</el-checkbox>
           <el-checkbox label="attack_type" name="attack_type">攻击类型</el-checkbox>
+          <el-checkbox label="protocol" name="protocol">协议</el-checkbox>
+          <el-checkbox label="summary_num" name="summary_num">次数</el-checkbox>
           <el-checkbox label="con" name="con">描述</el-checkbox>
           <el-checkbox label name>选择所有</el-checkbox>
         </el-checkbox-group>
