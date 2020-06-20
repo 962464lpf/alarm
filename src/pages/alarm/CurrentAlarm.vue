@@ -113,7 +113,13 @@
                 :data="currentAlarmList"
                 style="width: 100%"
                 :row-class-name="addClass"
-                @row-click="rowClick">
+                @row-click="rowClick"
+                @selection-change="handleSelectionChange"
+                row-key='id'>
+        <el-table-column type="selection"
+                         reserve-selection
+                         width="55">
+        </el-table-column>s
         <el-table-column label="恶意IP"
                          width="180">
           <template slot-scope="scope">
@@ -312,6 +318,9 @@ export default {
     }
   },
   methods: {
+    handleSelectionChange (val) {
+      console.log(val)
+    },
     rowClick (row) {
       if (row.is_new === 0) {
         let fd = new FormData()
@@ -723,7 +732,7 @@ export default {
     }
     tbody {
       tr {
-        td:first-child {
+        td:nth-child(2) {
           .cell {
             overflow: inherit !important;
             .triangle {

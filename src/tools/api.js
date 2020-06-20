@@ -2,7 +2,7 @@ import { POST, GET, downloadFile } from './request'
 
 let BASE_URL = ''
 if (process.env.NODE_ENV == 'development') {
-  BASE_URL = 'http://192.168.10.240:2020'
+  BASE_URL = 'http://172.18.0.180:2020'
 } else {
   BASE_URL = window.location.origin
 }
@@ -116,13 +116,10 @@ function addIPToWhiteBlackApi(params) {
 }
 
 function deleteIpApi(params, type) {
-
   let url = BASE_URL + '/jump/ip/delete'
   if (type === 'white') url = BASE_URL + '/jump/warning/delete_white'
   return POST(url, params)
 }
-
-
 
 function getAttackTrendApi(params) {
   let url = BASE_URL + '/jump/analyze/num'
@@ -345,5 +342,5 @@ export {
   getAssetsListApi,
   AddAssetsApi,
   editAssetsApi,
-  deleteAssetsApi
+  deleteAssetsApi,
 }
