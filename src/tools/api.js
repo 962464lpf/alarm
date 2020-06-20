@@ -287,6 +287,11 @@ function deleteAssetsApi(params) {
   return POST(url, params)
 }
 
+function downloadBlockedIPApi(params) {
+  let url = BASE_URL + '/jump/forbiddenIp/export'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   downloadFileApi,
@@ -343,4 +348,5 @@ export {
   AddAssetsApi,
   editAssetsApi,
   deleteAssetsApi,
+  downloadBlockedIPApi,
 }

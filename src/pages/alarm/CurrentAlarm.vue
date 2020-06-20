@@ -313,10 +313,14 @@ export default {
   },
   methods: {
     handleSelectionChange (val) {
-      console.log(val)
       this.selectRowData = val
     },
     batchBanned () {
+      let sipArr = []
+      this.selectRowData.forEach(item => {
+        sipArr.push(item.sip)
+      })
+      console.log(sipArr.join(','))
       if (this.selectRowData.length > 0) {
         this.$confirm('您确定要封禁已选择的IP?', '提示', {
           confirmButtonText: '确定',

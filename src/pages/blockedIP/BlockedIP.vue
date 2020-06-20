@@ -8,11 +8,11 @@
       </el-form-item>
       <el-form-item label="时间">
         <el-date-picker v-model="form.time"
-                        type="daterange"
+                        type="datetimerange"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期"
-                        value-format="yyyy-MM-dd">
+                        value-format="yyyy-MM-dd HH-mm-ss">
         </el-date-picker>
       </el-form-item>
 
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { getBlockedIApi, unBlockedIPApi, aKeyBlockedApi, downloadFileApi } from '../../tools/api'
+import { getBlockedIApi, unBlockedIPApi, aKeyBlockedApi, downloadBlockedIPApi, downloadFileApi, BASE_URL } from '../../tools/api'
 import addBlockedIP from '../../components/blockedIP/AddBlockedIP'
 import { mapState } from 'vuex'
 export default {
@@ -80,7 +80,7 @@ export default {
     return {
       form: {
         ip: '',
-        time: []
+        time: ['', '']
       },
       tableLoading: false,
       blockedIP: [],
@@ -95,23 +95,30 @@ export default {
   },
   methods: {
     exportFlie () {
-      let url = ''
-      let type = ''
-      downloadFileApi(url).then(res => {
-        let blob = new Blob([res], { type })
-        let url = window.URL.createObjectURL(blob)
-        let a = document.createElement('a')
-        a.setAttribute('download', 'text')
-        a.setAttribute('href', url)
-        a.click()
+      let fd = new FormData()
+      fd.append('start_time', this.form.time[0])
+      fd.append('end_time', this.form.time[1])
+      fd.append('ip', this.form.ip)
+      downloadBlockedIPApi(fd).then(res => {
+        let url = BASE_URL + res.file_path
+        let type = 'application/vnd.ms-excel'
+        downloadFileApi(url).then(res => {
+          let blob = new Blob([res], { type })
+          let url = window.URL.createObjectURL(blob)
+          let a = document.createElement('a')
+          a.setAttribute('download', '封禁列表')
+          a.setAttribute('href', url)
+          a.click()
+        })
+
       })
     },
     onSearch () {
-      console.log(this.form.time)
       this.getBlockedIP()
     },
     onReset () {
       this.form.ip = ''
+      this.form.time = ['', '']
       this.getBlockedIP()
     },
     onAdd () {
@@ -174,6 +181,8 @@ export default {
     getBlockedIP () {
       this.tableLoading = true
       let fd = new FormData()
+      fd.append('start_time', this.form.time[0])
+      fd.append('end_time', this.form.time[1])
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
       fd.append('ip', this.form.ip)
