@@ -106,6 +106,10 @@
         <el-button type="primary"
                    class="ml10"
                    @click="changeNewAlarm">取消新告警标志</el-button>
+        <el-button type="primary"
+                   @click="batchBanned">
+          批量封禁
+        </el-button>
       </span>
     </SearchForm>
     <div class="current-table">
@@ -118,8 +122,8 @@
                 row-key='id'>
         <el-table-column type="selection"
                          reserve-selection
-                         width="55">
-        </el-table-column>s
+                         width="45">
+        </el-table-column>
         <el-table-column label="恶意IP"
                          width="180">
           <template slot-scope="scope">
@@ -277,18 +281,7 @@ export default {
       bellSrcArr: [],
       intervalId: null,
       tableLoading: false,
-      currentAlarmList: [
-        {
-          sip: 13456,
-          wuli_addr: 'jump',
-          dip: 14545,
-          device_ip: 45646,
-          con: 'fsfs',
-          attack_time: '2020-6-11',
-          attack_type: 0,
-          protocol: 'http'
-        }
-      ],
+      currentAlarmList: [],
       rowAlarmData: {},
       currentPage: 1,
       pageSize: 20,
@@ -302,7 +295,8 @@ export default {
         attack_type: '',
         time: [],
         level: ''
-      }
+      },
+      selectRowData: []
     }
   },
   computed: {
@@ -320,6 +314,31 @@ export default {
   methods: {
     handleSelectionChange (val) {
       console.log(val)
+      this.selectRowData = val
+    },
+    batchBanned () {
+      if (this.selectRowData.length > 0) {
+        this.$confirm('您确定要封禁已选择的IP?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '请选择您要封禁的IP.'
+        })
+      }
     },
     rowClick (row) {
       if (row.is_new === 0) {
