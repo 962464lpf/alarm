@@ -327,6 +327,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          const loading = this.$loading({
+            lock: true,
+            text: 'Loading',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          });
           let fd = new FormData()
           fd.append('ipstr', sipArr.join(','))
           batchBannedApi(fd).then(res => {
@@ -337,6 +343,7 @@ export default {
               message = res.info
             } else {
               this.getCurrentAlarmList()
+              loading.close()
             }
             this.$message({
               type,
