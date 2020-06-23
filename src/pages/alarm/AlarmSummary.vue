@@ -163,7 +163,8 @@ import {
   exportSumAlarmFileApi,
   BASE_URL,
   downloadFileApi,
-  aKeyBlockedApi
+  aKeyBlockedApi,
+  batchBannedApi
 } from '../../tools/api'
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -216,24 +217,34 @@ export default {
   },
   methods: {
     handleSelectionChange (val) {
-      console.log(val)
       this.selectRowData = val
     },
     batchBanned () {
+      let sipArr = []
+      this.selectRowData.forEach(item => {
+        sipArr.push(item.sip)
+      })
       if (this.selectRowData.length > 0) {
-        this.$confirm('您确定要封禁已选择的IP吗?', '提示', {
+        this.$confirm('您确定要封禁已选择的IP?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
+          let fd = new FormData()
+          fd.append('ipstr', sipArr.join(','))
+          batchBannedApi(fd).then(res => {
+            let type = 'success'
+            let message = '封禁成功'
+            if (res.state !== this.successFlag) {
+              type = 'warning'
+              message = res.info
+            } else {
+              this.getCurrentAlarmList()
+            }
+            this.$message({
+              type,
+              message
+            })
           })
         })
       } else {

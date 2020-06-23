@@ -331,7 +331,7 @@ export default {
           fd.append('ipstr', sipArr.join(','))
           batchBannedApi(fd).then(res => {
             let type = 'success'
-            let message = '设置成功'
+            let message = '封禁成功'
             if (res.state !== this.successFlag) {
               type = 'warning'
               message = res.info
