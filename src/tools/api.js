@@ -110,6 +110,11 @@ function getAttackNumApi() {
   return POST(url)
 }
 
+function getStsWhiteStusApi() {
+  let url = BASE_URL + '/jump/globalSet/set'
+  return POST(url)
+}
+
 function addIPToWhiteBlackApi(params) {
   let url = BASE_URL + '/jump/ip/add'
   return POST(url, params)
@@ -318,6 +323,7 @@ export {
   setMailApi,
   getMailApi,
   getAttackNumApi,
+  getStsWhiteStusApi,
   addIPToWhiteBlackApi,
   deleteIpApi,
   startListernApi,

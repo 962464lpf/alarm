@@ -132,6 +132,7 @@ export default {
   },
   mounted () {
     this.assetsForm.ip = this.currentAssetsData.ip
+    this.assetsForm.domainName = this.currentAssetsData.domain
     this.assetsForm.name = this.currentAssetsData.name
   }
 }
