@@ -1,9 +1,14 @@
 <template>
   <div class="assets-dialog">
-    <el-dialog :title="title" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
+    <el-dialog :title="title"
+               :visible.sync="dialogVisible"
+               width="60%"
+               :before-close="handleClose">
       <el-row class="item">
-        <el-col :span="4" class="name">IP地址：</el-col>
-        <el-col :span="20" class="input">
+        <el-col :span="4"
+                class="name">IP地址：</el-col>
+        <el-col :span="20"
+                class="input">
           <p class="prompt">
             <span>
               <i class="el-icon-info"></i>
@@ -14,8 +19,24 @@
         </el-col>
       </el-row>
       <el-row class="item">
-        <el-col :span="4" class="name">平台名称：</el-col>
-        <el-col :span="20" class="input">
+        <el-col :span="4"
+                class="name">域名：</el-col>
+        <el-col :span="20"
+                class="input">
+          <p class="prompt">
+            <span>
+              <i class="el-icon-info"></i>
+              域名
+            </span>
+          </p>
+          <el-input v-model="assetsForm.domainName"></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="item">
+        <el-col :span="4"
+                class="name">平台名称：</el-col>
+        <el-col :span="20"
+                class="input">
           <p class="prompt">
             <span>
               <i class="el-icon-info"></i>
@@ -25,9 +46,12 @@
           <el-input v-model="assetsForm.name"></el-input>
         </el-col>
       </el-row>
-      <span slot="footer" class="dialog-footer" v-if="footerStatus">
+      <span slot="footer"
+            class="dialog-footer"
+            v-if="footerStatus">
         <el-button @click="handleClose">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
+        <el-button type="primary"
+                   @click="submit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -55,31 +79,34 @@ export default {
     },
     currentAssetsData: {
       type: Object,
-      default: () => {}
+      default: () => { }
     }
   },
-  data() {
+  data () {
     return {
       dialogVisible: this.value,
       assetsForm: {
         ip: '',
-        name: ''
+        name: '',
+        domainName: ''
       }
     }
   },
   methods: {
-    handleClose() {
+    handleClose () {
       this.assetsForm = {
         ip: '',
         name: ''
       }
       this.$emit('input', false)
     },
-    submit() {
+    submit () {
       let api = null
       let fd = new FormData()
       fd.append('ip', this.assetsForm.ip)
       fd.append('name', this.assetsForm.name)
+      fd.append('domainName', this.assetsForm.domainName)
+
       if (this.type === 'add') {
         api = AddAssetsApi
       } else if (this.type === 'edit') {
@@ -103,7 +130,7 @@ export default {
       })
     }
   },
-  mounted() {
+  mounted () {
     this.assetsForm.ip = this.currentAssetsData.ip
     this.assetsForm.name = this.currentAssetsData.name
   }
