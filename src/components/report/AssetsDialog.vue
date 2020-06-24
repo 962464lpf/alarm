@@ -105,7 +105,7 @@ export default {
       let fd = new FormData()
       fd.append('ip', this.assetsForm.ip)
       fd.append('name', this.assetsForm.name)
-      fd.append('domainName', this.assetsForm.domainName)
+      fd.append('domain', this.assetsForm.domainName)
 
       if (this.type === 'add') {
         api = AddAssetsApi
