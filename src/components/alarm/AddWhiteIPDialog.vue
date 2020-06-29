@@ -7,20 +7,20 @@
       <el-row class="mt10">
         <el-radio :label="getLable('dip')">目的IP:{{row.dip}}</el-radio>
       </el-row>
-      <el-row class="mt10">
+      <!-- <el-row class="mt10">
         <el-radio :label="getLable('device_ip')">告警来源:{{row.device_ip}}</el-radio>
-      </el-row>
+      </el-row>-->
       <el-row class="mt10">
         <el-radio :label="getLable('con')">描述: {{row.con}}</el-radio>
       </el-row>
       <el-row class="mt10">
         <el-radio :label="getLable('attack_type')">攻击类型: {{row.attack_type}}</el-radio>
       </el-row>
-      <el-row class="mt10">
+      <!-- <el-row class="mt10">
         <el-radio
           :label="getLable('level')"
         >攻击等级: {{row.level == 0 ? '高' : row.level == 1 ? '中' : '低'}}</el-radio>
-      </el-row>
+      </el-row>-->
     </el-radio-group>
     <span slot="footer" class="dialog-footer">
       <el-button @click="handleClose">取 消</el-button>

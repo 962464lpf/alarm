@@ -1,16 +1,17 @@
 <template>
   <div class="header">
     <el-row class="header-row">
-      <el-col :span="3"
-              class="title">
+      <el-col :span="3" class="title">
         <!-- <img src="../../assets/images/logo.png" class="curp" @click="jumpTo" /> -->
         <!-- 护网工具箱 -->
         {{name}}
       </el-col>
 
-      <el-col :span="16"
-              class="icon-box"
-              v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )">
+      <el-col
+        :span="16"
+        class="icon-box"
+        v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )"
+      >
         <span>
           {{cycleName}}攻击总数：
           <b>{{attackNum}}</b>
@@ -28,14 +29,14 @@
           <b>{{attackNumLow}}</b>
         </span>
         <span>
-          <i class="el-icon-s-tools curp"
-             style="font-size: 14px;"
-             @click="changeCycle"></i>
+          <i class="el-icon-s-tools curp" style="font-size: 14px;" @click="changeCycle"></i>
         </span>
       </el-col>
-      <el-col :span="5"
-              class="user-setting"
-              v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )">
+      <el-col
+        :span="5"
+        class="user-setting"
+        v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )"
+      >
         <span>
           <i class="el-icon-user"></i>
           {{userInfo.name}}({{getRoleName()}})
@@ -50,6 +51,9 @@
                 <p @click="resetUser">重置密码</p>
               </el-dropdown-item>
               <el-dropdown-item>
+                <p @click="setWhiteIfStatistical">{{statisticalWhite === 0 ? '启用白名单' : '不启用白名单'}}</p>
+              </el-dropdown-item>
+              <el-dropdown-item>
                 <p @click="logout">退出</p>
               </el-dropdown-item>
               <el-dropdown-item v-if="userInfo.level === 0">
@@ -60,33 +64,28 @@
         </span>
       </el-col>
     </el-row>
-    <el-dialog title="系统配置"
-               :visible.sync="dialogVisible"
-               width="30%">
+    <el-dialog title="告警统计周期" :visible.sync="dialogVisible" width="30%">
       <div>
-        <span>告警统计周期：</span>
+        <span>周期：</span>
         <el-radio-group v-model="radio">
-          <el-radio label="day">天</el-radio>
-          <el-radio label="week">周</el-radio>
-          <el-radio label="month">月</el-radio>
+          <el-radio-button label="day">日</el-radio-button>
+          <el-radio-button label="week">周</el-radio-button>
+          <el-radio-button label="month">月</el-radio-button>
         </el-radio-group>
       </div>
-      <div class="mt10">
+      <!-- <div class="mt10">
         <el-checkbox v-model="statisticalWhite">
-          <span style="font-size: 12px;">统计白名单数据</span>
+          <span style="font-size: 12px;">启用白名单</span>
         </el-checkbox>
-      </div>
+      </div>-->
 
-      <span slot="footer"
-            class="dialog-footer">
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary"
-                   @click="confirm">确 定</el-button>
+        <el-button type="primary" @click="confirm">确 定</el-button>
       </span>
     </el-dialog>
     <div v-if="resetPasswordStatus">
-      <ResetPassword v-model="resetPasswordStatus"
-                     @getResetform="getResetform"></ResetPassword>
+      <ResetPassword v-model="resetPasswordStatus" @getResetform="getResetform"></ResetPassword>
     </div>
   </div>
 </template>
@@ -106,11 +105,11 @@ export default {
   components: {
     ResetPassword
   },
-  data () {
+  data() {
     return {
       name: this.$NAME,
       radio: 'day',
-      statisticalWhite: true,
+      statisticalWhite: 0,
       dialogVisible: false,
       resetPasswordStatus: false
     }
@@ -125,7 +124,7 @@ export default {
       'currentPath',
       'userInfo'
     ]),
-    cycleName () {
+    cycleName() {
       if (this.cycle === 'day') {
         return '今日'
       } else if (this.cycle === 'week') {
@@ -136,10 +135,10 @@ export default {
     }
   },
   methods: {
-    jumpTo () {
+    jumpTo() {
       this.$router.push('/index')
     },
-    getRoleName () {
+    getRoleName() {
       let level = this.userInfo.level
       switch (level) {
         case 0:
@@ -152,37 +151,41 @@ export default {
           break
       }
     },
-    changeCycle () {
+    changeCycle() {
       this.dialogVisible = true
     },
-    confirm () {
+    setWhiteIfStatistical() {
       let fd = new FormData()
-      fd.append('white_show', Number(this.statisticalWhite))
+      fd.append('white_show', this.statisticalWhite === 0 ? 1 : 0)
       whiteIfStatisticalApi(fd).then(res => {
         let type = 'success'
         let message = '设置成功'
         if (res.state !== this.successFlag) {
           type = 'warning'
           message = res.info
+        } else {
+          this.statisticalWhite = this.statisticalWhite === 0 ? 1 : 0
         }
         this.$message({
           type,
           message
         })
       })
+    },
+    confirm() {
       this.$store.commit('cahngeCycle', this.radio)
       this.getAttackNum()
       this.dialogVisible = false
     },
-    getAttackNum () {
+    getAttackNum() {
       getAttackNumApi().then(res => {
         this.$store.commit('changeAttackNum', res)
       })
     },
-    resetUser () {
+    resetUser() {
       this.resetPasswordStatus = true
     },
-    getResetform (form) {
+    getResetform(form) {
       let fd = new FormData()
       let user = this.userInfo
       fd.append('id', user.id)
@@ -200,7 +203,7 @@ export default {
             .then(() => {
               this.$router.push('/')
             })
-            .catch(() => { })
+            .catch(() => {})
         } else {
           type = 'warning'
           this.$message({
@@ -210,7 +213,7 @@ export default {
         }
       })
     },
-    delAllCookie () {
+    delAllCookie() {
       let myDate = new Date()
       myDate.setTime(-1000) //设置时间
       let data = document.cookie
@@ -220,7 +223,7 @@ export default {
         document.cookie = varName[0] + "=''; expires=" + myDate.toGMTString()
       }
     },
-    logout () {
+    logout() {
       logoutApi().then(res => {
         if (res.state === 1) {
           this.$router.push('/')
@@ -236,7 +239,7 @@ export default {
         }
       })
     },
-    factoryDataReset () {
+    factoryDataReset() {
       this.$confirm('您确定要将此系统恢复出厂设置吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -255,17 +258,17 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted() {
     this.getAttackNum()
     getStsWhiteStusApi().then(res => {
-      this.statisticalWhite = Boolean(res.white_show)
+      this.statisticalWhite = res.white_show
     })
   }
 }
 </script>
 
 <style lang="scss">
-@import "../../assets/style/color.scss";
+@import '../../assets/style/color.scss';
 .header {
   height: 50px;
   width: 100%;
