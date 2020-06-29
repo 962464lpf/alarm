@@ -51,7 +51,9 @@
                 <p @click="resetUser">重置密码</p>
               </el-dropdown-item>
               <el-dropdown-item>
-                <p @click="setWhiteIfStatistical">{{statisticalWhite === 0 ? '启用白名单' : '不启用白名单'}}</p>
+                <p
+                  @click="setWhiteIfStatistical"
+                >{{statisticalWhite === 0 ? '启用白名单机制' : '不启用白名单机制'}}</p>
               </el-dropdown-item>
               <el-dropdown-item>
                 <p @click="logout">退出</p>
