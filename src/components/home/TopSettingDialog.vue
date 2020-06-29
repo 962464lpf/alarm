@@ -9,7 +9,7 @@
     <el-form>
       <el-form-item label="请选择统计周期：">
         <el-radio-group v-model="form.cycle">
-          <el-radio label="day">天</el-radio>
+          <el-radio label="day">日</el-radio>
           <el-radio label="week">周</el-radio>
           <el-radio label="month">月</el-radio>
         </el-radio-group>
