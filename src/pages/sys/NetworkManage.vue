@@ -177,8 +177,8 @@ export default {
           margin-left: 10px !important;
           .el-input__inner {
             border: none;
-            height: 34px;
-            line-height: 34px;
+            height: 50px;
+            line-height: 50px;
           }
         }
       }

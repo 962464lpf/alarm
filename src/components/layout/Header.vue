@@ -31,6 +31,11 @@
         <span>
           <i class="el-icon-s-tools curp" style="font-size: 14px;" @click="changeCycle"></i>
         </span>
+        <span>
+          <el-tooltip class="item" effect="dark" content="是否启用白名单机制" placement="top-start">
+            <el-switch v-model="statisticalWhite" :width="40" @change="setWhiteIfStatistical"></el-switch>
+          </el-tooltip>
+        </span>
       </el-col>
       <el-col
         :span="5"
@@ -49,11 +54,6 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
                 <p @click="resetUser">重置密码</p>
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <p
-                  @click="setWhiteIfStatistical"
-                >{{statisticalWhite === 0 ? '启用白名单机制' : '不启用白名单机制'}}</p>
               </el-dropdown-item>
               <el-dropdown-item>
                 <p @click="logout">退出</p>
@@ -156,17 +156,18 @@ export default {
     changeCycle() {
       this.dialogVisible = true
     },
-    setWhiteIfStatistical() {
+    setWhiteIfStatistical(val) {
       let fd = new FormData()
-      fd.append('white_show', this.statisticalWhite === 0 ? 1 : 0)
+      fd.append('white_show', Number(val))
       whiteIfStatisticalApi(fd).then(res => {
         let type = 'success'
         let message = '设置成功'
         if (res.state !== this.successFlag) {
           type = 'warning'
           message = res.info
+          this.statisticalWhite = !val
         } else {
-          this.statisticalWhite = this.statisticalWhite === 0 ? 1 : 0
+          this.statisticalWhite = val
         }
         this.$message({
           type,
@@ -263,7 +264,7 @@ export default {
   mounted() {
     this.getAttackNum()
     getStsWhiteStusApi().then(res => {
-      this.statisticalWhite = res.white_show
+      this.statisticalWhite = Boolean(res.white_show)
     })
   }
 }
