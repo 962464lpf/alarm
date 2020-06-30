@@ -32,9 +32,13 @@
           <i class="el-icon-s-tools curp" style="font-size: 14px;" @click="changeCycle"></i>
         </span>
         <span>
-          <el-tooltip class="item" effect="dark" content="是否启用白名单机制" placement="top-start">
-            <el-switch v-model="statisticalWhite" :width="40" @change="setWhiteIfStatistical"></el-switch>
-          </el-tooltip>
+          <a style="font-size:12px;">
+            白名单机制
+            <i class="el-icon-info curp" @click="showTooltip"></i>：
+          </a>
+          <!-- <el-tooltip class="item" effect="dark" content="是否启用白名单机制" placement="top-start"> -->
+          <el-switch v-model="statisticalWhite" :width="40" @change="setWhiteIfStatistical"></el-switch>
+          <!-- </el-tooltip> -->
         </span>
       </el-col>
       <el-col
@@ -137,6 +141,13 @@ export default {
     }
   },
   methods: {
+    showTooltip() {
+      this.$message({
+        message:
+          '启用白名单机制后，系统不会出现白名单告警数据，实时告警页面也不会推送白名告警数据',
+        duration: 3000
+      })
+    },
     jumpTo() {
       this.$router.push('/index')
     },
@@ -158,7 +169,7 @@ export default {
     },
     setWhiteIfStatistical(val) {
       let fd = new FormData()
-      fd.append('white_show', Number(val))
+      fd.append('white_show', Number(!val))
       whiteIfStatisticalApi(fd).then(res => {
         let type = 'success'
         let message = '设置成功'
@@ -264,7 +275,9 @@ export default {
   mounted() {
     this.getAttackNum()
     getStsWhiteStusApi().then(res => {
+      // 1代表关  0代表开
       this.statisticalWhite = Boolean(res.white_show)
+      this.statisticalWhite = !this.statisticalWhite
     })
   }
 }
