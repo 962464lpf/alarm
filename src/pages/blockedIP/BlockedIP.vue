@@ -56,7 +56,7 @@
       <addBlockedIP v-model="addBlockedIPStatus" @getAddBlockedIP="getAddBlockedIP"></addBlockedIP>
     </div>
     <div v-if="batchBlockedIPStatus">
-      <batchBlockedIP v-model="batchBlockedIPStatus"></batchBlockedIP>
+      <batchBlockedIP v-model="batchBlockedIPStatus" @updateTableData="getBlockedIP"></batchBlockedIP>
     </div>
   </div>
 </template>

@@ -238,7 +238,12 @@ function aKeyBlockedApi(params) {
 }
 
 function batchBannedApi(params) {
-  let url = BASE_URL + '/jump/forbiddenIp/forbidden_batch '
+  let url = BASE_URL + '/jump/forbiddenIp/forbidden_batch'
+  return POST(url, params)
+}
+
+function batchBannedFileApi(params) {
+  let url = BASE_URL + '/jump/forbiddenIp/daoru'
   return POST(url, params)
 }
 
@@ -349,6 +354,7 @@ export {
   whiteIfStatisticalApi,
   aKeyBlockedApi,
   batchBannedApi,
+  batchBannedFileApi,
   getBlockedIApi,
   unBlockedIPApi,
   factoryDataResetApi,
