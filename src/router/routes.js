@@ -97,12 +97,35 @@ const routes = [
   {
     path: '/blocked',
     name: 'blocked',
-    component: () => import('../pages/blockedIP/BlockedIP.vue'),
+    // component: () => import('../pages/blockedIP/BlockedIP.vue'),
+    component: () => import('../components/layout/RouterView.vue'),
     meta: {
-      title: '封禁列表',
+      title: '封禁管理',
       icon: 'fengjin',
       level: 1
-    }
+    },
+    children: [
+      {
+        path: '/blocked/list',
+        name: 'list',
+        component: () => import('../pages/blockedIP/BlockedIP.vue'),
+        meta: {
+          title: '封禁列表',
+          icon: 'fengjin',
+          level: 1
+        },
+      },
+      {
+        path: '/blocked/firewall',
+        name: 'list',
+        component: () => import('../pages/blockedIP/Firewall.vue'),
+        meta: {
+          title: '防火墙管理',
+          icon: 'fengjin',
+          level: 1
+        },
+      }
+    ]
   },
   {
     path: '/report',

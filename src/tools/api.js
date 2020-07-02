@@ -307,6 +307,26 @@ function downloadBlockedIPApi(params) {
   return POST(url, params)
 }
 
+// 防火墙管理
+function getFireWallDataApi() {
+  let url = BASE_URL + '/jump/firewall/index'
+  return POST(url)
+}
+function deleteFirewallApi(params) {
+  let url = BASE_URL + '/jump/firewall/delete'
+  return POST(url, params)
+}
+
+function addFirewallApi(params) {
+  let url = BASE_URL + '/jump/firewall/add'
+  return POST(url, params)
+}
+
+function editFirewallApi(params) {
+  let url = BASE_URL + '/jump/firewall/edit'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   downloadFileApi,
@@ -367,4 +387,8 @@ export {
   editAssetsApi,
   deleteAssetsApi,
   downloadBlockedIPApi,
+  getFireWallDataApi,
+  deleteFirewallApi,
+  addFirewallApi,
+  editFirewallApi
 }

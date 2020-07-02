@@ -167,6 +167,10 @@ export default {
       //   background: url('../../assets/images/baogao.png') no-repeat;
       //   background-size: contain;
       // }
+      .fengjin {
+        background: url('../../assets/images/fengjin.png') no-repeat;
+        background-size: contain;
+      }
     }
     .el-menu-item:hover {
       background: #2b3c53 !important;
