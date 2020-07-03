@@ -132,16 +132,10 @@ export default {
       this.addBlockedIPStatus = true
     },
     downloadBlockedFile() {
-      let url = BASE_URL + 'res.file_path'
-      let type = 'application/vnd.ms-excel'
-      downloadFileApi(url).then(res => {
-        let blob = new Blob([res], { type })
-        let url = window.URL.createObjectURL(blob)
-        let a = document.createElement('a')
-        a.setAttribute('download', '模板')
-        a.setAttribute('href', url)
-        a.click()
-      })
+      let a = document.createElement('a')
+      a.setAttribute('download', '模板')
+      a.setAttribute('href', BASE_URL + '/forbidden_moban.xlsx')
+      a.click()
     },
     getAddBlockedIP(form) {
       let fd = new FormData()
