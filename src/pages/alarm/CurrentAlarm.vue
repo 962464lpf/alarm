@@ -198,6 +198,10 @@
         @getCurrentAlarmList="getCurrentAlarmList"
       ></AddWhiteIP>
     </div>
+
+    <div v-if="chooseFirewallStatus">
+      <ChooseFirewall v-model="chooseFirewallStatus" @getFirewall="batchBannedOperation"></ChooseFirewall>
+    </div>
   </div>
 </template>
 
@@ -218,12 +222,14 @@ import { mapState } from 'vuex'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
 import SearchForm from '../../components/alarm/SearchForm'
 import AddWhiteIP from '../../components/alarm/AddWhiteIPDialog'
+import ChooseFirewall from '../../components/common/ChooseFirewall'
 
 export default {
   components: {
     ChooseBlackType,
     SearchForm,
-    AddWhiteIP
+    AddWhiteIP,
+    ChooseFirewall
   },
   data() {
     return {
@@ -243,7 +249,7 @@ export default {
       bellSrcArr: [],
       intervalId: null,
       tableLoading: false,
-      currentAlarmList: [],
+      currentAlarmList: [{}],
       rowAlarmData: {},
       currentPage: 1,
       pageSize: 20,
@@ -258,7 +264,8 @@ export default {
         time: [],
         level: ''
       },
-      selectRowData: []
+      selectRowData: [],
+      chooseFirewallStatus: false
     }
   },
   computed: {
@@ -277,41 +284,39 @@ export default {
     handleSelectionChange(val) {
       this.selectRowData = val
     },
-    batchBanned() {
+    batchBannedOperation(firewall) {
       let sipArr = []
       this.selectRowData.forEach(item => {
         sipArr.push(item.sip)
       })
-      if (this.selectRowData.length > 0) {
-        this.$confirm('您确定要封禁已选择的IP?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          const loading = this.$loading({
-            lock: true,
-            text: 'Loading',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
-          })
-          let fd = new FormData()
-          fd.append('ipstr', sipArr.join(','))
-          batchBannedApi(fd).then(res => {
-            let type = 'success'
-            let message = '封禁成功'
-            if (res.state !== this.successFlag) {
-              type = 'warning'
-              message = res.info
-            } else {
-              this.getCurrentAlarmList()
-              loading.close()
-            }
-            this.$message({
-              type,
-              message
-            })
-          })
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      let fd = new FormData()
+      fd.append('ipstr', sipArr.join(','))
+      fd.append('fid', firewall.id)
+      batchBannedApi(fd).then(res => {
+        let type = 'success'
+        let message = '封禁成功'
+        if (res.state !== this.successFlag) {
+          type = 'warning'
+          message = res.info
+        } else {
+          this.getCurrentAlarmList()
+          loading.close()
+        }
+        this.$message({
+          type,
+          message
         })
+      })
+    },
+    batchBanned() {
+      if (this.selectRowData.length > 0) {
+        this.chooseFirewallStatus = true
       } else {
         this.$message({
           type: 'warning',
