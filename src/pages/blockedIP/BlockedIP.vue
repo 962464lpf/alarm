@@ -28,9 +28,13 @@
       <el-form-item>
         <el-button type="primary" @click="batchBlockedIPStatus = true">批量封禁</el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="downloadBlockedFile">下载封禁模板</el-button>
+      </el-form-item>
     </el-form>
     <el-table v-loading="tableLoading" :data="blockedIP" border style="width: 100%">
       <el-table-column prop="ip" label="IP地址"></el-table-column>
+      <el-table-column prop="fname" label="封禁防火墙"></el-table-column>
       <el-table-column prop="created_time" label="封禁时间"></el-table-column>
       <el-table-column prop="uname" label="封禁人"></el-table-column>
       <el-table-column label="操作" width="100">
@@ -127,6 +131,18 @@ export default {
     onAdd() {
       this.addBlockedIPStatus = true
     },
+    downloadBlockedFile() {
+      let url = BASE_URL + 'res.file_path'
+      let type = 'application/vnd.ms-excel'
+      downloadFileApi(url).then(res => {
+        let blob = new Blob([res], { type })
+        let url = window.URL.createObjectURL(blob)
+        let a = document.createElement('a')
+        a.setAttribute('download', '模板')
+        a.setAttribute('href', url)
+        a.click()
+      })
+    },
     getAddBlockedIP(form) {
       let fd = new FormData()
       fd.append('ip', form.ip)
@@ -203,4 +219,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.blocked-ip {
+  .el-date-editor--datetimerange.el-input,
+  .el-date-editor--datetimerange.el-input__inner {
+    width: 200px;
+  }
+}
 </style>

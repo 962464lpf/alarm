@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       tableLoading: false,
-      fireWallData: [{}],
+      fireWallData: [],
       currentPage: 1,
       pageSize: 10,
       total: 0,
@@ -132,9 +132,11 @@ export default {
       this.getFireWallData()
     },
     getFireWallData() {
+      this.tableLoading = true
       getFireWallDataApi().then(res => {
         this.total = res.total
         this.fireWallData = res.data
+        this.tableLoading = false
       })
     }
   },
