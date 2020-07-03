@@ -68,7 +68,7 @@ export default {
       this.getFireWallData()
     },
     getFireWallData() {
-      this.tableLoading = false
+      this.tableLoading = true
       getFireWallDataApi().then(res => {
         this.total = res.total
         this.fireWallData = res.data
