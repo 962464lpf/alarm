@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     fileChange(file) {
-      this.fileList.push(file)
+      this.fileList.push(file.raw)
     },
     fileRemove() {
       this.fileList = []
