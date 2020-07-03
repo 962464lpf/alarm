@@ -265,7 +265,8 @@ export default {
         level: ''
       },
       selectRowData: [],
-      chooseFirewallStatus: false
+      chooseFirewallStatus: false,
+      selectBlockedType: ''
     }
   },
   computed: {
@@ -285,37 +286,53 @@ export default {
       this.selectRowData = val
     },
     batchBannedOperation(firewall) {
-      let sipArr = []
-      this.selectRowData.forEach(item => {
-        sipArr.push(item.sip)
-      })
-      const loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      let fd = new FormData()
-      fd.append('ipstr', sipArr.join(','))
-      fd.append('fid', firewall.id)
-      batchBannedApi(fd).then(res => {
-        let type = 'success'
-        let message = '封禁成功'
-        if (res.state !== this.successFlag) {
-          type = 'warning'
-          message = res.info
-        } else {
+      if (this.selectBlockedType === 'Akey') {
+        let fd = new FormData()
+        fd.append('ip', this.rowAlarmData.sip)
+        fd.append('fid', firewall.id)
+        aKeyBlockedApi(fd).then(res => {
+          let type = 'success'
+          if (res.state !== this.successFlag) type = 'warning'
+          this.$message({
+            type,
+            message: res.info
+          })
           this.getCurrentAlarmList()
-          loading.close()
-        }
-        this.$message({
-          type,
-          message
         })
-      })
+      } else {
+        let sipArr = []
+        this.selectRowData.forEach(item => {
+          sipArr.push(item.sip)
+        })
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
+        let fd = new FormData()
+        fd.append('ipstr', sipArr.join(','))
+        fd.append('fid', firewall.id)
+        batchBannedApi(fd).then(res => {
+          let type = 'success'
+          let message = '封禁成功'
+          if (res.state !== this.successFlag) {
+            type = 'warning'
+            message = res.info
+          } else {
+            this.getCurrentAlarmList()
+            loading.close()
+          }
+          this.$message({
+            type,
+            message
+          })
+        })
+      }
     },
     batchBanned() {
       if (this.selectRowData.length > 0) {
+        this.selectBlockedType = 'batch'
         this.chooseFirewallStatus = true
       } else {
         this.$message({
@@ -438,18 +455,9 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          let fd = new FormData()
-          fd.append('ip', row.sip)
-          fd.append('id', this.userInfo.id)
-          aKeyBlockedApi(fd).then(res => {
-            let type = 'success'
-            if (res.state !== this.successFlag) type = 'warning'
-            this.$message({
-              type,
-              message: res.info
-            })
-            this.getCurrentAlarmList()
-          })
+          this.rowAlarmData = row
+          this.selectBlockedType = 'Akey'
+          this.chooseFirewallStatus = true
         })
       } else {
         this.$message({
