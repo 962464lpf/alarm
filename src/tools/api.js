@@ -390,5 +390,5 @@ export {
   getFireWallDataApi,
   deleteFirewallApi,
   addFirewallApi,
-  editFirewallApi
+  editFirewallApi,
 }
