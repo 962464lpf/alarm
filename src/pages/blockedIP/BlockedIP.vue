@@ -156,7 +156,7 @@ export default {
     getAddBlockedIP (form) {
       let fd = new FormData()
       fd.append('ip', form.ip)
-      fd.append('fid', this.form.id)
+      fd.append('fid', form.id)
       aKeyBlockedApi(fd).then(res => {
         let type = 'success'
         if (res.state !== this.successFlag) {

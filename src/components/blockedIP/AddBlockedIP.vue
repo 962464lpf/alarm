@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="添加封禁IP"
              :visible.sync="dialogVisible"
-             width="30%"
+             width="60%"
              :before-close="handleClose">
     <el-form>
       <el-form-item label="IP：">
