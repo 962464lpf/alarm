@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div>
-      © Copyrights JUMP. All Rights Reserved
+      © Copyrights. All Rights Reserved
 
     </div>
   </div>
