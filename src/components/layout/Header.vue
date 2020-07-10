@@ -323,7 +323,9 @@ export default {
     .user-setting {
       justify-content: flex-end;
       span {
-        margin-right: 5px;
+        // margin-right: 5px;
+        padding-right: 20px;
+        box-sizing: border-box;
       }
     }
   }
