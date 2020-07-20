@@ -44,6 +44,9 @@ export default {
       this.$store.commit('changeUserInfo', res)
       this.$store.dispatch('connectEventSource', res)
     })
+  },
+  beforeDestroy() {
+    this.$store.dispatch('disconnectEventSource')
   }
 }
 </script>
