@@ -249,8 +249,7 @@ export default {
       'attackNumDesc',
       'attackNumHighDesc',
       'attackNumMiddleDesc',
-      'attackNumLowDesc',
-      'userInfo'
+      'attackNumLowDesc'
     ])
   },
   methods: {
@@ -418,9 +417,7 @@ export default {
       })
     }
   },
-  created() {
-    this.$store.dispatch('connectEventSource', this.userInfo)
-  },
+
   mounted() {
     let refresh = sessionStorage.getItem('refresh')
     if (refresh === 'false') {
