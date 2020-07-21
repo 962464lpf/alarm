@@ -418,9 +418,6 @@ export default {
       })
     }
   },
-  created() {
-    this.$store.dispatch('connectEventSource', this.userInfo)
-  },
   mounted() {
     let refresh = sessionStorage.getItem('refresh')
     if (refresh === 'false') {
