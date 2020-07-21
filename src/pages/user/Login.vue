@@ -99,10 +99,9 @@ export default {
           handleSubmit(fd).then(res => {
             this.loginBtnLoading = false
             if (res.state == 1) {
-              this.$router.push('/index')
               sessionStorage.setItem('userInfo', JSON.stringify(res.userinfo))
-              this.$store.dispatch('connectEventSource', res.userinfo)
               this.$store.commit('changeUserInfo', res.userinfo)
+              this.$router.push('/index')
             } else {
               this.$message({
                 type: 'warning',

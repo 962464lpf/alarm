@@ -249,7 +249,8 @@ export default {
       'attackNumDesc',
       'attackNumHighDesc',
       'attackNumMiddleDesc',
-      'attackNumLowDesc'
+      'attackNumLowDesc',
+      'userInfo'
     ])
   },
   methods: {
@@ -416,6 +417,9 @@ export default {
         this.formatChartData('redIpTop5', res[cycle], ['IP', '攻击次数'])
       })
     }
+  },
+  created() {
+    this.$store.dispatch('connectEventSource', this.userInfo)
   },
   mounted() {
     let refresh = sessionStorage.getItem('refresh')
