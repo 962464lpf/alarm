@@ -101,7 +101,6 @@ export default {
             if (res.state == 1) {
               this.$router.push('/index')
               sessionStorage.setItem('userInfo', JSON.stringify(res.userinfo))
-              this.$store.dispatch('connectEventSource', res.userinfo)
               this.$store.commit('changeUserInfo', res.userinfo)
             } else {
               this.$message({
