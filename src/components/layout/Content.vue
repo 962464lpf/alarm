@@ -42,7 +42,7 @@ export default {
     startRecveApi()
     getUserInfo().then(res => {
       this.$store.commit('changeUserInfo', res)
-      this.$store.dispatch('connectEventSource', res)
+      // this.$store.dispatch('connectEventSource', res)
     })
   },
   beforeDestroy() {
