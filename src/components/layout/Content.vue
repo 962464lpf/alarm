@@ -45,9 +45,9 @@ export default {
       // this.$store.dispatch('connectEventSource', res)
     })
   },
-  beforeDestroy() {
-    this.$store.dispatch('disconnectEventSource')
-  }
+  // beforeDestroy() {
+  //   this.$store.dispatch('disconnectEventSource')
+  // }
 }
 </script>
 
