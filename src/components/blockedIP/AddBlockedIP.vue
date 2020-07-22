@@ -1,46 +1,41 @@
 <template>
-  <el-dialog title="添加封禁IP"
-             :visible.sync="dialogVisible"
-             width="60%"
-             :before-close="handleClose">
-    <el-form>
+  <el-dialog title="添加封禁IP" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
+    <el-form label-width="80px">
       <el-form-item label="IP：">
         <el-input v-model="form.ip"></el-input>
       </el-form-item>
     </el-form>
     <p>请选择防火墙:</p>
-    <el-table class="mt10"
-              v-loading="tableLoading"
-              :data="fireWallData"
-              border
-              style="width: 100%"
-              highlight-current-row
-              @current-change="selectTable">
-      <el-table-column type="index"
-                       width="50"></el-table-column>
-      <el-table-column prop="name"
-                       label="防火墙名称"></el-table-column>
-      <el-table-column prop="url"
-                       label="地址"></el-table-column>
-      <el-table-column prop="created_time"
-                       label="创建时间"></el-table-column>
+    <el-table
+      class="mt10"
+      v-loading="tableLoading"
+      :data="fireWallData"
+      border
+      style="width: 100%"
+      highlight-current-row
+      @current-change="selectTable"
+    >
+      <el-table-column type="index" width="50"></el-table-column>
+      <el-table-column prop="name" label="防火墙名称"></el-table-column>
+      <el-table-column prop="url" label="地址"></el-table-column>
+      <el-table-column prop="created_time" label="创建时间"></el-table-column>
     </el-table>
-    <el-pagination class="fr mt10"
-                   background
-                   @size-change="handleSizeChange"
-                   @current-change="handleCurrentChange"
-                   :current-page="currentPage"
-                   :page-sizes="[10, 20, 30, 40]"
-                   :page-size="pageSize"
-                   layout="total, sizes, prev, pager, next, jumper"
-                   :total="total"></el-pagination>
+    <el-pagination
+      class="fr mt10"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
     <div class="clearfloat"></div>
 
-    <span slot="footer"
-          class="dialog-footer">
+    <span slot="footer" class="dialog-footer">
       <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary"
-                 @click="confirm">确定</el-button>
+      <el-button type="primary" @click="confirm">确定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -54,7 +49,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       dialogVisible: this.value,
       form: {
@@ -66,22 +61,21 @@ export default {
       currentPage: 1,
       pageSize: 10,
       total: 0
-
     }
   },
   methods: {
-    handleClose () {
+    handleClose() {
       this.$emit('input', false)
     },
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.pageSize = val
       this.getFireWallData()
     },
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.currentPage = val
       this.getFireWallData()
     },
-    getFireWallData () {
+    getFireWallData() {
       this.tableLoading = false
       getFireWallDataApi().then(res => {
         this.total = res.total
@@ -89,15 +83,15 @@ export default {
         this.tableLoading = false
       })
     },
-    selectTable (val) {
+    selectTable(val) {
       this.form.id = val.id
     },
-    confirm () {
+    confirm() {
       this.$emit('getAddBlockedIP', this.form)
       this.handleClose()
     }
   },
-  mounted () {
+  mounted() {
     this.getFireWallData()
   }
 }
