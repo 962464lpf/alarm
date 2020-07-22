@@ -103,7 +103,7 @@
         row-key="id"
       >
         <el-table-column type="selection" reserve-selection width="45"></el-table-column>
-        <el-table-column label="恶意IP" width="180">
+        <el-table-column label="恶意IP" width="150">
           <template slot-scope="scope">
             <div>
               <!-- 0 为新告警 -->
@@ -130,12 +130,24 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip" label="目的IP" width="100">
+        <el-table-column prop="dip" label="目的IP" width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.dip }}: {{scope.row.dport}}</span>
+            <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
+            <span v-else>{{ scope.row.dip }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="device_ip" label="告警来源"></el-table-column>
+        <el-table-column prop="device_ip" label="告警来源">
+          <template slot-scope="scope">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.device_ip"
+              placement="bottom"
+            >
+              <span class="curp omit">{{ scope.row.device_ip }}</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
         <el-table-column prop label="描述">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
@@ -143,9 +155,29 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="攻击时间" prop="attack_time"></el-table-column>
+        <el-table-column label="攻击时间" prop="attack_time">
+          <template slot-scope="scope">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.attack_time"
+              placement="bottom"
+            >
+              <span class="curp omit">{{ scope.row.attack_time }}</span>
+            </el-tooltip>
+          </template>
+        </el-table-column>
         <el-table-column prop="attack_type" label="攻击类型" width="70">
-          <template slot-scope="scope">{{scope.row.attack_type ? scope.row.attack_type: '未知'}}</template>
+          <template slot-scope="scope">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
+              placement="bottom"
+            >
+              <span class="curp omit">{{ scope.row.attack_type ? scope.row.attack_type : '未知' }}</span>
+            </el-tooltip>
+          </template>
         </el-table-column>
         <el-table-column prop="attack_type" label="攻击等级" width="70">
           <template slot-scope="scope">
