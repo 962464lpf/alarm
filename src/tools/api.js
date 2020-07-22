@@ -7,6 +7,11 @@ if (process.env.NODE_ENV == 'development') {
   BASE_URL = window.location.origin
 }
 
+function closeBackend() {
+  let url = BASE_URL + '/jump/warning/close_backend'
+  POST(url)
+}
+
 function downloadFileApi(url) {
   return downloadFile(url)
 }
@@ -329,6 +334,7 @@ function editFirewallApi(params) {
 
 export {
   BASE_URL,
+  closeBackend,
   downloadFileApi,
   startRecveApi,
   getSumAlarmListApi,

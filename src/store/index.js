@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { BASE_URL } from '../tools/api'
+import { BASE_URL, closeBackend } from '../tools/api'
 
 Vue.use(Vuex)
 
@@ -68,18 +68,20 @@ export default new Vuex.Store({
     },
     closeEventSource(state) {
       state.eventSource.close()
+      // 掉后端断开连接
+      closeBackend()
     },
   },
   actions: {
     connectEventSource({ commit }, data = {}) {
       let source = new EventSource(
         BASE_URL +
-          '/jump/api/stream2?device_ipstr=' +
-          data.device_ipstr +
-          '&uid=' +
-          data.id +
-          '&level=' +
-          data.level
+        '/jump/api/stream2?device_ipstr=' +
+        data.device_ipstr +
+        '&uid=' +
+        data.id +
+        '&level=' +
+        data.level
       )
       // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
       source.onopen = () => {
