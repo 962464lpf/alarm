@@ -11,6 +11,11 @@ function downloadFileApi(url) {
   return downloadFile(url)
 }
 
+function closeBackend() {
+  let url = BASE_URL + '/jump/warning/close_backend'
+  POST(url)
+}
+
 function startRecveApi() {
   let url = BASE_URL + '/jump/warning/start_recv'
   POST(url)
@@ -330,6 +335,7 @@ function editFirewallApi(params) {
 export {
   BASE_URL,
   downloadFileApi,
+  closeBackend,
   startRecveApi,
   getSumAlarmListApi,
   getCurrentAlarmListApi,
