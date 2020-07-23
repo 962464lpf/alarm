@@ -38,6 +38,9 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('beforeunload', () => {
+      this.$store.dispatch('disconnectEventSource')
+    })
     startListernApi()
     startRecveApi()
     getUserInfo().then(res => {
