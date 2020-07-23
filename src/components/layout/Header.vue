@@ -218,11 +218,11 @@ export default {
     logout() {
       logoutApi().then(res => {
         if (res.state === 1) {
-          this.$router.push('/')
           sessionStorage.removeItem('userInfo')
           this.$store.commit('changeUserInfo', {})
           this.delAllCookie()
           this.$store.dispatch('disconnectEventSource')
+          this.$router.push('/')
         } else {
           this.$message({
             type: 'warning',

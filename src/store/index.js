@@ -82,6 +82,7 @@ export default new Vuex.Store({
         '&level=' +
         data.level
       )
+      commit('saveSourceObj', source)
       // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
       source.onopen = () => {
         commit('saveSourceObj', source)
