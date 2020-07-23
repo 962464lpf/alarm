@@ -38,15 +38,15 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('beforeunload', () => {
+      this.$store.dispatch('disconnectEventSource')
+    })
     startListernApi()
     startRecveApi()
     getUserInfo().then(res => {
       this.$store.commit('changeUserInfo', res)
       this.$store.dispatch('connectEventSource', res)
     })
-  },
-  beforeDestroy() {
-    this.$store.dispatch('disconnectEventSource')
   }
 }
 </script>
