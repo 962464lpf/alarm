@@ -2,7 +2,7 @@
   <div id="app">
     <Header class="app-header"></Header>
     <component v-bind:is="contentCmp" class="app-content"></component>
-    <Footer class="app-footer"></Footer>
+    <!-- <Footer class="app-footer"></Footer> -->
   </div>
 </template>
 
@@ -57,7 +57,7 @@ export default {
   }
   .app-content {
     top: 50px;
-    bottom: 32px;
+    bottom: 0;
   }
   .app-footer {
     bottom: 0;
