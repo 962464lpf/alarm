@@ -30,8 +30,8 @@
         @selection-change="handleSelectionChange"
         row-key="id"
       >
-        <el-table-column type="selection" reserve-selection width="45"></el-table-column>
-        <el-table-column label="恶意IP" width="150">
+        <el-table-column type="selection" reserve-selection width="45" align="center"></el-table-column>
+        <el-table-column label="恶意IP" width="150" align="center">
           <template slot-scope="scope">
             <span
               class="curp"
@@ -43,7 +43,7 @@
             <span class="curp" v-else>{{ scope.row.sip }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="wuli_addr" label="位置">
+        <el-table-column prop="wuli_addr" label="位置" align="center">
           <template slot-scope="scope">
             <el-tooltip
               class="item"
@@ -55,13 +55,13 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip" label="目的IP" width="150">
+        <el-table-column prop="dip" label="目的IP" width="150" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
             <span v-else>{{ scope.row.dip }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="告警来源">
+        <el-table-column label="告警来源" align="center">
           <template slot-scope="scope">
             <el-tooltip
               class="item"
@@ -73,14 +73,14 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="描述">
+        <el-table-column label="描述" align="center">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
               <span class="curp omit">{{ scope.row.con }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="最后攻击时间" prop="attack_time">
+        <el-table-column label="最后攻击时间" prop="attack_time" align="center">
           <template slot-scope="scope">
             <el-tooltip
               class="item"
@@ -92,7 +92,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="attack_type" label="攻击类型">
+        <el-table-column prop="attack_type" label="攻击类型" align="center">
           <template slot-scope="scope">
             <el-tooltip
               class="item"
@@ -104,9 +104,9 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="protocol" width="80" label="协议"></el-table-column>
-        <el-table-column prop="summary_num" width="80" label="次数"></el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column prop="protocol" width="80" label="协议" align="center"></el-table-column>
+        <el-table-column prop="summary_num" width="80" label="次数" align="center"></el-table-column>
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <el-dropdown>
               <span class="el-dropdown-link el-button--lightblue dropbutton">
