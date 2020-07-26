@@ -44,7 +44,6 @@ function POST(url, params) {
         if (process.env.NODE_ENV != 'development') {
           if (res.data.state === -1) {
             router.push('/')
-            return
           } else {
             // if (Router.history.current.fullPath === '/') router.push('/index')
           }

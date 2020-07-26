@@ -122,7 +122,7 @@
                          reserve-selection
                          width="45"></el-table-column>
         <el-table-column label="恶意IP"
-                         width="150"
+                         width="160"
                          align="center">
           <template slot-scope="scope">
             <div>
@@ -823,7 +823,9 @@ export default {
               height: 0;
               border-top: 20px solid #d9534f;
               border-right: 20px solid transparent;
+              float: left;
             }
+
             .no-triangle {
               display: inline-block;
               text-indent: 20px;
