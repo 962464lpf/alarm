@@ -281,7 +281,7 @@ export default {
             type,
             message: res.info
           })
-          this.getCurrentAlarmList()
+          this.getAlarmList()
         })
       } else {
         let sipArr = []
@@ -297,7 +297,7 @@ export default {
           if (res.state !== this.successFlag) {
             type = 'warning'
           } else {
-            this.getCurrentAlarmList()
+            this.getAlarmList()
           }
           this.$message({
             type,
