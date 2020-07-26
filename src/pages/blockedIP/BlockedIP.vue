@@ -154,10 +154,17 @@ export default {
       a.click()
     },
     getAddBlockedIP (form) {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
       let fd = new FormData()
       fd.append('ip', form.ip)
       fd.append('fid', form.id)
       aKeyBlockedApi(fd).then(res => {
+        loading.close()
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
