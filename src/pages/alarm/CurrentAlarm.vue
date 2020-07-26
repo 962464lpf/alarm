@@ -359,11 +359,18 @@ export default {
       this.selectRowData = val
     },
     batchBannedOperation (firewall) {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
       if (this.selectBlockedType === 'Akey') {
         let fd = new FormData()
         fd.append('ip', this.rowAlarmData.sip)
         fd.append('fid', firewall.id)
         aKeyBlockedApi(fd).then(res => {
+          loading.close()
           let type = 'success'
           if (res.state !== this.successFlag) type = 'warning'
           this.$message({
@@ -377,18 +384,12 @@ export default {
         this.selectRowData.forEach(item => {
           sipArr.push(item.sip)
         })
-        const loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        })
         let fd = new FormData()
         fd.append('ipstr', sipArr.join(','))
         fd.append('fid', firewall.id)
         batchBannedApi(fd).then(res => {
-          let type = 'success'
           loading.close()
+          let type = 'success'
           if (res.state !== this.successFlag) {
             type = 'warning'
           } else {
