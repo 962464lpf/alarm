@@ -254,8 +254,9 @@ export default {
     ...mapState(['newAlarmData', 'userInfo'])
   },
   watch: {
+    // 有新的告警数据
     newAlarmData () {
-      this.getAlarmList()
+      // this.getAlarmList()
     }
   },
   methods: {
