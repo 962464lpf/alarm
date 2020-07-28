@@ -107,10 +107,17 @@ export default {
       this.currentRow = val
     },
     confirm () {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
       let fd = new FormData()
       fd.append('file', this.fileList[0])
       fd.append('fid', this.currentRow.id)
       batchBannedFileApi(fd).then(res => {
+        loading.close()
         let type = 'success'
         let message = '批量封禁成功'
         if (res.state !== this.successFlag) {
@@ -118,12 +125,12 @@ export default {
           message = res.info
         } else {
           this.$emit('updateTableData')
-          this.handleClose()
         }
         this.$message({
           type,
           message
         })
+        this.handleClose()
       })
     }
   },
