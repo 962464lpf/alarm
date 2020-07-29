@@ -135,16 +135,14 @@ export default {
       }
       api(fd).then(res => {
         let type = 'success'
-        let message = ''
         if (res.state !== this.successFlag) {
           type = 'warning'
-          message = res.info
         } else {
           this.$emit('refresh')
         }
         this.$message({
           type,
-          message
+          message: res.info
         })
       })
       this.handleClose()

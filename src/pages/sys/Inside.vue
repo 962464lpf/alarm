@@ -160,7 +160,7 @@ export default {
     }
   },
   mounted () {
-    // this.getInsideEquip()
+    this.getInsideEquip()
   }
 };
 </script>
