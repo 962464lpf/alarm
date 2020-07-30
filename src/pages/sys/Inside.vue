@@ -23,10 +23,8 @@
                    type="primary">资产录入</el-button>
         <el-button @click="entryInsideEquip('more')"
                    type="primary">批量录入</el-button>
-        <el-form-item>
-          <el-button type="primary"
-                     @click="downloadInsideFile">下载录入模板</el-button>
-        </el-form-item>
+        <el-button type="primary"
+                   @click="downloadInsideFile">下载录入模板</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="tableLoading"
