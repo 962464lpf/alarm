@@ -54,16 +54,16 @@
               </div>
               <div v-else
                    slot="content">
-                <span>{{ scope.row.sip }}</span>
+                <span>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
               </div>
               <div>
                 <span class="curp"
                       v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 ">
-                  {{ scope.row.sip }}
+                  {{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}
                   <b v-html="getToolTipContetn(scope.row.sip_black_type)"></b>
                 </span>
                 <span class="curp"
-                      v-else>{{ scope.row.sip }}</span>
+                      v-else>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
               </div>
             </el-tooltip>
           </template>

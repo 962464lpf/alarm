@@ -139,15 +139,15 @@
               </div>
               <div v-else
                    slot="content">
-                <span>{{ scope.row.sip }}</span>
+                <span>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
               </div>
               <div>
                 <!-- 0 为新告警 -->
                 <span class="triangle"
                       v-if="scope.row.is_new === 0"></span>
-                <span v-if="scope.row.is_new === 0">{{ scope.row.sip }}</span>
+                <span v-if="scope.row.is_new === 0">{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
                 <span class="no-triangle"
-                      v-else>{{ scope.row.sip }}</span>
+                      v-else>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
                 <span class="high"
                       v-if="scope.row.forbidden"
                       style="margin-left: 5px;">已封禁</span>

@@ -98,7 +98,7 @@ export default {
       addInsideEquipStatus: false,
       addInsideEquipType: '',
       currentRow: null,
-      duration: 0
+      notify: null
     }
   },
   components: {
@@ -107,11 +107,11 @@ export default {
   methods: {
     showNotify () {
       this.duration = 0
-      this.$notify({
-        title: '成功',
+      this.notify = this.$notify({
+        title: '提示',
         message: '资产正在录入...',
-        type: 'success',
-        duration: this.duration,
+        type: 'info',
+        duration: 0,
         position: 'bottom-right'
       });
     },
@@ -184,7 +184,7 @@ export default {
 
     postRequest ({ api, fd }) {
       api(fd).then(res => {
-        this.duration = 1
+        if (this.notify) this.notify.close()
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
