@@ -73,7 +73,8 @@
       <AddInsideEquip v-model="addInsideEquipStatus"
                       :addInsideEquipType='addInsideEquipType'
                       :currentRow='currentRow'
-                      @postRequest='postRequest'></AddInsideEquip>
+                      @postRequest='postRequest'
+                      @showNotify='showNotify'></AddInsideEquip>
     </div>
   </div>
 </template>
@@ -96,13 +97,24 @@ export default {
       insideEquipData: [],
       addInsideEquipStatus: false,
       addInsideEquipType: '',
-      currentRow: null
+      currentRow: null,
+      duration: 0
     }
   },
   components: {
     AddInsideEquip
   },
   methods: {
+    showNotify () {
+      this.duration = 0
+      this.$notify({
+        title: '成功',
+        message: '资产正在录入...',
+        type: 'success',
+        duration: this.duration,
+        position: 'bottom-right'
+      });
+    },
     downloadInsideFile () {
       let a = document.createElement('a')
       a.setAttribute('download', '模板')
@@ -172,6 +184,7 @@ export default {
 
     postRequest ({ api, fd }) {
       api(fd).then(res => {
+        this.duration = 1
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'

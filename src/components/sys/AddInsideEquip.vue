@@ -129,10 +129,7 @@ export default {
       if (this.addInsideEquipType === 'more') {
         api = addMoreInsideEquipApi
         fd.append('file', this.fileList[0])
-        this.$message({
-          type: 'info',
-          message: '正在批量导入。'
-        })
+        this.$emit('showNotify')
       } else if (this.addInsideEquipType === 'single') {
         api = addSingleInsideEquipApi
         for (let key in this.form) {
