@@ -40,13 +40,32 @@
                          width="150"
                          align="center">
           <template slot-scope="scope">
-            <span class="curp"
-                  v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 ">
-              {{ scope.row.sip }}
-              <b v-html="getToolTipContetn(scope.row.sip_black_type)"></b>
-            </span>
-            <span class="curp"
-                  v-else>{{ scope.row.sip }}</span>
+            <el-tooltip class="item"
+                        effect="dark"
+                        placement="bottom">
+              <div v-if="scope.row.sip_show"
+                   slot="content">
+                <p>IP：{{scope.row.sip_show.ip}}</p>
+                <p>安全域：{{scope.row.sip_show.anquanyu}}</p>
+                <p>单位-部门：{{scope.row.sip_show.com_dep}}</p>
+                <p>类型：{{scope.row.sip_show.cat}}</p>
+                <p>责任人：{{scope.row.sip_show.staff}}</p>
+                <p>联系电话：{{scope.row.sip_show.phone}}</p>
+              </div>
+              <div v-else
+                   slot="content">
+                <span>{{ scope.row.sip }}</span>
+              </div>
+              <div>
+                <span class="curp"
+                      v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 ">
+                  {{ scope.row.sip }}
+                  <b v-html="getToolTipContetn(scope.row.sip_black_type)"></b>
+                </span>
+                <span class="curp"
+                      v-else>{{ scope.row.sip }}</span>
+              </div>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column prop="wuli_addr"
@@ -66,8 +85,28 @@
                          width="150"
                          align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
-            <span v-else>{{ scope.row.dip }}</span>
+            <el-tooltip class="item"
+                        effect="dark"
+                        placement="bottom">
+              <div v-if="scope.row.dip_show"
+                   slot="content">
+                <p>IP：{{scope.row.dip_show.ip}}</p>
+                <p>安全域：{{scope.row.dip_show.anquanyu}}</p>
+                <p>单位-部门：{{scope.row.dip_show.com_dep}}</p>
+                <p>类型：{{scope.row.dip_show.cat}}</p>
+                <p>责任人：{{scope.row.dip_show.staff}}</p>
+                <p>联系电话：{{scope.row.dip_show.phone}}</p>
+              </div>
+              <div v-else
+                   slot="content">
+                <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
+                <span v-else>{{ scope.row.dip }}</span>
+              </div>
+              <div class="curp omit">
+                <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
+                <span v-else>{{ scope.row.dip }}</span>
+              </div>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column label="告警来源"

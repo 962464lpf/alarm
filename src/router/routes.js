@@ -21,8 +21,8 @@ const routes = [
     meta: {
       title: '趋势统计',
       icon: 'qushitongji',
-      level: 1
-    }
+      level: 1,
+    },
   },
   // {
   //   path: '/newindex',
@@ -41,8 +41,8 @@ const routes = [
     meta: {
       title: '告警汇总',
       icon: 'huizong',
-      level: 1
-    }
+      level: 1,
+    },
   },
   {
     path: '/alarm/log',
@@ -51,8 +51,8 @@ const routes = [
     meta: {
       title: '实时告警',
       icon: 'shishi',
-      level: 1
-    }
+      level: 1,
+    },
   },
 
   {
@@ -62,8 +62,8 @@ const routes = [
     meta: {
       title: '设备录入',
       icon: 'luru',
-      level: 1
-    }
+      level: 1,
+    },
   },
   {
     path: '/whitelist',
@@ -72,8 +72,8 @@ const routes = [
     meta: {
       title: '白名单',
       icon: 'baimingdan',
-      level: 1
-    }
+      level: 1,
+    },
   },
   // {
   //   path: '/objmgt/black',
@@ -91,8 +91,8 @@ const routes = [
     meta: {
       title: '红蓝对抗',
       icon: 'duikang',
-      level: 1
-    }
+      level: 1,
+    },
   },
   {
     path: '/blocked',
@@ -102,7 +102,7 @@ const routes = [
     meta: {
       title: '封禁管理',
       icon: 'fengjin',
-      level: 1
+      level: 1,
     },
     children: [
       {
@@ -112,7 +112,7 @@ const routes = [
         meta: {
           title: '封禁列表',
           icon: 'fengjin',
-          level: 1
+          level: 1,
         },
       },
       {
@@ -122,10 +122,10 @@ const routes = [
         meta: {
           title: '防火墙管理',
           icon: 'fengjin',
-          level: 1
+          level: 1,
         },
-      }
-    ]
+      },
+    ],
   },
   {
     path: '/report',
@@ -134,7 +134,7 @@ const routes = [
     meta: {
       title: '报告管理',
       icon: 'el-icon-document',
-      level: 1
+      level: 1,
     },
     children: [
       {
@@ -144,7 +144,7 @@ const routes = [
         meta: {
           title: '日报周报',
           icon: '',
-          level: 1
+          level: 1,
         },
       },
       {
@@ -152,12 +152,12 @@ const routes = [
         name: 'report',
         component: () => import('../pages/report/AssetsEntry.vue'),
         meta: {
-          title: '资产录入',
+          title: '受保护资产',
           icon: '',
-          level: 1
+          level: 1,
         },
-      }
-    ]
+      },
+    ],
   },
   {
     path: '/sys',
@@ -166,7 +166,7 @@ const routes = [
     meta: {
       title: '系统设置',
       icon: 'el-icon-setting',
-      level: 0
+      level: 0,
     },
     children: [
       {
@@ -176,8 +176,8 @@ const routes = [
         meta: {
           title: '邮件管理',
           icon: 'el-icon-document',
-          level: 0
-        }
+          level: 0,
+        },
       },
       {
         path: '/sys/user',
@@ -186,8 +186,8 @@ const routes = [
         meta: {
           title: '用户管理',
           icon: 'el-icon-document',
-          level: 0
-        }
+          level: 0,
+        },
       },
       {
         path: '/sys/networkManage',
@@ -196,9 +196,19 @@ const routes = [
         meta: {
           title: '网络管理',
           icon: 'el-icon-document',
-          level: 0
-        }
-      }
+          level: 0,
+        },
+      },
+      {
+        path: '/sys/inside',
+        name: 'inside',
+        component: () => import('../pages/sys/Inside.vue'),
+        meta: {
+          title: '资产管理',
+          icon: 'el-icon-document',
+          level: 0,
+        },
+      },
       // {
       //   path: '/sys/setting',
       //   name: 'setting',
@@ -209,8 +219,8 @@ const routes = [
       //     level: 0
       //   }
       // }
-    ]
-  }
+    ],
+  },
 ]
 
 export default routes

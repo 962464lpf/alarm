@@ -332,6 +332,31 @@ function editFirewallApi(params) {
   return POST(url, params)
 }
 
+function getInsideEquipApi(params) {
+  let url = BASE_URL + '/jump/zichan/index'
+  return POST(url, params)
+}
+
+function deleteInsideEquipApi(params) {
+  let url = BASE_URL + '/jump/zichan/delete'
+  return POST(url, params)
+}
+
+function addSingleInsideEquipApi(params) {
+  let url = BASE_URL + '/jump/zichan/add'
+  return POST(url, params)
+}
+
+function addMoreInsideEquipApi(params) {
+  let url = BASE_URL + '/jump/zichan/daoru'
+  return POST(url, params)
+}
+
+function editInsideEquipApi(params) {
+  let url = BASE_URL + '/jump/zichan/edit'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   closeBackend,
@@ -397,4 +422,9 @@ export {
   deleteFirewallApi,
   addFirewallApi,
   editFirewallApi,
+  getInsideEquipApi,
+  deleteInsideEquipApi,
+  addSingleInsideEquipApi,
+  addMoreInsideEquipApi,
+  editInsideEquipApi,
 }
