@@ -43,6 +43,12 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
+          <el-form-item label="单位-部门："
+                        prop="anquanyu">
+            <el-input v-model="form.com_dep"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="类型："
                         prop="cat">
             <el-input v-model="form.cat"></el-input>
@@ -98,7 +104,8 @@ export default {
         phone: '',
         anquanyu: '',
         cat: '',
-        staff: ''
+        staff: '',
+        com_dep: ''
       },
       fileList: [],
       uploadStatus: false,

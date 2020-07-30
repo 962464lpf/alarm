@@ -39,6 +39,8 @@
                        label="IP"></el-table-column>
       <el-table-column prop="anquanyu"
                        label="安全域"></el-table-column>
+      <el-table-column prop="com_dep"
+                       label="单位-部门"></el-table-column>
       <el-table-column prop="cat"
                        label="类型"></el-table-column>
       <el-table-column prop="staff"

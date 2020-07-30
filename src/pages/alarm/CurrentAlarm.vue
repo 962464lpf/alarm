@@ -132,6 +132,7 @@
                    slot="content">
                 <p>IP：{{scope.row.sip_show.ip}}</p>
                 <p>安全域：{{scope.row.sip_show.anquanyu}}</p>
+                <p>单位-部门：{{scope.row.sip_show.com_dep}}</p>
                 <p>类型：{{scope.row.sip_show.cat}}</p>
                 <p>责任人：{{scope.row.sip_show.staff}}</p>
                 <p>联系电话：{{scope.row.sip_show.phone}}</p>
@@ -181,6 +182,7 @@
                    slot="content">
                 <p>IP：{{scope.row.dip_show.ip}}</p>
                 <p>安全域：{{scope.row.dip_show.anquanyu}}</p>
+                <p>单位-部门：{{scope.row.dip_show.com_dep}}</p>
                 <p>类型：{{scope.row.dip_show.cat}}</p>
                 <p>责任人：{{scope.row.dip_show.staff}}</p>
                 <p>联系电话：{{scope.row.dip_show.phone}}</p>

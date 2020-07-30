@@ -204,7 +204,7 @@ const routes = [
         name: 'inside',
         component: () => import('../pages/sys/Inside.vue'),
         meta: {
-          title: '资产录入',
+          title: '资产管理',
           icon: 'el-icon-document',
           level: 0,
         },
