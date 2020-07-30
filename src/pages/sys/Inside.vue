@@ -23,6 +23,10 @@
                    type="primary">资产录入</el-button>
         <el-button @click="entryInsideEquip('more')"
                    type="primary">批量录入</el-button>
+        <el-form-item>
+          <el-button type="primary"
+                     @click="downloadInsideFile">下载录入模板</el-button>
+        </el-form-item>
       </el-form-item>
     </el-form>
     <el-table v-loading="tableLoading"
@@ -76,7 +80,7 @@
 
 <script>
 import AddInsideEquip from '../../components/sys/AddInsideEquip'
-import { getInsideEquipApi, deleteInsideEquipApi } from '../../tools/api'
+import { getInsideEquipApi, deleteInsideEquipApi, BASE_URL } from '../../tools/api'
 export default {
   data () {
     return {
@@ -99,6 +103,12 @@ export default {
     AddInsideEquip
   },
   methods: {
+    downloadInsideFile () {
+      let a = document.createElement('a')
+      a.setAttribute('download', '模板')
+      a.setAttribute('href', BASE_URL + '/zichan.xlsx')
+      a.click()
+    },
     entryInsideEquip (type) {
       this.addInsideEquipStatus = true
       this.addInsideEquipType = type
