@@ -152,7 +152,7 @@ const routes = [
         name: 'report',
         component: () => import('../pages/report/AssetsEntry.vue'),
         meta: {
-          title: '资产录入',
+          title: '受保护资产',
           icon: '',
           level: 1,
         },
@@ -204,7 +204,7 @@ const routes = [
         name: 'inside',
         component: () => import('../pages/sys/Inside.vue'),
         meta: {
-          title: '内部IP录入',
+          title: '资产录入',
           icon: 'el-icon-document',
           level: 0,
         },

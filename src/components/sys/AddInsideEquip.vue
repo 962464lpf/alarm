@@ -122,6 +122,10 @@ export default {
       if (this.addInsideEquipType === 'more') {
         api = addMoreInsideEquipApi
         fd.append('file', this.fileList[0])
+        this.$message({
+          type: 'info',
+          message: '正在批量导入。'
+        })
       } else if (this.addInsideEquipType === 'single') {
         api = addSingleInsideEquipApi
         for (let key in this.form) {
@@ -129,35 +133,25 @@ export default {
         }
       } else {
         api = editInsideEquipApi
+        fd.append('id', this.currentRow.id)
         for (let key in this.form) {
           fd.append(key, this.form[key])
         }
       }
-      api(fd).then(res => {
-        let type = 'success'
-        if (res.state !== this.successFlag) {
-          type = 'warning'
-        } else {
-          this.$emit('refresh')
-        }
-        this.$message({
-          type,
-          message: res.info
-        })
-      })
+      this.$emit('postRequest', { fd, api })
       this.handleClose()
     }
 
   },
   mounted () {
-    this.title = '录入内部设备'
+    this.title = '资产录入'
     if (this.addInsideEquipType === 'more') {
       this.uploadStatus = true
     } else if (this.addInsideEquipType === 'single') {
       this.uploadStatus = false
     } else {
       this.uploadStatus = false
-      this.title = '修改内部设备'
+      this.title = '修改资产'
       for (let key in this.form) {
         this.form[key] = this.currentRow[key]
       }

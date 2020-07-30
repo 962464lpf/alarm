@@ -20,9 +20,9 @@
                    type="primary"
                    size="small">重置</el-button>
         <el-button @click="entryInsideEquip('single')"
-                   type="primary">内部设备录入</el-button>
+                   type="primary">资产录入</el-button>
         <el-button @click="entryInsideEquip('more')"
-                   type="primary">批量录入内部设备</el-button>
+                   type="primary">批量录入</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="tableLoading"
@@ -48,10 +48,10 @@
         <template slot-scope="scope">
           <el-button @click="deleteEquip(scope.row)"
                      type="text"
-                     size="small">删除设备</el-button>
+                     size="small">删除</el-button>
           <el-button @click="modify(scope.row)"
                      type="text"
-                     size="small">修改设备</el-button>
+                     size="small">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -69,7 +69,7 @@
       <AddInsideEquip v-model="addInsideEquipStatus"
                       :addInsideEquipType='addInsideEquipType'
                       :currentRow='currentRow'
-                      @refresh='getInsideEquip'></AddInsideEquip>
+                      @postRequest='postRequest'></AddInsideEquip>
     </div>
   </div>
 </template>
@@ -104,7 +104,7 @@ export default {
       this.addInsideEquipType = type
     },
     deleteEquip (row) {
-      this.$confirm('您确定要删除此设备吗?', '提示', {
+      this.$confirm('您确定要删除此数据吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -116,7 +116,7 @@ export default {
           if (res.state !== this.successFlag) {
             type = 'warning'
           } else {
-            this.getBlockedIP()
+            this.getInsideEquip()
           }
           this.$message({
             type,
@@ -144,6 +144,7 @@ export default {
       }
       this.getInsideEquip()
     },
+
     getInsideEquip () {
       this.tableLoading = false
       let fd = new FormData()
@@ -156,6 +157,21 @@ export default {
         this.tableLoading = false
         this.insideEquipData = res.data
         this.total = res.total
+      })
+    },
+
+    postRequest ({ api, fd }) {
+      api(fd).then(res => {
+        let type = 'success'
+        if (res.state !== this.successFlag) {
+          type = 'warning'
+        } else {
+          this.getInsideEquip()
+        }
+        this.$message({
+          type,
+          message: res.info
+        })
       })
     }
   },
