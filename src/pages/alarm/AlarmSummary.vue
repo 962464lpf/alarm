@@ -193,7 +193,12 @@
       </div>
     </div>
     <div v-if="alarmListDialogStatus">
-      <AlarmListDialog v-model="alarmListDialogStatus" :rowId="rowId" :searchForm="searchForm"></AlarmListDialog>
+      <AlarmListDialog
+        v-model="alarmListDialogStatus"
+        :rowSip="rowSip"
+        :rowId="rowId"
+        :searchForm="searchForm"
+      ></AlarmListDialog>
     </div>
     <div v-if="blackTypeDialogStatus">
       <ChooseBlackType v-model="blackTypeDialogStatus" @emitChooseType="emitChooseType"></ChooseBlackType>
@@ -259,6 +264,7 @@ export default {
       blackTypeDialogStatus: false,
       rowAlarmData: {},
       rowId: '',
+      rowSip: '',
       selectRowData: [],
       chooseFirewallStatus: false,
       selectBlockedType: ''
@@ -432,6 +438,7 @@ export default {
     operation(row, type) {
       this.rowAlarmData = row
       this.rowId = parseInt(row.id)
+      this.rowSip = row.sip
       let fd = new FormData()
       fd.append('ip_addr', row.sip)
       fd.append('id', parseInt(row.id))
