@@ -30,6 +30,12 @@ function getSumAlarmListApi(params) {
   let url = BASE_URL + '/jump/warning/summary'
   return POST(url, params)
 }
+
+function getSumAlarmDetailListApi(params) {
+  let url = BASE_URL + '/jump/warning/summary_detail'
+  return POST(url, params)
+}
+
 function getCurrentAlarmListApi(params) {
   let url = BASE_URL + '/jump/warning/index'
   return POST(url, params)
@@ -363,6 +369,7 @@ export {
   downloadFileApi,
   startRecveApi,
   getSumAlarmListApi,
+  getSumAlarmDetailListApi,
   getCurrentAlarmListApi,
   exportCurrentAlarmFlieApi,
   setCurrentAlarmNotNewApi,

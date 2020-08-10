@@ -1,8 +1,20 @@
 <template>
-  <el-dialog :title="title" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
+  <el-dialog :title="title" :visible.sync="dialogVisible" width="65%" :before-close="handleClose">
     <el-table :data="currentPageData" style="width: 100%">
-      <el-table-column prop="dip" label="目的IP"></el-table-column>
-      <el-table-column prop="device_ip" label="告警来源"></el-table-column>
+      <el-table-column prop="dip" label="目的IP">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" :content="scope.row.dip" placement="bottom">
+            <span class="curp omit">{{ scope.row.dip }}</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="device_ip" label="告警来源">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" :content="scope.row.device_ip" placement="bottom">
+            <span class="curp omit">{{ scope.row.device_ip }}</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column label="描述">
         <template slot-scope="scope">
           <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
@@ -11,7 +23,18 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="攻击时间" prop="attack_time"></el-table-column>
+      <el-table-column label="攻击时间" prop="attack_time">
+        <template slot-scope="scope">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="scope.row.attack_time"
+            placement="bottom"
+          >
+            <span class="curp omit">{{ scope.row.attack_time }}</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column prop="attack_type" label="攻击类型">
         <template slot-scope="scope">{{scope.row.attack_type ? scope.row.attack_type : '未知'}}</template>
       </el-table-column>
@@ -31,30 +54,34 @@
 </template>
 
 <script>
+import { getSumAlarmDetailListApi } from '../../tools/api'
 export default {
   props: {
     value: {
       type: Boolean,
       default: false
     },
-    data: {
-      type: Array,
-      default: () => []
-    }
+    rowId: {
+      type: Number
+    },
+    searchForm: {
+      type: Object
+    },
+    rowSip: {}
   },
   data() {
     return {
       dialogVisible: this.value,
-      alarmData: this.data,
+      // alarmData: this.data,
       currentPage: 1,
       pageSize: 10,
-      total: this.data.length,
+      total: 0,
       currentPageData: []
     }
   },
   computed: {
     title() {
-      return this.alarmData[0].sip + '告警详情'
+      return this.rowSip + '告警详情'
     }
   },
   methods: {
@@ -63,16 +90,29 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val
-      this.sliceAlarmData()
+      this.getDetailData()
     },
-    sliceAlarmData() {
-      let start = (this.currentPage - 1) * this.pageSize
-      let end = this.currentPage * this.pageSize
-      this.currentPageData = this.alarmData.slice(start, end)
+    getDetailData() {
+      let fd = new FormData()
+      for (let k in this.searchForm) {
+        if (k === 'time') {
+          fd.append('start_time', this.searchForm[k][0])
+          fd.append('end_time', this.searchForm[k][1])
+        } else {
+          fd.append(k, this.searchForm[k])
+        }
+      }
+      fd.append('id', this.rowId)
+      fd.append('page', this.currentPage)
+      fd.append('per_page', this.pageSize)
+      getSumAlarmDetailListApi(fd).then(res => {
+        this.currentPageData = res.data
+        this.total = res.total
+      })
     }
   },
   mounted() {
-    this.sliceAlarmData()
+    this.getDetailData()
   }
 }
 </script>
