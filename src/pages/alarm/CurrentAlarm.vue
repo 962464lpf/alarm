@@ -863,7 +863,7 @@ export default {
     }
   }
   .attack-num {
-    padding: 2px 5px;
+    padding: 0px 5px;
     color: #303133;
     font-size: 13px;
     margin-top: 10px;
