@@ -48,7 +48,7 @@ export default new Vuex.Store({
           state[key] = data[enumData[key]]
         }
       }
-      if (data.day) {
+      if (data[state.cycle]) {
         setData(data[state.cycle])
       } else {
         state.attackNum = data.num

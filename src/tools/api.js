@@ -110,9 +110,9 @@ function getMailApi(params) {
   return GET(url, params)
 }
 
-function getAttackNumApi() {
+function getAttackNumApi(params) {
   let url = BASE_URL + '/jump/warning/get_attack_num'
-  return POST(url)
+  return POST(url, params)
 }
 
 function getStsWhiteStusApi() {

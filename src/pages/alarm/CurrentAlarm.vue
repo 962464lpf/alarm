@@ -252,6 +252,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
+      <div class="fr attack-num">共 {{totalAttackNum}} 次攻击</div>
     </div>
     <div class="clearfloat"></div>
     <div v-if="blackTypeDialogStatus">
@@ -332,7 +333,8 @@ export default {
       },
       selectRowData: [],
       chooseFirewallStatus: false,
-      selectBlockedType: ''
+      selectBlockedType: '',
+      totalAttackNum: 0
     }
   },
   computed: {
@@ -695,6 +697,7 @@ export default {
         this.currentAlarmList = res.data
         this.total = res.total
         this.whitePushAlarm = res.white_show === 1 ? true : false
+        this.totalAttackNum = res.total_attack_num
       })
     }
   },
@@ -857,6 +860,13 @@ export default {
         }
       }
     }
+  }
+  .attack-num {
+    padding: 0px 5px;
+    color: #303133;
+    font-size: 13px;
+    margin-top: 10px;
+    line-height: 32px;
   }
 }
 .notify-red,
