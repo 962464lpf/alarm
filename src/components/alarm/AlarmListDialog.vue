@@ -31,30 +31,34 @@
 </template>
 
 <script>
+import { getSumAlarmDetailListApi } from '../../tools/api'
 export default {
   props: {
     value: {
       type: Boolean,
       default: false
     },
-    data: {
-      type: Array,
-      default: () => []
+    rowId: {
+      type: Number
+    },
+    searchForm: {
+      type: Object
     }
   },
   data() {
     return {
       dialogVisible: this.value,
-      alarmData: this.data,
+      // alarmData: this.data,
       currentPage: 1,
       pageSize: 10,
-      total: this.data.length,
+      total: 0,
       currentPageData: []
     }
   },
   computed: {
     title() {
-      return this.alarmData[0].sip + '告警详情'
+      // return this.alarmData[0].sip + '告警详情'
+      return '告警详情'
     }
   },
   methods: {
@@ -63,16 +67,28 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val
-      this.sliceAlarmData()
+      this.getDetailData()
     },
-    sliceAlarmData() {
-      let start = (this.currentPage - 1) * this.pageSize
-      let end = this.currentPage * this.pageSize
-      this.currentPageData = this.alarmData.slice(start, end)
+    getDetailData() {
+      let fd = new FormData()
+      for (let k in this.searchForm) {
+        if (k === 'time') {
+          fd.append('start_time', this.searchForm[k][0])
+          fd.append('end_time', this.searchForm[k][1])
+        } else {
+          fd.append(k, this.searchForm[k])
+        }
+      }
+      fd.append('page', this.currentPage)
+      fd.append('per_page', this.pageSize)
+      getSumAlarmDetailListApi(fd).then(res => {
+        this.currentPageData = res.data
+        this.total = res.total
+      })
     }
   },
   mounted() {
-    this.sliceAlarmData()
+    this.getDetailData()
   }
 }
 </script>
