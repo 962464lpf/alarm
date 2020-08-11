@@ -10,6 +10,9 @@
       <el-form-item label="责任人">
         <el-input v-model="form.staff"></el-input>
       </el-form-item>
+      <el-form-item label="服务器区">
+        <el-switch v-model="form.is_server" active-text="是" inactive-text="否"></el-switch>
+      </el-form-item>
       <el-form-item>
         <el-button @click="getInsideEquip" type="primary" size="small">查询</el-button>
         <el-button @click="reset" type="primary" size="small">重置</el-button>
@@ -80,7 +83,8 @@ export default {
       form: {
         ip: '',
         name: '',
-        staff: ''
+        staff: '',
+        is_server: false
       },
       pageSize: 20,
       total: 0,
@@ -163,7 +167,11 @@ export default {
       this.tableLoading = false
       let fd = new FormData()
       for (let key in this.form) {
-        fd.append(key, this.form[key])
+        if (key === 'is_server') {
+          fd.append(key, Number(this.form[key]))
+        } else {
+          fd.append(key, this.form[key])
+        }
       }
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)

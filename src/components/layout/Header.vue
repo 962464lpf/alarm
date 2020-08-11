@@ -31,15 +31,6 @@
         <span>
           <i class="el-icon-s-tools curp" style="font-size: 14px;" @click="changeCycle"></i>
         </span>
-        <span>
-          <a style="font-size:12px;">
-            白名单机制
-            <i class="el-icon-info curp" @click="showTooltip"></i>：
-          </a>
-          <!-- <el-tooltip class="item" effect="dark" content="是否启用白名单机制" placement="top-start"> -->
-          <el-switch v-model="statisticalWhite" :width="40" @change="setWhiteIfStatistical"></el-switch>
-          <!-- </el-tooltip> -->
-        </span>
       </el-col>
       <el-col
         :span="5"
@@ -70,25 +61,35 @@
         </span>
       </el-col>
     </el-row>
-    <el-dialog title="告警统计周期" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="顶部配置" :visible.sync="dialogVisible" width="30%">
       <div>
-        <span>周期：</span>
-        <el-radio-group v-model="radio">
+        <span>告警统计周期：</span>
+        <el-radio-group v-model="radio" @change="radioChange">
           <el-radio-button label="day">日</el-radio-button>
           <el-radio-button label="week">周</el-radio-button>
           <el-radio-button label="month">月</el-radio-button>
         </el-radio-group>
       </div>
-      <!-- <div class="mt10">
-        <el-checkbox v-model="statisticalWhite">
-          <span style="font-size: 12px;">启用白名单</span>
-        </el-checkbox>
-      </div>-->
+      <div class="mt10">
+        <span>
+          <a style="font-size:12px;">
+            白名单机制
+            <i class="el-icon-info curp" @click="showTooltip"></i>：
+          </a>
+          <el-switch v-model="statisticalWhite" :width="40" @change="setWhiteIfStatistical"></el-switch>
+        </span>
+      </div>
+      <div class="mt10">
+        <span>
+          <a style="font-size:12px;">只统计服务器区数据：</a>
+          <el-switch v-model="isServer" :width="40" @change="setIsServer"></el-switch>
+        </span>
+      </div>
 
-      <span slot="footer" class="dialog-footer">
+      <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="confirm">确 定</el-button>
-      </span>
+      </span>-->
     </el-dialog>
     <div v-if="resetPasswordStatus">
       <ResetPassword v-model="resetPasswordStatus" @getResetform="getResetform"></ResetPassword>
@@ -117,7 +118,8 @@ export default {
       radio: 'day',
       statisticalWhite: 0,
       dialogVisible: false,
-      resetPasswordStatus: false
+      resetPasswordStatus: false,
+      isServer: false
     }
   },
   computed: {
@@ -141,6 +143,9 @@ export default {
     }
   },
   methods: {
+    radioChange() {
+      this.confirm()
+    },
     showTooltip() {
       this.$message({
         message:
@@ -189,8 +194,8 @@ export default {
     confirm() {
       this.$store.commit('cahngeCycle', this.radio)
       this.getAttackNum()
-      this.dialogVisible = false
     },
+    setIsServer() {},
     getAttackNum() {
       let fd = new FormData()
       fd.append('type', this.cycle)
