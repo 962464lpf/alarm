@@ -1,86 +1,77 @@
 <template>
-  <el-dialog :title="title"
-             :visible.sync="dialogVisible"
-             width="60%"
-             :before-close="handleClose">
-    <el-form ref="addInsideEquip"
-             :model="form"
-             :rules="rules"
-             inline
-             label-width="120px">
+  <el-dialog :title="title" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
+    <el-form ref="addInsideEquip" :model="form" :rules="rules" inline label-width="120px">
       <el-row v-if="uploadStatus">
-        <el-upload class="upload-demo"
-                   :auto-upload="false"
-                   :limit="1"
-                   action
-                   accept=".xls, .xlsx"
-                   :on-change="fileChange"
-                   :on-remove="fileRemove"
-                   :file-list="fileList">
-          <el-button size="small"
-                     type="primary">点击上传</el-button>
-          <div slot="tip"
-               class="el-upload__tip">只能上传excel文件</div>
+        <el-upload
+          class="upload-demo"
+          :auto-upload="false"
+          :limit="1"
+          action
+          accept=".xls, .xlsx"
+          :on-change="fileChange"
+          :on-remove="fileRemove"
+          :file-list="fileList"
+        >
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传excel文件</div>
         </el-upload>
       </el-row>
       <el-row v-else>
         <el-col :span="12">
-          <el-form-item label="资产名称："
-                        prop="name">
+          <el-form-item label="资产名称：" prop="name">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="IP："
-                        prop="ip">
+          <el-form-item label="IP：" prop="ip">
             <el-input v-model="form.ip"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="安全域："
-                        prop="anquanyu">
+          <el-form-item label="安全域：" prop="anquanyu">
             <el-input v-model="form.anquanyu"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="单位-部门："
-                        prop="anquanyu">
+          <el-form-item label="单位-部门：" prop="anquanyu">
             <el-input v-model="form.com_dep"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="类型："
-                        prop="cat">
+          <el-form-item label="类型：" prop="cat">
             <el-input v-model="form.cat"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="责任人："
-                        prop="staff">
+          <el-form-item label="责任人：" prop="staff">
             <el-input v-model="form.staff"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="联系电话："
-                        prop="phone">
+          <el-form-item label="联系电话：" prop="phone">
             <el-input v-model="form.phone"></el-input>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="服务器区：" prop="phone">
+            <el-switch v-model="form.is_server" active-text="是" inactive-text="否"></el-switch>
+          </el-form-item>
+        </el-col>
       </el-row>
-
     </el-form>
-    <span slot="footer"
-          class="dialog-footer">
+    <span slot="footer" class="dialog-footer">
       <el-button @click="handleClose">取消</el-button>
-      <el-button type="primary"
-                 @click="confirm">确定</el-button>
+      <el-button type="primary" @click="confirm">确定</el-button>
     </span>
-
   </el-dialog>
 </template>
 
 <script>
-import { addSingleInsideEquipApi, addMoreInsideEquipApi, editInsideEquipApi } from '../../tools/api'
+import {
+  addSingleInsideEquipApi,
+  addMoreInsideEquipApi,
+  editInsideEquipApi
+} from '../../tools/api'
 export default {
   props: {
     value: {
@@ -94,7 +85,7 @@ export default {
       type: Object
     }
   },
-  data () {
+  data() {
     return {
       title: '',
       dialogVisible: this.value,
@@ -105,25 +96,25 @@ export default {
         anquanyu: '',
         cat: '',
         staff: '',
-        com_dep: ''
+        com_dep: '',
+        is_server: false
       },
       fileList: [],
       uploadStatus: false,
-      rules: {
-      }
+      rules: {}
     }
   },
   methods: {
-    handleClose () {
+    handleClose() {
       this.$emit('input', false)
     },
-    fileChange (file) {
+    fileChange(file) {
       this.fileList.push(file.raw)
     },
-    fileRemove () {
+    fileRemove() {
       this.fileList = []
     },
-    confirm () {
+    confirm() {
       let fd = new FormData()
       let api = null
       if (this.addInsideEquipType === 'more') {
@@ -133,21 +124,28 @@ export default {
       } else if (this.addInsideEquipType === 'single') {
         api = addSingleInsideEquipApi
         for (let key in this.form) {
-          fd.append(key, this.form[key])
+          if (key === 'is_server') {
+            fd.append(key, Number(this.form[key]))
+          } else {
+            fd.append(key, this.form[key])
+          }
         }
       } else {
         api = editInsideEquipApi
         fd.append('id', this.currentRow.id)
         for (let key in this.form) {
-          fd.append(key, this.form[key])
+          if (key === 'is_server') {
+            fd.append(key, Number(this.form[key]))
+          } else {
+            fd.append(key, this.form[key])
+          }
         }
       }
       this.$emit('postRequest', { fd, api })
       this.handleClose()
     }
-
   },
-  mounted () {
+  mounted() {
     this.title = '资产录入'
     if (this.addInsideEquipType === 'more') {
       this.uploadStatus = true
