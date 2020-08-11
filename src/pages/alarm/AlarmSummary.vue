@@ -173,7 +173,8 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
-      <div class="statistic">
+      <div class="clearfloat"></div>
+      <div class="statistic fr mt10">
         <span>
           攻击总数：
           <b>{{ attack_total }}</b>
@@ -191,6 +192,7 @@
           <b>{{ attack_total_low }}</b>
         </span>
       </div>
+      <div class="clearfloat"></div>
     </div>
     <div v-if="alarmListDialogStatus">
       <AlarmListDialog
@@ -539,8 +541,9 @@ export default {
   .statistic {
     color: #606266;
     line-height: 32px;
+    font-size: 13px;
     span {
-      padding: 5px 15px;
+      padding: 5px 10px;
     }
   }
   .red-team,
