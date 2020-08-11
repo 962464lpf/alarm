@@ -33,6 +33,9 @@
       <el-table-column prop="cat" label="类型"></el-table-column>
       <el-table-column prop="staff" label="责任人"></el-table-column>
       <el-table-column prop="phone" label="联系电话"></el-table-column>
+      <el-table-column prop="is_server" label="服务器区">
+        <template slot-scope="scope">{{scope.row.is_server === 0 ? '否' : '是'}}</template>
+      </el-table-column>
       <el-table-column label="操作" width="180">
         <template slot-scope="scope">
           <el-button @click="deleteEquip(scope.row)" type="text" size="small">删除</el-button>

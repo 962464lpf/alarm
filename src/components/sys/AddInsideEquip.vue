@@ -155,7 +155,11 @@ export default {
       this.uploadStatus = false
       this.title = '修改资产'
       for (let key in this.form) {
-        this.form[key] = this.currentRow[key]
+        if (key === 'is_server') {
+          this.form[key] = Boolean(this.currentRow[key])
+        } else {
+          this.form[key] = this.currentRow[key]
+        }
       }
     }
   }
