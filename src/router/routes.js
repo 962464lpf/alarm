@@ -95,6 +95,16 @@ const routes = [
     },
   },
   {
+    path: '/order',
+    name: 'order',
+    component: () => import('../pages/order/Order.vue'),
+    meta: {
+      title: '工单管理',
+      icon: 'duikang',
+      level: 1,
+    },
+  },
+  {
     path: '/blocked',
     name: 'blocked',
     // component: () => import('../pages/blockedIP/BlockedIP.vue'),

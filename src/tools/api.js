@@ -248,6 +248,11 @@ function aKeyBlockedApi(params) {
   return POST(url, params)
 }
 
+function repairOrderApi(params) {
+  let url = BASE_URL + '/jump/warning/zhuanru'
+  return POST(url, params)
+}
+
 function batchBannedApi(params) {
   let url = BASE_URL + '/jump/forbiddenIp/forbidden_batch'
   return POST(url, params)
@@ -363,6 +368,33 @@ function editInsideEquipApi(params) {
   return POST(url, params)
 }
 
+function getOrderListApi(params) {
+  let url = BASE_URL + '/jump/gongdan/index'
+  return GET(url, params)
+}
+
+function getOrderDetailApi(params) {
+  let url = BASE_URL + '/jump/gongdan/detail'
+  return POST(url, params)
+}
+
+function orderWuBaoApi(params) {
+  let url = BASE_URL + '/jump/gongdan/wubao'
+  return POST(url, params)
+}
+
+function orderIssueDisposalApi(params) {
+  let url = BASE_URL + '/jump/gongdan/xiafa'
+  return POST(url, params)
+}
+
+function orderBlockApi(params) {
+  let url = BASE_URL + '/jump/gongdan/fengjin'
+  return POST(url, params)
+}
+
+
+
 export {
   BASE_URL,
   closeBackend,
@@ -411,6 +443,7 @@ export {
   whiteIfPushAlarmApi,
   whiteIfStatisticalApi,
   aKeyBlockedApi,
+  repairOrderApi,
   batchBannedApi,
   batchBannedFileApi,
   getBlockedIApi,
@@ -434,4 +467,9 @@ export {
   addSingleInsideEquipApi,
   addMoreInsideEquipApi,
   editInsideEquipApi,
+  getOrderListApi,
+  getOrderDetailApi,
+  orderWuBaoApi,
+  orderIssueDisposalApi,
+  orderBlockApi
 }

@@ -182,7 +182,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop label="描述" align="center">
+        <el-table-column label="描述" align="center">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
               <span class="curp omit">{{ scope.row.con}}</span>
@@ -213,7 +213,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="attack_type" label="攻击等级" width="70" align="center">
+        <el-table-column label="攻击等级" width="70" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.level == 0" class="high">高</span>
             <span v-if="scope.row.level == 1" class="middle">中</span>
@@ -235,6 +235,7 @@
                 <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
                 <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
                 <el-dropdown-item @click.native="blocked(scope.row)">一键封禁</el-dropdown-item>
+                <el-dropdown-item @click.native="repairOrder(scope.row)">一键转工单</el-dropdown-item>
                 <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
               </el-dropdown-menu>
             </el-dropdown>
@@ -280,6 +281,7 @@ import {
   setSingleAlarmNotNewApi,
   whiteIfPushAlarmApi,
   aKeyBlockedApi,
+  repairOrderApi,
   batchBannedApi,
   exportCurrentAlarmFlieApi,
   BASE_URL,
@@ -532,6 +534,20 @@ export default {
           message: '您没有权限执行此操作，请与管理员联系。'
         })
       }
+    },
+    repairOrder(row) {
+      let fd = new FormData()
+      fd.append('alert_id', row.id)
+      repairOrderApi(fd).then(res => {
+        let type = 'success'
+        if (res.state !== this.successFlag) {
+          type = 'warning'
+        }
+        this.$message({
+          type,
+          message: res.info
+        })
+      })
     },
     // 根据红，蓝，恶意，普通的进行添加不同类名，进行颜色区分
     addClass(row) {
