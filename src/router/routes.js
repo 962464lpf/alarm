@@ -100,7 +100,7 @@ const routes = [
     component: () => import('../pages/order/Order.vue'),
     meta: {
       title: '工单管理',
-      icon: 'duikang',
+      icon: 'el-icon-s-order',
       level: 1,
     },
   },

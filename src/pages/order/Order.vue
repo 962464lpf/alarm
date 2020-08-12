@@ -10,6 +10,7 @@
       <el-form-item>
         <el-button type="primary" @click="getOrderList">查询</el-button>
         <el-button type="primary" @click="onReset">重置</el-button>
+        <el-button type="primary" @click="selectTimeStatus=true">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="tableLoading" :data="orderList" border style="width: 100%">
@@ -55,12 +56,16 @@
     <div v-if="chooseFirewallStatus">
       <ChooseFirewall v-model="chooseFirewallStatus" @getFirewall="orderBlocked"></ChooseFirewall>
     </div>
+    <div v-if="selectTimeStatus">
+      <SelectTime v-model="selectTimeStatus" @getFirewall="orderBlocked"></SelectTime>
+    </div>
   </div>
 </template>
 
 <script>
 import OrderDetail from '../../components/order/OrderDetail'
 import ChooseFirewall from '../../components/common/ChooseFirewall'
+import SelectTime from '../../components/order/SelectTime'
 import { getOrderListApi, orderBlockApi } from '../../tools/api'
 export default {
   data() {
@@ -76,12 +81,14 @@ export default {
       total: 0,
       orderDetailStatus: false,
       chooseFirewallStatus: false,
+      selectTimeStatus: false,
       currentRow: {}
     }
   },
   components: {
     OrderDetail,
-    ChooseFirewall
+    ChooseFirewall,
+    SelectTime
   },
   methods: {
     getStatus(row) {

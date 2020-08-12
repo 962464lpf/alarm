@@ -393,6 +393,11 @@ function orderBlockApi(params) {
   return POST(url, params)
 }
 
+function downloadOrderApi(params) {
+  let url = BASE_URL + '/jump/gongdan/export'
+  return POST(url, params)
+}
+
 
 
 export {
@@ -471,5 +476,6 @@ export {
   getOrderDetailApi,
   orderWuBaoApi,
   orderIssueDisposalApi,
-  orderBlockApi
+  orderBlockApi,
+  downloadOrderApi
 }
