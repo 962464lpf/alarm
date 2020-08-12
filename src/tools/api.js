@@ -243,6 +243,11 @@ function whiteIfStatisticalApi(params) {
   return POST(url, params)
 }
 
+function lookServerSwitchApi(params) {
+  let url = BASE_URL + '/jump/globalSet/look_server_switch'
+  return POST(url, params)
+}
+
 function aKeyBlockedApi(params) {
   let url = BASE_URL + '/jump/forbiddenIp/forbidden'
   return POST(url, params)
@@ -410,6 +415,7 @@ export {
   userAllotEquipApi,
   whiteIfPushAlarmApi,
   whiteIfStatisticalApi,
+  lookServerSwitchApi,
   aKeyBlockedApi,
   batchBannedApi,
   batchBannedFileApi,

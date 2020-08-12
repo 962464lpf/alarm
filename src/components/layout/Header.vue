@@ -61,7 +61,7 @@
         </span>
       </el-col>
     </el-row>
-    <el-dialog title="顶部配置" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="全局配置" :visible.sync="dialogVisible" width="30%">
       <div>
         <span>告警统计周期：</span>
         <el-radio-group v-model="radio" @change="radioChange">
@@ -81,7 +81,7 @@
       </div>
       <div class="mt10">
         <span>
-          <a style="font-size:12px;">只统计服务器区数据：</a>
+          <a style="font-size:12px;">只看服务器区：</a>
           <el-switch v-model="isServer" :width="40" @change="setIsServer"></el-switch>
         </span>
       </div>
@@ -105,6 +105,7 @@ import {
   resetPassword,
   factoryDataResetApi,
   whiteIfStatisticalApi,
+  lookServerSwitchApi,
   getStsWhiteStusApi
 } from '../../tools/api'
 import ResetPassword from '../../components/common/ResetPassword'
@@ -195,7 +196,25 @@ export default {
       this.$store.commit('cahngeCycle', this.radio)
       this.getAttackNum()
     },
-    setIsServer() {},
+    setIsServer() {
+      let fd = new FormData()
+      fd.append('server_show', Number(this.isServer))
+      lookServerSwitchApi(fd).then(res => {
+        let type = 'success'
+        let message = '设置成功'
+        if (res.state !== this.successFlag) {
+          type = 'warning'
+          message = res.info
+          this.isServer = !this.isServer
+        } else {
+          this.isServer = this.isServer
+        }
+        this.$message({
+          type,
+          message
+        })
+      })
+    },
     getAttackNum() {
       let fd = new FormData()
       fd.append('type', this.cycle)
@@ -282,9 +301,11 @@ export default {
   mounted() {
     this.getAttackNum()
     getStsWhiteStusApi().then(res => {
-      // 1代表关  0代表开
+      // 1代表关  0代表开  白名单
       this.statisticalWhite = Boolean(res.white_show)
       this.statisticalWhite = !this.statisticalWhite
+      // 1代表开  0代表关  服务器区
+      this.isServer = Boolean(res.server_show)
     })
   }
 }
