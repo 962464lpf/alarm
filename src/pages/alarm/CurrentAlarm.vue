@@ -653,8 +653,14 @@ export default {
       fd.append('level', this.searchForm.level)
       fd.append('sip', this.searchForm.sip)
       // if (this.searchForm.time.length) {
-      fd.append('start_time', this.searchForm.time[0])
-      fd.append('end_time', this.searchForm.time[1])
+      fd.append(
+        'start_time',
+        this.searchForm.time[0] ? this.searchForm.time[0] : ''
+      )
+      fd.append(
+        'end_time',
+        this.searchForm.time[1] ? this.searchForm.time[1] : ''
+      )
       // }
 
       exportCurrentAlarmFlieApi(fd).then(res => {
@@ -700,8 +706,14 @@ export default {
       let fd = new FormData()
       for (let k in this.searchForm) {
         if (k === 'time') {
-          fd.append('start_time', this.searchForm[k][0])
-          fd.append('end_time', this.searchForm[k][1])
+          fd.append(
+            'start_time',
+            this.searchForm[k][0] ? this.searchForm[k][0] : ''
+          )
+          fd.append(
+            'end_time',
+            this.searchForm[k][1] ? this.searchForm[k][1] : ''
+          )
         } else {
           fd.append(k, this.searchForm[k])
         }

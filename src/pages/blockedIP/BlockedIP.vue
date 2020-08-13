@@ -104,8 +104,8 @@ export default {
   methods: {
     exportFlie() {
       let fd = new FormData()
-      fd.append('start_time', this.form.time[0])
-      fd.append('end_time', this.form.time[1])
+      fd.append('start_time', this.form.time[0] ? this.form.time[0] : '')
+      fd.append('end_time', this.form.time[1] ? this.form.time[1] : '')
       fd.append('ip', this.form.ip)
       downloadBlockedIPApi(fd).then(res => {
         let url = BASE_URL + res.file_path
@@ -201,8 +201,8 @@ export default {
     getBlockedIP() {
       this.tableLoading = true
       let fd = new FormData()
-      fd.append('start_time', this.form.time[0])
-      fd.append('end_time', this.form.time[1])
+      fd.append('start_time', this.form.time[0] ? this.form.time[0] : '')
+      fd.append('end_time', this.form.time[1] ? this.form.time[1] : '')
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
       fd.append('ip', this.form.ip)
