@@ -378,8 +378,14 @@ export default {
       }
       for (let k in this.searchForm) {
         if (k === 'time') {
-          fd.append('start_time', this.searchForm[k][0])
-          fd.append('end_time', this.searchForm[k][1])
+          fd.append(
+            'start_time',
+            this.searchForm[k][0] ? this.searchForm[k][0] : ''
+          )
+          fd.append(
+            'end_time',
+            this.searchForm[k][1] ? this.searchForm[k][1] : ''
+          )
         } else {
           fd.append(k, this.searchForm[k])
         }
@@ -517,8 +523,14 @@ export default {
       for (let key in this.searchForm) {
         if (key !== 'level') fd.append(key, this.searchForm[key])
       }
-      fd.append('start_time', this.searchForm.time[0])
-      fd.append('end_time', this.searchForm.time[1])
+      fd.append(
+        'start_time',
+        this.searchForm.time[0] ? this.searchForm.time[0] : ''
+      )
+      fd.append(
+        'end_time',
+        this.searchForm.time[1] ? this.searchForm.time[1] : ''
+      )
       getSumAlarmListApi(fd).then(res => {
         this.tableLoading = false
         this.summaryAlarmList = res.data
