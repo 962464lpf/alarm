@@ -12,7 +12,7 @@
           <el-date-picker
             v-model="time"
             type="datetimerange"
-            value-format="yyyy-MM-dd HH:mm:ss"
+            value-format="yyyy-MM-dd HH-mm-ss"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { downloadOrderApi, BASE_URL } from '../../tools/api'
+import { downloadOrderApi, formDownloadFile, BASE_URL } from '../../tools/api'
 export default {
   props: {
     value: {
@@ -49,16 +49,21 @@ export default {
     },
     exportFile() {
       let fd = new FormData()
-      fd.append('start_time', this.time[0])
-      fd.append('end_time', this.time[1])
+      fd.append('start_time', this.time[0] ? this.time[0] : '')
+      fd.append('end_time', this.time[1] ? this.time[1] : '')
       downloadOrderApi(fd).then(res => {
-        let url = BASE_URL + res.file_path
-        let a = document.createElement('a')
-        a.href = url
-        a.setAttribute('download', '工单')
-        a.setAttribute('href', url)
-        a.click()
-        this.handleClose()
+        if (res.file_path) {
+          let url = BASE_URL + res.file_path
+          formDownloadFile(url)
+          this.handleClose()
+        } else {
+          this.$message({
+            type: 'success',
+            message: res.info
+          })
+
+          this.handleClose()
+        }
       })
     }
   },

@@ -16,6 +16,17 @@ function downloadFileApi(url) {
   return downloadFile(url)
 }
 
+function formDownloadFile(url) {
+  const form = document.createElement('form')
+  form.action = url
+  form.method = 'get'
+  form.target = 'blank'
+  form.type = 'hidden'
+  document.body.appendChild(form)
+  form.submit()
+  document.body.removeChild(form)
+}
+
 function startRecveApi() {
   let url = BASE_URL + '/jump/warning/start_recv'
   POST(url)
@@ -404,6 +415,7 @@ export {
   BASE_URL,
   closeBackend,
   downloadFileApi,
+  formDownloadFile,
   startRecveApi,
   getSumAlarmListApi,
   getSumAlarmDetailListApi,
