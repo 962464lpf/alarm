@@ -94,16 +94,16 @@ const routes = [
       level: 1,
     },
   },
-  {
-    path: '/order',
-    name: 'order',
-    component: () => import('../pages/order/Order.vue'),
-    meta: {
-      title: '工单管理',
-      icon: 'el-icon-s-order',
-      level: 1,
-    },
-  },
+  // {
+  //   path: '/order',
+  //   name: 'order',
+  //   component: () => import('../pages/order/Order.vue'),
+  //   meta: {
+  //     title: '工单管理',
+  //     icon: 'el-icon-s-order',
+  //     level: 1,
+  //   },
+  // },
   {
     path: '/blocked',
     name: 'blocked',
