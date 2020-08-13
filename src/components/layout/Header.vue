@@ -207,7 +207,7 @@ export default {
           message = res.info
           this.isServer = !this.isServer
         } else {
-          this.isServer = this.isServer
+          // this.isServer = this.isServer
         }
         this.$message({
           type,
