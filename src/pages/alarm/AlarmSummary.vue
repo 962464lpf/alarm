@@ -521,7 +521,8 @@ export default {
 
       fd.append('per_page', this.pageSize)
       for (let key in this.searchForm) {
-        if (key !== 'time') fd.append(key, this.searchForm[key])
+        if (key !== 'level' && key !== 'time')
+          fd.append(key, this.searchForm[key])
       }
       fd.append(
         'start_time',
