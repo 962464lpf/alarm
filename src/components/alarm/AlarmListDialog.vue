@@ -96,8 +96,14 @@ export default {
       let fd = new FormData()
       for (let k in this.searchForm) {
         if (k === 'time') {
-          fd.append('start_time', this.searchForm[k][0])
-          fd.append('end_time', this.searchForm[k][1])
+          fd.append(
+            'start_time',
+            this.searchForm[k][0] ? this.searchForm[k][0] : ''
+          )
+          fd.append(
+            'end_time',
+            this.searchForm[k][1] ? this.searchForm[k][1] : ''
+          )
         } else {
           fd.append(k, this.searchForm[k])
         }
