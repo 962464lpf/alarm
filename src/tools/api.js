@@ -309,6 +309,11 @@ function getReportListApi(params) {
   return POST(url, params)
 }
 
+function createReportApi(params) {
+  let url = BASE_URL + '/jump/report/generate_day2'
+  return POST(url, params)
+}
+
 function getAssetsListApi(params) {
   let url = BASE_URL + '/jump/ipmap/index'
   return POST(url, params)
@@ -470,6 +475,7 @@ export {
   postNetWorkManageApi,
   resetNetWorkApi,
   getReportListApi,
+  createReportApi,
   getAssetsListApi,
   AddAssetsApi,
   editAssetsApi,
