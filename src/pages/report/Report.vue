@@ -14,18 +14,8 @@
           <el-button @click="getReportList" type="primary">查询</el-button>
           <el-button @click="resetData">重置</el-button>
         </el-form-item>
-        <el-form-item label="报告统计日期">
-          <el-date-picker
-            v-model="dateTime"
-            type="datetimerange"
-            value-format="yyyy-MM-dd HH-mm-ss"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          ></el-date-picker>
-        </el-form-item>
         <el-form-item>
-          <el-button @click="createReport" type="primary">生成报告</el-button>
+          <el-button @click="createReportStatus=true" type="primary">生成报告</el-button>
         </el-form-item>
       </el-form>
     </el-row>
@@ -60,10 +50,15 @@
       :total="total"
     ></el-pagination>
     <div class="clearfloat"></div>
+
+    <div v-if="createReportStatus">
+      <CreateReportComp v-model="createReportStatus" @reportOpt="createReport"></CreateReportComp>
+    </div>
   </div>
 </template>
 
 <script>
+import CreateReportComp from '../../components/report/CreateReportComp'
 import {
   getReportListApi,
   downloadFileApi,
@@ -71,6 +66,9 @@ import {
   createReportApi
 } from '../../tools/api'
 export default {
+  components: {
+    CreateReportComp
+  },
   data() {
     return {
       searchForm: {
@@ -79,10 +77,10 @@ export default {
       notsee_white: false,
       tableLoading: false,
       reportData: [],
-      dateTime: [],
       pageSize: 10,
       total: 0,
-      currentPage: 1
+      currentPage: 1,
+      createReportStatus: false
     }
   },
   methods: {
@@ -90,43 +88,35 @@ export default {
       this.searchForm.date = ''
       this.getReportList()
     },
-    createReport() {
-      if (this.dateTime.length) {
-        this.$message({
-          type: 'success',
-          message: '报告正在生成中，请等待！',
-          duration: 1500
-        })
-        let fd = new FormData()
-        fd.append('start_time', this.dateTime[0] ? this.dateTime[0] : '')
-        fd.append('end_time', this.dateTime[1] ? this.dateTime[1] : '')
-        createReportApi(fd)
-          .then(res => {
-            let type = 'success'
-            let message
-            if (res.state !== this.successFlag) {
-              type = 'warning'
-              message = res.info
-            } else {
-              this.getReportList()
-            }
-            this.$message({
-              type,
-              message
-            })
+    createReport({ dateTime, equipIds }) {
+      this.$message({
+        type: 'success',
+        message: '报告正在生成中，请等待！',
+        duration: 1500
+      })
+      let fd = new FormData()
+      fd.append('start_time', dateTime[0] ? dateTime[0] : '')
+      fd.append('end_time', dateTime[1] ? dateTime[1] : '')
+      fd.append('id', equipIds)
+      createReportApi(fd)
+        .then(res => {
+          let type = 'success'
+          if (res.state !== this.successFlag) {
+            type = 'warning'
+          } else {
+            this.getReportList()
+          }
+          this.$message({
+            type,
+            message: res.info
           })
-          .catch(() => {
-            this.$message({
-              type: 'warning',
-              message: '生成报告失败，请联系管理员。'
-            })
-          })
-      } else {
-        this.$message({
-          type: 'warning',
-          message: '请先选择报告的统计日期！'
         })
-      }
+        .catch(() => {
+          this.$message({
+            type: 'warning',
+            message: '生成报告失败，请联系管理员。'
+          })
+        })
     },
     downloadReport(row) {
       let length = row.url.split('.').length
