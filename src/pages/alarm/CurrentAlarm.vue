@@ -646,34 +646,46 @@ export default {
         this.searchForm.time[1] ? this.searchForm.time[1] : ''
       )
       // }
-
-      exportCurrentAlarmFlieApi(fd).then(res => {
-        if (res.state !== this.successFlag) {
+      this.$message({
+        type: 'warning',
+        message: '导出文件可能需要的时间较长，请等待！',
+        duration: 1500
+      })
+      exportCurrentAlarmFlieApi(fd)
+        .then(res => {
+          if (res.state !== this.successFlag) {
+            this.$message({
+              type: 'warning',
+              message: '导出失败'
+            })
+          } else {
+            let filePath = BASE_URL + res.file_path
+            // downloadFileApi(filePath)
+            if (
+              selectType === 'txt' ||
+              selectType === 'json' ||
+              selectType === 'html'
+            ) {
+              // 'text/plain'
+              // application/json
+              // text/html
+              let type = ''
+              if (selectType === 'txt') type = 'text/plain'
+              if (selectType === 'json') type = 'application/json'
+              if (selectType === 'html') type = 'text/html'
+              this.downloadFile(filePath, type)
+            } else {
+              window.open(filePath)
+            }
+          }
+        })
+        .catch(() => {
           this.$message({
             type: 'warning',
-            message: '导出失败'
+            message: '导出文件出错，请联系管理员。',
+            duration: 1500
           })
-        } else {
-          let filePath = BASE_URL + res.file_path
-          // downloadFileApi(filePath)
-          if (
-            selectType === 'txt' ||
-            selectType === 'json' ||
-            selectType === 'html'
-          ) {
-            // 'text/plain'
-            // application/json
-            // text/html
-            let type = ''
-            if (selectType === 'txt') type = 'text/plain'
-            if (selectType === 'json') type = 'application/json'
-            if (selectType === 'html') type = 'text/html'
-            this.downloadFile(filePath, type)
-          } else {
-            window.open(filePath)
-          }
-        }
-      })
+        })
     },
     downloadFile(filePath, type) {
       downloadFileApi(filePath).then(res => {
