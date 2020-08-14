@@ -48,7 +48,8 @@
       >
         <span>
           <i class="el-icon-user"></i>
-          {{userInfo.name}}({{getRoleName()}})
+          {{userInfo.name}}
+          <!-- ({{getRoleName()}}) -->
         </span>
         <span>
           <el-dropdown trigger="click">
