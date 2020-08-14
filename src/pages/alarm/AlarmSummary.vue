@@ -390,33 +390,45 @@ export default {
           fd.append(k, this.searchForm[k])
         }
       }
-      exportSumAlarmFileApi(fd).then(res => {
-        if (res.state !== this.successFlag) {
+      this.$message({
+        type: 'warning',
+        message: '导出文件可能需要的时间较长，请等待！',
+        duration: 1500
+      })
+      exportSumAlarmFileApi(fd)
+        .then(res => {
+          if (res.state !== this.successFlag) {
+            this.$message({
+              type: 'warning',
+              message: '导出失败'
+            })
+          } else {
+            let filePath = BASE_URL + res.file_path
+            // downloadFileApi(filePath)
+            if (
+              this.selectType === 'txt' ||
+              this.selectType === 'json' ||
+              this.selectType === 'html'
+            ) {
+              // 'text/plain'
+              // application/json
+              // text/html
+              let type = ''
+              if (this.selectType === 'txt') type = 'text/plain'
+              if (this.selectType === 'json') type = 'application/json'
+              if (this.selectType === 'html') type = 'text/html'
+              this.downloadFile(filePath, type)
+            } else {
+              window.open(filePath)
+            }
+          }
+        })
+        .catch(() => {
           this.$message({
             type: 'warning',
-            message: '导出失败'
+            message: '导出文件出错，请联系管理员。'
           })
-        } else {
-          let filePath = BASE_URL + res.file_path
-          // downloadFileApi(filePath)
-          if (
-            this.selectType === 'txt' ||
-            this.selectType === 'json' ||
-            this.selectType === 'html'
-          ) {
-            // 'text/plain'
-            // application/json
-            // text/html
-            let type = ''
-            if (this.selectType === 'txt') type = 'text/plain'
-            if (this.selectType === 'json') type = 'application/json'
-            if (this.selectType === 'html') type = 'text/html'
-            this.downloadFile(filePath, type)
-          } else {
-            window.open(filePath)
-          }
-        }
-      })
+        })
     },
     exportFile(type) {
       this.selectTypeDialogStatus = true
