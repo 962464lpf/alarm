@@ -392,7 +392,8 @@ export default {
       }
       this.$message({
         type: 'warning',
-        message: '导出文件可能需要的时间较长，请等待！'
+        message: '导出文件可能需要的时间较长，请等待！',
+        duration: 1500
       })
       exportSumAlarmFileApi(fd)
         .then(res => {

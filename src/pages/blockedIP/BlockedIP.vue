@@ -105,7 +105,8 @@ export default {
     exportFlie() {
       this.$message({
         type: 'warning',
-        message: '导出文件可能需要的时间较长，请等待！'
+        message: '导出文件可能需要的时间较长，请等待！',
+        duration: 1500
       })
       let fd = new FormData()
       fd.append('start_time', this.form.time[0] ? this.form.time[0] : '')
