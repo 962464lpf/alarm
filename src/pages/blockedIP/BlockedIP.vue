@@ -103,22 +103,34 @@ export default {
   },
   methods: {
     exportFlie() {
+      this.$message({
+        type: 'warning',
+        message: '导出文件可能需要的时间较长，请等待！'
+      })
       let fd = new FormData()
       fd.append('start_time', this.form.time[0] ? this.form.time[0] : '')
       fd.append('end_time', this.form.time[1] ? this.form.time[1] : '')
       fd.append('ip', this.form.ip)
-      downloadBlockedIPApi(fd).then(res => {
-        let url = BASE_URL + res.file_path
-        let type = 'application/vnd.ms-excel'
-        downloadFileApi(url).then(res => {
-          let blob = new Blob([res], { type })
-          let url = window.URL.createObjectURL(blob)
-          let a = document.createElement('a')
-          a.setAttribute('download', '封禁列表')
-          a.setAttribute('href', url)
-          a.click()
+      downloadBlockedIPApi(fd)
+        .then(res => {
+          let url = BASE_URL + res.file_path
+          let type = 'application/vnd.ms-excel'
+          downloadFileApi(url).then(res => {
+            let blob = new Blob([res], { type })
+            let url = window.URL.createObjectURL(blob)
+            let a = document.createElement('a')
+            a.setAttribute('download', '封禁列表')
+            a.setAttribute('href', url)
+            a.click()
+          })
         })
-      })
+        .catch(() => {
+          this.$message({
+            type: 'warning',
+            message: '导出文件出错，请联系管理员。',
+            duration: 1500
+          })
+        })
     },
     onSearch() {
       this.getBlockedIP()
