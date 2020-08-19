@@ -114,7 +114,6 @@
       <el-table v-loading="tableLoading"
                 :data="currentAlarmList"
                 style="width: 100%"
-                border
                 :row-class-name="addClass"
                 @row-click="rowClick"
                 @selection-change="handleSelectionChange"
