@@ -786,7 +786,7 @@ export default {
     }
   },
   mounted () {
-    // this.getCurrentAlarmList()
+    this.getCurrentAlarmList()
   },
   beforeDestroy () {
     clearInterval(this.interval)
