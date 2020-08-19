@@ -3,14 +3,23 @@
     <el-form :inline="true"
              :model="form"
              class="demo-form-inline">
-      <el-form-item label="IP">
+      <el-form-item label="公网IP">
         <el-input v-model="form.ip"></el-input>
+      </el-form-item>
+      <el-form-item label="私网IP">
+        <el-input v-model="form.ip_private"></el-input>
       </el-form-item>
       <el-form-item label="资产名称">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
       <el-form-item label="责任人">
         <el-input v-model="form.staff"></el-input>
+      </el-form-item>
+      <el-form-item label="是否在线">
+        <el-switch v-model="form.online"
+                   active-text="在线"
+                   inactive-text="离线">
+        </el-switch>
       </el-form-item>
       <el-form-item>
         <el-button @click="getInsideEquip"
@@ -100,7 +109,9 @@ export default {
       form: {
         ip: '',
         name: '',
-        staff: ''
+        staff: '',
+        ip_private: '',
+        online: true
       },
       pageSize: 20,
       total: 0,
@@ -183,7 +194,11 @@ export default {
       this.tableLoading = false
       let fd = new FormData()
       for (let key in this.form) {
-        fd.append(key, this.form[key])
+        if (key === 'online') {
+          fd.append(key, Number(this.form[key]))
+        } else {
+          fd.append(key, this.form[key])
+        }
       }
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
