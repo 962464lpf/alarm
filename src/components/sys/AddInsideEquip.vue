@@ -160,7 +160,11 @@ export default {
         api = editInsideEquipApi
         fd.append('id', this.currentRow.id)
         for (let key in this.form) {
-          fd.append(key, this.form[key])
+          if (key === 'online') {
+            fd.append(key, Number(this.form[key]))
+          } else {
+            fd.append(key, this.form[key])
+          }
         }
       }
       this.$emit('postRequest', { fd, api })
