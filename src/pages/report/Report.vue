@@ -47,10 +47,14 @@
       <el-table-column prop="created_time"
                        label="创建时间"></el-table-column>
       <el-table-column label="操作"
-                       width="50">
+                       width="100">
         <template slot-scope="scope">
           <el-button type="text"
                      @click.native="downloadReport(scope.row)">下载</el-button>
+          <el-button type="text"
+                     @click.native="deleteReport(scope.row)">删
+
+            除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -74,7 +78,7 @@
 
 <script>
 import CreateReportComp from '../../components/report/CreateReportComp'
-import { getReportListApi, downloadFileApi, createReportApi, BASE_URL } from '../../tools/api'
+import { getReportListApi, downloadFileApi, createReportApi, deleteReportApi, BASE_URL } from '../../tools/api'
 export default {
   data () {
     return {
@@ -83,7 +87,7 @@ export default {
       },
       notsee_white: false,
       tableLoading: false,
-      reportData: [],
+      reportData: [{}],
       pageSize: 10,
       total: 0,
       currentPage: 1,
@@ -147,6 +151,30 @@ export default {
           })
         })
     },
+    deleteReport (row) {
+      this.$confirm('您确认删除该调报告吗？, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let fd = new FormData()
+        fd.append('id', row.id)
+        deleteReportApi(fd).then(res => {
+          let type = 'success'
+          let message = '删除成功'
+          if (res.state !== this.successFlag) {
+            type = 'warning'
+            message = res.info
+          } else {
+            this.getReportList()
+          }
+          this.$message({
+            type,
+            message
+          })
+        })
+      })
+    },
     handleSizeChange (val) {
       this.pageSize = val
       this.getReportList()
@@ -169,7 +197,7 @@ export default {
     }
   },
   mounted () {
-    this.getReportList()
+    // this.getReportList()
   }
 }
 </script>
