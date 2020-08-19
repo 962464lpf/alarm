@@ -1,32 +1,41 @@
 <template>
   <div class="network-manage">
-    <el-form :model="networkForm" :rules="rules" ref="networkForm" label-width="100px">
+    <el-form :model="networkForm"
+             :rules="rules"
+             ref="networkForm"
+             label-width="100px">
       <el-row class="item">
-        <el-col :span="4" class="name">
+        <el-col :span="4"
+                class="name">
           <span></span>
           IP地址：
         </el-col>
-        <el-col :span="20" class="input">
+        <el-col :span="20"
+                class="input">
           <el-form-item prop="IPADDR">
             <el-input v-model="networkForm.IPADDR"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="item">
-        <el-col :span="4" class="name">
+        <el-col :span="4"
+                class="name">
           <span></span>子网掩码：
         </el-col>
-        <el-col :span="20" class="input">
+        <el-col :span="20"
+                class="input">
           <el-form-item prop="NETMASK">
             <el-input v-model="networkForm.NETMASK"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="item">
-        <el-col :span="4" class="name">
+        <el-col :span="4"
+                class="name">
           <span></span>默认网关：
         </el-col>
-        <el-col :span="20" class="input">
+        <el-col :span="20"
+                class="input">
           <el-form-item prop="GATEWAY">
             <el-input v-model="networkForm.GATEWAY"></el-input>
           </el-form-item>
@@ -34,17 +43,28 @@
       </el-row>
       <el-divider></el-divider>
       <el-row class="item">
-        <el-col :span="4" class="name">DNS服务器：</el-col>
-        <el-col :span="20" class="input">
+        <el-col :span="4"
+                class="name">DNS服务器：</el-col>
+        <el-col :span="20"
+                class="input">
           <el-form-item>
             <el-input v-model="networkForm.DNS1"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
-    <div class="mt10" style="text-align: center;">
-      <el-button type="primary" :loading="submitBtnLoading" @click="submitForm('networkForm')">更改网卡</el-button>
-      <el-button type="primary" :loading="resetBtnLoading" @click="resetNetWork">重置网卡</el-button>
+    <div class="mt10"
+         style="text-align: center;">
+      <el-button type="primary"
+                 :loading="submitBtnLoading"
+                 @click="submitForm('networkForm')">更改网卡</el-button>
+      <el-button type="primary"
+                 :loading="resetBtnLoading"
+                 @click="resetNetWork">重置网卡</el-button>
+      <el-button type="primary"
+                 :loading="resetBtnLoading"
+                 @click="factoryDataReset">恢复出厂设置</el-button>
+
     </div>
   </div>
 </template>
@@ -53,10 +73,11 @@
 import {
   getNetWorkManageApi,
   postNetWorkManageApi,
-  resetNetWorkApi
+  resetNetWorkApi,
+  factoryDataResetApi
 } from '../../tools/api'
 export default {
-  data() {
+  data () {
     return {
       networkForm: {
         IPADDR: '0.0.0.0',
@@ -78,7 +99,7 @@ export default {
     }
   },
   methods: {
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$confirm('您确定要更改网络配置吗?', '提示', {
@@ -94,12 +115,12 @@ export default {
         }
       })
     },
-    getNetWorkManage() {
+    getNetWorkManage () {
       getNetWorkManageApi().then(res => {
         this.networkForm = res
       })
     },
-    postNetWorkManage() {
+    postNetWorkManage () {
       let fd = new FormData()
       for (let key in this.networkForm) {
         fd.append(key, this.networkForm[key])
@@ -118,7 +139,7 @@ export default {
         })
       })
     },
-    resetNetWork() {
+    resetNetWork () {
       this.$confirm('您确定要重置网卡吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -138,9 +159,27 @@ export default {
           this.getNetWorkManage()
         })
       })
+    },
+    factoryDataReset () {
+      this.$confirm('您确定要将此系统恢复出厂设置吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        factoryDataResetApi().then(res => {
+          let type = 'success'
+          if (res.state === this.successFlag) {
+            type = 'warning'
+          }
+          this.$message({
+            type,
+            message: res.info
+          })
+        })
+      })
     }
   },
-  mounted() {
+  mounted () {
     this.getNetWorkManage()
   }
 }
@@ -161,7 +200,7 @@ export default {
       font-size: 14px;
       border-right: 1px solid #e6e6e6;
       span:before {
-        content: '*';
+        content: "*";
         color: #f56c6c;
         margin-right: 4px;
       }

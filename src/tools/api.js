@@ -314,6 +314,11 @@ function createReportApi(params) {
   return POST(url, params)
 }
 
+function deleteReportApi(params) {
+  let url = BASE_URL + '/jump/report/delete'
+  return POST(url, params)
+}
+
 function getAssetsListApi(params) {
   let url = BASE_URL + '/jump/ipmap/index'
   return POST(url, params)
@@ -414,8 +419,6 @@ function downloadOrderApi(params) {
   return POST(url, params)
 }
 
-
-
 export {
   BASE_URL,
   closeBackend,
@@ -476,6 +479,7 @@ export {
   resetNetWorkApi,
   getReportListApi,
   createReportApi,
+  deleteReportApi,
   getAssetsListApi,
   AddAssetsApi,
   editAssetsApi,
@@ -495,5 +499,5 @@ export {
   orderWuBaoApi,
   orderIssueDisposalApi,
   orderBlockApi,
-  downloadOrderApi
+  downloadOrderApi,
 }
