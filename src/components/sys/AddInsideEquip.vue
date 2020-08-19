@@ -31,9 +31,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="IP："
+          <el-form-item label="公网IP："
                         prop="ip">
             <el-input v-model="form.ip"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="私网IP："
+                        prop="ip_private">
+            <el-input v-model="form.ip_private"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -64,6 +70,15 @@
           <el-form-item label="联系电话："
                         prop="phone">
             <el-input v-model="form.phone"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="是否在线："
+                        prop="online">
+            <el-switch v-model="form.online"
+                       active-text="在线"
+                       inactive-text="离线">
+            </el-switch>
           </el-form-item>
         </el-col>
       </el-row>
@@ -100,12 +115,14 @@ export default {
       dialogVisible: this.value,
       form: {
         ip: '',
+        ip_private: '',
         name: '',
         phone: '',
         anquanyu: '',
         cat: '',
         staff: '',
-        com_dep: ''
+        com_dep: '',
+        online: true
       },
       fileList: [],
       uploadStatus: false,
@@ -133,7 +150,11 @@ export default {
       } else if (this.addInsideEquipType === 'single') {
         api = addSingleInsideEquipApi
         for (let key in this.form) {
-          fd.append(key, this.form[key])
+          if (key === 'online') {
+            fd.append(key, Number(this.form[key]))
+          } else {
+            fd.append(key, this.form[key])
+          }
         }
       } else {
         api = editInsideEquipApi
@@ -157,7 +178,12 @@ export default {
       this.uploadStatus = false
       this.title = '修改资产'
       for (let key in this.form) {
-        this.form[key] = this.currentRow[key]
+        if (key === 'online') {
+          this.form[key] = Boolean(this.currentRow[key])
+        } else {
+          this.form[key] = this.currentRow[key]
+        }
+
       }
     }
   }
