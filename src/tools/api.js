@@ -293,6 +293,11 @@ function resetNetWorkApi() {
   return POST(url)
 }
 
+function deleteReportApi(params) {
+  let url = BASE_URL + '/jump/report/delete'
+  return POST(url, params)
+}
+
 function getReportListApi(params) {
   let url = BASE_URL + '/jump/report/index'
   return POST(url, params)
@@ -426,6 +431,7 @@ export {
   postNetWorkManageApi,
   resetNetWorkApi,
   getReportListApi,
+  deleteReportApi,
   getAssetsListApi,
   AddAssetsApi,
   editAssetsApi,

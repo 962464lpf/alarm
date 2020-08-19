@@ -47,6 +47,9 @@
         <template slot-scope="scope">
           <el-button type="text"
                      @click.native="downloadReport(scope.row)">下载</el-button>
+
+          <el-button type="text"
+                     @click.native="deleteReport(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,7 +67,7 @@
 </template>
 
 <script>
-import { getReportListApi, downloadFileApi, BASE_URL } from '../../tools/api'
+import { getReportListApi, downloadFileApi, deleteReportApi, BASE_URL } from '../../tools/api'
 export default {
   data () {
     return {
@@ -103,6 +106,30 @@ export default {
         a.setAttribute('href', url)
         a.download = `${name}.${type}`
         a.click()
+      })
+    },
+    deleteReport (row) {
+      this.$confirm('您确认删除该调报告吗？, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let fd = new FormData()
+        fd.append('id', row.id)
+        deleteReportApi(fd).then(res => {
+          let type = 'success'
+          let message = '删除成功'
+          if (res.state !== this.successFlag) {
+            type = 'warning'
+            message = res.info
+          } else {
+            this.getReportList()
+          }
+          this.$message({
+            type,
+            message
+          })
+        })
       })
     },
     handleSizeChange (val) {
