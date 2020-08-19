@@ -15,6 +15,10 @@
                      type="primary">查询</el-button>
           <el-button @click="resetData">重置</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button @click="createReportStatus=true"
+                     type="primary">生成报告</el-button>
+        </el-form-item>
       </el-form>
     </el-row>
     <div class="clearfloat"></div>
@@ -60,11 +64,17 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total"></el-pagination>
     <div class="clearfloat"></div>
+
+    <div v-if="createReportStatus">
+      <CreateReportComp v-model="createReportStatus"
+                        @reportOpt="createReport"></CreateReportComp>
+    </div>
   </div>
 </template>
 
 <script>
-import { getReportListApi, downloadFileApi, BASE_URL } from '../../tools/api'
+import CreateReportComp from '../../components/report/CreateReportComp'
+import { getReportListApi, downloadFileApi, createReportApi, BASE_URL } from '../../tools/api'
 export default {
   data () {
     return {
@@ -76,9 +86,11 @@ export default {
       reportData: [],
       pageSize: 10,
       total: 0,
-      currentPage: 1
+      currentPage: 1,
+      createReportStatus: false
     }
   },
+  components: { CreateReportComp },
   methods: {
     resetData () {
       this.searchForm.date = ''
@@ -104,6 +116,36 @@ export default {
         a.download = `${name}.${type}`
         a.click()
       })
+    },
+    createReport ({ dateTime, equipIds }) {
+      this.$message({
+        type: 'success',
+        message: '报告正在生成中，请等待！',
+        duration: 1500
+      })
+      let fd = new FormData()
+      fd.append('start_time', dateTime[0] ? dateTime[0] : '')
+      fd.append('end_time', dateTime[1] ? dateTime[1] : '')
+      fd.append('id', equipIds)
+      createReportApi(fd)
+        .then(res => {
+          let type = 'success'
+          if (res.state !== this.successFlag) {
+            type = 'warning'
+          } else {
+            this.getReportList()
+          }
+          this.$message({
+            type,
+            message: res.info
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'warning',
+            message: '生成报告失败，请联系管理员。'
+          })
+        })
     },
     handleSizeChange (val) {
       this.pageSize = val
