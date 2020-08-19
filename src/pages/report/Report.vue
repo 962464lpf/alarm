@@ -189,7 +189,6 @@ export default {
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
       fd.append('tongji_riqi', this.searchForm.date)
-
       getReportListApi(fd).then(res => {
         this.total = res.total
         this.reportData = res.data
@@ -197,7 +196,7 @@ export default {
     }
   },
   mounted () {
-    // this.getReportList()
+    this.getReportList()
   }
 }
 </script>
