@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="生成报告"
+  <el-dialog :title="title"
              :visible.sync="dialogVisible"
              width="60%"
              :before-close="handleClose">
@@ -52,25 +52,25 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total"></el-pagination>
     <div class="clearfloat"></div>
-
-    <p>报告统计人员值班选择</p>
-    <el-row class="mt10">
-      <el-switch v-model="dayType"
-                 active-text="白班"
-                 inactive-text="夜班">
-      </el-switch>
-      <el-col :span="24"
-              class="mt10">
-        <el-transfer v-model="dayData"
-                     v-if="dayType"
-                     :titles="['值班人员', '白班人员']"
-                     :data="peopleData"></el-transfer>
-        <el-transfer v-model="nightData"
-                     v-else
-                     :titles="['值班人员', '夜班人员']"
-                     :data="peopleData"></el-transfer>
-      </el-col>
-      <!-- <el-col :span="24"
+    <div v-if="reportType==='day'">
+      <p>报告统计人员值班选择</p>
+      <el-row class="mt10">
+        <el-switch v-model="dayType"
+                   active-text="白班"
+                   inactive-text="夜班">
+        </el-switch>
+        <el-col :span="24"
+                class="mt10">
+          <el-transfer v-model="dayData"
+                       v-if="dayType"
+                       :titles="['值班人员', '白班人员']"
+                       :data="peopleData"></el-transfer>
+          <el-transfer v-model="nightData"
+                       v-else
+                       :titles="['值班人员', '夜班人员']"
+                       :data="peopleData"></el-transfer>
+        </el-col>
+        <!-- <el-col :span="24"
               class="mt10">
         <p class="mt10">已选白班人员：<span class="mr10 ml10"
                 v-for="item in dayData"
@@ -78,7 +78,9 @@
         <p class="mt10">已选夜班人员：<span v-for="item in nightData"
                 :key='item'>{{getName}}</span></p>
       </el-col> -->
-    </el-row>
+      </el-row>
+
+    </div>
 
     <span slot="footer"
           class="dialog-footer">
@@ -97,10 +99,15 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    reportType: {
+      type: String,
+      default: 'day'
     }
   },
   data () {
     return {
+      title: '',
       dialogVisible: this.value,
       dateTime: [],
       tableLoading: false,
@@ -158,12 +165,21 @@ export default {
         this.multipleSelection.forEach(item => {
           ids.push(item.id)
         })
-        this.$emit('reportOpt', {
-          dateTime: this.dateTime,
-          equipIds: ids.join(','),
-          baiban: this.dayData.join(','),
-          yeban: this.nightData.join(',')
-        })
+        let obj = {}
+        if (this.reportType === 'day') {
+          obj = {
+            dateTime: this.dateTime,
+            equipIds: ids.join(','),
+            baiban: this.dayData.join(','),
+            yeban: this.nightData.join(',')
+          }
+        } else {
+          obj = {
+            dateTime: this.dateTime,
+            equipIds: ids.join(','),
+          }
+        }
+        this.$emit('reportOpt', obj)
         this.handleClose()
       } else {
         this.$message({
@@ -189,6 +205,7 @@ export default {
     },
   },
   mounted () {
+    this.reportType === 'day' ? this.title = '生成日报' : this.title = '生成周报'
     this.getSateEquipList()
     this.getScheduleData()
   }

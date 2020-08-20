@@ -16,8 +16,12 @@
           <el-button @click="resetData">重置</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="createReportStatus=true"
-                     type="primary">生成报告</el-button>
+          <el-button @click="reportDialog('day')"
+                     type="primary">生成日报</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="reportDialog('week')"
+                     type="primary">生成周报</el-button>
         </el-form-item>
       </el-form>
     </el-row>
@@ -69,7 +73,8 @@
 
     <div v-if="createReportStatus">
       <CreateReportComp v-model="createReportStatus"
-                        @reportOpt="createReport"></CreateReportComp>
+                        @reportOpt="createReport"
+                        :reportType='reportType'></CreateReportComp>
     </div>
   </div>
 </template>
@@ -80,7 +85,7 @@ import {
   getReportListApi,
   downloadFileApi,
   BASE_URL,
-  createReportApi,
+  createReportDayApi, createReportWeekApi,
   deleteReportApi
 } from '../../tools/api'
 export default {
@@ -98,15 +103,20 @@ export default {
       pageSize: 10,
       total: 0,
       currentPage: 1,
-      createReportStatus: false
+      createReportStatus: false,
+      reportType: 'week'
     }
   },
   methods: {
+    reportDialog (type) {
+      this.createReportStatus = true
+      this.reportType = type
+    },
     resetData () {
       this.searchForm.date = ''
       this.getReportList()
     },
-    createReport ({ dateTime, equipIds, baiban, yeban }) {
+    createReport ({ dateTime, equipIds, baiban = '', yeban = '' }) {
       this.$message({
         type: 'success',
         message: '报告正在生成中，请等待！',
@@ -116,9 +126,13 @@ export default {
       fd.append('start_time', dateTime[0] ? dateTime[0] : '')
       fd.append('end_time', dateTime[1] ? dateTime[1] : '')
       fd.append('id', equipIds)
-      fd.append('baiban', baiban)
-      fd.append('yeban', yeban)
-      createReportApi(fd)
+      let api = createReportWeekApi
+      if (this.reportType === 'day') {
+        fd.append('baiban', baiban)
+        fd.append('yeban', yeban)
+        api = createReportDayApi
+      }
+      api(fd)
         .then(res => {
           let type = 'success'
           if (res.state !== this.successFlag) {
