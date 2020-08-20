@@ -130,7 +130,8 @@
                         placement="bottom">
               <div v-if="scope.row.sip_show"
                    slot="content">
-                <p>IP：{{scope.row.sip_show.ip}}</p>
+                <p>私网IP：{{scope.row.sip_show.ip_private}}</p>
+                <p>公网IP：{{scope.row.sip_show.ip}}</p>
                 <p>安全域：{{scope.row.sip_show.anquanyu}}</p>
                 <p>单位-部门：{{scope.row.sip_show.com_dep}}</p>
                 <p>类型：{{scope.row.sip_show.cat}}</p>
@@ -180,7 +181,8 @@
                         placement="bottom">
               <div v-if="scope.row.dip_show"
                    slot="content">
-                <p>IP：{{scope.row.dip_show.ip}}</p>
+                <p>私网IP：{{scope.row.dip_show.ip_private}}</p>
+                <p>外网IP：{{scope.row.dip_show.ip}}</p>
                 <p>安全域：{{scope.row.dip_show.anquanyu}}</p>
                 <p>单位-部门：{{scope.row.dip_show.com_dep}}</p>
                 <p>类型：{{scope.row.dip_show.cat}}</p>

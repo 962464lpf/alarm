@@ -219,6 +219,16 @@ const routes = [
           level: 0,
         },
       },
+      {
+        path: '/sys/schedule',
+        name: 'schedule',
+        component: () => import('../pages/sys/Schedule.vue'),
+        meta: {
+          title: '排班管理',
+          icon: 'el-icon-document',
+          level: 0,
+        },
+      },
       // {
       //   path: '/sys/setting',
       //   name: 'setting',

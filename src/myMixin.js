@@ -1,7 +1,7 @@
 const myMixin = {
   data() {
     return {
-      successFlag: 1
+      successFlag: 1,
     }
   },
   methods: {
@@ -9,21 +9,19 @@ const myMixin = {
     // 参数1，请求返回的对象{res: 0/1, info: ''}
     // 参数2：成功时的提示消息
     // 参数3：成功时的回调函数
-    requestPrompt(res, successMessage, callback) {
+    mixinPrompt(res, callback) {
       let type = 'success'
-      let message = successMessage
       if (res.state !== this.successFlag) {
         type = 'warning'
-        message = res.info
       } else {
         callback()
       }
       this.$message({
         type,
-        message
+        message: res.info,
       })
-    }
-  }
+    },
+  },
 }
 
 export default myMixin

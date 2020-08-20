@@ -419,6 +419,26 @@ function downloadOrderApi(params) {
   return POST(url, params)
 }
 
+function getScheduleApi(params) {
+  let url = BASE_URL + '/jump/zhiban_ry/index'
+  return POST(url, params)
+}
+
+function addScheduleApi(params) {
+  let url = BASE_URL + '/jump/zhiban_ry/add'
+  return POST(url, params)
+}
+
+function editScheduleApi(params) {
+  let url = BASE_URL + '/jump/zhiban_ry/edit'
+  return POST(url, params)
+}
+
+function deleteScheduleApi(params) {
+  let url = BASE_URL + '/jump/zhiban_ry/delete'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   closeBackend,
@@ -500,4 +520,8 @@ export {
   orderIssueDisposalApi,
   orderBlockApi,
   downloadOrderApi,
+  getScheduleApi,
+  addScheduleApi,
+  editScheduleApi,
+  deleteScheduleApi,
 }

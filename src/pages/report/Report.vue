@@ -106,7 +106,7 @@ export default {
       this.searchForm.date = ''
       this.getReportList()
     },
-    createReport ({ dateTime, equipIds }) {
+    createReport ({ dateTime, equipIds, baiban, yeban }) {
       this.$message({
         type: 'success',
         message: '报告正在生成中，请等待！',
@@ -116,6 +116,8 @@ export default {
       fd.append('start_time', dateTime[0] ? dateTime[0] : '')
       fd.append('end_time', dateTime[1] ? dateTime[1] : '')
       fd.append('id', equipIds)
+      fd.append('baiban', baiban)
+      fd.append('yeban', yeban)
       createReportApi(fd)
         .then(res => {
           let type = 'success'
