@@ -517,7 +517,7 @@ export default {
     },
     blocked(row) {
       if (this.userInfo.level === 0 || this.userInfo.level === 2) {
-        this.$confirm('您确定要将此IP进行封禁吗?', '提示', {
+        this.$confirm(`您确定要将恶意IP:${row.sip}封禁吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
