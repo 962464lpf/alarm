@@ -157,16 +157,16 @@ const routes = [
           level: 1,
         },
       },
-      {
-        path: '/report/assets',
-        name: 'report',
-        component: () => import('../pages/report/AssetsEntry.vue'),
-        meta: {
-          title: '受保护资产',
-          icon: '',
-          level: 1,
-        },
-      },
+      // {
+      //   path: '/report/assets',
+      //   name: 'report',
+      //   component: () => import('../pages/report/AssetsEntry.vue'),
+      //   meta: {
+      //     title: '受保护资产',
+      //     icon: '',
+      //     level: 1,
+      //   },
+      // },
     ],
   },
   {
