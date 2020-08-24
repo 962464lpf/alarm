@@ -281,7 +281,7 @@
                 <el-dropdown-item @click.native="operation(scope.row, 'white')">添加至白名单</el-dropdown-item>
                 <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
                 <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
-                <!-- <el-dropdown-item @click.native="repairOrder(scope.row)">一键转工单</el-dropdown-item> -->
+                <el-dropdown-item @click.native="repairOrder(scope.row)">一键转工单</el-dropdown-item>
                 <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
               </el-dropdown-menu>
             </el-dropdown>
