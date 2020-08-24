@@ -66,14 +66,13 @@ export default {
   methods: {
     isPermission (page) {
       // 超级管理员为0  普通用户为1
-      return true
-      // let permission = this.userInfo.level
-      // let pagePermission = page.meta.level
-      // if (permission <= pagePermission) {
-      //   return true
-      // } else {
-      //   return false
-      // }
+      let permission = this.userInfo.level
+      let pagePermission = page.meta.level
+      if (permission <= pagePermission) {
+        return true
+      } else {
+        return false
+      }
     },
     handleScaling () {
       this.isCollapse = !this.isCollapse
