@@ -94,6 +94,16 @@ const routes = [
       level: 1,
     },
   },
+  // {
+  //   path: '/order',
+  //   name: 'order',
+  //   component: () => import('../pages/order/Order.vue'),
+  //   meta: {
+  //     title: '工单管理',
+  //     icon: 'el-icon-s-order',
+  //     level: 1,
+  //   },
+  // },
   {
     path: '/blocked',
     name: 'blocked',
@@ -147,16 +157,16 @@ const routes = [
           level: 1,
         },
       },
-      {
-        path: '/report/assets',
-        name: 'report',
-        component: () => import('../pages/report/AssetsEntry.vue'),
-        meta: {
-          title: '受保护资产',
-          icon: '',
-          level: 1,
-        },
-      },
+      // {
+      //   path: '/report/assets',
+      //   name: 'report',
+      //   component: () => import('../pages/report/AssetsEntry.vue'),
+      //   meta: {
+      //     title: '受保护资产',
+      //     icon: '',
+      //     level: 1,
+      //   },
+      // },
     ],
   },
   {
@@ -205,6 +215,16 @@ const routes = [
         component: () => import('../pages/sys/Inside.vue'),
         meta: {
           title: '资产管理',
+          icon: 'el-icon-document',
+          level: 0,
+        },
+      },
+      {
+        path: '/sys/schedule',
+        name: 'schedule',
+        component: () => import('../pages/sys/Schedule.vue'),
+        meta: {
+          title: '排班管理',
           icon: 'el-icon-document',
           level: 0,
         },

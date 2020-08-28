@@ -91,6 +91,7 @@ export default {
       dialogVisible: this.value,
       form: {
         ip: '',
+        ip_private: '',
         name: '',
         phone: '',
         anquanyu: '',

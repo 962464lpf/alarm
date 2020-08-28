@@ -16,6 +16,17 @@ function downloadFileApi(url) {
   return downloadFile(url)
 }
 
+function formDownloadFile(url) {
+  const form = document.createElement('form')
+  form.action = url
+  form.method = 'get'
+  form.target = 'blank'
+  form.type = 'hidden'
+  document.body.appendChild(form)
+  form.submit()
+  document.body.removeChild(form)
+}
+
 function startRecveApi() {
   let url = BASE_URL + '/jump/warning/start_recv'
   POST(url)
@@ -253,6 +264,11 @@ function aKeyBlockedApi(params) {
   return POST(url, params)
 }
 
+function repairOrderApi(params) {
+  let url = BASE_URL + '/jump/warning/zhuanru'
+  return POST(url, params)
+}
+
 function batchBannedApi(params) {
   let url = BASE_URL + '/jump/forbiddenIp/forbidden_batch'
   return POST(url, params)
@@ -300,6 +316,16 @@ function deleteReportApi(params) {
 
 function getReportListApi(params) {
   let url = BASE_URL + '/jump/report/index'
+  return POST(url, params)
+}
+
+function createReportDayApi(params) {
+  let url = BASE_URL + '/jump/report/generate_day2'
+  return POST(url, params)
+}
+
+function createReportWeekApi(params) {
+  let url = BASE_URL + '/jump/report/generate_week'
   return POST(url, params)
 }
 
@@ -373,10 +399,61 @@ function editInsideEquipApi(params) {
   return POST(url, params)
 }
 
+function getOrderListApi(params) {
+  let url = BASE_URL + '/jump/gongdan/index'
+  return GET(url, params)
+}
+
+function getOrderDetailApi(params) {
+  let url = BASE_URL + '/jump/gongdan/detail'
+  return POST(url, params)
+}
+
+function orderWuBaoApi(params) {
+  let url = BASE_URL + '/jump/gongdan/wubao'
+  return POST(url, params)
+}
+
+function orderIssueDisposalApi(params) {
+  let url = BASE_URL + '/jump/gongdan/xiafa'
+  return POST(url, params)
+}
+
+function orderBlockApi(params) {
+  let url = BASE_URL + '/jump/gongdan/fengjin'
+  return POST(url, params)
+}
+
+function downloadOrderApi(params) {
+  let url = BASE_URL + '/jump/gongdan/export'
+  return POST(url, params)
+}
+
+function getScheduleApi(params) {
+  let url = BASE_URL + '/jump/zhiban_ry/index'
+  return POST(url, params)
+}
+
+function addScheduleApi(params) {
+  let url = BASE_URL + '/jump/zhiban_ry/add'
+  return POST(url, params)
+}
+
+function editScheduleApi(params) {
+  let url = BASE_URL + '/jump/zhiban_ry/edit'
+  return POST(url, params)
+}
+
+function deleteScheduleApi(params) {
+  let url = BASE_URL + '/jump/zhiban_ry/delete'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   closeBackend,
   downloadFileApi,
+  formDownloadFile,
   startRecveApi,
   getSumAlarmListApi,
   getSumAlarmDetailListApi,
@@ -422,6 +499,7 @@ export {
   whiteIfStatisticalApi,
   lookServerSwitchApi,
   aKeyBlockedApi,
+  repairOrderApi,
   batchBannedApi,
   batchBannedFileApi,
   getBlockedIApi,
@@ -431,6 +509,8 @@ export {
   postNetWorkManageApi,
   resetNetWorkApi,
   getReportListApi,
+  createReportDayApi,
+  createReportWeekApi,
   deleteReportApi,
   getAssetsListApi,
   AddAssetsApi,
@@ -446,4 +526,14 @@ export {
   addSingleInsideEquipApi,
   addMoreInsideEquipApi,
   editInsideEquipApi,
+  getOrderListApi,
+  getOrderDetailApi,
+  orderWuBaoApi,
+  orderIssueDisposalApi,
+  orderBlockApi,
+  downloadOrderApi,
+  getScheduleApi,
+  addScheduleApi,
+  editScheduleApi,
+  deleteScheduleApi,
 }
