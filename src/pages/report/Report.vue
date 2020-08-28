@@ -19,10 +19,10 @@
           <el-button @click="reportDialog('day')"
                      type="primary">生成日报</el-button>
         </el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
           <el-button @click="reportDialog('week')"
                      type="primary">生成周报</el-button>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
     </el-row>
     <div class="clearfloat"></div>
@@ -116,7 +116,7 @@ export default {
       this.searchForm.date = ''
       this.getReportList()
     },
-    createReport ({ dateTime, equipIds, baiban = '', yeban = '' }) {
+    createReport ({ dateTime, equipIds }) {
       this.$message({
         type: 'success',
         message: '报告正在生成中，请等待！',
@@ -128,8 +128,8 @@ export default {
       fd.append('id', equipIds)
       let api = createReportWeekApi
       if (this.reportType === 'day') {
-        fd.append('baiban', baiban)
-        fd.append('yeban', yeban)
+        // fd.append('baiban', baiban)
+        // fd.append('yeban', yeban)
         api = createReportDayApi
       }
       api(fd)

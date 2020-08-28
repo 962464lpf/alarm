@@ -52,7 +52,7 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total"></el-pagination>
     <div class="clearfloat"></div>
-    <div v-if="reportType==='day'">
+    <!-- <div v-if="reportType==='day'">
       <p>报告统计人员值班选择</p>
       <el-row class="mt10">
         <el-switch v-model="dayType"
@@ -70,15 +70,7 @@
                        :titles="['值班人员', '夜班人员']"
                        :data="peopleData"></el-transfer>
         </el-col>
-        <!-- <el-col :span="24"
-              class="mt10">
-        <p class="mt10">已选白班人员：<span class="mr10 ml10"
-                v-for="item in dayData"
-                :key='item'>{{getName}}</span></p>
-        <p class="mt10">已选夜班人员：<span v-for="item in nightData"
-                :key='item'>{{getName}}</span></p>
-      </el-col> -->
-      </el-row>
+      </el-row> -->
 
     </div>
 
