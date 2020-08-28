@@ -1,17 +1,16 @@
 <template>
   <div class="header">
     <el-row class="header-row">
-      <el-col :span="3" class="title">
+      <el-col :span="3"
+              class="title">
         <!-- <img src="../../assets/images/logo.png" class="curp" @click="jumpTo" /> -->
         <!-- 护网工具箱 -->
         {{name}}
       </el-col>
 
-      <el-col
-        :span="16"
-        class="icon-box"
-        v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )"
-      >
+      <el-col :span="16"
+              class="icon-box"
+              v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )">
         <span>
           {{cycleName}}攻击总数：
           <b>{{attackNum}}</b>
@@ -29,26 +28,18 @@
           <b>{{attackNumLow}}</b>
         </span>
         <span>
-          <i class="el-icon-s-tools curp" style="font-size: 14px;" @click="changeCycle"></i>
-        </span>
-        <span>
-          <a style="font-size:12px;">
-            白名单机制
-            <i class="el-icon-info curp" @click="showTooltip"></i>：
-          </a>
-          <!-- <el-tooltip class="item" effect="dark" content="是否启用白名单机制" placement="top-start"> -->
-          <el-switch v-model="statisticalWhite" :width="40" @change="setWhiteIfStatistical"></el-switch>
-          <!-- </el-tooltip> -->
+          <i class="el-icon-s-tools curp"
+             style="font-size: 14px;"
+             @click="changeCycle"></i>
         </span>
       </el-col>
-      <el-col
-        :span="5"
-        class="user-setting"
-        v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )"
-      >
+      <el-col :span="5"
+              class="user-setting"
+              v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )">
         <span>
           <i class="el-icon-user"></i>
-          {{userInfo.name}}({{getRoleName()}})
+          {{userInfo.name}}
+          <!-- ({{getRoleName()}}) -->
         </span>
         <span>
           <el-dropdown trigger="click">
@@ -62,36 +53,44 @@
               <el-dropdown-item>
                 <p @click="logout">退出</p>
               </el-dropdown-item>
-              <el-dropdown-item v-if="userInfo.level === 0">
-                <p @click="factoryDataReset">恢复出厂设置</p>
-              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </span>
       </el-col>
     </el-row>
-    <el-dialog title="告警统计周期" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="全局配置" :visible.sync="dialogVisible" width="30%">
       <div>
-        <span>周期：</span>
-        <el-radio-group v-model="radio">
+        <span>告警统计周期：</span>
+        <el-radio-group v-model="radio" @change="radioChange">
           <el-radio-button label="day">日</el-radio-button>
           <el-radio-button label="week">周</el-radio-button>
           <el-radio-button label="month">月</el-radio-button>
         </el-radio-group>
       </div>
-      <!-- <div class="mt10">
-        <el-checkbox v-model="statisticalWhite">
-          <span style="font-size: 12px;">启用白名单</span>
-        </el-checkbox>
-      </div>-->
+      <div class="mt10">
+        <span>
+          <a style="font-size:12px;">
+            白名单机制
+            <i class="el-icon-info curp" @click="showTooltip"></i>：
+          </a>
+          <el-switch v-model="statisticalWhite" :width="40" @change="setWhiteIfStatistical"></el-switch>
+        </span>
+      </div>
+      <div class="mt10">
+        <span>
+          <a style="font-size:12px;">只看服务器区：</a>
+          <el-switch v-model="isServer" :width="40" @change="setIsServer"></el-switch>
+        </span>
+      </div>
 
-      <span slot="footer" class="dialog-footer">
+      <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="confirm">确 定</el-button>
-      </span>
+      </span>-->
     </el-dialog>
     <div v-if="resetPasswordStatus">
-      <ResetPassword v-model="resetPasswordStatus" @getResetform="getResetform"></ResetPassword>
+      <ResetPassword v-model="resetPasswordStatus"
+                     @getResetform="getResetform"></ResetPassword>
     </div>
   </div>
 </template>
@@ -102,8 +101,8 @@ import {
   getAttackNumApi,
   logoutApi,
   resetPassword,
-  factoryDataResetApi,
   whiteIfStatisticalApi,
+  lookServerSwitchApi,
   getStsWhiteStusApi
 } from '../../tools/api'
 import ResetPassword from '../../components/common/ResetPassword'
@@ -111,13 +110,14 @@ export default {
   components: {
     ResetPassword
   },
-  data() {
+  data () {
     return {
       name: this.$NAME,
       radio: 'day',
       statisticalWhite: 0,
       dialogVisible: false,
-      resetPasswordStatus: false
+      resetPasswordStatus: false,
+      isServer: false
     }
   },
   computed: {
@@ -130,7 +130,7 @@ export default {
       'currentPath',
       'userInfo'
     ]),
-    cycleName() {
+    cycleName () {
       if (this.cycle === 'day') {
         return '今日'
       } else if (this.cycle === 'week') {
@@ -141,6 +141,9 @@ export default {
     }
   },
   methods: {
+    radioChange() {
+      this.confirm()
+    },
     showTooltip() {
       this.$message({
         message:
@@ -148,10 +151,10 @@ export default {
         duration: 3000
       })
     },
-    jumpTo() {
+    jumpTo () {
       this.$router.push('/index')
     },
-    getRoleName() {
+    getRoleName () {
       let level = this.userInfo.level
       switch (level) {
         case 0:
@@ -164,10 +167,10 @@ export default {
           break
       }
     },
-    changeCycle() {
+    changeCycle () {
       this.dialogVisible = true
     },
-    setWhiteIfStatistical(val) {
+    setWhiteIfStatistical (val) {
       let fd = new FormData()
       fd.append('white_show', Number(!val))
       whiteIfStatisticalApi(fd).then(res => {
@@ -186,22 +189,40 @@ export default {
         })
       })
     },
-    confirm() {
+    confirm () {
       this.$store.commit('cahngeCycle', this.radio)
       this.getAttackNum()
-      this.dialogVisible = false
     },
-    getAttackNum() {
+    setIsServer() {
+      let fd = new FormData()
+      fd.append('server_show', Number(this.isServer))
+      lookServerSwitchApi(fd).then(res => {
+        let type = 'success'
+        let message = '设置成功'
+        if (res.state !== this.successFlag) {
+          type = 'warning'
+          message = res.info
+          this.isServer = !this.isServer
+        } else {
+          // this.isServer = this.isServer
+        }
+        this.$message({
+          type,
+          message
+        })
+      })
+    },
+    getAttackNum () {
       let fd = new FormData()
       fd.append('type', this.cycle)
       getAttackNumApi(fd).then(res => {
         this.$store.commit('changeAttackNum', res)
       })
     },
-    resetUser() {
+    resetUser () {
       this.resetPasswordStatus = true
     },
-    getResetform(form) {
+    getResetform (form) {
       let fd = new FormData()
       let user = this.userInfo
       fd.append('id', user.id)
@@ -219,7 +240,7 @@ export default {
             .then(() => {
               this.$router.push('/')
             })
-            .catch(() => {})
+            .catch(() => { })
         } else {
           type = 'warning'
           this.$message({
@@ -229,7 +250,7 @@ export default {
         }
       })
     },
-    delAllCookie() {
+    delAllCookie () {
       let myDate = new Date()
       myDate.setTime(-1000) //设置时间
       let data = document.cookie
@@ -239,7 +260,7 @@ export default {
         document.cookie = varName[0] + "=''; expires=" + myDate.toGMTString()
       }
     },
-    logout() {
+    logout () {
       logoutApi().then(res => {
         if (res.state === 1) {
           sessionStorage.removeItem('userInfo')
@@ -255,38 +276,23 @@ export default {
         }
       })
     },
-    factoryDataReset() {
-      this.$confirm('您确定要将此系统恢复出厂设置吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        factoryDataResetApi().then(res => {
-          let type = 'success'
-          if (res.state === this.successFlag) {
-            type = 'warning'
-          }
-          this.$message({
-            type,
-            message: res.info
-          })
-        })
-      })
-    }
+
   },
-  mounted() {
+  mounted () {
     this.getAttackNum()
     getStsWhiteStusApi().then(res => {
-      // 1代表关  0代表开
+      // 1代表关  0代表开  白名单
       this.statisticalWhite = Boolean(res.white_show)
       this.statisticalWhite = !this.statisticalWhite
+      // 1代表开  0代表关  服务器区
+      this.isServer = Boolean(res.server_show)
     })
   }
 }
 </script>
 
 <style lang="scss">
-@import '../../assets/style/color.scss';
+@import "../../assets/style/color.scss";
 .header {
   height: 50px;
   width: 100%;

@@ -16,8 +16,12 @@
           <el-button @click="resetData">重置</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="createReportStatus=true"
-                     type="primary">生成报告</el-button>
+          <el-button @click="reportDialog('day')"
+                     type="primary">生成日报</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="reportDialog('week')"
+                     type="primary">生成周报</el-button>
         </el-form-item>
       </el-form>
     </el-row>
@@ -52,9 +56,7 @@
           <el-button type="text"
                      @click.native="downloadReport(scope.row)">下载</el-button>
           <el-button type="text"
-                     @click.native="deleteReport(scope.row)">删
-
-            除</el-button>
+                     @click.native="deleteReport(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -71,15 +73,25 @@
 
     <div v-if="createReportStatus">
       <CreateReportComp v-model="createReportStatus"
-                        @reportOpt="createReport"></CreateReportComp>
+                        @reportOpt="createReport"
+                        :reportType='reportType'></CreateReportComp>
     </div>
   </div>
 </template>
 
 <script>
 import CreateReportComp from '../../components/report/CreateReportComp'
-import { getReportListApi, downloadFileApi, createReportApi, deleteReportApi, BASE_URL } from '../../tools/api'
+import {
+  getReportListApi,
+  downloadFileApi,
+  BASE_URL,
+  createReportDayApi, createReportWeekApi,
+  deleteReportApi
+} from '../../tools/api'
 export default {
+  components: {
+    CreateReportComp
+  },
   data () {
     return {
       searchForm: {
@@ -91,14 +103,54 @@ export default {
       pageSize: 10,
       total: 0,
       currentPage: 1,
-      createReportStatus: false
+      createReportStatus: false,
+      reportType: 'week'
     }
   },
-  components: { CreateReportComp },
   methods: {
+    reportDialog (type) {
+      this.createReportStatus = true
+      this.reportType = type
+    },
     resetData () {
       this.searchForm.date = ''
       this.getReportList()
+    },
+    createReport ({ dateTime, equipIds, baiban = '', yeban = '' }) {
+      this.$message({
+        type: 'success',
+        message: '报告正在生成中，请等待！',
+        duration: 1500
+      })
+      let fd = new FormData()
+      fd.append('start_time', dateTime[0] ? dateTime[0] : '')
+      fd.append('end_time', dateTime[1] ? dateTime[1] : '')
+      fd.append('id', equipIds)
+      let api = createReportWeekApi
+      if (this.reportType === 'day') {
+        fd.append('baiban', baiban)
+        fd.append('yeban', yeban)
+        api = createReportDayApi
+      }
+      api(fd)
+        .then(res => {
+          let type = 'success'
+          if (res.state !== this.successFlag) {
+            type = 'warning'
+          } else {
+            this.getReportList()
+          }
+          this.$message({
+            type,
+            message: res.info
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'warning',
+            message: '生成报告失败，请联系管理员。'
+          })
+        })
     },
     downloadReport (row) {
       let length = row.url.split('.').length
@@ -120,36 +172,6 @@ export default {
         a.download = `${name}.${type}`
         a.click()
       })
-    },
-    createReport ({ dateTime, equipIds }) {
-      this.$message({
-        type: 'success',
-        message: '报告正在生成中，请等待！',
-        duration: 1500
-      })
-      let fd = new FormData()
-      fd.append('start_time', dateTime[0] ? dateTime[0] : '')
-      fd.append('end_time', dateTime[1] ? dateTime[1] : '')
-      fd.append('id', equipIds)
-      createReportApi(fd)
-        .then(res => {
-          let type = 'success'
-          if (res.state !== this.successFlag) {
-            type = 'warning'
-          } else {
-            this.getReportList()
-          }
-          this.$message({
-            type,
-            message: res.info
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'warning',
-            message: '生成报告失败，请联系管理员。'
-          })
-        })
     },
     deleteReport (row) {
       this.$confirm('您确认删除该调报告吗？, 是否继续?', '提示', {
