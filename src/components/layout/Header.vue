@@ -58,7 +58,7 @@
         </span>
       </el-col>
     </el-row>
-    <el-dialog title="全局配置" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="全局配置" :visible.sync="dialogVisible" width="50%">
       <div>
         <span>告警统计周期：</span>
         <el-radio-group v-model="radio" @change="radioChange">
@@ -66,6 +66,19 @@
           <el-radio-button label="week">周</el-radio-button>
           <el-radio-button label="month">月</el-radio-button>
         </el-radio-group>
+      </div>
+      <div class="mt10">
+        <span>自定义告警统计周期：</span>
+        <el-date-picker
+          :clearable="false"
+          v-model="time"
+          type="datetimerange"
+          value-format="yyyy-MM-dd HH-mm-ss"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          @change='timeChange'
+        ></el-date-picker>
       </div>
       <div class="mt10">
         <span>
@@ -117,7 +130,8 @@ export default {
       statisticalWhite: 0,
       dialogVisible: false,
       resetPasswordStatus: false,
-      isServer: false
+      isServer: false,
+      time: []
     }
   },
   computed: {
@@ -141,6 +155,9 @@ export default {
     }
   },
   methods: {
+    timeChange () {
+      this.getAttackNum(this.time)
+    },
     radioChange() {
       this.confirm()
     },
@@ -212,9 +229,13 @@ export default {
         })
       })
     },
-    getAttackNum () {
+    getAttackNum (time) {
       let fd = new FormData()
-      fd.append('type', this.cycle)
+      if (time) {
+        fd.append('type', time.join(','))
+      } else {
+        fd.append('type', this.cycle)
+      }
       getAttackNumApi(fd).then(res => {
         this.$store.commit('changeAttackNum', res)
       })
