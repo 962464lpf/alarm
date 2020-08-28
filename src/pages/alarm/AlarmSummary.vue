@@ -450,7 +450,8 @@ export default {
         .catch(() => {
           this.$message({
             type: 'warning',
-            message: '导出文件出错，请联系管理员。'
+            message: '导出文件出错，请联系管理员。',
+            duration: 1500
           })
         })
     },

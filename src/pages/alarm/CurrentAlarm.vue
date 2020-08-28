@@ -708,12 +708,12 @@ export default {
         'end_time',
         this.searchForm.time[1] ? this.searchForm.time[1] : ''
       )
+      // }
       this.$message({
         type: 'warning',
         message: '导出文件可能需要的时间较长，请等待！',
         duration: 1500
       })
-
       exportCurrentAlarmFlieApi(fd)
         .then(res => {
           if (res.state !== this.successFlag) {
@@ -745,7 +745,8 @@ export default {
         .catch(() => {
           this.$message({
             type: 'warning',
-            message: '导出文件出错，请联系管理员。'
+            message: '导出文件出错，请联系管理员。',
+            duration: 1500
           })
         })
     },

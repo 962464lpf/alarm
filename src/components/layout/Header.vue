@@ -32,18 +32,6 @@
              style="font-size: 14px;"
              @click="changeCycle"></i>
         </span>
-        <span>
-          <a style="font-size:12px;">
-            白名单机制
-            <i class="el-icon-info curp"
-               @click="showTooltip"></i>：
-          </a>
-          <!-- <el-tooltip class="item" effect="dark" content="是否启用白名单机制" placement="top-start"> -->
-          <el-switch v-model="statisticalWhite"
-                     :width="40"
-                     @change="setWhiteIfStatistical"></el-switch>
-          <!-- </el-tooltip> -->
-        </span>
       </el-col>
       <el-col :span="5"
               class="user-setting"
@@ -70,29 +58,35 @@
         </span>
       </el-col>
     </el-row>
-    <el-dialog title="告警统计周期"
-               :visible.sync="dialogVisible"
-               width="30%">
+    <el-dialog title="全局配置" :visible.sync="dialogVisible" width="30%">
       <div>
-        <span>周期：</span>
-        <el-radio-group v-model="radio">
+        <span>告警统计周期：</span>
+        <el-radio-group v-model="radio" @change="radioChange">
           <el-radio-button label="day">日</el-radio-button>
           <el-radio-button label="week">周</el-radio-button>
           <el-radio-button label="month">月</el-radio-button>
         </el-radio-group>
       </div>
-      <!-- <div class="mt10">
-        <el-checkbox v-model="statisticalWhite">
-          <span style="font-size: 12px;">启用白名单</span>
-        </el-checkbox>
-      </div>-->
+      <div class="mt10">
+        <span>
+          <a style="font-size:12px;">
+            白名单机制
+            <i class="el-icon-info curp" @click="showTooltip"></i>：
+          </a>
+          <el-switch v-model="statisticalWhite" :width="40" @change="setWhiteIfStatistical"></el-switch>
+        </span>
+      </div>
+      <div class="mt10">
+        <span>
+          <a style="font-size:12px;">只看服务器区：</a>
+          <el-switch v-model="isServer" :width="40" @change="setIsServer"></el-switch>
+        </span>
+      </div>
 
-      <span slot="footer"
-            class="dialog-footer">
+      <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary"
-                   @click="confirm">确 定</el-button>
-      </span>
+        <el-button type="primary" @click="confirm">确 定</el-button>
+      </span>-->
     </el-dialog>
     <div v-if="resetPasswordStatus">
       <ResetPassword v-model="resetPasswordStatus"
@@ -108,6 +102,7 @@ import {
   logoutApi,
   resetPassword,
   whiteIfStatisticalApi,
+  lookServerSwitchApi,
   getStsWhiteStusApi
 } from '../../tools/api'
 import ResetPassword from '../../components/common/ResetPassword'
@@ -121,7 +116,8 @@ export default {
       radio: 'day',
       statisticalWhite: 0,
       dialogVisible: false,
-      resetPasswordStatus: false
+      resetPasswordStatus: false,
+      isServer: false
     }
   },
   computed: {
@@ -145,7 +141,10 @@ export default {
     }
   },
   methods: {
-    showTooltip () {
+    radioChange() {
+      this.confirm()
+    },
+    showTooltip() {
       this.$message({
         message:
           '启用白名单机制后，系统不会出现白名单告警数据，实时告警页面也不会推送白名告警数据',
@@ -193,7 +192,25 @@ export default {
     confirm () {
       this.$store.commit('cahngeCycle', this.radio)
       this.getAttackNum()
-      this.dialogVisible = false
+    },
+    setIsServer() {
+      let fd = new FormData()
+      fd.append('server_show', Number(this.isServer))
+      lookServerSwitchApi(fd).then(res => {
+        let type = 'success'
+        let message = '设置成功'
+        if (res.state !== this.successFlag) {
+          type = 'warning'
+          message = res.info
+          this.isServer = !this.isServer
+        } else {
+          // this.isServer = this.isServer
+        }
+        this.$message({
+          type,
+          message
+        })
+      })
     },
     getAttackNum () {
       let fd = new FormData()
@@ -264,9 +281,11 @@ export default {
   mounted () {
     this.getAttackNum()
     getStsWhiteStusApi().then(res => {
-      // 1代表关  0代表开
+      // 1代表关  0代表开  白名单
       this.statisticalWhite = Boolean(res.white_show)
       this.statisticalWhite = !this.statisticalWhite
+      // 1代表开  0代表关  服务器区
+      this.isServer = Boolean(res.server_show)
     })
   }
 }

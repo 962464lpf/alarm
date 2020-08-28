@@ -21,6 +21,9 @@
                    inactive-text="离线">
         </el-switch>
       </el-form-item>
+      <el-form-item label="服务器区">
+        <el-switch v-model="form.is_server" active-text="是" inactive-text="否"></el-switch>
+      </el-form-item>
       <el-form-item>
         <el-button @click="getInsideEquip"
                    type="primary"
@@ -58,8 +61,10 @@
                        label="责任人"></el-table-column>
       <el-table-column prop="phone"
                        label="联系电话"></el-table-column>
-      <el-table-column prop="online"
-                       label="是否在线">
+      <el-table-column prop="is_server" label="服务器区">
+        <template slot-scope="scope">{{scope.row.is_server === 0 ? '否' : '是'}}</template>
+      </el-table-column>    
+      <el-table-column label="是否在线" width="180">
         <template slot-scope="scope">
           {{scope.row.online ? '在线' : '离线'}}
         </template>
@@ -111,7 +116,8 @@ export default {
         name: '',
         staff: '',
         ip_private: '',
-        online: true
+        online: true,
+        is_server: false
       },
       pageSize: 20,
       total: 0,
@@ -194,7 +200,7 @@ export default {
       this.tableLoading = false
       let fd = new FormData()
       for (let key in this.form) {
-        if (key === 'online') {
+        if (key === 'is_server' || key === 'online') {
           fd.append(key, Number(this.form[key]))
         } else {
           fd.append(key, this.form[key])
@@ -226,7 +232,7 @@ export default {
     }
   },
   mounted () {
-    this.getInsideEquip()
+    // this.getInsideEquip()
   }
 }
 </script>
