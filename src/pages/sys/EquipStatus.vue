@@ -7,7 +7,14 @@
         <p>已使用{{equipStatus.totalDisk - equipStatus.freeDisk}}GB 可用{{equipStatus.freeDisk}} GB 共{{equipStatus.totalDisk}}GB</p>
       </div>
     </el-row>
-    <el-row class="mt10">
+    <el-row>
+      <div class="title">内存状态</div>
+      <div class="pl25">
+        <el-progress :percentage="memoryStatus"></el-progress>
+        <p>已使用{{equipStatus.totalMemory - equipStatus.freeMemory}}GB 可用{{equipStatus.freeMemory}} GB 共{{equipStatus.totalMemory}}GB</p>
+      </div>
+    </el-row>
+    <!-- <el-row class="mt10">
       <div class="title">负载状态</div>
       <el-row class="pl25">
         <el-col :span="12">
@@ -17,11 +24,16 @@
           <ve-line :data="memoryChartData" :settings="memoryChartSettings"></ve-line>
         </el-col>
       </el-row>
-    </el-row>
+    </el-row>-->
     <el-row class="mt10">
       <div class="title">系统时间</div>
       <!-- <div class="pl25">系统时间：2020-8-31 14:16:23</div> -->
       <div class="pl25">系统运行时间：{{equipStatus.runTime}} 天</div>
+    </el-row>
+    <el-row class="mt10">
+      <div class="title">内核版本</div>
+      <!-- <div class="pl25">系统时间：2020-8-31 14:16:23</div> -->
+      <div class="pl25">{{equipStatus.modelName}} 天</div>
     </el-row>
   </div>
 </template>
@@ -32,9 +44,12 @@ export default {
   data() {
     return {
       equipStatus: {
-        totalDisk: 100,
-        freeDisk: 20,
+        totalDisk: 0,
+        freeDisk: 0,
+        totalMemory: '',
+        freeMemory: '',
         runTime: '',
+        modelName: '',
       },
       cpuChartData: {
         columns: ['日期', 'cpu使用率'],
@@ -75,6 +90,14 @@ export default {
         ).toFixed(3) * 100
       )
     },
+    memoryStatus() {
+      return (
+        (
+          (this.equipStatus.totalMemory - this.equipStatus.freeMemory) /
+          this.equipStatus.freeMemory
+        ).toFixed(3) * 100
+      )
+    },
   },
   methods: {},
   mounted() {
@@ -82,9 +105,18 @@ export default {
       this.equipStatus.totalDisk = res.total_disk
       this.equipStatus.freeDisk = res.free_disk.slice(
         0,
-        res.free_disk.length - 2
+        res.free_disk.length - 1
+      )
+      this.equipStatus.totalMemory = res.total_mem.slice(
+        0,
+        res.total_mem.length - 1
+      )
+      this.equipStatus.freeMemory = res.free_mem.slice(
+        0,
+        res.free_mem.length - 1
       )
       this.equipStatus.runTime = res.run_time
+      this.equipStatus.modelName = res.model_name
     })
   },
 }
