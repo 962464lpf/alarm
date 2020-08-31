@@ -2,7 +2,7 @@ import { POST, GET, downloadFile } from './request'
 
 let BASE_URL = ''
 if (process.env.NODE_ENV == 'development') {
-  BASE_URL = 'http://192.168.123.242:2020'
+  BASE_URL = 'http://192.168.10.242:2020'
 } else {
   BASE_URL = window.location.origin
 }
@@ -449,6 +449,11 @@ function deleteScheduleApi(params) {
   return POST(url, params)
 }
 
+function getHardWareApi() {
+  let url = BASE_URL + '/jump/device/hardware '
+  return POST(url)
+}
+
 export {
   BASE_URL,
   closeBackend,
@@ -536,4 +541,5 @@ export {
   addScheduleApi,
   editScheduleApi,
   deleteScheduleApi,
+  getHardWareApi
 }

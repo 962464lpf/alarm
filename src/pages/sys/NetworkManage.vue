@@ -74,7 +74,7 @@ import {
   getNetWorkManageApi,
   postNetWorkManageApi,
   resetNetWorkApi,
-  factoryDataResetApi
+  factoryDataResetApi,
 } from '../../tools/api'
 export default {
   data () {

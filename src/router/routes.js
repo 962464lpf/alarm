@@ -219,6 +219,16 @@ const routes = [
           level: 0,
         },
       },
+      {
+        path: '/sys/equipstatus',
+        name: 'inside',
+        component: () => import('../pages/sys/EquipStatus.vue'),
+        meta: {
+          title: '设备状态',
+          icon: 'el-icon-document',
+          level: 0,
+        },
+      },
       // {
       //   path: '/sys/schedule',
       //   name: 'schedule',
