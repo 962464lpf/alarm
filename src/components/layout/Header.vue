@@ -149,13 +149,16 @@ export default {
         return '今日'
       } else if (this.cycle === 'week') {
         return '本周'
-      } else {
+      } else if (this.cycle === 'month') {
         return '本月'
+      } else {
+        return ''
       }
     }
   },
   methods: {
     timeChange () {
+      this.$store.commit('cahngeCycle', 'scope')
       this.getAttackNum(this.time)
     },
     radioChange() {
