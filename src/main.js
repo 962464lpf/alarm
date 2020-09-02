@@ -7,27 +7,40 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/style/common.scss'
 import VCharts from 'v-charts'
 import myMixin from './myMixin'
-// import { Message } from 'element-ui'
+import { Message } from 'element-ui'
 Vue.use(VCharts)
-
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, { size: 'mini' })
 
 Vue.mixin(myMixin)
+
 // eslint-disable-next-line no-undef
 Vue.prototype.$NAME = $NAME
-// router.beforeEach((to, from, next) => {
-//   if (from.fullPath === '/' && to.fullPath === '/index') location.reload()
-//   next()
-// })
+
+router.beforeEach((to, from, next) => {
+  // 普通页面级别为1，配置界面为0
+  if (to.fullPath === '/') {
+    next()
+  } else {
+    let userLevel = JSON.parse(sessionStorage.getItem('userInfo')).level
+      ? JSON.parse(sessionStorage.getItem('userInfo')).level
+      : ''
+    let pageLevel = to.meta.level
+    if (userLevel <= pageLevel) {
+      next()
+    } else {
+      Message.warning('暂无权限访问或访问地址不存在！')
+    }
+  }
+})
 
 new Vue({
   router,
   store,
-  render: h => h(App),
+  render: (h) => h(App),
   mounted() {
     // eslint-disable-next-line no-undef
     document.title = $NAME
-  }
+  },
 }).$mount('#app')
