@@ -17,16 +17,19 @@ Vue.mixin(myMixin)
 // eslint-disable-next-line no-undef
 Vue.prototype.$NAME = $NAME
 router.beforeEach((to, from, next) => {
-  let userLevel = JSON.parse(sessionStorage.getItem('userInfo')).level
-    ? JSON.parse(sessionStorage.getItem('userInfo')).level
-    : ''
-  let pageLevel = to.meta.level
   // 普通页面级别为1，配置界面为0
-  if (to.fullPath === '/') pageLevel = 2
-  if (userLevel <= pageLevel) {
+  if (to.fullPath === '/') {
     next()
   } else {
-    Message.warning('暂无权限访问或访问地址不存在！')
+    let userLevel = JSON.parse(sessionStorage.getItem('userInfo')).level
+      ? JSON.parse(sessionStorage.getItem('userInfo')).level
+      : ''
+    let pageLevel = to.meta.level
+    if (userLevel <= pageLevel) {
+      next()
+    } else {
+      Message.warning('暂无权限访问或访问地址不存在！')
+    }
   }
 })
 new Vue({
