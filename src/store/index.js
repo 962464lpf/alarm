@@ -76,12 +76,12 @@ export default new Vuex.Store({
     connectEventSource({ commit }, data = {}) {
       let source = new EventSource(
         BASE_URL +
-        '/jump/api/stream2?device_ipstr=' +
-        data.device_ipstr +
-        '&uid=' +
-        data.id +
-        '&level=' +
-        data.level
+          '/jump/api/stream2?device_ipstr=' +
+          data.device_ipstr +
+          '&uid=' +
+          data.id +
+          '&level=' +
+          data.level
       )
       commit('saveSourceObj', source)
       // CONNECTING (0), OPEN (1), 或者 CLOSED (2)。
