@@ -14,7 +14,7 @@ const myMixin = {
       if (res.state !== this.successFlag) {
         type = 'warning'
       } else {
-        callback()
+        if (callback) callback()
       }
       this.$message({
         type,
