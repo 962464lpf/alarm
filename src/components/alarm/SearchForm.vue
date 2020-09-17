@@ -1,14 +1,14 @@
 <template>
   <div class="alarm-summary-search">
     <el-form :inline="true" label-width="75px" :model="searchForm" ref="searchForm">
-      <div class="more-search" @mouseenter="moreSearch = true">
+      <div class="more-search">
         <el-button
           slot="append"
           class="more-search-btn"
           icon="el-icon-caret-bottom"
           @click="moreSearch = !moreSearch"
         >全部</el-button>
-        <div class="search-box" v-if="moreSearch" @mouseleave="moreSearch = false">
+        <div class="search-box" v-if="moreSearch">
           <el-form-item label="恶意IP">
             <el-input v-model="searchForm.sip" placeholder="恶意IP"></el-input>
           </el-form-item>
@@ -55,8 +55,8 @@
 export default {
   props: {
     levelStatus: {
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -67,8 +67,8 @@ export default {
         device_ip: '',
         attack_type: '',
         time: [],
-        level: ''
-      }
+        level: '',
+      },
     }
   },
   computed: {
@@ -82,7 +82,7 @@ export default {
         ' ' +
         this.searchForm.attack_type
       )
-    }
+    },
   },
   methods: {
     onSearch(type) {
@@ -93,13 +93,13 @@ export default {
           device_ip: '',
           attack_type: '',
           time: [],
-          level: ''
+          level: '',
         }
       }
       this.$emit('getSearchForm', this.searchForm)
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 }
 </script>
 
