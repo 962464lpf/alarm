@@ -170,6 +170,28 @@ const routes = [
     ],
   },
   {
+    path: '/beef',
+    name: 'beef',
+    component: () => import('../pages/beef/Beef.vue'),
+    meta: {
+      title: 'Beef',
+      icon: 'el-icon-document',
+      level: 1,
+    },
+    // children: [
+    //   {
+    //     path: '/report/report',
+    //     name: 'report',
+    //     component: () => import('../pages/report/Report.vue'),
+    //     meta: {
+    //       title: '日报周报',
+    //       icon: '',
+    //       level: 1,
+    //     },
+    //   },
+    // ],
+  },
+  {
     path: '/sys',
     name: 'sux',
     component: () => import('../components/layout/RouterView.vue'),

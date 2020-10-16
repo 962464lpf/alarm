@@ -22,10 +22,18 @@ router.beforeEach((to, from, next) => {
   if (to.fullPath === '/') {
     next()
   } else {
-    let userLevel = JSON.parse(sessionStorage.getItem('userInfo')).level
-      ? JSON.parse(sessionStorage.getItem('userInfo')).level
-      : ''
-    let pageLevel = to.meta.level
+    let userLevel
+    let pageLevel
+    try {
+      userLevel = JSON.parse(sessionStorage.getItem('userInfo')).level
+        ? JSON.parse(sessionStorage.getItem('userInfo')).level
+        : ''
+      pageLevel = to.meta.level
+    } catch (error) {
+      console.log(error)
+      next('/')
+    }
+
     if (userLevel <= pageLevel) {
       next()
     } else {
