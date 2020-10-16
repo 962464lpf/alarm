@@ -22,10 +22,16 @@ router.beforeEach((to, from, next) => {
   if (to.fullPath === '/') {
     next()
   } else {
-    let userLevel = JSON.parse(sessionStorage.getItem('userInfo')).level
-      ? JSON.parse(sessionStorage.getItem('userInfo')).level
-      : ''
-    let pageLevel = to.meta.level
+    let userLevel
+    let pageLevel
+    try {
+      userLevel = JSON.parse(sessionStorage.getItem('userInfo')).level
+        ? JSON.parse(sessionStorage.getItem('userInfo')).level
+        : ''
+      pageLevel = to.meta.level
+    } catch (e) {
+      // Message.warning('暂无权限访问或访问地址不存在！')
+    }
     if (userLevel <= pageLevel) {
       next()
     } else {
