@@ -1,5 +1,5 @@
 import imgUrl from '../assets/images/11111.png'
-var parts = 150 //切割数量
+var parts = 70 //切割数量
 var imgIndex = 0 //当前图片
 /* eslint-disable */
 function getXinDianTu() {

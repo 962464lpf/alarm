@@ -7,9 +7,7 @@
             <span style="font-size: 12px;">不显示白名单数据</span>
           </el-checkbox>
         </span>-->
-        <el-dropdown split-button
-                     type="primary"
-                     @command="exportFile">
+        <el-dropdown split-button type="primary" @command="exportFile">
           导出
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="csv">csv</el-dropdown-item>
@@ -19,32 +17,24 @@
             <el-dropdown-item command="html">html</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button type="primary"
-                   class="ml10"
-                   @click="batchBanned">批量封禁</el-button>
+        <el-button type="primary" class="ml10" @click="batchBanned">批量封禁</el-button>
       </span>
     </SearchForm>
 
     <div class="alarm-summary-table">
-      <el-table v-loading="tableLoading"
-                :data="summaryAlarmList"
-                style="width: 100%"
-                border
-                @selection-change="handleSelectionChange"
-                row-key="id">
-        <el-table-column type="selection"
-                         reserve-selection
-                         width="45"
-                         align="center"></el-table-column>
-        <el-table-column label="恶意IP"
-                         width="150"
-                         align="center">
+      <el-table
+        v-loading="tableLoading"
+        :data="summaryAlarmList"
+        style="width: 100%"
+        border
+        @selection-change="handleSelectionChange"
+        row-key="id"
+      >
+        <el-table-column type="selection" reserve-selection width="45" align="center"></el-table-column>
+        <el-table-column label="恶意IP" width="150" align="center">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        placement="bottom">
-              <div v-if="scope.row.sip_show"
-                   slot="content">
+            <el-tooltip class="item" effect="dark" placement="bottom">
+              <div v-if="scope.row.sip_show" slot="content">
                 <p>私网IP：{{scope.row.sip_show.ip_private}}</p>
                 <p>公网IP：{{scope.row.sip_show.ip}}</p>
                 <p>安全域：{{scope.row.sip_show.anquanyu}}</p>
@@ -53,44 +43,43 @@
                 <p>责任人：{{scope.row.sip_show.staff}}</p>
                 <p>联系电话：{{scope.row.sip_show.phone}}</p>
               </div>
-              <div v-else
-                   slot="content">
+              <div v-else slot="content">
                 <span>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
               </div>
               <div>
-                <span class="curp"
-                      v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 ">
+                <span
+                  class="curp"
+                  v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 "
+                >
                   {{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}
-                  <b v-html="getToolTipContetn(scope.row.sip_black_type)"></b>
+                  <b
+                    v-html="getToolTipContetn(scope.row.sip_black_type)"
+                  ></b>
                 </span>
-                <span class="curp"
-                      v-else>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
+                <span
+                  class="curp"
+                  v-else
+                >{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
               </div>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="wuli_addr"
-                         label="位置"
-                         align="center">
+        <el-table-column prop="wuli_addr" label="位置" align="center">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        :content="scope.row.wuli_addr"
-                        placement="bottom">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.wuli_addr"
+              placement="bottom"
+            >
               <span class="curp omit">{{ scope.row.wuli_addr }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="dip"
-                         label="目的IP"
-                         width="150"
-                         align="center">
+        <el-table-column prop="dip" label="目的IP" width="150" align="center">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        placement="bottom">
-              <div v-if="scope.row.dip_show"
-                   slot="content">
+            <el-tooltip class="item" effect="dark" placement="bottom">
+              <div v-if="scope.row.dip_show" slot="content">
                 <p>私网IP：{{scope.row.dip_show.ip_private}}</p>
                 <p>公网IP：{{scope.row.dip_show.ip}}</p>
                 <p>安全域：{{scope.row.dip_show.anquanyu}}</p>
@@ -99,8 +88,7 @@
                 <p>责任人：{{scope.row.dip_show.staff}}</p>
                 <p>联系电话：{{scope.row.dip_show.phone}}</p>
               </div>
-              <div v-else
-                   slot="content">
+              <div v-else slot="content">
                 <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
                 <span v-else>{{ scope.row.dip }}</span>
               </div>
@@ -111,63 +99,52 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="告警来源"
-                         align="center">
+        <el-table-column label="告警来源" align="center">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        :content="scope.row.device_ip"
-                        placement="bottom">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.device_ip"
+              placement="bottom"
+            >
               <span class="curp omit">{{ scope.row.device_ip }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="描述"
-                         align="center">
+        <el-table-column label="描述" align="center">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        :content="scope.row.con"
-                        placement="bottom">
+            <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
               <span class="curp omit">{{ scope.row.con }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="最后攻击时间"
-                         prop="attack_time"
-                         align="center">
+        <el-table-column label="最后攻击时间" prop="attack_time" align="center">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        :content="scope.row.attack_time"
-                        placement="bottom">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.attack_time"
+              placement="bottom"
+            >
               <span class="curp omit">{{ scope.row.attack_time }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="attack_type"
-                         label="攻击类型"
-                         align="center">
+        <el-table-column prop="attack_type" label="攻击类型" align="center">
           <template slot-scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
-                        placement="bottom">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
+              placement="bottom"
+            >
               <span class="curp omit">{{ scope.row.attack_type ? scope.row.attack_type : '未知' }}</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="protocol"
-                         width="80"
-                         label="协议"
-                         align="center"></el-table-column>
-        <el-table-column prop="summary_num"
-                         width="80"
-                         label="次数"
-                         align="center"></el-table-column>
-        <el-table-column label="操作"
-                         width="100"
-                         align="center">
+        <el-table-column prop="protocol" width="80" label="协议" align="center"></el-table-column>
+        <el-table-column prop="summary_num" width="80" label="次数" align="center"></el-table-column>
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <el-dropdown>
               <span class="el-dropdown-link el-button--lightblue dropbutton">
@@ -187,15 +164,17 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination class="fr clearfix"
-                     background
-                     @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="[10, 20, 30, 40]"
-                     :page-size="pageSize"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="total"></el-pagination>
+      <el-pagination
+        class="fr clearfix"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
       <div class="clearfloat"></div>
       <div class="statistic fr mt10">
         <span>
@@ -218,23 +197,22 @@
       <div class="clearfloat"></div>
     </div>
     <div v-if="alarmListDialogStatus">
-      <AlarmListDialog v-model="alarmListDialogStatus"
-                       :rowSip="rowSip"
-                       :rowId="rowId"
-                       :searchForm="searchForm"></AlarmListDialog>
+      <AlarmListDialog
+        v-model="alarmListDialogStatus"
+        :rowSip="rowSip"
+        :rowId="rowId"
+        :searchForm="searchForm"
+      ></AlarmListDialog>
     </div>
     <div v-if="blackTypeDialogStatus">
-      <ChooseBlackType v-model="blackTypeDialogStatus"
-                       @emitChooseType="emitChooseType"></ChooseBlackType>
+      <ChooseBlackType v-model="blackTypeDialogStatus" @emitChooseType="emitChooseType"></ChooseBlackType>
     </div>
     <div v-if="selectTypeDialogStatus">
-      <AddSelectType v-model="selectTypeDialogStatus"
-                     @emitSelectTyepe="emitSelectTyepe"></AddSelectType>
+      <AddSelectType v-model="selectTypeDialogStatus" @emitSelectTyepe="emitSelectTyepe"></AddSelectType>
     </div>
 
     <div v-if="chooseFirewallStatus">
-      <ChooseFirewall v-model="chooseFirewallStatus"
-                      @getFirewall="batchBannedOperation"></ChooseFirewall>
+      <ChooseFirewall v-model="chooseFirewallStatus" @getFirewall="batchBannedOperation"></ChooseFirewall>
     </div>
   </div>
 </template>
@@ -248,7 +226,7 @@ import {
   BASE_URL,
   downloadFileApi,
   aKeyBlockedApi,
-  batchBannedApi
+  batchBannedApi,
 } from '../../tools/api'
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -262,9 +240,9 @@ export default {
     ChooseBlackType,
     AddSelectType,
     SearchForm,
-    ChooseFirewall
+    ChooseFirewall,
   },
-  data () {
+  data() {
     return {
       notsee_white: true,
       moreSearch: false,
@@ -275,7 +253,7 @@ export default {
         dip: '',
         device_ip: '',
         attack_type: '',
-        time: []
+        time: [],
       },
       tableLoading: false,
       summaryAlarmList: [{}],
@@ -293,52 +271,52 @@ export default {
       rowSip: '',
       selectRowData: [],
       chooseFirewallStatus: false,
-      selectBlockedType: ''
+      selectBlockedType: '',
     }
   },
   computed: {
-    ...mapState(['newAlarmData', 'userInfo'])
+    ...mapState(['newAlarmData', 'userInfo']),
   },
   watch: {
     // 有新的告警数据
-    newAlarmData () {
+    newAlarmData() {
       // this.getAlarmList()
-    }
+    },
   },
   methods: {
-    handleSelectionChange (val) {
+    handleSelectionChange(val) {
       this.selectRowData = val
     },
-    batchBannedOperation (firewall) {
+    batchBannedOperation(firewall) {
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
         spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
+        background: 'rgba(0, 0, 0, 0.7)',
       })
       if (this.selectBlockedType === 'Akey') {
         let fd = new FormData()
         fd.append('ip', this.rowAlarmData.sip)
         fd.append('fid', firewall.id)
-        aKeyBlockedApi(fd).then(res => {
+        aKeyBlockedApi(fd).then((res) => {
           loading.close()
           let type = 'success'
           if (res.state !== this.successFlag) type = 'warning'
           this.$message({
             type,
-            message: res.info
+            message: res.info,
           })
           this.getAlarmList()
         })
       } else {
         let sipArr = []
-        this.selectRowData.forEach(item => {
+        this.selectRowData.forEach((item) => {
           sipArr.push(item.sip)
         })
         let fd = new FormData()
         fd.append('ipstr', sipArr.join(','))
         fd.append('fid', firewall.id)
-        batchBannedApi(fd).then(res => {
+        batchBannedApi(fd).then((res) => {
           loading.close()
           let type = 'success'
           if (res.state !== this.successFlag) {
@@ -348,27 +326,27 @@ export default {
           }
           this.$message({
             type,
-            message: res.info
+            message: res.info,
           })
         })
       }
     },
-    batchBanned () {
+    batchBanned() {
       if (this.selectRowData.length > 0) {
         this.selectBlockedType = 'batch'
         this.chooseFirewallStatus = true
       } else {
         this.$message({
           type: 'warning',
-          message: '请选择您要封禁的IP.'
+          message: '请选择您要封禁的IP.',
         })
       }
     },
-    getSearchForm (form) {
+    getSearchForm(form) {
       this.searchForm = form
       this.getAlarmList()
     },
-    getToolTipContetn (type) {
+    getToolTipContetn(type) {
       let content = ''
       if (type === 0) {
         content = '<a class="red-team">红队</a>'
@@ -379,8 +357,8 @@ export default {
       }
       return content
     },
-    downloadFile (filePath, type) {
-      downloadFileApi(filePath).then(res => {
+    downloadFile(filePath, type) {
+      downloadFileApi(filePath).then((res) => {
         let blob = new Blob([res], { type })
         let url = window.URL.createObjectURL(blob)
         let a = document.createElement('a')
@@ -390,7 +368,7 @@ export default {
       })
     },
 
-    emitSelectTyepe (data) {
+    emitSelectTyepe(data) {
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('type', this.selectType)
@@ -417,14 +395,14 @@ export default {
       this.$message({
         type: 'warning',
         message: '导出文件可能需要的时间较长，请等待！',
-        duration: 1500
+        duration: 1500,
       })
       exportSumAlarmFileApi(fd)
-        .then(res => {
+        .then((res) => {
           if (res.state !== this.successFlag) {
             this.$message({
               type: 'warning',
-              message: '导出失败'
+              message: '导出失败',
             })
           } else {
             let filePath = BASE_URL + res.file_path
@@ -451,22 +429,22 @@ export default {
           this.$message({
             type: 'warning',
             message: '导出文件出错，请联系管理员。',
-            duration: 1500
+            duration: 1500,
           })
         })
     },
-    exportFile (type) {
+    exportFile(type) {
       this.selectTypeDialogStatus = true
       this.selectType = type
     },
-    emitChooseType (type) {
+    emitChooseType(type) {
       this.blackType = type
       let fd = new FormData()
       fd.append('ip_addr', this.rowAlarmData.sip)
       fd.append('type', 'black')
       fd.append('black_type', type)
       fd.append('id', parseInt(this.rowAlarmData.id))
-      setIpApi('black', fd).then(res => {
+      setIpApi('black', fd).then((res) => {
         let type = 'success'
         let message = '设置成功'
         if (res.state !== this.successFlag) {
@@ -475,12 +453,12 @@ export default {
         }
         this.$message({
           type,
-          message
+          message,
         })
         this.getAlarmList()
       })
     },
-    operation (row, type) {
+    operation(row, type) {
       this.rowAlarmData = row
       this.rowId = parseInt(row.id)
       this.rowSip = row.sip
@@ -506,9 +484,9 @@ export default {
         this.$confirm(`您确定将此源IP设置为${IpName}吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         }).then(() => {
-          setIpApi(type, fd).then(res => {
+          setIpApi(type, fd).then((res) => {
             let type = 'success'
             let message = '设置成功'
             if (res.state !== this.successFlag) {
@@ -517,19 +495,19 @@ export default {
             }
             this.$message({
               type,
-              message
+              message,
             })
             this.getAlarmList()
           })
         })
       }
     },
-    blocked (row) {
+    blocked(row) {
       if (this.userInfo.level === 0 || this.userInfo.level === 2) {
         this.$confirm(`您确定要将恶意IP:${row.sip}封禁吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         }).then(() => {
           this.rowAlarmData = row
           this.selectBlockedType = 'Akey'
@@ -538,20 +516,20 @@ export default {
       } else {
         this.$message({
           type: 'warning',
-          message: '您没有权限执行此操作，请与管理员联系。'
+          message: '您没有权限执行此操作，请与管理员联系。',
         })
       }
     },
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.pageSize = val
       this.getAlarmList()
     },
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.currentPage = val
       this.getAlarmList()
     },
-    getAlarmList () {
-      this.tableLoading = true
+    getAlarmList() {
+      this.tableLoading = false
       let fd = new FormData()
       fd.append('page', this.currentPage)
       // fd.append('notsee_white', this.notsee_white ? 1 : 0)
@@ -569,7 +547,7 @@ export default {
         'end_time',
         this.searchForm.time[1] ? this.searchForm.time[1] : ''
       )
-      getSumAlarmListApi(fd).then(res => {
+      getSumAlarmListApi(fd).then((res) => {
         this.tableLoading = false
         this.summaryAlarmList = res.data
         this.total = res.total
@@ -578,11 +556,11 @@ export default {
         this.attack_total_low = res.attack_total_low
         this.attack_total_middle = res.attack_total_middle
       })
-    }
+    },
   },
-  mounted () {
+  mounted() {
     this.getAlarmList()
-  }
+  },
 }
 </script>
 

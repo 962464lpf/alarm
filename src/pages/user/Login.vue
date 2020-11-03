@@ -1,8 +1,11 @@
 <template>
   <div class="user" id="user">
     <div class="title">
-      <img src="../../assets/images/logo1.png" alt />
-      <span>TURING CENTER</span>
+      <img src="../../assets/images/logo.png" alt />
+      <div>
+        <img src="../../assets/images/logo1.png" alt />
+        <p>TURING SAFETY MANAGEMENT CENTEER</p>
+      </div>
     </div>
     <div class="form-box">
       <div class="form">
@@ -42,7 +45,7 @@
 import { loginApi, verifyLoginApi } from '../../tools/api'
 import { mapState } from 'vuex'
 import { decode } from '../../tools/encrypt'
-import { getXinDianTu } from '../../tools/xindiantu'
+// import { getXinDianTu } from '../../tools/xindiantu'
 export default {
   data() {
     return {
@@ -135,7 +138,7 @@ export default {
   mounted() {
     window.addEventListener('keydown', this.keyDown)
     sessionStorage.setItem('refresh', false)
-    getXinDianTu()
+    // getXinDianTu()
   },
   destroyed() {
     window.removeEventListener('keydown', this.keyDown, false)
@@ -168,18 +171,23 @@ export default {
     font-size: 34px;
     color: white;
     font-weight: 700;
-    height: 50px;
-    line-height: 50px;
+    // height: 50px;
     z-index: 99;
-    span {
-      display: inline-block;
-      height: 50px;
-      line-height: 50px;
-      vertical-align: top;
-      margin-left: 5px;
-    }
+    display: flex;
+    justify-content: center;
     img {
-      height: 100%;
+      height: 60px;
+    }
+    div {
+      img {
+        height: 40px;
+      }
+      p {
+        font-size: 14px;
+        text-align: left;
+        margin-left: 2px;
+        line-height: 10px;
+      }
     }
   }
   overflow: hidden;
@@ -199,8 +207,8 @@ export default {
     bottom: 25%;
     left: calc(50% - 200px);
     border-radius: 20px;
-    padding: 45px;
-    padding-bottom: 25px;
+    padding: 35px;
+    padding-bottom: 6px;
     background-color: #1a2332 !important;
     border-color: #1a2332 !important;
     box-sizing: border-box;

@@ -820,31 +820,6 @@ export default {
     }
   }
   .current-table {
-    .el-table {
-      thead {
-        color: white;
-        tr {
-          th {
-            background: #141d2b !important;
-            border-bottom: 1px solid #292e33;
-          }
-        }
-      }
-      tbody {
-        tr {
-          background: #141d2b;
-          color: #798086;
-          .el-checkbox__inner {
-            border: 1px solid #292e33;
-            background-color: #141d2b;
-          }
-        }
-      }
-    }
-    .el-table::before {
-      background-color: #292e33 !important;
-    }
-
     // color: black;
     .cell-blue {
       background: rgb(198, 226, 255);
@@ -938,46 +913,6 @@ export default {
     font-size: 13px;
     margin-top: 10px;
     line-height: 32px;
-  }
-  .el-pagination {
-    .el-pagination__total {
-      color: white;
-    }
-    .el-input__inner {
-      background: transparent;
-      border: none;
-      color: white;
-    }
-    .btn-prev {
-      background: transparent;
-      .el-icon {
-        color: white;
-      }
-    }
-    .el-pager li {
-      background: transparent;
-      color: white;
-    }
-    .el-pager li:not(.disabled).active {
-      background: transparent;
-      color: #9acc14;
-    }
-    .btn-next {
-      background: transparent;
-      .el-icon {
-        color: white;
-      }
-    }
-    .el-pagination__jump {
-      color: white;
-    }
-  }
-  .more-operation {
-    .el-button--primary {
-      background-color: rgba(159, 239, 0, 0.1) !important;
-      border: none;
-      color: #97e402;
-    }
   }
 }
 .notify-red,
