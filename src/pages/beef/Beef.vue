@@ -1,5 +1,5 @@
 <template>
-  <div class="beef">beef</div>
+  <div class="beef"></div>
 </template>
 
 <script>

@@ -18,6 +18,7 @@ Vue.mixin(myMixin)
 Vue.prototype.$NAME = $NAME
 
 router.beforeEach((to, from, next) => {
+  next()
   // 普通页面级别为1，配置界面为0
   if (to.fullPath === '/') {
     next()
@@ -31,7 +32,8 @@ router.beforeEach((to, from, next) => {
       pageLevel = to.meta.level
     } catch (error) {
       console.log(error)
-      next('/')
+      // next('/')
+      next()
     }
 
     if (userLevel <= pageLevel) {

@@ -1,16 +1,20 @@
 <template>
-  <div class="header">
+  <div
+    class="header"
+    v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )"
+  >
     <el-row class="header-row">
-      <el-col :span="3"
-              class="title">
+      <el-col :span="3" class="title">
         <!-- <img src="../../assets/images/logo.png" class="curp" @click="jumpTo" /> -->
         <!-- 护网工具箱 -->
         {{name}}
       </el-col>
 
-      <el-col :span="16"
-              class="icon-box"
-              v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )">
+      <el-col
+        :span="16"
+        class="icon-box"
+        v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )"
+      >
         <span>
           {{cycleName}}攻击总数：
           <b>{{attackNum}}</b>
@@ -28,14 +32,14 @@
           <b>{{attackNumLow}}</b>
         </span>
         <span>
-          <i class="el-icon-s-tools curp"
-             style="font-size: 14px;"
-             @click="changeCycle"></i>
+          <i class="el-icon-s-tools curp" style="font-size: 14px;" @click="changeCycle"></i>
         </span>
       </el-col>
-      <el-col :span="5"
-              class="user-setting"
-              v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )">
+      <el-col
+        :span="5"
+        class="user-setting"
+        v-if="!(currentPath === '/' || currentPath === '/register' ||  currentPath === '/edituser' )"
+      >
         <span>
           <i class="el-icon-user"></i>
           {{userInfo.name}}
@@ -89,8 +93,7 @@
       </span>-->
     </el-dialog>
     <div v-if="resetPasswordStatus">
-      <ResetPassword v-model="resetPasswordStatus"
-                     @getResetform="getResetform"></ResetPassword>
+      <ResetPassword v-model="resetPasswordStatus" @getResetform="getResetform"></ResetPassword>
     </div>
   </div>
 </template>
@@ -103,21 +106,21 @@ import {
   resetPassword,
   whiteIfStatisticalApi,
   lookServerSwitchApi,
-  getStsWhiteStusApi
+  getStsWhiteStusApi,
 } from '../../tools/api'
 import ResetPassword from '../../components/common/ResetPassword'
 export default {
   components: {
-    ResetPassword
+    ResetPassword,
   },
-  data () {
+  data() {
     return {
       name: this.$NAME,
       radio: 'day',
       statisticalWhite: 0,
       dialogVisible: false,
       resetPasswordStatus: false,
-      isServer: false
+      isServer: false,
     }
   },
   computed: {
@@ -128,9 +131,9 @@ export default {
       'attackNumLow',
       'cycle',
       'currentPath',
-      'userInfo'
+      'userInfo',
     ]),
-    cycleName () {
+    cycleName() {
       if (this.cycle === 'day') {
         return '今日'
       } else if (this.cycle === 'week') {
@@ -138,7 +141,7 @@ export default {
       } else {
         return '本月'
       }
-    }
+    },
   },
   methods: {
     radioChange() {
@@ -148,13 +151,13 @@ export default {
       this.$message({
         message:
           '启用白名单机制后，系统不会出现白名单告警数据，实时告警页面也不会推送白名告警数据',
-        duration: 3000
+        duration: 3000,
       })
     },
-    jumpTo () {
+    jumpTo() {
       this.$router.push('/index')
     },
-    getRoleName () {
+    getRoleName() {
       let level = this.userInfo.level
       switch (level) {
         case 0:
@@ -167,13 +170,13 @@ export default {
           break
       }
     },
-    changeCycle () {
+    changeCycle() {
       this.dialogVisible = true
     },
-    setWhiteIfStatistical (val) {
+    setWhiteIfStatistical(val) {
       let fd = new FormData()
       fd.append('white_show', Number(!val))
-      whiteIfStatisticalApi(fd).then(res => {
+      whiteIfStatisticalApi(fd).then((res) => {
         let type = 'success'
         let message = '设置成功'
         if (res.state !== this.successFlag) {
@@ -185,18 +188,18 @@ export default {
         }
         this.$message({
           type,
-          message
+          message,
         })
       })
     },
-    confirm () {
+    confirm() {
       this.$store.commit('cahngeCycle', this.radio)
       this.getAttackNum()
     },
     setIsServer() {
       let fd = new FormData()
       fd.append('server_show', Number(this.isServer))
-      lookServerSwitchApi(fd).then(res => {
+      lookServerSwitchApi(fd).then((res) => {
         let type = 'success'
         let message = '设置成功'
         if (res.state !== this.successFlag) {
@@ -208,49 +211,49 @@ export default {
         }
         this.$message({
           type,
-          message
+          message,
         })
       })
     },
-    getAttackNum () {
+    getAttackNum() {
       let fd = new FormData()
       fd.append('type', this.cycle)
-      getAttackNumApi(fd).then(res => {
+      getAttackNumApi(fd).then((res) => {
         this.$store.commit('changeAttackNum', res)
       })
     },
-    resetUser () {
+    resetUser() {
       this.resetPasswordStatus = true
     },
-    getResetform (form) {
+    getResetform(form) {
       let fd = new FormData()
       let user = this.userInfo
       fd.append('id', user.id)
       fd.append('name', user.name)
       fd.append('password', form.password)
       fd.append('password2', form.password2)
-      resetPassword(fd).then(res => {
+      resetPassword(fd).then((res) => {
         let type = 'success'
         if (res.state === 1) {
           this.$confirm('密码已重置, 是否重新登录?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            type: 'warning'
+            type: 'warning',
           })
             .then(() => {
               this.$router.push('/')
             })
-            .catch(() => { })
+            .catch(() => {})
         } else {
           type = 'warning'
           this.$message({
             type,
-            message: res.info
+            message: res.info,
           })
         }
       })
     },
-    delAllCookie () {
+    delAllCookie() {
       let myDate = new Date()
       myDate.setTime(-1000) //设置时间
       let data = document.cookie
@@ -260,8 +263,8 @@ export default {
         document.cookie = varName[0] + "=''; expires=" + myDate.toGMTString()
       }
     },
-    logout () {
-      logoutApi().then(res => {
+    logout() {
+      logoutApi().then((res) => {
         if (res.state === 1) {
           sessionStorage.removeItem('userInfo')
           this.$store.commit('changeUserInfo', {})
@@ -271,32 +274,32 @@ export default {
         } else {
           this.$message({
             type: 'warning',
-            message: res.info
+            message: res.info,
           })
         }
       })
     },
-
   },
-  mounted () {
+  mounted() {
     this.getAttackNum()
-    getStsWhiteStusApi().then(res => {
+    getStsWhiteStusApi().then((res) => {
       // 1代表关  0代表开  白名单
       this.statisticalWhite = Boolean(res.white_show)
       this.statisticalWhite = !this.statisticalWhite
       // 1代表开  0代表关  服务器区
       this.isServer = Boolean(res.server_show)
     })
-  }
+  },
 }
 </script>
 
 <style lang="scss">
-@import "../../assets/style/color.scss";
+@import '../../assets/style/color.scss';
 .header {
   height: 50px;
   width: 100%;
-  background: $hfbg-color;
+  background: #1a2332;
+  font-size: 14px;
   .header-row {
     height: 50px;
     line-height: 50px;

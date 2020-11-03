@@ -19,13 +19,13 @@ import Nav from '../layout/Nav'
 import { getUserInfo, startListernApi, startRecveApi } from '../../tools/api'
 export default {
   components: {
-    Nav
+    Nav,
     // Breadcrumb
   },
 
   data() {
     return {
-      isCollapse: false
+      isCollapse: false,
     }
   },
   methods: {
@@ -35,7 +35,7 @@ export default {
       } else if (type === 'close') {
         this.isCollapse = false
       }
-    }
+    },
   },
   mounted() {
     window.addEventListener('beforeunload', () => {
@@ -43,11 +43,11 @@ export default {
     })
     startListernApi()
     startRecveApi()
-    getUserInfo().then(res => {
+    getUserInfo().then((res) => {
       this.$store.commit('changeUserInfo', res)
       this.$store.dispatch('connectEventSource', res)
     })
-  }
+  },
 }
 </script>
 
@@ -58,17 +58,17 @@ export default {
   .left {
     height: 100%;
     overflow: auto;
-    background: $navbg-color;
+    background: #111927;
   }
   .right {
     height: 100%;
     overflow-y: auto;
     padding: 10px 15px;
-    border-radius: 5px;
+    // border-radius: 5px;
     box-sizing: border-box;
-    background: #e7ebf1;
+    background: #141d2b;
     .right-view {
-      background: white;
+      background: #141d2b;
       padding: 10px;
       border-radius: 5px;
       box-sizing: border-box;

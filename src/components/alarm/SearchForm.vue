@@ -46,7 +46,8 @@
         <el-button type="primary" @click="onSearch(true)">查询</el-button>
         <el-button type="primary" @click="onSearch(false)">重置</el-button>
       </el-form-item>
-      <slot></slot>
+
+      <slot class="my-slot"></slot>
     </el-form>
   </div>
 </template>
@@ -55,8 +56,8 @@
 export default {
   props: {
     levelStatus: {
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -67,8 +68,8 @@ export default {
         device_ip: '',
         attack_type: '',
         time: [],
-        level: ''
-      }
+        level: '',
+      },
     }
   },
   computed: {
@@ -82,7 +83,7 @@ export default {
         ' ' +
         this.searchForm.attack_type
       )
-    }
+    },
   },
   methods: {
     onSearch(type) {
@@ -93,13 +94,13 @@ export default {
           device_ip: '',
           attack_type: '',
           time: [],
-          level: ''
+          level: '',
         }
       }
       this.$emit('getSearchForm', this.searchForm)
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 }
 </script>
 
@@ -108,14 +109,19 @@ export default {
   .more-search {
     display: inline-block;
     margin-right: 20px;
+    .more-search-btn {
+      background: transparent;
+      border: 1px solid #97e402;
+      color: white;
+    }
     .search-box {
       position: absolute;
-      background: white;
+      background: #292e33;
       z-index: 10;
       width: 280px;
       padding-top: 18px;
       overflow: auto;
-      box-shadow: 0 0 8px 2px rgba(191, 191, 191, 0.42);
+      // box-shadow: 0 0 8px 2px rgba(191, 191, 191, 0.42);
       border-top-left-radius: 0;
       border-top-right-radius: 8px;
       border-bottom-right-radius: 8px;
@@ -131,6 +137,36 @@ export default {
           .el-radio {
             // margin-right: 10px;
           }
+        }
+      }
+    }
+  }
+
+  .el-form-item {
+    label {
+      color: #97e402;
+    }
+    .el-button--primary {
+      background-color: rgba(159, 239, 0, 0.1) !important;
+      border: none;
+      color: #97e402;
+    }
+
+    .el-form-item__content {
+      .el-input__inner {
+        background: transparent;
+        border: 1px solid #97e402;
+      }
+      .el-range-editor {
+        .el-icon-time {
+          color: #97e402;
+        }
+        input {
+          background: transparent;
+          color: white;
+        }
+        .el-range-separator {
+          color: white;
         }
       }
     }
