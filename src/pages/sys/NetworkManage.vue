@@ -1,41 +1,32 @@
 <template>
   <div class="network-manage">
-    <el-form :model="networkForm"
-             :rules="rules"
-             ref="networkForm"
-             label-width="100px">
+    <el-form :model="networkForm" :rules="rules" ref="networkForm" label-width="100px">
       <el-row class="item">
-        <el-col :span="4"
-                class="name">
+        <el-col :span="4" class="name">
           <span></span>
           IP地址：
         </el-col>
-        <el-col :span="20"
-                class="input">
+        <el-col :span="20" class="input">
           <el-form-item prop="IPADDR">
             <el-input v-model="networkForm.IPADDR"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="item">
-        <el-col :span="4"
-                class="name">
+        <el-col :span="4" class="name">
           <span></span>子网掩码：
         </el-col>
-        <el-col :span="20"
-                class="input">
+        <el-col :span="20" class="input">
           <el-form-item prop="NETMASK">
             <el-input v-model="networkForm.NETMASK"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row class="item">
-        <el-col :span="4"
-                class="name">
+        <el-col :span="4" class="name">
           <span></span>默认网关：
         </el-col>
-        <el-col :span="20"
-                class="input">
+        <el-col :span="20" class="input">
           <el-form-item prop="GATEWAY">
             <el-input v-model="networkForm.GATEWAY"></el-input>
           </el-form-item>
@@ -43,28 +34,18 @@
       </el-row>
       <el-divider></el-divider>
       <el-row class="item">
-        <el-col :span="4"
-                class="name">DNS服务器：</el-col>
-        <el-col :span="20"
-                class="input">
+        <el-col :span="4" class="name">DNS服务器：</el-col>
+        <el-col :span="20" class="input">
           <el-form-item>
             <el-input v-model="networkForm.DNS1"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
-    <div class="mt10"
-         style="text-align: center;">
-      <el-button type="primary"
-                 :loading="submitBtnLoading"
-                 @click="submitForm('networkForm')">更改网卡</el-button>
-      <el-button type="primary"
-                 :loading="resetBtnLoading"
-                 @click="resetNetWork">重置网卡</el-button>
-      <el-button type="primary"
-                 :loading="resetBtnLoading"
-                 @click="factoryDataReset">恢复出厂设置</el-button>
-
+    <div class="mt10 btn" style="text-align: center;">
+      <el-button type="primary" :loading="submitBtnLoading" @click="submitForm('networkForm')">更改网卡</el-button>
+      <el-button type="primary" :loading="resetBtnLoading" @click="resetNetWork">重置网卡</el-button>
+      <el-button type="primary" :loading="resetBtnLoading" @click="factoryDataReset">恢复出厂设置</el-button>
     </div>
   </div>
 </template>
@@ -74,38 +55,38 @@ import {
   getNetWorkManageApi,
   postNetWorkManageApi,
   resetNetWorkApi,
-  factoryDataResetApi
+  factoryDataResetApi,
 } from '../../tools/api'
 export default {
-  data () {
+  data() {
     return {
       networkForm: {
         IPADDR: '0.0.0.0',
         NETMASK: '0.0.0.0',
         GATEWAY: '0.0.0.0',
-        DNS1: '0.0.0.0'
+        DNS1: '0.0.0.0',
       },
       submitBtnLoading: false,
       resetBtnLoading: false,
       rules: {
         IPADDR: [{ required: true, message: '请输入IP地址', trigger: 'blur' }],
         NETMASK: [
-          { required: true, message: '请输入子网掩码', trigger: 'blur' }
+          { required: true, message: '请输入子网掩码', trigger: 'blur' },
         ],
         GATEWAY: [
-          { required: true, message: '请输入默认网关', trigger: 'blur' }
-        ]
-      }
+          { required: true, message: '请输入默认网关', trigger: 'blur' },
+        ],
+      },
     }
   },
   methods: {
-    submitForm (formName) {
-      this.$refs[formName].validate(valid => {
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$confirm('您确定要更改网络配置吗?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            type: 'warning'
+            type: 'warning',
           }).then(() => {
             this.submitBtnLoading = true
             this.postNetWorkManage()
@@ -115,17 +96,17 @@ export default {
         }
       })
     },
-    getNetWorkManage () {
-      getNetWorkManageApi().then(res => {
+    getNetWorkManage() {
+      getNetWorkManageApi().then((res) => {
         this.networkForm = res
       })
     },
-    postNetWorkManage () {
+    postNetWorkManage() {
       let fd = new FormData()
       for (let key in this.networkForm) {
         fd.append(key, this.networkForm[key])
       }
-      postNetWorkManageApi(fd).then(res => {
+      postNetWorkManageApi(fd).then((res) => {
         setTimeout(() => {
           this.submitBtnLoading = false
         }, 1000)
@@ -135,18 +116,18 @@ export default {
         }
         this.$message({
           type,
-          message: res.info
+          message: res.info,
         })
       })
     },
-    resetNetWork () {
+    resetNetWork() {
       this.$confirm('您确定要重置网卡吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         this.resetBtnLoading = true
-        resetNetWorkApi().then(res => {
+        resetNetWorkApi().then((res) => {
           this.resetBtnLoading = false
           let type = 'success'
           if (res.state !== this.successFlag) {
@@ -154,34 +135,34 @@ export default {
           }
           this.$message({
             type,
-            message: res.info
+            message: res.info,
           })
           this.getNetWorkManage()
         })
       })
     },
-    factoryDataReset () {
+    factoryDataReset() {
       this.$confirm('您确定要将此系统恢复出厂设置吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
-        factoryDataResetApi().then(res => {
+        factoryDataResetApi().then((res) => {
           let type = 'success'
           if (res.state === this.successFlag) {
             type = 'warning'
           }
           this.$message({
             type,
-            message: res.info
+            message: res.info,
           })
         })
       })
-    }
+    },
   },
-  mounted () {
+  mounted() {
     this.getNetWorkManage()
-  }
+  },
 }
 </script>
 
@@ -190,7 +171,7 @@ export default {
   padding: 0 10%;
   .item {
     // height: 80px;
-    border: 1px solid #e6e6e6;
+    border: 1px solid #95d214;
     box-sizing: border-box;
     border-bottom: none;
     .name {
@@ -198,9 +179,10 @@ export default {
       text-align: center;
       font-weight: 400;
       font-size: 14px;
-      border-right: 1px solid #e6e6e6;
+      border-right: 1px solid #95d214;
+      color: white;
       span:before {
-        content: "*";
+        content: '*';
         color: #f56c6c;
         margin-right: 4px;
       }
@@ -218,6 +200,8 @@ export default {
             border: none;
             height: 50px;
             line-height: 50px;
+            background: transparent;
+            color: white;
           }
         }
       }
@@ -227,15 +211,15 @@ export default {
           line-height: 34px;
           font-size: 14px;
           display: inline-block;
-          background: #d2eef7;
+          background: #1a2332;
           width: 100%;
-          color: #333;
+          color: #a4b1cd;
           border-radius: 5px;
           padding-left: 5px;
           box-sizing: border-box;
           i {
             margin-right: 2px;
-            color: #137298;
+            color: #95d214;
           }
         }
       }
@@ -243,19 +227,31 @@ export default {
   }
   .item:nth-last-child(even) {
     .name {
-      background: #eee;
+      background: #2f3644;
     }
   }
   .item:nth-last-child(odd) {
     .name {
-      background: none;
+      background: #141d2b;
     }
   }
   .item:last-child {
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid #95d214;
   }
   .item:nth-child(3) {
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid #95d214;
+  }
+  .el-divider {
+    background: #2f3644;
+  }
+  .btn {
+    button {
+      padding: 10px 20px;
+      background: #9fef00;
+      border: none;
+      color: #141d2b;
+      font-size: 16px;
+    }
   }
 }
 </style>

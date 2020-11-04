@@ -1,7 +1,7 @@
 <template>
   <div class="user-manage">
     <el-row>
-      <el-button type="primary" @click="addUser">添加用户</el-button>
+      <el-button type="primary" @click="addUser" class="my-elem-btn">添加用户</el-button>
     </el-row>
     <el-table
       v-loading="tableLoading"
@@ -41,12 +41,12 @@ import {
   getUserListApi,
   userAllotEquipApi,
   registerApi,
-  deleteUserApi
+  deleteUserApi,
 } from '../../tools/api'
 export default {
   components: {
     AllotEquip,
-    Adduser
+    Adduser,
   },
   data() {
     return {
@@ -54,7 +54,7 @@ export default {
       userData: [],
       allotEquipStatus: false,
       selectRowUser: '',
-      addUserStatus: false
+      addUserStatus: false,
     }
   },
   methods: {
@@ -66,14 +66,14 @@ export default {
       for (let key in form) {
         fd.append(key, form[key])
       }
-      registerApi(fd).then(res => {
+      registerApi(fd).then((res) => {
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
         }
         this.$message({
           type,
-          message: res.info
+          message: res.info,
         })
         this.getUserList()
       })
@@ -89,18 +89,18 @@ export default {
       this.$confirm('您确定删除此用户吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         let fd = new FormData()
         fd.append('id', row.id)
-        deleteUserApi(fd).then(res => {
+        deleteUserApi(fd).then((res) => {
           let type = 'success'
           if (res.state !== this.successFlag) {
             type = 'warning'
           }
           this.$message({
             type,
-            message: res.info
+            message: res.info,
           })
           this.getUserList()
         })
@@ -117,29 +117,29 @@ export default {
       let fd = new FormData()
       fd.append('id', this.selectRowUser.id)
       fd.append('device_auth', equips)
-      userAllotEquipApi(fd).then(res => {
+      userAllotEquipApi(fd).then((res) => {
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
         }
         this.$message({
           type,
-          message: res.info
+          message: res.info,
         })
         this.getUserList()
       })
     },
     getUserList() {
       this.tableLoading = true
-      getUserListApi().then(res => {
+      getUserListApi().then((res) => {
         this.tableLoading = false
         this.userData = res
       })
-    }
+    },
   },
   mounted() {
     this.getUserList()
-  }
+  },
 }
 </script>
 
