@@ -8,7 +8,7 @@
     <audio v-if="bellSrc === 'red'" src="../../assets/audio/red.wav" autoplay>您的浏览器不支持 audio 标签。</audio>
     <span class="bell">
       <span class="fr">
-        <el-button @click="alarmSettingShow = !alarmSettingShow">告警配置</el-button>
+        <el-button class="my-elem-btn" @click="alarmSettingShow = !alarmSettingShow">告警配置</el-button>
       </span>
     </span>
     <transition name="el-zoom-in-top">
@@ -811,13 +811,8 @@ export default {
   .bell {
     position: absolute;
     top: 10px;
-    right: 32px;
+    right: 2px;
     z-index: 10;
-    button {
-      background-color: rgba(159, 239, 0, 0.1) !important;
-      border: none;
-      color: #97e402;
-    }
   }
   .current-table {
     // color: black;

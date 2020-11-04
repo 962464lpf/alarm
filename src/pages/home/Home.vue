@@ -2,33 +2,28 @@
   <div class="new-alarm">
     <p class="title">告警信息</p>
     <el-row :gutter="20">
-      <el-col :span="6"
-              class="data-card-col">
-        <div class="data-card first curp"
-             @click="jumpTo()">
+      <el-col :span="6" class="data-card-col">
+        <div class="data-card first curp" @click="jumpTo()">
           <p>攻击总数</p>
           <p>{{attackNumDesc}}</p>
           <p>{{attackNum}}</p>
         </div>
       </el-col>
-      <el-col :span="6"
-              class="data-card-col">
+      <el-col :span="6" class="data-card-col">
         <div class="data-card second">
           <p>高危次数</p>
           <p>{{attackNumHighDesc}}</p>
           <p>{{attackNumHigh}}</p>
         </div>
       </el-col>
-      <el-col :span="6"
-              class="data-card-col">
+      <el-col :span="6" class="data-card-col">
         <div class="data-card third">
           <p>中危次数</p>
           <p>{{attackNumMiddleDesc}}</p>
           <p>{{attackNumMiddle}}</p>
         </div>
       </el-col>
-      <el-col :span="6"
-              class="data-card-col">
+      <el-col :span="6" class="data-card-col">
         <div class="data-card forth">
           <p>低危次数</p>
           <p>{{attackNumLowDesc}}</p>
@@ -38,66 +33,69 @@
     </el-row>
     <p class="title">趋势统计</p>
     <div class="chart-box">
-      <div class="trend-title"
-           style="height: 34px;">
-        <div class="fr">
-          <el-button :type="cycle === 'day' ? 'primary' : ''"
-                     size="mini"
-                     @click="changeCycle('day')">日</el-button>
-          <el-button :type="cycle === 'week' ? 'primary' : ''"
-                     size="mini"
-                     @click="changeCycle('week')">周</el-button>
-          <el-button :type="cycle === 'month' ? 'primary' : ''"
-                     size="mini"
-                     @click="changeCycle('month')">月</el-button>
-          <el-button :type="cycle === 'year' ? 'primary' : ''"
-                     @click="changeCycle('year')">年</el-button>
+      <div class="trend-title" style="height: 34px;">
+        <div>
+          <el-button
+            v-bind:class="[cycle === 'day' ? 'my-elem-btn-active' : 'my-elem-btn']"
+            size="mini"
+            @click="changeCycle('day')"
+          >日</el-button>
+          <el-button
+            v-bind:class="[cycle === 'week' ? 'my-elem-btn-active' : 'my-elem-btn']"
+            size="mini"
+            @click="changeCycle('week')"
+          >周</el-button>
+          <el-button
+            v-bind:class="[cycle === 'month' ? 'my-elem-btn-active' : 'my-elem-btn']"
+            size="mini"
+            @click="changeCycle('month')"
+          >月</el-button>
+          <el-button
+            v-bind:class="[cycle === 'year' ? 'my-elem-btn-active' : 'my-elem-btn']"
+            @click="changeCycle('year')"
+          >年</el-button>
         </div>
       </div>
-      <ve-line :data="attackTrend"
-               height="300px"
-               :settings="attackTrendSettings"
-               :extend="attackTrendExtend"></ve-line>
+      <ve-line
+        :data="attackTrend"
+        height="300px"
+        :settings="attackTrendSettings"
+        :extend="attackTrendExtend"
+      ></ve-line>
     </div>
-    <el-row :gutter="20"
-            class="mt10">
-      <el-col :span="8"
-              v-for="(item, index) in top5ChartsList"
-              :key="index">
-        <div class="chart-box"
-             :id="item.id">
+    <el-row :gutter="20" class="mt10">
+      <el-col :span="8" v-for="(item, index) in top5ChartsList" :key="index">
+        <div class="chart-box" :id="item.id">
           <div class="title">
             <span>{{item.title}}</span>
             <div class="setting fr">
-              <span class="curp"
-                    @click="settingCycleTop(item.fun)">
+              <span class="curp" @click="settingCycleTop(item.fun)">
                 <i class="el-icon-setting"></i>
               </span>
-              <span class="ml10 curp"
-                    @click="refreshTop(item.fun, item.dataKey)">
+              <span class="ml10 curp" @click="refreshTop(item.fun, item.dataKey)">
                 <i class="el-icon-refresh"></i>
               </span>
-              <span class="ml10 curp"
-                    @click="fullScreenTop(item.id)">
+              <span class="ml10 curp" @click="fullScreenTop(item.id)">
                 <i class="el-icon-full-screen"></i>
               </span>
-              <span class="ml10 curp"
-                    @click="toTop(index)">
+              <span class="ml10 curp" @click="toTop(index)">
                 <i class="el-icon-top"></i>
               </span>
             </div>
           </div>
-          <ve-histogram :data="item.data()"
-                        :colors="item.colors"
-                        height="300px"
-                        :legend-visible="false"
-                        :data-empty="item.dataEmpty"></ve-histogram>
+          <ve-histogram
+            :data="item.data()"
+            :colors="item.colors"
+            height="300px"
+            :legend-visible="false"
+            :data-empty="item.dataEmpty"
+            :extend="topExtend"
+          ></ve-histogram>
         </div>
       </el-col>
     </el-row>
     <div v-if="topSettingDialogStatus">
-      <TopSettingDialog v-model="topSettingDialogStatus"
-                        @getTopSetting="getTopSetting"></TopSettingDialog>
+      <TopSettingDialog v-model="topSettingDialogStatus" @getTopSetting="getTopSetting"></TopSettingDialog>
     </div>
   </div>
 </template>
@@ -117,9 +115,9 @@ import {
 import TopSettingDialog from '../../components/home/TopSettingDialog'
 export default {
   components: {
-    TopSettingDialog
+    TopSettingDialog,
   },
-  data () {
+  data() {
     return {
       cycle: 'day',
       attackTrend: {
@@ -130,16 +128,37 @@ export default {
             攻击总数: 1393,
             高危次数: 393,
             中危次数: 400,
-            低危次数: 600
-          }
-        ]
+            低危次数: 600,
+          },
+        ],
       },
       attackTrendSettings: {
         // stack: { 数量: ['攻击总数', '低危次数', '中危次数', '高危次数'] },
-        area: true
+        area: true,
         // area: true
       },
-      attackTrendExtend: {},
+      attackTrendExtend: {
+        legend: {
+          inactiveColor: '#b7aeae',
+          textStyle: {
+            color: 'white',
+          },
+        },
+        textStyle: {
+          color: 'white',
+        },
+      },
+      topExtend: {
+        textStyle: {
+          color: 'white',
+        },
+        xAxis: {
+          show: false,
+        },
+        yAxis: {
+          show: false,
+        },
+      },
 
       top5ChartsList: [
         {
@@ -150,7 +169,7 @@ export default {
           colors: ['#c23531'],
           id: 'maliciousSource',
           dataKey: 'maliciousSourceIPTop5',
-          dataEmpty: true
+          dataEmpty: true,
         },
         {
           title: '目的IP Top5',
@@ -159,7 +178,7 @@ export default {
           colors: ['#61a0a8'],
           id: 'attacked',
           dataKey: 'attackedIPTop5',
-          dataEmpty: true
+          dataEmpty: true,
         },
         {
           title: '设备来源 Top5',
@@ -169,7 +188,7 @@ export default {
           colors: ['#d48265'],
           id: 'device',
           dataKey: 'deviceIPTop5',
-          dataEmpty: true
+          dataEmpty: true,
         },
         {
           title: '物理地址 Top5',
@@ -179,7 +198,7 @@ export default {
           colors: ['#bda29a'],
           id: 'physical',
           dataKey: 'physicalIPTop5',
-          dataEmpty: true
+          dataEmpty: true,
         },
         {
           title: '攻击类型 Top5',
@@ -189,7 +208,7 @@ export default {
           colors: ['#bda29a'],
           id: 'attackedType',
           dataKey: 'attackedTypeTop5',
-          dataEmpty: true
+          dataEmpty: true,
         },
         {
           title: '红队IP Top5',
@@ -199,8 +218,8 @@ export default {
           colors: ['#d48265'],
           id: 'red',
           dataKey: 'redIpTop5',
-          dataEmpty: true
-        }
+          dataEmpty: true,
+        },
       ],
       selectSettingTop: '',
       topSettingDialogStatus: false,
@@ -216,34 +235,34 @@ export default {
           {
             名称: '192.168.1.3',
             攻击次数: 1393,
-            高危: 1200
+            高危: 1200,
           },
           {
             名称: '192.168.1.4',
             攻击次数: 1000,
-            高危: 1221
+            高危: 1221,
           },
           {
             名称: '192.168.1.5',
             攻击次数: 800,
-            高危: 1235
+            高危: 1235,
           },
           {
             名称: '192.168.1.6',
             攻击次数: 600,
-            高危: 1278
+            高危: 1278,
           },
           {
             名称: '192.168.1.7',
             攻击次数: 400,
-            高危: 1212
-          }
-        ]
-      }
+            高危: 1212,
+          },
+        ],
+      },
     }
   },
   computed: {
-    getType () {
+    getType() {
       return this.cycle === 'day' ? 'primary' : ''
     },
     ...mapState([
@@ -254,25 +273,25 @@ export default {
       'attackNumDesc',
       'attackNumHighDesc',
       'attackNumMiddleDesc',
-      'attackNumLowDesc'
-    ])
+      'attackNumLowDesc',
+    ]),
   },
   methods: {
-    jumpTo () {
+    jumpTo() {
       this.$router.push('/alarm/summary')
     },
-    getTopSetting (form) {
+    getTopSetting(form) {
       this[this.selectSettingTop](form.cycle)
     },
-    settingCycleTop (top) {
+    settingCycleTop(top) {
       this.selectSettingTop = top
       this.topSettingDialogStatus = true
     },
-    refreshTop (method, dataKey) {
+    refreshTop(method, dataKey) {
       this[dataKey] = {}
       this[method]()
     },
-    fullScreenTop (id) {
+    fullScreenTop(id) {
       let dom = document.getElementById(id)
       //W3C
       if (dom.requestFullscreen) {
@@ -293,12 +312,12 @@ export default {
       dom.style.backgroundColor = 'white'
       // dom.webkitRequestFullScreen()
     },
-    toTop (index) {
+    toTop(index) {
       let currentChart = this.top5ChartsList[index]
       this.top5ChartsList.splice(index, 1)
       this.top5ChartsList.unshift(currentChart)
     },
-    changeCycle (type) {
+    changeCycle(type) {
       this.cycle = type
       if (type === 'day') {
         this.getAttackTrend('hour')
@@ -310,20 +329,20 @@ export default {
         this.getAttackTrend('month')
       }
     },
-    getAttackTrend (type) {
+    getAttackTrend(type) {
       let fd = new FormData()
       fd.append('type', type)
-      getAttackTrendApi(fd).then(res => {
+      getAttackTrendApi(fd).then((res) => {
         this.attackTrend = {
           columns: [],
-          rows: []
+          rows: [],
         }
         this.attackTrend.columns = [
           'time',
           '攻击总数',
           '高危次数',
           '中危次数',
-          '低危次数'
+          '低危次数',
         ]
         let time = ''
         switch (this.cycle) {
@@ -353,77 +372,77 @@ export default {
             攻击总数: all[k],
             高危次数: high[k],
             中危次数: middle[k],
-            低危次数: low[k]
+            低危次数: low[k],
           }
           this.attackTrend.rows.push(obj)
         }
       })
     },
-    formatChartData (data, res, columns) {
+    formatChartData(data, res, columns) {
       this[data] = {
         columns: [],
-        rows: []
+        rows: [],
       }
       this[data].columns = columns
       for (let key in res) {
         let obj = {
           [columns[0]]: key,
-          [columns[1]]: res[key]
+          [columns[1]]: res[key],
         }
         this[data].rows.push(obj)
       }
     },
-    isDataEmpth (res, funName) {
+    isDataEmpth(res, funName) {
       let keyLens = Object.keys(res).length
-      this.top5ChartsList.forEach(item => {
+      this.top5ChartsList.forEach((item) => {
         if (item.fun === funName && keyLens) item.dataEmpty = false
       })
     },
-    getMaliciousSourceIPTop (cycle = 'day') {
-      getMaliciousSourceIPTop5Api().then(res => {
+    getMaliciousSourceIPTop(cycle = 'day') {
+      getMaliciousSourceIPTop5Api().then((res) => {
         this.isDataEmpth(res[cycle], 'getMaliciousSourceIPTop')
         this.formatChartData('maliciousSourceIPTop5', res[cycle], [
           'IP',
-          '攻击次数'
+          '攻击次数',
         ])
       })
     },
-    getAttackedIPTop5 (cycle = 'day') {
-      getAttackedIPTop5Api().then(res => {
+    getAttackedIPTop5(cycle = 'day') {
+      getAttackedIPTop5Api().then((res) => {
         this.isDataEmpth(res[cycle], 'getAttackedIPTop5')
         this.formatChartData('attackedIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
-    getDeviceIPTop5 (cycle = 'day') {
-      getDeviceIPTop5Api().then(res => {
+    getDeviceIPTop5(cycle = 'day') {
+      getDeviceIPTop5Api().then((res) => {
         this.isDataEmpth(res[cycle], 'getDeviceIPTop5')
         this.formatChartData('deviceIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
-    getPhysicalIPTop5 (cycle = 'day') {
-      getPhysicalIPTop5Api().then(res => {
+    getPhysicalIPTop5(cycle = 'day') {
+      getPhysicalIPTop5Api().then((res) => {
         this.isDataEmpth(res[cycle], 'getPhysicalIPTop5')
         this.formatChartData('physicalIPTop5', res[cycle], ['IP', '攻击次数'])
       })
     },
-    getAttackedTypeTop5 (cycle = 'day') {
-      getAttackedTypeTop5Api().then(res => {
+    getAttackedTypeTop5(cycle = 'day') {
+      getAttackedTypeTop5Api().then((res) => {
         this.isDataEmpth(res[cycle], 'getAttackedTypeTop5')
         this.formatChartData('attackedTypeTop5', res[cycle], [
           '类型',
-          '攻击次数'
+          '攻击次数',
         ])
       })
     },
-    getRedIPTop5 (cycle = 'day') {
-      getRedIPTop5Api().then(res => {
+    getRedIPTop5(cycle = 'day') {
+      getRedIPTop5Api().then((res) => {
         this.isDataEmpth(res[cycle], 'getRedIPTop5')
         this.formatChartData('redIpTop5', res[cycle], ['IP', '攻击次数'])
       })
-    }
+    },
   },
 
-  mounted () {
+  mounted() {
     let refresh = sessionStorage.getItem('refresh')
     if (refresh === 'false') {
       sessionStorage.setItem('refresh', true)
@@ -439,7 +458,7 @@ export default {
     // getAttackNumApi().then(res => {
     //   this.$store.commit('changeAttackNum', res)
     // })
-  }
+  },
 }
 </script>
 
@@ -449,6 +468,7 @@ export default {
     font-size: 16px;
     font-weight: 400;
     line-height: 48px;
+    color: white;
   }
   .data-card-col {
     display: flex;
@@ -487,7 +507,7 @@ export default {
   .chart-box {
     // border: 1px solid #dadada;
     // padding: 0 15px;
-    box-shadow: 0 0 5px #dadada;
+    box-shadow: 0 0 5px rgba(159, 239, 0, 0.3);
     box-sizing: border-box;
     margin-bottom: 15px;
     .trend-title {
@@ -497,7 +517,7 @@ export default {
     .trend-title,
     .title {
       border-radius: 5px 5px 0 0;
-      border-bottom: 1px solid #dadada;
+      border-bottom: 1px solid rgba(159, 239, 0, 0.3);
       padding: 8px;
       line-height: 34px;
     }
@@ -513,6 +533,10 @@ export default {
       background-color: hsla(0, 0%, 100%, 0.9);
       color: #888;
       font-size: 14px;
+    }
+    .v-charts-data-empty {
+      background: #1b2534 !important;
+      color: white !important;
     }
   }
 }
