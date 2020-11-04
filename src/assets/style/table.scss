@@ -20,6 +20,12 @@
       }
     }
   }
+  .el-table__empty-block {
+    background: #141d2b !important;
+    .el-table__empty-text {
+      color: white !important;
+    }
+  }
 }
 .el-table::before {
   background-color: #292e33 !important;

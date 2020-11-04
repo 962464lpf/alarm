@@ -1,5 +1,6 @@
 @import '../style/pagination.scss';
 @import '../style/table.scss';
+@import '../style/form.scss';
 html,
 body,
 #app,
@@ -206,5 +207,13 @@ img {
   }
   .el-dropdown__caret-button::before {
     background: none;
+  }
+}
+.el-loading-mask {
+  background: transparent !important;
+  .circular {
+    .path {
+      stroke: #95d214 !important;
+    }
   }
 }
