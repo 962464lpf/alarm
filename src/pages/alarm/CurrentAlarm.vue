@@ -816,7 +816,7 @@ export default {
   }
   .current-table {
     // color: black;
-    .cell-blue {
+    .cell-blue > td {
       background: rgb(198, 226, 255);
       .cell {
         color: black;
@@ -851,7 +851,19 @@ export default {
       padding-top: 12px !important;
     }
     tbody {
+      tr:hover {
+        background: #141d2b !important;
+        .cell {
+          color: white !important;
+        }
+        td:nth-child(1) {
+          background: #141d2b !important;
+        }
+      }
       tr {
+        td:nth-child(1) {
+          background: #141d2b !important;
+        }
         td:nth-child(2) {
           .cell {
             overflow: inherit !important;
