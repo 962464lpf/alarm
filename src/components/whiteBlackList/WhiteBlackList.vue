@@ -31,12 +31,12 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'white'
+      default: 'white',
     },
     ifGetIP: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -44,7 +44,7 @@ export default {
       blackIPData: [],
       total: 0,
       currentPage: 1,
-      pageSize: 10
+      pageSize: 10,
     }
   },
   watch: {
@@ -52,7 +52,7 @@ export default {
       if (val) {
         this.getIPList()
       }
-    }
+    },
   },
   methods: {
     handleSizeChange(val) {
@@ -91,7 +91,7 @@ export default {
       }
       fd.append('type', type)
 
-      getIPListApi(fd).then(res => {
+      getIPListApi(fd).then((res) => {
         this.tableLoading = false
         this.blackIPData = res.data
         this.total = res.total
@@ -101,15 +101,15 @@ export default {
       this.$confirm('您确定要移除此IP?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         this.$emit('removeIP', row)
       })
-    }
+    },
   },
   mounted() {
     this.getIPList()
-  }
+  },
 }
 </script>
 

@@ -34,28 +34,30 @@
         <el-button type="primary" @click="downloadBlockedFile" class="my-elem-btn">下载封禁模板</el-button>
       </el-form-item>
     </el-form>
-    <el-table v-loading="tableLoading" :data="blockedIP" border style="width: 100%">
-      <el-table-column prop="ip" label="IP地址"></el-table-column>
-      <el-table-column prop="fname" label="封禁防火墙"></el-table-column>
-      <el-table-column prop="created_time" label="封禁时间"></el-table-column>
-      <el-table-column prop="uname" label="封禁人"></el-table-column>
-      <el-table-column label="操作" width="100">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="unBlockedIP(scope.row)">解封</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      class="fr mt10"
-      background
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <div class="my-elem-table my-elem-pagination">
+      <el-table v-loading="tableLoading" :data="blockedIP" border style="width: 100%">
+        <el-table-column prop="ip" label="IP地址"></el-table-column>
+        <el-table-column prop="fname" label="封禁防火墙"></el-table-column>
+        <el-table-column prop="created_time" label="封禁时间"></el-table-column>
+        <el-table-column prop="uname" label="封禁人"></el-table-column>
+        <el-table-column label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="unBlockedIP(scope.row)">解封</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        class="fr mt10"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+    </div>
     <div class="clearfloat"></div>
 
     <div v-if="addBlockedIPStatus">

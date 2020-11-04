@@ -17,38 +17,40 @@
         <el-button type="primary" @click="selectTimeStatus=true" class="my-elem-btn">导出</el-button>
       </el-form-item>
     </el-form>
-    <el-table v-loading="tableLoading" :data="orderList" border style="width: 100%">
-      <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="sip" label="源IP"></el-table-column>
-      <el-table-column prop="dip" label="目的IP"></el-table-column>
-      <el-table-column prop="dip" label="时间">
-        <template slot-scope="scope">
-          <span>{{getTime(scope.row)}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="dip" label="状态">
-        <template slot-scope="scope">
-          <span>{{getStatus(scope.row)}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="120">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="getDetail(scope.row)">详情</el-button>
-          <el-button type="text" size="small" @click="blocked(scope.row)">一键封禁</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      class="fr mt10"
-      background
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <div class="my-elem-table my-elem-pagination">
+      <el-table v-loading="tableLoading" :data="orderList" border style="width: 100%">
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column prop="sip" label="源IP"></el-table-column>
+        <el-table-column prop="dip" label="目的IP"></el-table-column>
+        <el-table-column prop="dip" label="时间">
+          <template slot-scope="scope">
+            <span>{{getTime(scope.row)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="dip" label="状态">
+          <template slot-scope="scope">
+            <span>{{getStatus(scope.row)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="120">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="getDetail(scope.row)">详情</el-button>
+            <el-button type="text" size="small" @click="blocked(scope.row)">一键封禁</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        class="fr mt10"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+    </div>
     <div class="clearfloat"></div>
     <div v-if="orderDetailStatus">
       <OrderDetail

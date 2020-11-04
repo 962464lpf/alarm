@@ -3,28 +3,23 @@
     <el-row>
       <el-button type="primary" @click="addUser" class="my-elem-btn">添加用户</el-button>
     </el-row>
-    <el-table
-      v-loading="tableLoading"
-      :data="userData"
-      stripe
-      border
-      style="width: 100%"
-      class="mt10"
-    >
-      <el-table-column prop="name" label="用户名"></el-table-column>
-      <el-table-column prop="phone" label="电话"></el-table-column>
-      <el-table-column prop="email" label="邮箱"></el-table-column>
-      <el-table-column label="权限">
-        <template slot-scope="scope">{{getLevel(scope)}}</template>
-      </el-table-column>
-      <el-table-column prop="iplst" label="当前分配设备"></el-table-column>
-      <el-table-column label="操作" width="180">
-        <template slot-scope="scope">
-          <el-button @click="deleteUser(scope.row)" type="text" size="small">删除用户</el-button>
-          <el-button type="text" size="small" @click="allotEquip(scope.row)">分配设备</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="my-elem-table">
+      <el-table v-loading="tableLoading" :data="userData" style="width: 100%" class="mt10">
+        <el-table-column prop="name" label="用户名"></el-table-column>
+        <el-table-column prop="phone" label="电话"></el-table-column>
+        <el-table-column prop="email" label="邮箱"></el-table-column>
+        <el-table-column label="权限">
+          <template slot-scope="scope">{{getLevel(scope)}}</template>
+        </el-table-column>
+        <el-table-column prop="iplst" label="当前分配设备"></el-table-column>
+        <el-table-column label="操作" width="180">
+          <template slot-scope="scope">
+            <el-button @click="deleteUser(scope.row)" type="text" size="small">删除用户</el-button>
+            <el-button type="text" size="small" @click="allotEquip(scope.row)">分配设备</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <div v-if="addUserStatus">
       <Adduser v-model="addUserStatus" @getUserForm="getUserForm"></Adduser>
     </div>

@@ -1,51 +1,52 @@
 // 表格
-
-.el-table {
-  thead {
-    color: white;
-    tr {
-      th {
-        background: #141d2b !important;
-        border-bottom: 1px solid #292e33 !important;
+.my-elem-table {
+  .el-table {
+    thead {
+      color: white;
+      tr {
+        th {
+          background: #141d2b !important;
+          border-bottom: 1px solid #292e33 !important;
+        }
+      }
+    }
+    tbody {
+      tr {
+        background: #141d2b;
+        color: #798086;
+        .el-checkbox__inner {
+          border: 1px solid #292e33;
+          background-color: #141d2b;
+        }
+      }
+    }
+    .el-table__empty-block {
+      background: #141d2b !important;
+      .el-table__empty-text {
+        color: white !important;
       }
     }
   }
-  tbody {
-    tr {
-      background: #141d2b;
-      color: #798086;
-      .el-checkbox__inner {
-        border: 1px solid #292e33;
-        background-color: #141d2b;
-      }
-    }
+  .el-table::before {
+    background-color: #292e33 !important;
   }
-  .el-table__empty-block {
-    background: #141d2b !important;
-    .el-table__empty-text {
-      color: white !important;
-    }
-  }
-}
-.el-table::before {
-  background-color: #292e33 !important;
-}
 
-.el-table--enable-row-hover .el-table__body tr:hover > td {
-  background-color: transparent !important;
-}
-.el-table td {
-  border-bottom: 1px solid transparent;
-}
-.el-table--border {
-  border: 1px solid #292e33 !important ;
-  td {
-    border-right-color: #292e33 !important ;
+  .el-table--enable-row-hover .el-table__body tr:hover > td {
+    background-color: transparent !important;
   }
-  th {
-    border-right-color: #292e33 !important ;
+  .el-table td {
+    border-bottom: 1px solid transparent;
   }
-}
-.el-table--border::after {
-  background-color: transparent !important;
+  .el-table--border {
+    border: 1px solid #292e33 !important ;
+    td {
+      border-right-color: #292e33 !important ;
+    }
+    th {
+      border-right-color: #292e33 !important ;
+    }
+  }
+  .el-table--border::after {
+    background-color: transparent !important;
+  }
 }

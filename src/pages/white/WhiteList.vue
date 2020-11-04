@@ -3,23 +3,25 @@
     <!-- <el-button type="primary" @click="changAddDigIpVis">添加白名单</el-button> -->
     <el-tabs type="border-card" v-model="tabsName" class="my-elem-tabs">
       <el-tab-pane label="恶意IP" name="sip">
-        <WhiteIpList type="sip" label="恶意IP" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+        <div class="my-elem-table">
+          <WhiteIpList type="sip" label="恶意IP" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="目的IP" name="dip">
-        <WhiteIpList type="dip" label="目的IP" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+        <div class="my-elem-table">
+          <WhiteIpList type="dip" label="目的IP" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+        </div>
       </el-tab-pane>
-      <!-- <el-tab-pane label="告警来源" name="device_ip">
-        <WhiteIpList type="device_ip" label="告警来源" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
-      </el-tab-pane>-->
       <el-tab-pane label="描述" name="con">
-        <WhiteIpList type="con" label="描述" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+        <div class="my-elem-table">
+          <WhiteIpList type="con" label="描述" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="攻击类型" name="attack_type">
-        <WhiteIpList type="attack_type" label="攻击类型" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+        <div class="my-elem-table">
+          <WhiteIpList type="attack_type" label="攻击类型" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
+        </div>
       </el-tab-pane>
-      <!-- <el-tab-pane label="攻击等级" name="level">
-        <WhiteIpList type="level" label="攻击等级" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
-      </el-tab-pane>-->
     </el-tabs>
     <div v-if="addIpDialogVis">
       <AddIPDialog v-model="addIpDialogVis" title="添加白队IP" @getIP="getIP"></AddIPDialog>

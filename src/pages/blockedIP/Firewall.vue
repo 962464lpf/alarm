@@ -1,28 +1,36 @@
 <template>
   <div class="fire-wall">
     <el-button type="primary" @click="openAddFireWall" class="my-elem-btn">新增防火墙</el-button>
-    <el-table class="mt10" v-loading="tableLoading" :data="fireWallData" border style="width: 100%">
-      <el-table-column prop="name" label="防火墙名称"></el-table-column>
-      <el-table-column prop="url" label="地址"></el-table-column>
-      <el-table-column prop="created_time" label="创建时间"></el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="openEditFireWall( scope.row)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteFireWall(scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      class="fr mt10"
-      background
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <div class="my-elem-table my-elem-pagination">
+      <el-table
+        class="mt10"
+        v-loading="tableLoading"
+        :data="fireWallData"
+        border
+        style="width: 100%"
+      >
+        <el-table-column prop="name" label="防火墙名称"></el-table-column>
+        <el-table-column prop="url" label="地址"></el-table-column>
+        <el-table-column prop="created_time" label="创建时间"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="openEditFireWall( scope.row)">修改</el-button>
+            <el-button type="text" size="small" @click="deleteFireWall(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        class="fr mt10"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+    </div>
     <div class="clearfloat"></div>
     <div v-if="addFireWallStatus">
       <AddFirewall

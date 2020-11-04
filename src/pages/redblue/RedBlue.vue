@@ -8,13 +8,17 @@
       <el-col :span="12" class="first-col">
         <div class="title">
           蓝队IP
-          <WhiteBlackList type="blue" class="mt10" :ifGetIP="ifGetIP" @removeIP="removeIP"></WhiteBlackList>
+          <div class="my-elem-table my-elem-pagination">
+            <WhiteBlackList type="blue" class="mt10" :ifGetIP="ifGetIP" @removeIP="removeIP"></WhiteBlackList>
+          </div>
         </div>
       </el-col>
       <el-col :span="12">
         <div class="title">
           红队IP
-          <WhiteBlackList type="red" class="mt10" :ifGetIP="ifGetIP" @removeIP="removeIP"></WhiteBlackList>
+          <div class="my-elem-table my-elem-pagination">
+            <WhiteBlackList type="red" class="mt10" :ifGetIP="ifGetIP" @removeIP="removeIP"></WhiteBlackList>
+          </div>
         </div>
       </el-col>
     </el-row>

@@ -93,168 +93,174 @@
       </span>
     </SearchForm>
     <div class="current-table">
-      <el-table
-        v-loading="tableLoading"
-        :data="currentAlarmList"
-        style="width: 100%"
-        :row-class-name="addClass"
-        @row-click="rowClick"
-        @selection-change="handleSelectionChange"
-        row-key="id"
-      >
-        <el-table-column type="selection" reserve-selection width="45"></el-table-column>
-        <el-table-column label="恶意IP" width="160" align="center">
-          <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" placement="bottom">
-              <div v-if="scope.row.sip_show" slot="content">
-                <p>私网IP：{{scope.row.sip_show.ip_private}}</p>
-                <p>公网IP：{{scope.row.sip_show.ip}}</p>
-                <p>安全域：{{scope.row.sip_show.anquanyu}}</p>
-                <p>单位-部门：{{scope.row.sip_show.com_dep}}</p>
-                <p>类型：{{scope.row.sip_show.cat}}</p>
-                <p>责任人：{{scope.row.sip_show.staff}}</p>
-                <p>联系电话：{{scope.row.sip_show.phone}}</p>
-              </div>
-              <div v-else slot="content">
-                <span>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
-              </div>
-              <div>
-                <!-- 0 为新告警 -->
-                <span class="triangle" v-if="scope.row.is_new === 0"></span>
-                <span
-                  v-if="scope.row.is_new === 0"
-                >{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
-                <span
-                  class="no-triangle"
-                  v-else
-                >{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
-                <span class="high" v-if="scope.row.forbidden" style="margin-left: 5px;">已封禁</span>
-              </div>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column label="位置" align="center">
-          <template slot-scope="scope">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="scope.row.wuli_addr"
-              placement="bottom"
-            >
-              <span class="curp omit">
-                {{
-                scope.row.wuli_addr
-                }}
-              </span>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column prop="dip" label="目的IP" width="150" align="center">
-          <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" placement="bottom">
-              <div v-if="scope.row.dip_show" slot="content">
-                <p>私网IP：{{scope.row.dip_show.ip_private}}</p>
-                <p>外网IP：{{scope.row.dip_show.ip}}</p>
-                <p>安全域：{{scope.row.dip_show.anquanyu}}</p>
-                <p>单位-部门：{{scope.row.dip_show.com_dep}}</p>
-                <p>类型：{{scope.row.dip_show.cat}}</p>
-                <p>责任人：{{scope.row.dip_show.staff}}</p>
-                <p>联系电话：{{scope.row.dip_show.phone}}</p>
-              </div>
-              <div v-else slot="content">
-                <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
-                <span v-else>{{ scope.row.dip }}</span>
-              </div>
-              <div class="curp omit">
-                <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
-                <span v-else>{{ scope.row.dip }}</span>
-              </div>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column prop="device_ip" label="告警来源" align="center">
-          <template slot-scope="scope">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="scope.row.device_ip"
-              placement="bottom"
-            >
-              <span class="curp omit">{{ scope.row.device_ip }}</span>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column label="描述" align="center">
-          <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
-              <span class="curp omit">{{ scope.row.con}}</span>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column label="攻击时间" prop="attack_time" align="center">
-          <template slot-scope="scope">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="scope.row.attack_time"
-              placement="bottom"
-            >
-              <span class="curp omit">{{ scope.row.attack_time }}</span>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column prop="attack_type" label="攻击类型" width="70" align="center">
-          <template slot-scope="scope">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
-              placement="bottom"
-            >
-              <span class="curp omit">{{ scope.row.attack_type ? scope.row.attack_type : '未知' }}</span>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column label="攻击等级" width="70" align="center">
-          <template slot-scope="scope">
-            <span v-if="scope.row.level == 0" class="high">高</span>
-            <span v-if="scope.row.level == 1" class="middle">中</span>
-            <span v-if="scope.row.level == 2" class="low">低</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="protocol" width="120" label="协议" align="center"></el-table-column>
-        <el-table-column label="操作" width="150" align="center">
-          <template slot-scope="scope">
-            <el-button type="text" class="mr10" @click.native="blocked(scope.row)">一键封禁</el-button>
-            <el-dropdown>
-              <span class="el-dropdown-link el-button--lightblue dropbutton">
-                操 作
-                <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
+      <div class="my-elem-table">
+        <el-table
+          class="mfsfs"
+          v-loading="tableLoading"
+          :data="currentAlarmList"
+          style="width: 100%"
+          :row-class-name="addClass"
+          @row-click="rowClick"
+          @selection-change="handleSelectionChange"
+          row-key="id"
+        >
+          <el-table-column type="selection" reserve-selection width="45"></el-table-column>
+          <el-table-column label="恶意IP" width="160" align="center">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" placement="bottom">
+                <div v-if="scope.row.sip_show" slot="content">
+                  <p>私网IP：{{scope.row.sip_show.ip_private}}</p>
+                  <p>公网IP：{{scope.row.sip_show.ip}}</p>
+                  <p>安全域：{{scope.row.sip_show.anquanyu}}</p>
+                  <p>单位-部门：{{scope.row.sip_show.com_dep}}</p>
+                  <p>类型：{{scope.row.sip_show.cat}}</p>
+                  <p>责任人：{{scope.row.sip_show.staff}}</p>
+                  <p>联系电话：{{scope.row.sip_show.phone}}</p>
+                </div>
+                <div v-else slot="content">
+                  <span>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
+                </div>
+                <div>
+                  <!-- 0 为新告警 -->
+                  <span class="triangle" v-if="scope.row.is_new === 0"></span>
+                  <span
+                    v-if="scope.row.is_new === 0"
+                  >{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
+                  <span
+                    class="no-triangle"
+                    v-else
+                  >{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
+                  <span class="high" v-if="scope.row.forbidden" style="margin-left: 5px;">已封禁</span>
+                </div>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="位置" align="center">
+            <template slot-scope="scope">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="scope.row.wuli_addr"
+                placement="bottom"
+              >
+                <span class="curp omit">
+                  {{
+                  scope.row.wuli_addr
+                  }}
+                </span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column prop="dip" label="目的IP" width="150" align="center">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" placement="bottom">
+                <div v-if="scope.row.dip_show" slot="content">
+                  <p>私网IP：{{scope.row.dip_show.ip_private}}</p>
+                  <p>外网IP：{{scope.row.dip_show.ip}}</p>
+                  <p>安全域：{{scope.row.dip_show.anquanyu}}</p>
+                  <p>单位-部门：{{scope.row.dip_show.com_dep}}</p>
+                  <p>类型：{{scope.row.dip_show.cat}}</p>
+                  <p>责任人：{{scope.row.dip_show.staff}}</p>
+                  <p>联系电话：{{scope.row.dip_show.phone}}</p>
+                </div>
+                <div v-else slot="content">
+                  <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
+                  <span v-else>{{ scope.row.dip }}</span>
+                </div>
+                <div class="curp omit">
+                  <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
+                  <span v-else>{{ scope.row.dip }}</span>
+                </div>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column prop="device_ip" label="告警来源" align="center">
+            <template slot-scope="scope">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="scope.row.device_ip"
+                placement="bottom"
+              >
+                <span class="curp omit">{{ scope.row.device_ip }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="描述" align="center">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
+                <span class="curp omit">{{ scope.row.con}}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="攻击时间" prop="attack_time" align="center">
+            <template slot-scope="scope">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="scope.row.attack_time"
+                placement="bottom"
+              >
+                <span class="curp omit">{{ scope.row.attack_time }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column prop="attack_type" label="攻击类型" width="70" align="center">
+            <template slot-scope="scope">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
+                placement="bottom"
+              >
+                <span class="curp omit">{{ scope.row.attack_type ? scope.row.attack_type : '未知' }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="攻击等级" width="70" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.level == 0" class="high">高</span>
+              <span v-if="scope.row.level == 1" class="middle">中</span>
+              <span v-if="scope.row.level == 2" class="low">低</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="protocol" width="120" label="协议" align="center"></el-table-column>
+          <el-table-column label="操作" width="150" align="center">
+            <template slot-scope="scope">
+              <el-button type="text" class="mr10" @click.native="blocked(scope.row)">一键封禁</el-button>
+              <el-dropdown>
+                <span class="el-dropdown-link el-button--lightblue dropbutton">
+                  操 作
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
 
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="operation(scope.row, 'detail')">详情</el-dropdown-item>
-                <el-dropdown-item @click.native="operation(scope.row, 'white')">添加至白名单</el-dropdown-item>
-                <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
-                <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
-                <el-dropdown-item @click.native="repairOrder(scope.row)">一键转工单</el-dropdown-item>
-                <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
-              </el-dropdown-menu>
-            </el-dropdown>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        class="fr mt10"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="operation(scope.row, 'detail')">详情</el-dropdown-item>
+                  <el-dropdown-item @click.native="operation(scope.row, 'white')">添加至白名单</el-dropdown-item>
+                  <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
+                  <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
+                  <el-dropdown-item @click.native="repairOrder(scope.row)">一键转工单</el-dropdown-item>
+                  <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="my-elem-pagination">
+        <el-pagination
+          class="fr mt10"
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
+
       <div class="fr attack-num">共 {{totalAttackNum}} 次攻击</div>
     </div>
     <div class="clearfloat"></div>

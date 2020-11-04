@@ -12,35 +12,40 @@
         <el-button type="success" class="my-elem-btn" @click="updateEqp('add')">新增</el-button>
       </el-form-item>
     </el-form>
-    <el-table v-loading="tableLoading" :data="safeEquip" border style="width: 100%">
-      <el-table-column prop="ip" label="IP地址" width="140"></el-table-column>
-      <el-table-column prop="name" label="名称" width="180"></el-table-column>
-      <el-table-column prop="link" label="链接">
-        <template slot-scope="scope">
-          <el-tooltip class="item" effect="dark" :content="scope.row.link" placement="bottom">
-            <p class="omit">{{scope.row.link}}</p>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-      <el-table-column prop="desc" label="描述"></el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="updateEqp('edit', scope.row)">编辑</el-button>
-          <el-button type="text" size="small" @click="deleteRow(scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      class="fr mt10"
-      background
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <div class="my-elem-table">
+      <el-table v-loading="tableLoading" :data="safeEquip" border style="width: 100%">
+        <el-table-column prop="ip" label="IP地址" width="140"></el-table-column>
+        <el-table-column prop="name" label="名称" width="180"></el-table-column>
+        <el-table-column prop="link" label="链接">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" :content="scope.row.link" placement="bottom">
+              <p class="omit">{{scope.row.link}}</p>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column prop="desc" label="描述"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="updateEqp('edit', scope.row)">编辑</el-button>
+            <el-button type="text" size="small" @click="deleteRow(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="my-elem-pagination">
+      <el-pagination
+        class="fr mt10"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+    </div>
+
     <div class="clearfloat"></div>
     <div v-if="updEqipDiaStatus">
       <UpdEquiqDialog

@@ -1,42 +1,43 @@
 // 分页
-
-.el-pagination {
-  .el-pagination__total {
-    color: white !important;
-  }
-  .el-input__inner {
-    background: transparent !important;
-    border: none !important;
-    color: white !important;
-  }
-  .btn-prev {
-    background: transparent !important;
-    .el-icon {
+.my-elem-pagination {
+  .el-pagination {
+    .el-pagination__total {
+      color: white !important;
+    }
+    .el-input__inner {
+      background: transparent !important;
+      border: none !important;
+      color: white !important;
+    }
+    .btn-prev {
+      background: transparent !important;
+      .el-icon {
+        color: white !important;
+      }
+    }
+    .el-pager li {
+      background: transparent !important;
+      color: white !important;
+    }
+    .el-pager li:not(.disabled).active {
+      background: transparent !important;
+      color: #9acc14 !important;
+    }
+    .btn-next {
+      background: transparent !important;
+      .el-icon {
+        color: white !important;
+      }
+    }
+    .el-pagination__jump {
       color: white !important;
     }
   }
-  .el-pager li {
-    background: transparent !important;
-    color: white !important;
-  }
-  .el-pager li:not(.disabled).active {
-    background: transparent !important;
-    color: #9acc14 !important;
-  }
-  .btn-next {
-    background: transparent !important;
-    .el-icon {
-      color: white !important;
+  .more-operation {
+    .el-button--primary {
+      background-color: rgba(159, 239, 0, 0.1) !important;
+      border: none !important;
+      color: #97e402 !important;
     }
-  }
-  .el-pagination__jump {
-    color: white !important;
-  }
-}
-.more-operation {
-  .el-button--primary {
-    background-color: rgba(159, 239, 0, 0.1) !important;
-    border: none !important;
-    color: #97e402 !important;
   }
 }

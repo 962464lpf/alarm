@@ -57,8 +57,9 @@ export default {
   overflow: hidden;
   .left {
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
     background: #111927;
+    overflow-x: hidden;
   }
   .right {
     height: 100%;
