@@ -1,8 +1,10 @@
 <template>
   <div class="blocked-ip">
-    <el-form :inline="true" :model="form">
+    <el-form :inline="true" :model="form" class="my-elem-form">
       <el-form-item label="IP地址">
-        <el-input v-model="form.ip" placeholder="请输入IP地址"></el-input>
+        <el-input v-model="form.ip" placeholder="请输入IP地址">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
       </el-form-item>
       <el-form-item label="时间">
         <el-date-picker
@@ -16,20 +18,20 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="onSearch">查询</el-button>
-        <el-button type="primary" @click="onReset">重置</el-button>
+        <el-button type="primary" @click="onSearch" class="my-elem-btn">查询</el-button>
+        <el-button type="primary" @click="onReset" class="my-elem-btn">重置</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onAdd">新增</el-button>
+        <el-button type="primary" @click="onAdd" class="my-elem-btn">新增</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="exportFlie">导出</el-button>
+        <el-button type="primary" @click="exportFlie" class="my-elem-btn">导出</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="batchBlockedIPStatus = true">批量封禁</el-button>
+        <el-button type="primary" @click="batchBlockedIPStatus = true" class="my-elem-btn">批量封禁</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="downloadBlockedFile">下载封禁模板</el-button>
+        <el-button type="primary" @click="downloadBlockedFile" class="my-elem-btn">下载封禁模板</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="tableLoading" :data="blockedIP" border style="width: 100%">
@@ -72,7 +74,7 @@ import {
   aKeyBlockedApi,
   downloadBlockedIPApi,
   downloadFileApi,
-  BASE_URL
+  BASE_URL,
 } from '../../tools/api'
 import addBlockedIP from '../../components/blockedIP/AddBlockedIP'
 import batchBlockedIP from '../../components/blockedIP/BatchBlockedIP'
@@ -81,13 +83,13 @@ import { mapState } from 'vuex'
 export default {
   components: {
     addBlockedIP,
-    batchBlockedIP
+    batchBlockedIP,
   },
   data() {
     return {
       form: {
         ip: '',
-        time: ['', '']
+        time: ['', ''],
       },
       tableLoading: false,
       blockedIP: [],
@@ -95,11 +97,11 @@ export default {
       pageSize: 10,
       total: 0,
       addBlockedIPStatus: false,
-      batchBlockedIPStatus: false
+      batchBlockedIPStatus: false,
     }
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
   },
   methods: {
     exportFlie() {
@@ -110,13 +112,13 @@ export default {
       this.$message({
         type: 'warning',
         message: '导出文件可能需要的时间较长，请等待！',
-        duration: 1500
+        duration: 1500,
       })
       downloadBlockedIPApi(fd)
-        .then(res => {
+        .then((res) => {
           let url = BASE_URL + res.file_path
           let type = 'application/vnd.ms-excel'
-          downloadFileApi(url).then(res => {
+          downloadFileApi(url).then((res) => {
             let blob = new Blob([res], { type })
             let url = window.URL.createObjectURL(blob)
             let a = document.createElement('a')
@@ -129,7 +131,7 @@ export default {
           this.$message({
             type: 'warning',
             message: '导出文件出错，请联系管理员。',
-            duration: 1500
+            duration: 1500,
           })
         })
     },
@@ -155,12 +157,12 @@ export default {
         lock: true,
         text: 'Loading',
         spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
+        background: 'rgba(0, 0, 0, 0.7)',
       })
       let fd = new FormData()
       fd.append('ip', form.ip)
       fd.append('fid', form.id)
-      aKeyBlockedApi(fd).then(res => {
+      aKeyBlockedApi(fd).then((res) => {
         loading.close()
         let type = 'success'
         if (res.state !== this.successFlag) {
@@ -170,7 +172,7 @@ export default {
         }
         this.$message({
           type,
-          message: res.info
+          message: res.info,
         })
       })
     },
@@ -179,11 +181,11 @@ export default {
         this.$confirm('您确定要将此IP进行解封吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         }).then(() => {
           let fd = new FormData()
           fd.append('ip', row.ip)
-          unBlockedIPApi(fd).then(res => {
+          unBlockedIPApi(fd).then((res) => {
             let type = 'success'
             if (res.state !== this.successFlag) {
               type = 'warning'
@@ -192,14 +194,14 @@ export default {
             }
             this.$message({
               type,
-              message: res.info
+              message: res.info,
             })
           })
         })
       } else {
         this.$message({
           type: 'warning',
-          message: '您没有权限执行此操作，请与管理员联系。'
+          message: '您没有权限执行此操作，请与管理员联系。',
         })
       }
     },
@@ -219,16 +221,16 @@ export default {
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
       fd.append('ip', this.form.ip)
-      getBlockedIApi(fd).then(res => {
+      getBlockedIApi(fd).then((res) => {
         this.tableLoading = false
         this.blockedIP = res.data
         this.total = res.total
       })
-    }
+    },
   },
   mounted() {
     this.getBlockedIP()
-  }
+  },
 }
 </script>
 

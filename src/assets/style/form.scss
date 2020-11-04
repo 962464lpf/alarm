@@ -7,4 +7,11 @@
   .el-form-item__label {
     color: white !important;
   }
+  .el-date-editor {
+    .el-range-input {
+      background: #111927 !important;
+      color: white !important;
+      border: none !important;
+    }
+  }
 }
