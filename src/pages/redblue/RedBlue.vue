@@ -1,8 +1,8 @@
 <template>
   <div class="red-blue">
     <el-row>
-      <el-button type="primary" @click="openAddDialogStatus('blue')">添加蓝队IP</el-button>
-      <el-button type="danger" @click="openAddDialogStatus('red')">添加红队IP</el-button>
+      <el-button class="my-elem-btn" type="primary" @click="openAddDialogStatus('blue')">添加蓝队IP</el-button>
+      <el-button class="my-elem-btn" type="danger" @click="openAddDialogStatus('red')">添加红队IP</el-button>
     </el-row>
     <el-row :gutter="20" class="list-content mt10">
       <el-col :span="12" class="first-col">
@@ -32,13 +32,13 @@ import { addIPToWhiteBlackApi, deleteIpApi } from '../../tools/api'
 export default {
   components: {
     AddIPDialog,
-    WhiteBlackList
+    WhiteBlackList,
   },
   data() {
     return {
       addDialogStatus: false,
       addDialogTitle: '',
-      ifGetIP: false
+      ifGetIP: false,
     }
   },
   methods: {
@@ -60,7 +60,7 @@ export default {
       } else {
         fd.append('black_type', 1)
       }
-      addIPToWhiteBlackApi(fd).then(res => {
+      addIPToWhiteBlackApi(fd).then((res) => {
         let type = 'success'
         if (res.state == 1) {
           this.ifGetIP = true
@@ -72,14 +72,14 @@ export default {
         }
         this.$message({
           message: res.info,
-          type
+          type,
         })
       })
     },
     removeIP(row) {
       let fd = new FormData()
       fd.append('id', row.id)
-      deleteIpApi(fd).then(res => {
+      deleteIpApi(fd).then((res) => {
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
@@ -91,12 +91,12 @@ export default {
         }
         this.$message({
           type,
-          message: res.info
+          message: res.info,
         })
       })
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 }
 </script>
 
@@ -111,7 +111,8 @@ export default {
     }
     .title {
       text-align: center;
-      background: white;
+      background: #111927;
+      color: white;
     }
   }
 }
