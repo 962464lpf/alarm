@@ -1,16 +1,20 @@
 <template>
   <div class="order">
-    <el-form :inline="true" v-model="searchForm" ref="searchForm">
+    <el-form :inline="true" v-model="searchForm" ref="searchForm" class="my-elem-form">
       <el-form-item label="源IP">
-        <el-input v-model="searchForm.sip" placeholder="请输入IP地址"></el-input>
+        <el-input v-model="searchForm.sip" placeholder="请输入IP地址">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
       </el-form-item>
       <el-form-item label="目的IP">
-        <el-input v-model="searchForm.dip" placeholder="请输入IP地址"></el-input>
+        <el-input v-model="searchForm.dip" placeholder="请输入IP地址">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="getOrderList">查询</el-button>
-        <el-button type="primary" @click="onReset">重置</el-button>
-        <el-button type="primary" @click="selectTimeStatus=true">导出</el-button>
+        <el-button type="primary" @click="getOrderList" class="my-elem-btn">查询</el-button>
+        <el-button type="primary" @click="onReset" class="my-elem-btn">重置</el-button>
+        <el-button type="primary" @click="selectTimeStatus=true" class="my-elem-btn">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="tableLoading" :data="orderList" border style="width: 100%">
@@ -74,7 +78,7 @@ export default {
       orderList: [],
       searchForm: {
         sip: '',
-        dip: ''
+        dip: '',
       },
       pageSize: 10,
       currentPage: 0,
@@ -82,13 +86,13 @@ export default {
       orderDetailStatus: false,
       chooseFirewallStatus: false,
       selectTimeStatus: false,
-      currentRow: {}
+      currentRow: {},
     }
   },
   components: {
     OrderDetail,
     ChooseFirewall,
-    SelectTime
+    SelectTime,
   },
   methods: {
     getStatus(row) {
@@ -145,16 +149,16 @@ export default {
         lock: true,
         text: 'Loading',
         spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
+        background: 'rgba(0, 0, 0, 0.7)',
       })
       orderBlockApi(fd)
-        .then(res => {
+        .then((res) => {
           let type = 'success'
           loading.close()
           if (res.state !== this.successFlag) type = 'warning'
           this.$message({
             type,
-            message: res.info
+            message: res.info,
           })
           this.getOrderList()
         })
@@ -162,7 +166,7 @@ export default {
           loading.close()
           this.$message({
             type: 'warning',
-            message: '系统出错，请联系管理员。'
+            message: '系统出错，请联系管理员。',
           })
         })
     },
@@ -170,15 +174,15 @@ export default {
       let fd = new FormData()
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
-      getOrderListApi(fd).then(res => {
+      getOrderListApi(fd).then((res) => {
         this.total = res.total
         this.orderList = res.data
       })
-    }
+    },
   },
   mounted() {
     this.getOrderList()
-  }
+  },
 }
 </script>
 
