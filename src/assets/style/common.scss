@@ -198,3 +198,13 @@ img {
   border: none !important;
   color: white !important;
 }
+.my-elem-drop-btn {
+  button {
+    background: rgba(159, 239, 0, 0.5) !important;
+    border: none;
+    color: #97e402 !important;
+  }
+  .el-dropdown__caret-button::before {
+    background: none;
+  }
+}

@@ -7,7 +7,7 @@
             <span style="font-size: 12px;">不显示白名单数据</span>
           </el-checkbox>
         </span>-->
-        <el-dropdown split-button type="primary" @command="exportFile">
+        <el-dropdown split-button type="primary" @command="exportFile" class="my-elem-drop-btn">
           导出
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="csv">csv</el-dropdown-item>
@@ -17,7 +17,7 @@
             <el-dropdown-item command="html">html</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button type="primary" class="ml10" @click="batchBanned">批量封禁</el-button>
+        <el-button type="primary" class="ml10 my-elem-btn" @click="batchBanned">批量封禁</el-button>
       </span>
     </SearchForm>
 
