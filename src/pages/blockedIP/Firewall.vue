@@ -1,6 +1,6 @@
 <template>
   <div class="fire-wall">
-    <el-button type="primary" @click="openAddFireWall">新增防火墙</el-button>
+    <el-button type="primary" @click="openAddFireWall" class="my-elem-btn">新增防火墙</el-button>
     <el-table class="mt10" v-loading="tableLoading" :data="fireWallData" border style="width: 100%">
       <el-table-column prop="name" label="防火墙名称"></el-table-column>
       <el-table-column prop="url" label="地址"></el-table-column>
@@ -40,7 +40,7 @@ import {
   getFireWallDataApi,
   deleteFirewallApi,
   addFirewallApi,
-  editFirewallApi
+  editFirewallApi,
 } from '../../tools/api'
 import AddFirewall from '../../components/blockedIP/AddFirewall'
 export default {
@@ -53,11 +53,11 @@ export default {
       total: 0,
       addFireWallStatus: false,
       currentRow: {},
-      AddfireWallTitle: ''
+      AddfireWallTitle: '',
     }
   },
   components: {
-    AddFirewall
+    AddFirewall,
   },
   methods: {
     openAddFireWall() {
@@ -84,7 +84,7 @@ export default {
         fd.append('id', this.currentRow.id)
         message = '修改成功'
       }
-      api(fd).then(res => {
+      api(fd).then((res) => {
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
@@ -94,7 +94,7 @@ export default {
         }
         this.$message({
           type,
-          message
+          message,
         })
       })
     },
@@ -103,11 +103,11 @@ export default {
       this.$confirm('此操作将删除该防火墙, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         let fd = new FormData()
         fd.append('id', row.id)
-        deleteFirewallApi(fd).then(res => {
+        deleteFirewallApi(fd).then((res) => {
           let type = 'success'
           let message = '删除成功'
           if (res.state !== this.successFlag) {
@@ -118,7 +118,7 @@ export default {
           }
           this.$message({
             type,
-            message
+            message,
           })
         })
       })
@@ -133,16 +133,16 @@ export default {
     },
     getFireWallData() {
       this.tableLoading = true
-      getFireWallDataApi().then(res => {
+      getFireWallDataApi().then((res) => {
         this.total = res.total
         this.fireWallData = res.data
         this.tableLoading = false
       })
-    }
+    },
   },
   mounted() {
     this.getFireWallData()
-  }
+  },
 }
 </script>
 
