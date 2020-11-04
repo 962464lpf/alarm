@@ -1,7 +1,7 @@
 <template>
   <div class="white-ip">
     <!-- <el-button type="primary" @click="changAddDigIpVis">添加白名单</el-button> -->
-    <el-tabs type="border-card" v-model="tabsName">
+    <el-tabs type="border-card" v-model="tabsName" class="my-elem-tabs">
       <el-tab-pane label="恶意IP" name="sip">
         <WhiteIpList type="sip" label="恶意IP" :tableData="tableData" @removeIP="removeIP"></WhiteIpList>
       </el-tab-pane>
@@ -35,14 +35,14 @@ import { deleteIpApi, getWhiteIpBytype } from '../../tools/api'
 export default {
   components: {
     AddIPDialog,
-    WhiteIpList
+    WhiteIpList,
   },
   data() {
     return {
       addIpDialogVis: false,
       ifGetIP: false,
       tabsName: 'sip',
-      tableData: []
+      tableData: [],
     }
   },
   methods: {
@@ -56,7 +56,7 @@ export default {
     removeIP(row) {
       let fd = new FormData()
       fd.append('id', row.id)
-      deleteIpApi(fd, 'white').then(res => {
+      deleteIpApi(fd, 'white').then((res) => {
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
@@ -65,7 +65,7 @@ export default {
         }
         this.$message({
           type,
-          message: res.info
+          message: res.info,
         })
       })
     },
@@ -75,15 +75,15 @@ export default {
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
 
-      getWhiteIpBytype(fd).then(res => {
+      getWhiteIpBytype(fd).then((res) => {
         this.tableData = res
         console.log(res)
       })
-    }
+    },
   },
   mounted() {
     this.getIPList()
-  }
+  },
 }
 </script>
 

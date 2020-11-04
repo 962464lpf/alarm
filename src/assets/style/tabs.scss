@@ -1,0 +1,23 @@
+.my-elem-tabs {
+  background: #1a2332;
+  border: none;
+  .el-tabs__header {
+    background: #1a2332;
+    border-bottom: 3px solid #141d2b;
+    .is-active {
+      color: white !important;
+      background-color: rgba(159, 239, 0, 0.5) !important;
+      border-right-color: transparent !important;
+      border-left-color: transparent !important;
+    }
+    .el-tabs__item:hover {
+      color: #97e402 !important;
+    }
+    .el-tabs__item {
+      color: white !important;
+    }
+  }
+  .el-tabs__content {
+    // border: 1px solid red($color: #000000);
+  }
+}
