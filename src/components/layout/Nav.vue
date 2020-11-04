@@ -12,9 +12,9 @@
       style="width: 100%;"
       :default-active="defaultActive"
       :collapse="isCollapse"
-      background-color="#001529"
-      text-color="#6e7888"
-      active-text-color="white"
+      background-color="#111927"
+      text-color="#a4b1cd"
+      active-text-color="#b0ea49"
       :collapse-transition="false"
     >
       <template v-for="(route, index) in routes">
@@ -42,9 +42,7 @@
           :key="route.path"
           v-else-if="!route.children && route.meta && isPermission(route)"
         >
-          <i :class="route.meta.icon">
-            <!-- <img src="../../assets/images/ALL1.png" alt /> -->
-          </i>
+          <i :class="route.meta.icon"></i>
           <span slot="title">{{route.meta.title}}</span>
         </el-menu-item>
       </template>
@@ -105,7 +103,7 @@ export default {
     height: 30px;
     i {
       line-height: 30px;
-      color: $hfbg-color;
+      color: #b0ea49;
       margin-right: 15px;
       font-size: 20px;
     }
@@ -172,14 +170,14 @@ export default {
       }
     }
     .el-menu-item:hover {
-      background: #2b3c53 !important;
+      background: #1a2332 !important;
       span {
-        color: white;
+        color: #b0ea49;
         font-weight: 700;
       }
     }
     .is-active {
-      background: #2b3c53 !important;
+      background: #1a2332 !important;
       box-sizing: border-box;
       span {
         font-weight: 700;

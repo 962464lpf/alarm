@@ -7,7 +7,8 @@
       <el-col :span="3" class="title">
         <!-- <img src="../../assets/images/logo.png" class="curp" @click="jumpTo" /> -->
         <!-- 护网工具箱 -->
-        {{name}}
+        <img src="../../assets/images/logo.png" alt />
+        <img src="../../assets/images/tuling.png" alt />
       </el-col>
 
       <el-col
@@ -304,10 +305,13 @@ export default {
     height: 50px;
     line-height: 50px;
     .title {
-      text-align: center;
-      color: white;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding-left: 15px;
+      box-sizing: border-box;
       img {
-        height: 50px;
+        height: 35px;
       }
     }
     .icon-box,
