@@ -35,14 +35,14 @@ import { deleteIpApi, getWhiteIpBytype } from '../../tools/api'
 export default {
   components: {
     AddIPDialog,
-    WhiteIpList
+    WhiteIpList,
   },
   data() {
     return {
       addIpDialogVis: false,
       ifGetIP: false,
       tabsName: 'sip',
-      tableData: []
+      tableData: [],
     }
   },
   methods: {
@@ -50,13 +50,11 @@ export default {
       this.addIpDialogVis = true
     },
     //
-    getIP(form) {
-      console.log(form)
-    },
+    getIP() {},
     removeIP(row) {
       let fd = new FormData()
       fd.append('id', row.id)
-      deleteIpApi(fd, 'white').then(res => {
+      deleteIpApi(fd, 'white').then((res) => {
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
@@ -65,7 +63,7 @@ export default {
         }
         this.$message({
           type,
-          message: res.info
+          message: res.info,
         })
       })
     },
@@ -75,15 +73,14 @@ export default {
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
 
-      getWhiteIpBytype(fd).then(res => {
+      getWhiteIpBytype(fd).then((res) => {
         this.tableData = res
-        console.log(res)
       })
-    }
+    },
   },
   mounted() {
     this.getIPList()
-  }
+  },
 }
 </script>
 

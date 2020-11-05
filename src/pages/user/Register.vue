@@ -42,7 +42,7 @@ export default {
     return {
       userForm: {
         name: '',
-        password: ''
+        password: '',
       },
       btnName: '登录',
       loginBtnLoading: false,
@@ -53,21 +53,21 @@ export default {
         name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
         checkpassword: [
-          { required: true, message: '请再次输入密码', trigger: 'blur' }
-        ]
-      }
+          { required: true, message: '请再次输入密码', trigger: 'blur' },
+        ],
+      },
     }
   },
   computed: {
-    ...mapState(['currentPath'])
+    ...mapState(['currentPath']),
   },
   watch: {
     currentPath() {
       this.userForm = {
         name: '',
-        password: ''
+        password: '',
       }
-    }
+    },
   },
   methods: {
     submit() {
@@ -89,14 +89,14 @@ export default {
     },
     submitForm(formName) {
       this.loginBtnLoading = true
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           let fd = new FormData()
           for (let key in this.userForm) {
             fd.append(key, this.userForm[key])
           }
           let handleSubmit = loginApi
-          handleSubmit(fd).then(res => {
+          handleSubmit(fd).then((res) => {
             this.loginBtnLoading = false
             if (res.state === 1) {
               if (this.currentPath === '/') {
@@ -109,7 +109,7 @@ export default {
             } else {
               this.$message({
                 type: 'warning',
-                message: '操作失败'
+                message: '操作失败',
               })
             }
           })
@@ -131,21 +131,20 @@ export default {
       if (e.keyCode == 13) {
         this.submitForm('userForm')
       }
-    }
+    },
   },
   beforeMount() {
-    verifyLoginApi().then(res => {
+    verifyLoginApi().then((res) => {
       if (res.state !== -1) this.$router.push('/index')
     })
   },
   mounted() {
-    console.log(222)
     window.addEventListener('keydown', this.keyDown)
   },
   destroyed() {
     window.removeEventListener('keydown', this.keyDown, false)
     location.reload()
-  }
+  },
 }
 </script>
 
