@@ -134,6 +134,12 @@ export default {
         this.$store.dispatch('disconnectEventSource')
       }
     })
+    let s2 = document.createElement('script')
+    s2.src = '/waves1.js'
+    document.body.appendChild(s2)
+    let s1 = document.createElement('script')
+    s1.src = '/waves.js'
+    document.body.appendChild(s1)
   },
   mounted() {
     window.addEventListener('keydown', this.keyDown)

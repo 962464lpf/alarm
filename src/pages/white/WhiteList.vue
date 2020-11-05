@@ -52,9 +52,7 @@ export default {
       this.addIpDialogVis = true
     },
     //
-    getIP(form) {
-      console.log(form)
-    },
+    getIP() {},
     removeIP(row) {
       let fd = new FormData()
       fd.append('id', row.id)
@@ -79,7 +77,6 @@ export default {
 
       getWhiteIpBytype(fd).then((res) => {
         this.tableData = res
-        console.log(res)
       })
     },
   },
