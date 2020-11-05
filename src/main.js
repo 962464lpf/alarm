@@ -30,10 +30,8 @@ router.beforeEach((to, from, next) => {
         : ''
       pageLevel = to.meta.level
     } catch (error) {
-      console.log(error)
-      next('/')
+      // next('/')
     }
-
     if (userLevel <= pageLevel) {
       next()
     } else {
