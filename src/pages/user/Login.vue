@@ -44,7 +44,7 @@
 <script>
 import { loginApi, verifyLoginApi } from '../../tools/api'
 import { mapState } from 'vuex'
-import { decode } from '../../tools/encrypt'
+import { encode } from '../../tools/encrypt'
 // import { getXinDianTu } from '../../tools/xindiantu'
 export default {
   data() {
@@ -99,7 +99,7 @@ export default {
         if (valid) {
           let fd = new FormData()
           for (let key in this.userForm) {
-            fd.append(key, decode(this.userForm[key]))
+            fd.append(key, encode(this.userForm[key]))
           }
           let handleSubmit = loginApi
           handleSubmit(fd).then((res) => {

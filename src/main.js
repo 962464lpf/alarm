@@ -29,13 +29,14 @@ router.beforeEach((to, from, next) => {
         ? JSON.parse(sessionStorage.getItem('userInfo')).level
         : ''
       pageLevel = to.meta.level
+
+      if (userLevel <= pageLevel) {
+        next()
+      } else {
+        Message.warning('暂无权限访问或访问地址不存在！')
+      }
     } catch (error) {
-      // next('/')
-    }
-    if (userLevel <= pageLevel) {
-      next()
-    } else {
-      Message.warning('暂无权限访问或访问地址不存在！')
+      next('/')
     }
   }
 })

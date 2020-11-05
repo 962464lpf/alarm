@@ -1,7 +1,7 @@
 //字符串转base64
 function encode(str) {
   // 对字符串进行编码
-  var encode = encodeURI(str)
+  var encode = encodeURIComponent(str)
   // 对编码的字符串转化base64
   var base64 = btoa(encode)
   return base64
@@ -12,7 +12,7 @@ function decode(base64) {
   // 对base64转编码
   var decode = atob(base64)
   // 编码转字符串
-  var str = decodeURI(decode)
+  var str = decodeURIComponent(decode)
   return str
 }
 
