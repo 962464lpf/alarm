@@ -51,6 +51,7 @@
         :currentRow="currentRow"
         :operateType="operateType"
         @postRequest="postRequest"
+        class="my-elem-form"
       ></AddSchedule>
     </div>
   </div>

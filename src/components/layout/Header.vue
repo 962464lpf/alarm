@@ -63,7 +63,7 @@
         </span>
       </el-col>
     </el-row>
-    <el-dialog title="全局配置" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="全局配置" :visible.sync="dialogVisible" width="30%" class="overall-dialog">
       <div>
         <span>告警统计周期：</span>
         <el-radio-group v-model="radio" @change="radioChange">
@@ -78,20 +78,27 @@
             白名单机制
             <i class="el-icon-info curp" @click="showTooltip"></i>：
           </a>
-          <el-switch v-model="statisticalWhite" :width="40" @change="setWhiteIfStatistical"></el-switch>
+          <el-switch
+            v-model="statisticalWhite"
+            :width="40"
+            @change="setWhiteIfStatistical"
+            active-color="#95d214"
+            class="my-switch"
+          ></el-switch>
         </span>
       </div>
       <div class="mt10">
         <span>
           <a style="font-size:12px;">只看服务器区：</a>
-          <el-switch v-model="isServer" :width="40" @change="setIsServer"></el-switch>
+          <el-switch
+            v-model="isServer"
+            :width="40"
+            @change="setIsServer"
+            active-color="#95d214"
+            class="my-switch"
+          ></el-switch>
         </span>
       </div>
-
-      <!-- <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirm">确 定</el-button>
-      </span>-->
     </el-dialog>
     <div v-if="resetPasswordStatus">
       <ResetPassword v-model="resetPasswordStatus" @getResetform="getResetform"></ResetPassword>
@@ -337,8 +344,32 @@ export default {
       }
     }
   }
-  .el-dialog {
+  .overall-dialog {
     // height: 40% !important;
+    .el-dialog__body {
+      div {
+        color: white;
+        .my-switch {
+          .el-switch__label {
+            color: #8e8a8a !important;
+          }
+          .is-active {
+            color: #95d214 !important;
+          }
+        }
+        .el-radio-group {
+          .el-radio-button__inner {
+            border: none;
+          }
+          .is-active {
+            .el-radio-button__inner {
+              background-color: #95d214 !important;
+              border: none;
+            }
+          }
+        }
+      }
+    }
   }
 }
 </style>

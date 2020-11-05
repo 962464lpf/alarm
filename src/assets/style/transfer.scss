@@ -1,0 +1,14 @@
+.my-elem-transfer {
+  .el-transfer {
+    .el-transfer-panel {
+      background: transparent;
+      .el-transfer-panel__header {
+        background: transparent;
+        color: white;
+        .el-checkbox__label {
+          color: white;
+        }
+      }
+    }
+  }
+}

@@ -60,7 +60,11 @@
       ></OrderDetail>
     </div>
     <div v-if="chooseFirewallStatus">
-      <ChooseFirewall v-model="chooseFirewallStatus" @getFirewall="orderBlocked"></ChooseFirewall>
+      <ChooseFirewall
+        class="my-elem-table my-elem-pagination"
+        v-model="chooseFirewallStatus"
+        @getFirewall="orderBlocked"
+      ></ChooseFirewall>
     </div>
     <div v-if="selectTimeStatus">
       <SelectTime v-model="selectTimeStatus" @getFirewall="orderBlocked"></SelectTime>

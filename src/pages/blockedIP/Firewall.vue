@@ -38,6 +38,7 @@
         :title="AddfireWallTitle"
         :currentRow="currentRow"
         @getFirewallForm="getFirewallForm"
+        class="my-elem-form"
       ></AddFirewall>
     </div>
   </div>

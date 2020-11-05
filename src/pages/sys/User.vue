@@ -21,10 +21,14 @@
       </el-table>
     </div>
     <div v-if="addUserStatus">
-      <Adduser v-model="addUserStatus" @getUserForm="getUserForm"></Adduser>
+      <Adduser class="my-elem-form" v-model="addUserStatus" @getUserForm="getUserForm"></Adduser>
     </div>
     <div v-if="allotEquipStatus">
-      <AllotEquip v-model="allotEquipStatus" @getSelectEquip="getSelectEquip"></AllotEquip>
+      <AllotEquip
+        class="my-elem-table my-elem-pagination"
+        v-model="allotEquipStatus"
+        @getSelectEquip="getSelectEquip"
+      ></AllotEquip>
     </div>
   </div>
 </template>

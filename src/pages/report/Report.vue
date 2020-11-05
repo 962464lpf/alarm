@@ -62,6 +62,7 @@
         v-model="createReportStatus"
         @reportOpt="createReport"
         :reportType="reportType"
+        class="my-elem-table my-elem-form my-elem-pagination my-elem-transfer"
       ></CreateReportComp>
     </div>
   </div>

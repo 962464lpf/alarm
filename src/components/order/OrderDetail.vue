@@ -47,7 +47,7 @@
           <span>{{orderDetail.con}}</span>
         </el-col>
       </el-row>
-      <span slot="footer" class="dialog-footer"  v-if="currentRow.state === 0">
+      <span slot="footer" class="dialog-footer" v-if="currentRow.state === 0">
         <el-button type="primary" @click="falseReport">误报</el-button>
         <el-button type="primary" @click="issueDisposal">下发处置</el-button>
       </span>
@@ -59,20 +59,20 @@
 import {
   getOrderDetailApi,
   orderIssueDisposalApi,
-  orderWuBaoApi
+  orderWuBaoApi,
 } from '../../tools/api'
 export default {
   props: {
     value: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    currentRow: {}
+    currentRow: {},
   },
   data() {
     return {
       dialogVisible: this.value,
-      orderDetail: {}
+      orderDetail: {},
     }
   },
   methods: {
@@ -82,7 +82,7 @@ export default {
     falseReport() {
       let fd = new FormData()
       fd.append('id', this.currentRow.id)
-      orderWuBaoApi(fd).then(res => {
+      orderWuBaoApi(fd).then((res) => {
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
@@ -91,7 +91,7 @@ export default {
         }
         this.$message({
           type,
-          message: res.info
+          message: res.info,
         })
         this.handleClose()
       })
@@ -99,7 +99,7 @@ export default {
     issueDisposal() {
       let fd = new FormData()
       fd.append('id', this.currentRow.id)
-      orderIssueDisposalApi(fd).then(res => {
+      orderIssueDisposalApi(fd).then((res) => {
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'
@@ -108,7 +108,7 @@ export default {
         }
         this.$message({
           type,
-          message: res.info
+          message: res.info,
         })
         this.handleClose()
       })
@@ -118,14 +118,14 @@ export default {
       // id-工单id，alert_id-告警id
       fd.append('id', this.currentRow.id)
       fd.append('alert_id', this.currentRow.alert_id)
-      getOrderDetailApi(fd).then(res => {
+      getOrderDetailApi(fd).then((res) => {
         this.orderDetail = res
       })
-    }
+    },
   },
   mounted() {
     this.getOrderDetail()
-  }
+  },
 }
 </script>
 
@@ -134,6 +134,7 @@ export default {
   .order-detail {
     .el-col-12 {
       line-height: 28px;
+      color: white;
     }
   }
 }

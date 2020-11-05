@@ -207,6 +207,7 @@
         :rowSip="rowSip"
         :rowId="rowId"
         :searchForm="searchForm"
+        class="my-elem-table my-elem-pagination"
       ></AlarmListDialog>
     </div>
     <div v-if="blackTypeDialogStatus">
@@ -217,7 +218,11 @@
     </div>
 
     <div v-if="chooseFirewallStatus">
-      <ChooseFirewall v-model="chooseFirewallStatus" @getFirewall="batchBannedOperation"></ChooseFirewall>
+      <ChooseFirewall
+        v-model="chooseFirewallStatus"
+        class="my-elem-table my-elem-pagination"
+        @getFirewall="batchBannedOperation"
+      ></ChooseFirewall>
     </div>
   </div>
 </template>

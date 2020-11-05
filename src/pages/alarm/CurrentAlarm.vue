@@ -63,22 +63,16 @@
             </p>
           </div>
         </div>
-        <!-- <div class="list">
-          <div class="content">
-            <span class="name">
-              白名单提醒
-              <i></i>
-            </span>
-
-            <a></a>
-            <el-switch v-model="whitePushAlarm" @change="handleWhitePush"></el-switch>
-          </div>
-        </div>-->
       </div>
     </transition>
     <SearchForm :levelStatus="true" @getSearchForm="getSearchForm">
       <span class="more-operation">
-        <el-dropdown split-button type="primary" @command="exportFile" class="ml10">
+        <el-dropdown
+          split-button
+          type="primary"
+          @command="exportFile"
+          class="ml10 my-elem-drop-btn"
+        >
           导出
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="csv">csv</el-dropdown-item>
@@ -88,8 +82,8 @@
             <el-dropdown-item command="html">html</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button type="primary" class="ml10" @click="changeNewAlarm">取消新告警标志</el-button>
-        <el-button type="primary" @click="batchBanned">批量封禁</el-button>
+        <el-button type="primary" class="ml10 my-elem-btn" @click="changeNewAlarm">取消新告警标志</el-button>
+        <el-button type="primary" @click="batchBanned" class="my-elem-btn">批量封禁</el-button>
       </span>
     </SearchForm>
     <div class="current-table">
@@ -276,7 +270,11 @@
     </div>
 
     <div v-if="chooseFirewallStatus">
-      <ChooseFirewall v-model="chooseFirewallStatus" @getFirewall="batchBannedOperation"></ChooseFirewall>
+      <ChooseFirewall
+        class="my-elem-table my-elem-pagination"
+        v-model="chooseFirewallStatus"
+        @getFirewall="batchBannedOperation"
+      ></ChooseFirewall>
     </div>
   </div>
 </template>
@@ -326,7 +324,7 @@ export default {
       bellSrcArr: [],
       intervalId: null,
       tableLoading: false,
-      currentAlarmList: [{ dip: 123 }, { dip: 123 }],
+      currentAlarmList: [],
       rowAlarmData: {},
       currentPage: 1,
       pageSize: 20,

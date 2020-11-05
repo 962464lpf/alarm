@@ -1,6 +1,13 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
-    <el-form ref="addInsideEquip" :model="form" :rules="rules" inline label-width="120px">
+    <el-form
+      ref="addInsideEquip"
+      class="my-elem-form"
+      :model="form"
+      :rules="rules"
+      inline
+      label-width="120px"
+    >
       <el-row v-if="uploadStatus">
         <el-upload
           class="upload-demo"
@@ -23,20 +30,17 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="公网IP："
-                        prop="ip">
+          <el-form-item label="公网IP：" prop="ip">
             <el-input v-model="form.ip"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="私网IP："
-                        prop="ip_private">
+          <el-form-item label="私网IP：" prop="ip_private">
             <el-input v-model="form.ip_private"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="安全域："
-                        prop="anquanyu">
+          <el-form-item label="安全域：" prop="anquanyu">
             <el-input v-model="form.anquanyu"></el-input>
           </el-form-item>
         </el-col>
@@ -61,15 +65,23 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="是否在线："
-                        prop="online">
-            <el-switch v-model="form.online"
-                       active-text="在线"
-                       inactive-text="离线">
-            </el-switch>
+          <el-form-item label="是否在线：" prop="online">
+            <el-switch
+              class="my-switch"
+              v-model="form.online"
+              active-text="在线"
+              inactive-text="离线"
+              active-color="#95d214"
+            ></el-switch>
           </el-form-item>
           <el-form-item label="服务器区：" prop="phone">
-            <el-switch v-model="form.is_server" active-text="是" inactive-text="否"></el-switch>
+            <el-switch
+              class="my-switch"
+              v-model="form.is_server"
+              active-text="是"
+              inactive-text="否"
+              active-color="#95d214"
+            ></el-switch>
           </el-form-item>
         </el-col>
       </el-row>
@@ -85,20 +97,20 @@
 import {
   addSingleInsideEquipApi,
   addMoreInsideEquipApi,
-  editInsideEquipApi
+  editInsideEquipApi,
 } from '../../tools/api'
 export default {
   props: {
     value: {
       type: Boolean,
-      default: false
+      default: false,
     },
     addInsideEquipType: {
-      type: String
+      type: String,
     },
     currentRow: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   data() {
     return {
@@ -114,11 +126,11 @@ export default {
         staff: '',
         com_dep: '',
         online: true,
-        is_server: false
+        is_server: false,
       },
       fileList: [],
       uploadStatus: false,
-      rules: {}
+      rules: {},
     }
   },
   methods: {
@@ -160,7 +172,7 @@ export default {
       }
       this.$emit('postRequest', { fd, api })
       this.handleClose()
-    }
+    },
   },
   mounted() {
     this.title = '资产录入'
@@ -179,9 +191,17 @@ export default {
         }
       }
     }
-  }
+  },
 }
 </script>
 
 <style  lang="scss">
+.my-switch {
+  .el-switch__label {
+    color: #8e8a8a !important;
+  }
+  .is-active {
+    color: #95d214 !important;
+  }
+}
 </style>

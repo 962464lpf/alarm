@@ -61,10 +61,18 @@
     <div class="clearfloat"></div>
 
     <div v-if="addBlockedIPStatus">
-      <addBlockedIP v-model="addBlockedIPStatus" @getAddBlockedIP="getAddBlockedIP"></addBlockedIP>
+      <addBlockedIP
+        class="my-elem-table my-elem-pagination my-elem-form"
+        v-model="addBlockedIPStatus"
+        @getAddBlockedIP="getAddBlockedIP"
+      ></addBlockedIP>
     </div>
     <div v-if="batchBlockedIPStatus">
-      <batchBlockedIP v-model="batchBlockedIPStatus" @updateTableData="getBlockedIP"></batchBlockedIP>
+      <batchBlockedIP
+        class="my-elem-table my-elem-pagination"
+        v-model="batchBlockedIPStatus"
+        @updateTableData="getBlockedIP"
+      ></batchBlockedIP>
     </div>
   </div>
 </template>
