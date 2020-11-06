@@ -178,18 +178,69 @@ const routes = [
       icon: 'el-icon-document',
       level: 1,
     },
-    // children: [
-    //   {
-    //     path: '/report/report',
-    //     name: 'report',
-    //     component: () => import('../pages/report/Report.vue'),
-    //     meta: {
-    //       title: '日报周报',
-    //       icon: '',
-    //       level: 1,
-    //     },
-    //   },
-    // ],
+  },
+  {
+    path: '/network',
+    name: '网络配置',
+    component: () => import('../components/layout/RouterView.vue'),
+    meta: {
+      title: '网络配置',
+      icon: 'el-icon-document',
+      level: 0,
+    },
+    children: [
+      {
+        path: '/network/networkManage',
+        name: 'networkManage',
+        component: () => import('../pages/network/NetworkManage.vue'),
+        meta: {
+          title: '网络管理',
+          icon: 'el-icon-document',
+          level: 0,
+        },
+      },
+      {
+        path: '/network/phyInterface',
+        name: 'phyInterface',
+        component: () => import('../pages/network/PhyInterface.vue'),
+        meta: {
+          title: '物理接口',
+          icon: 'el-icon-document',
+          level: 0,
+        },
+      },
+      {
+        path: '/network/staticroute',
+        name: 'staticroute',
+        component: () => import('../pages/network/Staticroute.vue'),
+        meta: {
+          title: '静态路由',
+          icon: 'el-icon-document',
+          level: 0,
+        },
+      },
+      {
+        path: '/network/ARP',
+        name: 'ARP',
+        component: () => import('../pages/network/ARP.vue'),
+        meta: {
+          title: 'ARP表',
+          icon: 'el-icon-document',
+          level: 0,
+        },
+      },
+    ],
+  },
+
+  {
+    path: '/tools',
+    name: 'tools',
+    component: () => import('../pages/diagnostictools/Tools.vue'),
+    meta: {
+      title: '诊断工具',
+      icon: 'el-icon-document',
+      level: 1,
+    },
   },
   {
     path: '/sys',
@@ -217,16 +268,6 @@ const routes = [
         component: () => import('../pages/sys/User.vue'),
         meta: {
           title: '用户管理',
-          icon: 'el-icon-document',
-          level: 0,
-        },
-      },
-      {
-        path: '/sys/networkManage',
-        name: 'networkManage',
-        component: () => import('../pages/sys/NetworkManage.vue'),
-        meta: {
-          title: '网络管理',
           icon: 'el-icon-document',
           level: 0,
         },

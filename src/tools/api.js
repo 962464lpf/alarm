@@ -449,6 +449,71 @@ function deleteScheduleApi(params) {
   return POST(url, params)
 }
 
+function getPhyInterface() {
+  let url = BASE_URL + '/jump/net/ether'
+  return POST(url)
+}
+
+function getStaticRouteData() {
+  let url = BASE_URL + '/jump/net/ether'
+  return POST(url)
+}
+
+function getARPData() {
+  let url = BASE_URL + '/jump/net/arp_table'
+  return POST(url)
+}
+
+function deleteArpData(params) {
+  let url
+  if (params) {
+    url = BASE_URL + '/jump/net/arp_del'
+    return POST(url, params)
+  } else {
+    url = BASE_URL + '/jump/net/arp_del_all'
+    return POST(url)
+  }
+}
+
+function pingStart(params) {
+  let url = BASE_URL + '/jump/diagnose/ping_start'
+  return POST(url, params)
+}
+
+function pingEnd() {
+  let url = BASE_URL + '/jump/diagnose/ping_stop'
+  return POST(url)
+}
+
+function pingContinue() {
+  let url = BASE_URL + '/jump/diagnose/ping_stop'
+  return POST(url)
+}
+
+function tracerouteStart(params) {
+  let url = BASE_URL + '/jump/diagnose/ping_start'
+  return POST(url, params)
+}
+function tracerouteEnd() {
+  let url = BASE_URL + '/jump/diagnose/ping_stop'
+  return POST(url)
+}
+
+function tracerouteContinue() {
+  let url = BASE_URL + '/jump/diagnose/ping_stop'
+  return POST(url)
+}
+
+function getCurl(params) {
+  let url = BASE_URL + '/jump/diagnose/curl'
+  return POST(url, params)
+}
+
+function getDns(params) {
+  let url = BASE_URL + '/jump/diagnose/dns'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   closeBackend,
@@ -536,4 +601,16 @@ export {
   addScheduleApi,
   editScheduleApi,
   deleteScheduleApi,
+  getPhyInterface,
+  getStaticRouteData,
+  getARPData,
+  deleteArpData,
+  pingStart,
+  pingEnd,
+  pingContinue,
+  tracerouteStart,
+  tracerouteEnd,
+  tracerouteContinue,
+  getCurl,
+  getDns,
 }
