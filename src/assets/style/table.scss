@@ -13,7 +13,7 @@
     tbody {
       tr {
         background: #141d2b;
-        color: #798086;
+        color: #e3e3e3;
         .el-checkbox__inner {
           border: 1px solid #292e33;
           background-color: #141d2b;
@@ -36,6 +36,7 @@
   }
   .el-table td {
     border-bottom: 1px solid transparent;
+    padding: 10px 0 !important;
   }
   .el-table--border {
     border: 1px solid #292e33 !important ;

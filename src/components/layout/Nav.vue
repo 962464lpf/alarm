@@ -16,6 +16,7 @@
       text-color="#a4b1cd"
       active-text-color="#b0ea49"
       :collapse-transition="false"
+      unique-opened
     >
       <template v-for="(route, index) in routes">
         <el-submenu
@@ -169,13 +170,17 @@ export default {
         background-size: contain;
       }
     }
+
     .el-menu-item:hover {
       background: #1a2332 !important;
+      color: #b0ea49 !important;
+      font-weight: 700 !important;
       span {
-        color: #b0ea49;
-        font-weight: 700;
+        color: #b0ea49 !important;
+        font-weight: 700 !important;
       }
     }
+
     .is-active {
       background: #1a2332 !important;
       box-sizing: border-box;
@@ -187,7 +192,7 @@ export default {
     .el-submenu__title:hover {
       background: #2b3c53 !important;
       span {
-        color: white;
+        color: #b0ea49;
       }
     }
   }

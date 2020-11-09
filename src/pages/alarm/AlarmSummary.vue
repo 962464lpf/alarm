@@ -273,7 +273,7 @@ export default {
       attack_total_middle: 0,
       currentPage: 1,
       total: 0,
-      pageSize: 10,
+      pageSize: 20,
       alarmListDialogStatus: false,
       blackTypeDialogStatus: false,
       rowAlarmData: {},

@@ -85,6 +85,28 @@ const routes = [
   //   }
   // },
   {
+    path: '/retcoun',
+    name: 'retcoun',
+    component: () => import('../components/layout/RouterView.vue'),
+    meta: {
+      title: '溯源反制',
+      icon: 'duikang',
+      level: 1,
+    },
+    children: [
+      {
+        path: '/retcoun/beef',
+        name: 'beef',
+        component: () => import('../pages/beef/Beef.vue'),
+        meta: {
+          title: 'Beef',
+          icon: 'el-icon-document',
+          level: 1,
+        },
+      },
+    ],
+  },
+  {
     path: '/redblue',
     name: 'redblue',
     component: () => import('../pages/redblue/RedBlue.vue'),
@@ -169,16 +191,7 @@ const routes = [
       // },
     ],
   },
-  {
-    path: '/beef',
-    name: 'beef',
-    component: () => import('../pages/beef/Beef.vue'),
-    meta: {
-      title: 'Beef',
-      icon: 'el-icon-document',
-      level: 1,
-    },
-  },
+
   {
     path: '/network',
     name: '网络配置',

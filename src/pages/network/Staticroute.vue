@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     deleteRoute(row) {
-      console.log(row)
       let str
       if (row) {
         str = '您确认删除该路由吗？'

@@ -489,6 +489,10 @@ function pingContinue() {
   let url = BASE_URL + '/jump/diagnose/read_ping_data'
   return POST(url)
 }
+function pingContinueStop() {
+  let url = BASE_URL + '/jump/diagnose/read_ping_data_stop'
+  return POST(url)
+}
 
 function tracerouteStart(params) {
   let url = BASE_URL + '/jump/diagnose/traceroute_start'
@@ -501,6 +505,11 @@ function tracerouteEnd() {
 
 function tracerouteContinue() {
   let url = BASE_URL + '/jump/diagnose/read_traceroute_data'
+  return POST(url)
+}
+
+function tracerouteContinueStop() {
+  let url = BASE_URL + '/jump/diagnose/read_traceroute_data_stop'
   return POST(url)
 }
 
@@ -608,9 +617,11 @@ export {
   pingStart,
   pingEnd,
   pingContinue,
+  pingContinueStop,
   tracerouteStart,
   tracerouteEnd,
   tracerouteContinue,
+  tracerouteContinueStop,
   getCurl,
   getDns,
 }

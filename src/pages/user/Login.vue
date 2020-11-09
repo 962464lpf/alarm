@@ -1,38 +1,40 @@
 <template>
   <div class="user" id="user">
-    <div class="title">
-      <img src="../../assets/images/logo.png" alt />
-      <div>
-        <img src="../../assets/images/logo1.png" alt />
-        <p>TURING SAFETY MANAGEMENT CENTEER</p>
+    <div class="login-content">
+      <div class="title">
+        <img src="../../assets/images/logo.png" alt />
+        <div>
+          <img src="../../assets/images/logo1.png" alt />
+          <p>TURING SAFETY MANAGEMENT CENTEER</p>
+        </div>
       </div>
-    </div>
-    <div class="form-box">
-      <div class="form">
-        <el-form :model="userForm" status-icon :rules="rules" ref="userForm">
-          <el-form-item label prop="name">
-            <el-input v-model="userForm.name" placeholder="请输入用户名">
-              <i slot="prefix" class="el-input__icon el-icon-user"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input v-model="userForm.password" placeholder="请输入密码" type="password">
-              <i slot="prefix" class="el-input__icon el-icon-lock"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="checkpassword" v-if="currentPath === '/edituser'">
-            <el-input v-model="userForm.password2" placeholder="请再次输入密码" type="password">
-              <i slot="prefix" class="el-input__icon el-icon-lock"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              class="btn curp"
-              :loading="loginBtnLoading"
-              @click="submitForm('userForm')"
-            >{{immediateTitle('btn')}}</el-button>
-          </el-form-item>
-        </el-form>
+      <div class="form-box">
+        <div class="form">
+          <el-form :model="userForm" status-icon :rules="rules" ref="userForm">
+            <el-form-item label prop="name">
+              <el-input v-model="userForm.name" placeholder="请输入用户名">
+                <i slot="prefix" class="el-input__icon el-icon-user"></i>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input v-model="userForm.password" placeholder="请输入密码" type="password">
+                <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="checkpassword" v-if="currentPath === '/edituser'">
+              <el-input v-model="userForm.password2" placeholder="请再次输入密码" type="password">
+                <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                class="btn curp"
+                :loading="loginBtnLoading"
+                @click="submitForm('userForm')"
+              >{{immediateTitle('btn')}}</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
     </div>
 
@@ -168,98 +170,101 @@ export default {
     left: calc(50% - 262px);
   }
 
-  .title {
+  .login-content {
     position: absolute;
-    top: 30px;
-    width: 100%;
-    text-align: center;
-    line-height: 40px;
-    font-size: 34px;
-    color: white;
-    font-weight: 700;
-    // height: 50px;
-    z-index: 99;
-    display: flex;
-    justify-content: center;
-    img {
-      height: 60px;
-    }
-    div {
-      img {
-        height: 40px;
-      }
-      p {
-        font-size: 14px;
-        text-align: left;
-        margin-left: 2px;
-        line-height: 10px;
-      }
-    }
-  }
-  overflow: hidden;
-  // position: relative;
-  background: #141d2b;
-  overflow: hidden;
-  .form-box {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    background: transparent;
-    z-index: 999;
-  }
-  .form {
-    width: 400px;
-    position: absolute;
-    bottom: 25%;
+    bottom: calc(50% - 100px);
     left: calc(50% - 200px);
-    border-radius: 20px;
-    padding: 35px;
-    padding-bottom: 6px;
-    background-color: #1a2332 !important;
-    border-color: #1a2332 !important;
-    box-sizing: border-box;
-    .el-form {
-      .el-form-item {
-        display: flex;
-        margin-bottom: 26px;
-        .el-form-item__content {
-          flex: 1;
-          margin-left: 0 !important;
-          .el-input--mini .el-input__inner {
-            height: 30px;
-            line-height: 30px;
-            border-color: #1a2332;
-            background: #111927;
-            color: white;
-            padding: 25px;
-            padding-left: 30px;
-          }
-          .el-form-item__error {
-            color: #9fef00;
-            padding-top: 6px;
-            padding-left: 12px;
-          }
-          .el-input__suffix {
-            .el-icon-circle-close {
-              color: #9fef00;
+    .title {
+      width: 100%;
+      text-align: center;
+      line-height: 40px;
+      font-size: 34px;
+      color: white;
+      font-weight: 700;
+      // height: 50px;
+      z-index: 99;
+      display: flex;
+      justify-content: center;
+      img {
+        height: 60px;
+      }
+      div {
+        img {
+          height: 40px;
+        }
+        p {
+          font-size: 14px;
+          text-align: left;
+          margin-left: 2px;
+          line-height: 10px;
+        }
+      }
+    }
+    .form-box {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      background: transparent;
+      margin-top: 35px;
+      z-index: 999;
+      .form {
+        width: 400px;
+
+        border-radius: 20px;
+        padding: 35px;
+        padding-bottom: 6px;
+        background-color: #1a2332 !important;
+        border-color: #1a2332 !important;
+        box-sizing: border-box;
+        .el-form {
+          .el-form-item {
+            display: flex;
+            margin-bottom: 26px;
+            .el-form-item__content {
+              flex: 1;
+              margin-left: 0 !important;
+              .el-input--mini .el-input__inner {
+                height: 30px;
+                line-height: 30px;
+                border-color: #1a2332;
+                background: #111927;
+                color: white;
+                padding: 25px;
+                padding-left: 30px;
+              }
+              .el-form-item__error {
+                color: #9fef00;
+                padding-top: 6px;
+                padding-left: 12px;
+              }
+              .el-input__suffix {
+                .el-icon-circle-close {
+                  color: #9fef00;
+                }
+              }
+            }
+            .btn {
+              width: 100%;
+              border-radius: 10px;
+              height: 35px;
+              background: #9fef00;
+              line-height: 35px;
+              text-align: center;
+              color: black;
+              font-size: 18px;
+              border: none;
+              padding: 0 !important;
             }
           }
         }
-        .btn {
-          width: 100%;
-          border-radius: 10px;
-          height: 35px;
-          background: #9fef00;
-          line-height: 35px;
-          text-align: center;
-          color: black;
-          font-size: 18px;
-          border: none;
-          padding: 0 !important;
-        }
       }
     }
   }
+
+  overflow: hidden;
+  // position: relative;
+  background: #141d2b;
+
   .immediately {
     color: #9fef00;
     font-size: 14px;

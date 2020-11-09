@@ -22,7 +22,12 @@ import Ping from '../../components/diagnostictools/Ping'
 import Traceroute from '../../components/diagnostictools/Traceroute'
 import CURL from '../../components/diagnostictools/CURL'
 import Dns from '../../components/diagnostictools/Dns'
-
+import {
+  pingEnd,
+  tracerouteEnd,
+  tracerouteContinueStop,
+  pingContinueStop,
+} from '../../tools/api'
 export default {
   components: {
     Ping,
@@ -41,6 +46,15 @@ export default {
       this.Interval = val
     },
     handleClick() {
+      if (this.tabsName === 'traceroute') {
+        pingEnd().then(() => {
+          pingContinueStop()
+        })
+      } else {
+        tracerouteEnd().then(() => {
+          tracerouteContinueStop()
+        })
+      }
       if (this.Interval) {
         window.clearInterval(this.Interval)
       }
@@ -48,6 +62,12 @@ export default {
     },
   },
   mounted() {},
+  beforeDestroy() {
+    pingEnd()
+    tracerouteEnd().then(() => {
+      tracerouteContinueStop()
+    })
+  },
 }
 </script>
 

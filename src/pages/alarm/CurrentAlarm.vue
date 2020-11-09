@@ -115,7 +115,11 @@
                   <span>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
                 </div>
                 <div>
+                  <!-- <el-badge value="new" class="item">
+                    <el-button size="small">评论</el-button>
+                  </el-badge>-->
                   <!-- 0 为新告警 -->
+                  <!-- <span>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span> -->
                   <span class="triangle" v-if="scope.row.is_new === 0"></span>
                   <span
                     v-if="scope.row.is_new === 0"
@@ -872,11 +876,15 @@ export default {
           .cell {
             overflow: inherit !important;
             .triangle {
-              width: 0;
-              height: 0;
-              border-top: 20px solid #d9534f;
-              border-right: 20px solid transparent;
               float: left;
+              background-color: #97e402;
+              border-radius: 10px;
+              font-size: 12px;
+              padding: 0 6px;
+              line-height: 18px;
+            }
+            .triangle::before {
+              content: 'new';
             }
 
             .no-triangle {
@@ -924,6 +932,10 @@ export default {
     font-size: 13px;
     margin-top: 10px;
     line-height: 32px;
+  }
+  .el-badge__content {
+    border: none;
+    background-color: #8bc34a;
   }
 }
 .notify-red,

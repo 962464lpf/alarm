@@ -6,8 +6,7 @@
         <el-input v-model="dns.ip" style="width: 400px; margin-left: 50px;"></el-input>
 
         <span class="ml10">
-          <el-button class="my-elem-btn" @click="confirmDns">确定</el-button>
-          <el-button class="my-elem-btn">停止</el-button>
+          <el-button class="my-elem-btn" @click="confirmDns">开始</el-button>
         </span>
       </el-form-item>
 
@@ -33,7 +32,6 @@ export default {
     confirmDns() {
       var domain = /[a-zA-Z0-9][a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/
       if (domain.test(this.dns.ip)) {
-        pingEnd()
         let fd = new FormData()
         fd.append('domain_name', this.dns.ip)
         this.textarea = '请等待...'
@@ -44,9 +42,12 @@ export default {
               type: 'warning',
             })
           } else {
-            this.textarea = res
+            this.textarea = res.info
           }
         })
+        setTimeout(() => {
+          pingEnd()
+        }, 2000)
       } else {
         this.$message({
           message: '请输入正确的域名',

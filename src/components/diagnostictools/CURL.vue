@@ -6,12 +6,11 @@
         <el-input
           v-model="curl.ip"
           style="width: 400px; margin-left: 50px;"
-          placeholder="请输入完整的域名格式。例如:https://www.baidu.com/"
+          placeholder="请输入完整的地址格式。例如:https://www.baidu.com"
         ></el-input>
 
         <span class="ml10">
-          <el-button class="my-elem-btn" @click="confirmCurl">确定</el-button>
-          <el-button class="my-elem-btn">停止</el-button>
+          <el-button class="my-elem-btn" @click="confirmCurl">开始</el-button>
         </span>
       </el-form-item>
 
@@ -46,7 +45,7 @@ export default {
       } else {
         this.$message({
           type: 'warning',
-          message: '请输入正确的域名',
+          message: '请输入请输入完整的地址格式。例如:https://www.baidu.com',
         })
       }
     },

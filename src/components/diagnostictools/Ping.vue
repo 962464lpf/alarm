@@ -23,7 +23,7 @@
       </el-form-item>
       <el-form-item>
         <div class="start-stop mb10">
-          <el-button class="my-elem-btn" @click="startPing">确定</el-button>
+          <el-button class="my-elem-btn" @click="startPing" :disabled="disableStatus">开始</el-button>
           <el-button class="my-elem-btn" @click="endPing">停止</el-button>
         </div>
         <el-input class="mt10" type="textarea" :rows="16" v-model="textarea"></el-input>
@@ -33,7 +33,12 @@
 </template>
 
 <script>
-import { pingStart, pingEnd, pingContinue } from '../../tools/api'
+import {
+  pingStart,
+  pingEnd,
+  pingContinue,
+  pingContinueStop,
+} from '../../tools/api'
 export default {
   props: ['continueInterval'],
   data() {
@@ -42,6 +47,7 @@ export default {
       ipv6: '',
       iptype: '1',
       textarea: '',
+      disableStatus: false,
     }
   },
   computed: {
@@ -54,6 +60,7 @@ export default {
   },
   methods: {
     startPing() {
+      this.disableStatus = true
       var ip = /((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}/
       var domain = /[a-zA-Z0-9][a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/
       let checkIp = ip.test(this.ipv4)
@@ -80,17 +87,23 @@ export default {
     continueReceive() {
       let continueInterval = setInterval(() => {
         pingContinue().then((res) => {
-          this.textarea = ''
-          res.forEach((item) => {
-            this.textarea += item
-          })
+          if (res.length > 20) {
+            this.endPing()
+          } else {
+            this.textarea = ''
+            res.forEach((item) => {
+              this.textarea += item
+            })
+          }
         })
       }, 1000)
       this.$emit('getContinueInterval', continueInterval)
     },
     endPing() {
+      this.disableStatus = false
       pingEnd().then(() => {
-        pingContinue().then((res) => {
+        pingContinueStop().then((res) => {
+          this.textarea = ''
           res.forEach((item) => {
             this.textarea += item
           })
