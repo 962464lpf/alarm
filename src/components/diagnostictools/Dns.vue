@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { getDns } from '../../tools/api'
+import { getDns, pingEnd } from '../../tools/api'
 export default {
   data() {
     return {
@@ -31,16 +31,32 @@ export default {
   },
   methods: {
     confirmDns() {
-      let fd = new FormData()
-      fd.append('domain_name', this.dns.ip)
-      getDns(fd).then((res) => {
-        this.textarea = res
-      })
+      var domain = /[a-zA-Z0-9][a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/
+      if (domain.test(this.dns.ip)) {
+        pingEnd()
+        let fd = new FormData()
+        fd.append('domain_name', this.dns.ip)
+        this.textarea = '请等待...'
+        getDns(fd).then((res) => {
+          if (res.state === 0) {
+            this.$message({
+              message: res.info,
+              type: 'warning',
+            })
+          } else {
+            this.textarea = res
+          }
+        })
+      } else {
+        this.$message({
+          message: '请输入正确的域名',
+          type: 'warning',
+        })
+      }
     },
   },
   mounted() {},
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

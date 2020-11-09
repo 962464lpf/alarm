@@ -3,7 +3,11 @@
     <el-form :model="curl" class="my-elem-form">
       <el-form-item>
         <span>CURL</span>
-        <el-input v-model="curl.ip" style="width: 400px; margin-left: 50px;"></el-input>
+        <el-input
+          v-model="curl.ip"
+          style="width: 400px; margin-left: 50px;"
+          placeholder="请输入完整的域名格式。例如:https://www.baidu.com/"
+        ></el-input>
 
         <span class="ml10">
           <el-button class="my-elem-btn" @click="confirmCurl">确定</el-button>
@@ -31,11 +35,20 @@ export default {
   },
   methods: {
     confirmCurl() {
-      let fd = new FormData()
-      fd.append('url_addr', this.curl.ip)
-      getCurl(fd).then((res) => {
-        this.textarea = res
-      })
+      let urlReg = /^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+/
+      if (urlReg.test(this.curl.ip)) {
+        let fd = new FormData()
+        fd.append('url_addr', this.curl.ip)
+        this.textarea = '请等待...'
+        getCurl(fd).then((res) => {
+          this.textarea = res
+        })
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '请输入正确的域名',
+        })
+      }
     },
   },
   mounted() {},

@@ -25,30 +25,55 @@ import {
   tracerouteContinue,
 } from '../../tools/api'
 export default {
+  props: ['continueInterval'],
   data() {
     return {
       traceroute: {
         ip: '',
       },
+      textarea: '',
     }
   },
   methods: {
     startTraceroute() {
-      let fd = new FormData()
-      fd.append('ip', this.traceroute.ip)
-      tracerouteStart(fd).then(() => {
-        this.continueReceive()
-      })
+      var ip = /((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}/
+      var domain = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/
+      let checkIp = ip.test(this.traceroute.ip)
+      let checkDomain = domain.test(this.traceroute.ip)
+      if (checkIp || checkDomain) {
+        let fd = new FormData()
+        fd.append('ip', this.traceroute.ip)
+        this.textarea = '请等待...'
+        tracerouteStart(fd).then(() => {})
+        setTimeout(() => {
+          this.continueReceive()
+        }, 1000)
+      } else {
+        this.$message({
+          message: '请输入正确的域名或ip',
+          type: 'warning',
+        })
+      }
     },
     continueReceive() {
-      this.continueInterval = setInterval(() => {
+      let continueInterval = setInterval(() => {
         tracerouteContinue().then((res) => {
-          this.textarea = res
+          this.textarea = ''
+          res.forEach((item) => {
+            this.textarea += item
+          })
         })
       }, 1000)
+      this.$emit('getContinueInterval', continueInterval)
     },
     endTraceroute() {
       tracerouteEnd().then(() => {
+        tracerouteContinue().then((res) => {
+          this.textarea = ''
+          res.forEach((item) => {
+            this.textarea += item
+          })
+        })
         window.clearInterval(this.continueInterval)
       })
     },

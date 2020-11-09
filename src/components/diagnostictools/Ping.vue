@@ -1,10 +1,10 @@
 <template>
   <div class="ping">
-    <el-form :model="ping" class="my-elem-form">
+    <el-form class="my-elem-form">
       <el-form-item>
         <el-radio v-model="iptype" label="1">IPV4地址(Ping)</el-radio>
         <el-input
-          v-model="ping.ipv4"
+          v-model="ipv4"
           placeholder="请输入IPV4地址"
           style="width: 400px; margin-left: 50px;"
           :disabled="ipv4Disable"
@@ -14,7 +14,7 @@
       <el-form-item>
         <el-radio v-model="iptype" label="2">IPV6地址(Ping)</el-radio>
         <el-input
-          v-model="ping.ipv6"
+          v-model="ipv6"
           placeholder="请输入IPV6地址"
           style="width: 400px; margin-left: 50px;"
           :disabled="ipv6Disable"
@@ -35,15 +35,13 @@
 <script>
 import { pingStart, pingEnd, pingContinue } from '../../tools/api'
 export default {
+  props: ['continueInterval'],
   data() {
     return {
-      ping: {
-        ipv4: '',
-        ipv6: '',
-      },
+      ipv4: '',
+      ipv6: '',
       iptype: '1',
       textarea: '',
-      continueInterval: null,
     }
   },
   computed: {
@@ -56,29 +54,52 @@ export default {
   },
   methods: {
     startPing() {
-      let fd = new FormData()
-      if (this.iptype === 1) {
-        fd.append('ip', this.ping.ipv4)
+      var ip = /((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}/
+      var domain = /[a-zA-Z0-9][a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/
+      let checkIp = ip.test(this.ipv4)
+      let checkDomain = domain.test(this.ipv4)
+      if (checkIp || checkDomain) {
+        let fd = new FormData()
+        if (this.iptype === '1') {
+          fd.append('ip', this.ipv4)
+        } else {
+          fd.append('ip', this.ipv6)
+        }
+        this.textarea = '请等待...'
+        pingStart(fd)
+        setTimeout(() => {
+          this.continueReceive()
+        }, 1000)
       } else {
-        fd.append('ip', this.ping.ipv6)
+        this.$message({
+          message: '请输入正确的域名或ip',
+          type: 'warning',
+        })
       }
-      pingStart(fd).then(() => {
-        this.continueReceive()
-      })
     },
     continueReceive() {
-      this.continueInterval = setInterval(() => {
+      let continueInterval = setInterval(() => {
         pingContinue().then((res) => {
-          this.textarea = res
+          this.textarea = ''
+          res.forEach((item) => {
+            this.textarea += item
+          })
         })
       }, 1000)
+      this.$emit('getContinueInterval', continueInterval)
     },
     endPing() {
       pingEnd().then(() => {
+        pingContinue().then((res) => {
+          res.forEach((item) => {
+            this.textarea += item
+          })
+        })
         window.clearInterval(this.continueInterval)
       })
     },
   },
+
   mounted() {},
 }
 </script>

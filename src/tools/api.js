@@ -455,7 +455,7 @@ function getPhyInterface() {
 }
 
 function getStaticRouteData() {
-  let url = BASE_URL + '/jump/net/ether'
+  let url = BASE_URL + '/jump/net/static_route'
   return POST(url)
 }
 
@@ -486,21 +486,21 @@ function pingEnd() {
 }
 
 function pingContinue() {
-  let url = BASE_URL + '/jump/diagnose/ping_stop'
+  let url = BASE_URL + '/jump/diagnose/read_ping_data'
   return POST(url)
 }
 
 function tracerouteStart(params) {
-  let url = BASE_URL + '/jump/diagnose/ping_start'
+  let url = BASE_URL + '/jump/diagnose/traceroute_start'
   return POST(url, params)
 }
 function tracerouteEnd() {
-  let url = BASE_URL + '/jump/diagnose/ping_stop'
+  let url = BASE_URL + '/jump/diagnose/traceroute_stop'
   return POST(url)
 }
 
 function tracerouteContinue() {
-  let url = BASE_URL + '/jump/diagnose/ping_stop'
+  let url = BASE_URL + '/jump/diagnose/read_traceroute_data'
   return POST(url)
 }
 

@@ -1,16 +1,16 @@
 <template>
   <div class="diagnostic-tools">
-    <el-tabs type="border-card" v-model="tabsName" class="my-elem-tabs">
-      <el-tab-pane label="Ping" name="ping">
-        <Ping></Ping>
+    <el-tabs type="border-card" v-model="tabsName" class="my-elem-tabs" @tab-click="handleClick">
+      <el-tab-pane label="Ping" name="ping" lazy>
+        <Ping :continueInterval="Interval" @getContinueInterval="getContinueInterval"></Ping>
       </el-tab-pane>
-      <el-tab-pane label="Traceroute" name="traceroute">
-        <Traceroute></Traceroute>
+      <el-tab-pane label="Traceroute" name="traceroute" lazy>
+        <Traceroute :continueInterval="Interval" @getContinueInterval="getContinueInterval"></Traceroute>
       </el-tab-pane>
-      <el-tab-pane label="CURL" name="curl">
+      <el-tab-pane label="CURL" name="curl" lazy>
         <CURL></CURL>
       </el-tab-pane>
-      <el-tab-pane label="域名解析" name="dns">
+      <el-tab-pane label="域名解析" name="dns" lazy>
         <Dns></Dns>
       </el-tab-pane>
     </el-tabs>
@@ -33,9 +33,20 @@ export default {
   data() {
     return {
       tabsName: 'ping',
+      Interval: null,
     }
   },
-  methods: {},
+  methods: {
+    getContinueInterval(val) {
+      this.Interval = val
+    },
+    handleClick() {
+      if (this.Interval) {
+        window.clearInterval(this.Interval)
+      }
+      this.Interval = null
+    },
+  },
   mounted() {},
 }
 </script>

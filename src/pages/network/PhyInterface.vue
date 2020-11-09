@@ -10,20 +10,18 @@
       border
     >
       <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="name" label="MAC地址"></el-table-column>
-      <el-table-column prop="name" label="IP地址/掩码"></el-table-column>
-      <el-table-column prop="name" label="工作模式"></el-table-column>
-      <el-table-column prop="name" label="工作速率" width="80"></el-table-column>
-      <el-table-column prop="name" label="协商类型" width="80"></el-table-column>
-      <el-table-column prop="name" label="MTU" width="80"></el-table-column>
-      <el-table-column prop="name" label="连接状态" width="80"></el-table-column>
-      <el-table-column prop="name" label="启用状态" width="80"></el-table-column>
+      <el-table-column prop="mac_addr" label="MAC地址"></el-table-column>
+      <el-table-column prop="ip_addr" label="IP地址/掩码"></el-table-column>
+      <el-table-column prop="mtu" label="MTU" width="120"></el-table-column>
+      <el-table-column prop="name" label="连接状态" width="120">
+        <template slot-scope="scope">{{scope.row.state === 'UP' ? '已连接' : '未连接'}}</template>
+      </el-table-column>
 
-      <el-table-column label="操作" width="100">
+      <!-- <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-button type="text" @click="editPhyInterface(scope.row)">编辑</el-button>
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
     <el-pagination
       class="fr mt10"
@@ -51,7 +49,7 @@ export default {
   data() {
     return {
       tableLoading: false,
-      phyInterfaceData: [{}],
+      phyInterfaceData: [],
       currentPage: 1,
       pageSize: 10,
       total: 0,
@@ -66,7 +64,10 @@ export default {
     },
     handleCurrentChange() {},
     getPhyInterface() {
-      getPhyInterface()
+      getPhyInterface().then((res) => {
+        this.phyInterfaceData = res.data
+        this.total = res.total
+      })
     },
   },
   mounted() {

@@ -3,10 +3,10 @@
     <el-button class="my-elem-btn fr" @click="deleteArp()">清空</el-button>
     <div class="clearfloat"></div>
     <el-table class="mt10" v-loading="tableLoading" :data="arpData" style="width: 100%" border>
-      <el-table-column prop="name" label="IP地址"></el-table-column>
-      <el-table-column prop="name" label="MAC地址"></el-table-column>
-      <el-table-column prop="name" label="物理接口"></el-table-column>
-      <el-table-column prop="name" label="类型"></el-table-column>
+      <el-table-column prop="address" label="IP地址"></el-table-column>
+      <el-table-column prop="hwaddresss" label="MAC地址"></el-table-column>
+      <el-table-column prop="iface" label="物理接口"></el-table-column>
+      <el-table-column prop="hwtype" label="类型"></el-table-column>
 
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       tableLoading: false,
-      arpData: [{}],
+      arpData: [],
       currentPage: 1,
       pageSize: 10,
       total: 0,
@@ -44,9 +44,9 @@ export default {
       let str
       let fd
       if (row) {
-        str = '您确认删除该ARP吗？'
+        str = `您确认删除该条ARP(${row.address})吗？`
         fd = new FormData()
-        fd.append('ip', row.ip)
+        fd.append('address', row.address)
       } else {
         str = '您确认删除所有ARP吗？'
       }
@@ -56,13 +56,16 @@ export default {
         type: 'warning',
       }).then(() => {
         deleteArpData(row ? fd : '').then((res) => {
-          this.mixinPrompt(res, this.getStaticRoute)
+          this.mixinPrompt(res, this.getARP)
         })
       })
     },
     handleCurrentChange() {},
     getARP() {
-      getARPData()
+      getARPData().then((res) => {
+        this.total = res.total
+        this.arpData = res.data
+      })
     },
   },
   mounted() {

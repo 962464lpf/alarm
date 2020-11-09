@@ -4,12 +4,11 @@
     <el-button class="my-elem-btn fr mr10" @click="addRouteStatus=true">新建</el-button>
     <div class="clearfloat"></div>
     <el-table class="mt10" v-loading="tableLoading" :data="routeData" style="width: 100%" border>
-      <el-table-column prop="name" label="目的网段"></el-table-column>
-      <el-table-column prop="name" label="类型"></el-table-column>
-      <el-table-column prop="name" label="IP类型"></el-table-column>
-      <el-table-column prop="name" label="网关"></el-table-column>
-      <el-table-column prop="name" label="物理接口" width="80"></el-table-column>
-
+      <el-table-column prop="destination" label="目的网段"></el-table-column>
+      <el-table-column prop="type" label="类型"></el-table-column>
+      <el-table-column prop="ip_type" label="IP类型"></el-table-column>
+      <el-table-column prop="gateway" label="网关"></el-table-column>
+      <el-table-column prop="ether" label="物理接口"></el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-button type="text" @click="deleteRoute(scope.row)">删除</el-button>
@@ -42,7 +41,7 @@ export default {
   data() {
     return {
       tableLoading: false,
-      routeData: [{}],
+      routeData: [],
       currentPage: 1,
       pageSize: 10,
       total: 0,
@@ -73,7 +72,10 @@ export default {
     },
     handleCurrentChange() {},
     getStaticRoute() {
-      getStaticRouteData()
+      getStaticRouteData().then((res) => {
+        this.total = res.total
+        this.routeData = res.data
+      })
     },
   },
   mounted() {
