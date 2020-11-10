@@ -296,9 +296,11 @@ export default {
         line-height: 34px;
         margin-top: 3px;
         background: transparent;
+        border: 1px solid #8bc34a;
       }
       .el-textarea__inner {
         background: transparent;
+        border: 1px solid #8bc34a;
       }
       .prompt {
         span {

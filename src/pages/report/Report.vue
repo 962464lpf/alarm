@@ -213,5 +213,17 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss">
+.el-date-picker {
+  background: #141d2b;
+  border: 1px solid #97e402;
+  color: #d5d8de;
+  .el-date-table td.current:not(.disabled) span {
+    background: #97e402;
+    color: white;
+  }
+  .el-date-table td.available:hover {
+    color: #97e402;
+  }
+}
 </style>

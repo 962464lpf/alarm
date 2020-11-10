@@ -766,27 +766,28 @@ export default {
   position: relative;
   .alarm-setting {
     width: 200px;
-    background: #e8e8e8;
+    background: #1a2332;
     position: fixed;
     right: 0;
     top: 50px;
-    bottom: 32px;
+    bottom: 0;
     z-index: 100;
     padding: 10px;
+    border: 1px solid #97e402;
     box-sizing: border-box;
     transition: all 0.5s ease-in;
     .list {
       margin-bottom: 15px;
       .content {
-        background: white;
         padding: 5px;
         display: flex;
         height: 50px;
         align-items: center;
         box-sizing: border-box;
         font-size: 14px;
+        color: white;
         // justify-content: space-between;
-        border: 1px dashed #f9e9e9;
+        border: 1px dashed #97e402;
         .name {
           height: 30px;
           line-height: 30px;
