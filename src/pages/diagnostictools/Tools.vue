@@ -2,10 +2,18 @@
   <div class="diagnostic-tools">
     <el-tabs type="border-card" v-model="tabsName" class="my-elem-tabs" @tab-click="handleClick">
       <el-tab-pane label="Ping" name="ping" lazy>
-        <Ping :continueInterval="Interval" @getContinueInterval="getContinueInterval"></Ping>
+        <Ping
+          :continueInterval="Interval"
+          :disableStaus="disableStatus"
+          @getContinueInterval="getContinueInterval"
+        ></Ping>
       </el-tab-pane>
       <el-tab-pane label="Traceroute" name="traceroute" lazy>
-        <Traceroute :continueInterval="Interval" @getContinueInterval="getContinueInterval"></Traceroute>
+        <Traceroute
+          :disableStaus="disableStatus"
+          :continueInterval="Interval"
+          @getContinueInterval="getContinueInterval"
+        ></Traceroute>
       </el-tab-pane>
       <el-tab-pane label="CURL" name="curl" lazy>
         <CURL></CURL>
@@ -39,6 +47,7 @@ export default {
     return {
       tabsName: 'ping',
       Interval: null,
+      disableStatus: false,
     }
   },
   methods: {
@@ -58,12 +67,15 @@ export default {
       if (this.Interval) {
         window.clearInterval(this.Interval)
       }
+      this.disableStatus = false
       this.Interval = null
     },
   },
   mounted() {},
   beforeDestroy() {
-    pingEnd()
+    pingEnd().then(() => {
+      pingContinueStop()
+    })
     tracerouteEnd().then(() => {
       tracerouteContinueStop()
     })

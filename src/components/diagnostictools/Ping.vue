@@ -23,7 +23,7 @@
       </el-form-item>
       <el-form-item>
         <div class="start-stop mb10">
-          <el-button class="my-elem-btn" @click="startPing" :disabled="disableStatus">开始</el-button>
+          <el-button class="my-elem-btn" @click="startPing" :disabled="pingDisable">开始</el-button>
           <el-button class="my-elem-btn" @click="endPing">停止</el-button>
         </div>
         <el-input class="mt10" type="textarea" :rows="16" v-model="textarea"></el-input>
@@ -40,14 +40,19 @@ import {
   pingContinueStop,
 } from '../../tools/api'
 export default {
-  props: ['continueInterval'],
+  props: {
+    continueInterval: {},
+    disableStatus: {
+      defaule: false,
+    },
+  },
   data() {
     return {
       ipv4: '',
       ipv6: '',
       iptype: '1',
       textarea: '',
-      disableStatus: false,
+      pingDisable: this.disableStatus,
     }
   },
   computed: {
@@ -60,7 +65,7 @@ export default {
   },
   methods: {
     startPing() {
-      this.disableStatus = true
+      this.pingDisable = true
       var ip = /((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}/
       var domain = /[a-zA-Z0-9][a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/
       let checkIp = ip.test(this.ipv4)
@@ -73,7 +78,9 @@ export default {
           fd.append('ip', this.ipv6)
         }
         this.textarea = '请等待...'
-        pingStart(fd)
+        pingStart(fd).then(() => {
+          this.endPing(false)
+        })
         setTimeout(() => {
           this.continueReceive()
         }, 1000)
@@ -99,14 +106,16 @@ export default {
       }, 1000)
       this.$emit('getContinueInterval', continueInterval)
     },
-    endPing() {
-      this.disableStatus = false
+    endPing(isClean = true) {
+      this.pingDisable = false
       pingEnd().then(() => {
         pingContinueStop().then((res) => {
-          this.textarea = ''
-          res.forEach((item) => {
-            this.textarea += item
-          })
+          if (isClean) {
+            this.textarea = ''
+            res.forEach((item) => {
+              this.textarea += item
+            })
+          }
         })
         window.clearInterval(this.continueInterval)
       })
