@@ -19,6 +19,12 @@
           background-color: #141d2b;
         }
       }
+      tr:hover {
+        .cell {
+          color: #97e402 !important;
+          font-weight: 700;
+        }
+      }
     }
     .el-table__empty-block {
       background: #141d2b !important;
@@ -36,7 +42,7 @@
   }
   .el-table td {
     border-bottom: 1px solid transparent;
-    padding: 10px 0 !important;
+    padding: 15px 0 !important;
   }
   .el-table--border {
     border: 1px solid #292e33 !important ;
