@@ -158,7 +158,61 @@
           </div>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="短信管理" name="phone" lazy></el-tab-pane>
+      <el-tab-pane label="短信管理" name="phone" lazy>
+        <el-form :model="msg" inline :rules="rules" ref="emailForm" label-width="100px">
+          <el-row class="item">
+            <el-col :span="4" class="name">发送模式：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>
+                  发送模式
+                </span>
+              </p>
+              <el-checkbox v-model="msg.type">POST</el-checkbox>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">短信URL:</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>
+                  发送短信URL,例如100.100.100/sms.php
+                </span>
+              </p>
+              <el-input v-model="msg.url"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">短信参数:</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>
+                  短信URL参数，可留空，例如user=xxx&phone=xxx
+                </span>
+              </p>
+              <el-input v-model="msg.params"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">POST参数:</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>
+                  POST参数,其中发送内容用'[msg]'替代，例如：message=[msg]&user=xxx&pwd=xxx
+                </span>
+              </p>
+              <el-input v-model="msg.postParams"></el-input>
+            </el-col>
+          </el-row>
+          <div class="mt10 confirm-btn">
+            <el-button type="primary" :loading="mailBtnLoading" @click="confirm('emailForm')">确 定</el-button>
+          </div>
+        </el-form>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -180,6 +234,12 @@ export default {
         content: '',
         alarm_switch: 1,
         summary_switch: 1,
+      },
+      msg: {
+        type: true,
+        url: '',
+        params: '',
+        postParams: '',
       },
       mailAlarm: 1,
       mailAlarmSummary: 1,
