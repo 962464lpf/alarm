@@ -1,160 +1,165 @@
 <template>
   <div class="mail">
-    <el-form :model="emailForm" inline :rules="rules" ref="emailForm" label-width="100px">
-      <el-row class="item">
-        <el-col :span="4" class="name">邮件服务器：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>
-              电子邮件的发送服务器
-            </span>
-          </p>
-          <el-input v-model="emailForm.email_server"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="item">
-        <el-col :span="4" class="name">端口：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>电子邮件的发送服务器端口
-            </span>
-          </p>
-          <el-input v-model="emailForm.port"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="item">
-        <el-col :span="4" class="name">发件箱：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>电子邮件的发件箱
-            </span>
-          </p>
-          <el-input v-model="emailForm.from_addr"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="item">
-        <el-col :span="4" class="name">密码：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>发件箱的密码
-            </span>
-          </p>
-          <el-input v-model="emailForm.password"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="item">
-        <el-col :span="4" class="name">收件箱：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>接收电子邮件的邮箱
-            </span>
-          </p>
-          <el-input v-model="emailForm.to_addr"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="item">
-        <el-col :span="4" class="name">抄送：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>接收电子邮件的邮箱
-            </span>
-          </p>
-          <el-input v-model="emailForm.cc"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="item">
-        <el-col :span="4" class="name">主题：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>电子邮件的主题
-            </span>
-          </p>
-          <el-input v-model="emailForm.subject"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="item">
-        <el-col :span="4" class="name">内容：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>电子邮件的内容
-            </span>
-          </p>
-          <el-input type="textarea" v-model="emailForm.content"></el-input>
-        </el-col>
-      </el-row>
-      <el-row class="item">
-        <el-col :span="4" class="name">告警通知：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>邮件告警通知开关
-            </span>
-          </p>
-          <el-radio-group v-model="emailForm.alarm_switch">
-            <el-radio :label="1">开</el-radio>
-            <el-radio :label="0">关</el-radio>
-          </el-radio-group>
-        </el-col>
-      </el-row>
-      <el-row class="item">
-        <el-col :span="4" class="name">汇总通知：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>邮件汇总通知开关
-            </span>
-          </p>
-          <el-radio-group v-model="emailForm.summary_switch">
-            <el-radio :label="1">开</el-radio>
-            <el-radio :label="0">关</el-radio>
-          </el-radio-group>
-        </el-col>
-      </el-row>
-      <el-row class="item last-item">
-        <el-col :span="4" class="name">选择时间：</el-col>
-        <el-col :span="20" class="input">
-          <p class="prompt">
-            <span>
-              <i class="el-icon-info"></i>选择邮件汇总发送时间
-            </span>
-          </p>
-          <el-time-select
-            v-for="(item, index) in selectTime"
-            :key="index"
-            v-model="item.time"
-            placeholder
-            class="mr10"
-            :picker-options="{
+    <el-tabs type="border-card" v-model="tabsName" class="my-elem-tabs">
+      <el-tab-pane label="邮件管理" name="mail" lazy>
+        <el-form :model="emailForm" inline :rules="rules" ref="emailForm" label-width="100px">
+          <el-row class="item">
+            <el-col :span="4" class="name">邮件服务器：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>
+                  电子邮件的发送服务器
+                </span>
+              </p>
+              <el-input v-model="emailForm.email_server"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">端口：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>电子邮件的发送服务器端口
+                </span>
+              </p>
+              <el-input v-model="emailForm.port"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">发件箱：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>电子邮件的发件箱
+                </span>
+              </p>
+              <el-input v-model="emailForm.from_addr"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">密码：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>发件箱的密码
+                </span>
+              </p>
+              <el-input v-model="emailForm.password"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">收件箱：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>接收电子邮件的邮箱
+                </span>
+              </p>
+              <el-input v-model="emailForm.to_addr"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">抄送：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>接收电子邮件的邮箱
+                </span>
+              </p>
+              <el-input v-model="emailForm.cc"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">主题：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>电子邮件的主题
+                </span>
+              </p>
+              <el-input v-model="emailForm.subject"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">内容：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>电子邮件的内容
+                </span>
+              </p>
+              <el-input type="textarea" v-model="emailForm.content"></el-input>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">告警通知：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>邮件告警通知开关
+                </span>
+              </p>
+              <el-radio-group v-model="emailForm.alarm_switch">
+                <el-radio :label="1">开</el-radio>
+                <el-radio :label="0">关</el-radio>
+              </el-radio-group>
+            </el-col>
+          </el-row>
+          <el-row class="item">
+            <el-col :span="4" class="name">汇总通知：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>邮件汇总通知开关
+                </span>
+              </p>
+              <el-radio-group v-model="emailForm.summary_switch">
+                <el-radio :label="1">开</el-radio>
+                <el-radio :label="0">关</el-radio>
+              </el-radio-group>
+            </el-col>
+          </el-row>
+          <el-row class="item last-item">
+            <el-col :span="4" class="name">选择时间：</el-col>
+            <el-col :span="20" class="input">
+              <p class="prompt">
+                <span>
+                  <i class="el-icon-info"></i>选择邮件汇总发送时间
+                </span>
+              </p>
+              <el-time-select
+                v-for="(item, index) in selectTime"
+                :key="index"
+                v-model="item.time"
+                placeholder
+                class="mr10"
+                :picker-options="{
               start: '06:00',
               step: '01:00',
               end: '22:00'
             }"
-          ></el-time-select>
-          <el-button
-            class="my-elem-btn"
-            @click="changeSelecttime('add')"
-            style="padding: 10px 15px"
-          >添加</el-button>
-          <el-button
-            class="my-elem-btn"
-            @click="changeSelecttime('delete')"
-            style="padding: 10px 15px"
-          >删除</el-button>
-        </el-col>
-      </el-row>
+              ></el-time-select>
+              <el-button
+                class="my-elem-btn"
+                @click="changeSelecttime('add')"
+                style="padding: 10px 15px"
+              >添加</el-button>
+              <el-button
+                class="my-elem-btn"
+                @click="changeSelecttime('delete')"
+                style="padding: 10px 15px"
+              >删除</el-button>
+            </el-col>
+          </el-row>
 
-      <div class="mt10 confirm-btn">
-        <el-button type="primary" :loading="mailBtnLoading" @click="confirm('emailForm')">确 定</el-button>
-      </div>
-    </el-form>
+          <div class="mt10 confirm-btn">
+            <el-button type="primary" :loading="mailBtnLoading" @click="confirm('emailForm')">确 定</el-button>
+          </div>
+        </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="短信管理" name="phone" lazy></el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -163,6 +168,7 @@ import { getMailApi, setMailApi, startSendMailApi } from '../../tools/api'
 export default {
   data() {
     return {
+      tabsName: 'mail',
       emailForm: {
         email_server: '',
         port: '',

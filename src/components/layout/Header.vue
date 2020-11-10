@@ -18,19 +18,23 @@
       >
         <span>
           {{cycleName}}攻击总数：
-          <b>{{attackNum}}</b>
+          <!-- attackNum -->
+          <b class="attack-num">{{attackNum}}</b>
         </span>
         <span>
           高危次数：
-          <b>{{attackNumHigh}}</b>
+          <!-- attackNumHigh -->
+          <b class="attack-num">{{attackNumHigh}}</b>
         </span>
         <span>
           中危次数：
-          <b>{{attackNumMiddle}}</b>
+          <!-- attackNumMiddle -->
+          <b class="attack-num">{{attackNumMiddle}}</b>
         </span>
         <span>
           低危次数：
-          <b>{{attackNumLow}}</b>
+          <!-- attackNumLow -->
+          <b class="attack-num">{{attackNumLow}}</b>
         </span>
         <span>
           <i class="el-icon-s-tools curp" style="font-size: 14px;" @click="changeCycle"></i>
@@ -129,6 +133,7 @@ export default {
       dialogVisible: false,
       resetPasswordStatus: false,
       isServer: false,
+      LEDNmuber: null,
     }
   },
   computed: {
@@ -333,6 +338,11 @@ export default {
         padding-right: 30px;
         color: white;
         box-sizing: border-box;
+      }
+      .attack-num {
+        font-family: fangsong, Arial, Helvetica, sans-serif;
+        font-size: 18px;
+        color: #97e402;
       }
     }
     .user-setting {
