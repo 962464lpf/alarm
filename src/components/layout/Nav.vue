@@ -120,6 +120,7 @@ export default {
         width: 18px;
         height: 18px;
         margin-right: 3px;
+        color: #a4b1cd;
       }
       .baimingdan {
         background: url('../../assets/images/baimingdan.png') no-repeat;
@@ -153,6 +154,14 @@ export default {
         background: url('../../assets/images/baogao.png') no-repeat;
         background-size: contain;
       }
+      .suyuan {
+        background: url('../../assets/images/suyuan.png') no-repeat;
+        background-size: contain;
+      }
+      .zhenduan {
+        background: url('../../assets/images/zhenduan.png') no-repeat;
+        background-size: contain;
+      }
     }
     .el-submenu__title {
       i {
@@ -160,6 +169,7 @@ export default {
         width: 18px;
         height: 18px;
         margin-right: 3px;
+        color: #a4b1cd;
       }
       // .baogao {
       //   background: url('../../assets/images/baogao.png') no-repeat;
@@ -167,6 +177,14 @@ export default {
       // }
       .fengjin {
         background: url('../../assets/images/fengjin.png') no-repeat;
+        background-size: contain;
+      }
+      .wangluo {
+        background: url('../../assets/images/wangluo.png') no-repeat;
+        background-size: contain;
+      }
+      .suyuan {
+        background: url('../../assets/images/suyuan.png') no-repeat;
         background-size: contain;
       }
     }

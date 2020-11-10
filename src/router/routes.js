@@ -90,7 +90,7 @@ const routes = [
     component: () => import('../components/layout/RouterView.vue'),
     meta: {
       title: '溯源反制',
-      icon: 'duikang',
+      icon: 'suyuan',
       level: 1,
     },
     children: [
@@ -198,7 +198,7 @@ const routes = [
     component: () => import('../components/layout/RouterView.vue'),
     meta: {
       title: '网络配置',
-      icon: 'el-icon-document',
+      icon: 'wangluo',
       level: 0,
     },
     children: [
@@ -251,7 +251,7 @@ const routes = [
     component: () => import('../pages/diagnostictools/Tools.vue'),
     meta: {
       title: '诊断工具',
-      icon: 'el-icon-document',
+      icon: 'zhenduan',
       level: 1,
     },
   },
