@@ -209,7 +209,7 @@
             </el-col>
           </el-row>
           <div class="mt10 confirm-btn">
-            <el-button type="primary" :loading="mailBtnLoading" @click="confirm('emailForm')">确 定</el-button>
+            <el-button type="primary" :loading="mailBtnLoading">确 定</el-button>
           </div>
         </el-form>
       </el-tab-pane>
