@@ -84,28 +84,7 @@ const routes = [
   //     icon: 'el-icon-document'
   //   }
   // },
-  {
-    path: '/retcoun',
-    name: 'retcoun',
-    component: () => import('../components/layout/RouterView.vue'),
-    meta: {
-      title: '溯源反制',
-      icon: 'suyuan',
-      level: 1,
-    },
-    children: [
-      {
-        path: '/retcoun/beef',
-        name: 'beef',
-        component: () => import('../pages/beef/Beef.vue'),
-        meta: {
-          title: 'Beef',
-          icon: 'el-icon-document',
-          level: 1,
-        },
-      },
-    ],
-  },
+
   {
     path: '/redblue',
     name: 'redblue',
@@ -126,6 +105,49 @@ const routes = [
       level: 1,
     },
   },
+  {
+    path: '/retcoun',
+    name: 'retcoun',
+    component: () => import('../components/layout/RouterView.vue'),
+    meta: {
+      title: '溯源反制',
+      icon: 'suyuan',
+      level: 1,
+    },
+    children: [
+      {
+        path: '/retcoun/beef',
+        name: 'beef',
+        component: () => import('../pages/suyuanfanzhi/Beef.vue'),
+        meta: {
+          title: 'Beef',
+          icon: 'el-icon-document',
+          level: 1,
+        },
+      },
+      {
+        path: '/retcoun/identity',
+        name: 'beef',
+        component: () => import('../pages/suyuanfanzhi/Identity.vue'),
+        meta: {
+          title: '身份溯源',
+          icon: 'el-icon-document',
+          level: 1,
+        },
+      },
+      {
+        path: '/retcoun/counterattack',
+        name: '攻击者反制',
+        component: () => import('../pages/suyuanfanzhi/Counterattack.vue'),
+        meta: {
+          title: '攻击者反制',
+          icon: 'el-icon-document',
+          level: 1,
+        },
+      },
+    ],
+  },
+
   {
     path: '/blocked',
     name: 'blocked',
@@ -242,19 +264,19 @@ const routes = [
           level: 0,
         },
       },
+      {
+        path: '/network/tools',
+        name: 'tools',
+        component: () => import('../pages/diagnostictools/Tools.vue'),
+        meta: {
+          title: '诊断工具',
+          icon: 'zhenduan',
+          level: 1,
+        },
+      },
     ],
   },
 
-  {
-    path: '/tools',
-    name: 'tools',
-    component: () => import('../pages/diagnostictools/Tools.vue'),
-    meta: {
-      title: '诊断工具',
-      icon: 'zhenduan',
-      level: 1,
-    },
-  },
   {
     path: '/sys',
     name: 'sux',

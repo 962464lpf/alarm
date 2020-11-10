@@ -24,10 +24,24 @@
           </template>
         </el-table-column>
         <el-table-column prop="desc" label="描述"></el-table-column>
-        <el-table-column label="操作" width="150">
+        <el-table-column label="操作" width="120">
           <template slot-scope="scope">
-            <el-button class="my-elem-btn" size="small" @click="updateEqp('edit', scope.row)">编辑</el-button>
-            <el-button class="my-elem-btn" size="small" @click="deleteRow(scope.row)">删除</el-button>
+            <el-tooltip class="item" effect="dark" content="编辑" placement="bottom">
+              <el-button
+                class="my-elem-btn"
+                icon="el-icon-edit"
+                size="small"
+                @click="updateEqp('edit', scope.row)"
+              ></el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="删除" placement="bottom">
+              <el-button
+                class="my-elem-btn"
+                icon="el-icon-delete"
+                size="small"
+                @click="deleteRow(scope.row)"
+              ></el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>

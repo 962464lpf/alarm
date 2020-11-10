@@ -11,7 +11,14 @@
       <el-table-column prop="ether" label="物理接口"></el-table-column>
       <el-table-column label="操作" width="80">
         <template slot-scope="scope">
-          <el-button class="my-elem-btn" @click="deleteRoute(scope.row)">删除</el-button>
+          <el-tooltip class="item" effect="dark" content="删除" placement="bottom">
+            <el-button
+              class="my-elem-btn"
+              icon="el-icon-delete"
+              size="small"
+              @click="deleteRoute(scope.row)"
+            ></el-button>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>

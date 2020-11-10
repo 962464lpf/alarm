@@ -4,9 +4,16 @@
       <el-table-column prop="ip_addr" label="IP"></el-table-column>
       <el-table-column prop="created_time" label="创建时间"></el-table-column>
       <el-table-column prop="updated_time" label="更新时间"></el-table-column>
-      <el-table-column label="操作" width="80">
+      <el-table-column label="操作" width="70">
         <template slot-scope="scope">
-          <el-button class="my-elem-btn" @click.native="removeIP(scope.row)">移除</el-button>
+          <el-tooltip class="item" effect="dark" content="移除" placement="bottom">
+            <el-button
+              class="my-elem-btn"
+              icon="el-icon-delete"
+              size="small"
+              @click.native="removeIP(scope.row)"
+            ></el-button>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>

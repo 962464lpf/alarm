@@ -14,7 +14,14 @@
         <el-table-column prop="iplst" label="当前分配设备"></el-table-column>
         <el-table-column label="操作" width="220">
           <template slot-scope="scope">
-            <el-button @click="deleteUser(scope.row)" class="my-elem-btn" size="small">删除用户</el-button>
+            <el-tooltip class="item" effect="dark" content="删除用户" placement="bottom">
+              <el-button
+                class="my-elem-btn"
+                icon="el-icon-delete"
+                size="small"
+                @click="deleteUser(scope.row)"
+              ></el-button>
+            </el-tooltip>
             <el-button class="my-elem-btn" size="small" @click="allotEquip(scope.row)">分配设备</el-button>
           </template>
         </el-table-column>

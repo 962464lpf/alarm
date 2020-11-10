@@ -138,12 +138,12 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.wuli_addr"
+                :content="scope.row.wuli_addr === '无数据' ? '未知' : scope.row.wuli_addr"
                 placement="bottom"
               >
                 <span class="curp omit">
                   {{
-                  scope.row.wuli_addr
+                  scope.row.wuli_addr === '无数据' ? '未知' : scope.row.wuli_addr
                   }}
                 </span>
               </el-tooltip>
@@ -180,7 +180,10 @@
                 :content="scope.row.device_ip"
                 placement="bottom"
               >
-                <span class="curp omit">{{ scope.row.device_ip }}</span>
+                <div>
+                  <p class="curp omit1 box">{{ scope.row.device_ip.split(' ') [0] }}</p>
+                  <p class="curp omit1 box">{{ scope.row.device_ip.split(' ') [1] }}</p>
+                </div>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -860,6 +863,13 @@ export default {
       padding-top: 12px !important;
     }
     tbody {
+      .box {
+        background: rgba(151, 228, 2, 0.6);
+        margin-top: 2px;
+        padding: 2px 3px;
+        color: white;
+        border-radius: 2px;
+      }
       tr:hover {
         background: #141d2b !important;
         .cell {
