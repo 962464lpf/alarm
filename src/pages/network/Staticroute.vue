@@ -9,9 +9,9 @@
       <el-table-column prop="ip_type" label="IP类型"></el-table-column>
       <el-table-column prop="gateway" label="网关"></el-table-column>
       <el-table-column prop="ether" label="物理接口"></el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="80">
         <template slot-scope="scope">
-          <el-button type="text" @click="deleteRoute(scope.row)">删除</el-button>
+          <el-button class="my-elem-btn" @click="deleteRoute(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

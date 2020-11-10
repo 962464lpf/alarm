@@ -40,9 +40,9 @@
         <el-table-column prop="fname" label="封禁防火墙"></el-table-column>
         <el-table-column prop="created_time" label="封禁时间"></el-table-column>
         <el-table-column prop="uname" label="封禁人"></el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="80">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="unBlockedIP(scope.row)">解封</el-button>
+            <el-button class="my-elem-btn" size="small" @click="unBlockedIP(scope.row)">解封</el-button>
           </template>
         </el-table-column>
       </el-table>

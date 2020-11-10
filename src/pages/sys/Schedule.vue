@@ -25,10 +25,10 @@
       >
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="140">
           <template slot-scope="scope">
-            <el-button @click="deleteSchedule(scope.row)" type="text" size="small">删除</el-button>
-            <el-button @click="scheduleEdit('edit',scope.row)" type="text" size="small">修改</el-button>
+            <el-button @click="deleteSchedule(scope.row)" class="my-elem-btn" size="small">删除</el-button>
+            <el-button @click="scheduleEdit('edit',scope.row)" class="my-elem-btn" size="small">修改</el-button>
           </template>
         </el-table-column>
       </el-table>

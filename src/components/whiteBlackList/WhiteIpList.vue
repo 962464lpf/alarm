@@ -4,9 +4,9 @@
       <el-table-column prop="value" :label="label"></el-table-column>
       <el-table-column prop="created_time" label="创建时间"></el-table-column>
       <el-table-column prop="updated_time" label="更新时间"></el-table-column>
-      <el-table-column label="操作" width="50">
+      <el-table-column label="操作" width="80">
         <template slot-scope="scope">
-          <el-button type="text" @click.native="removeIP(scope.row)">移除</el-button>
+          <el-button class="my-elem-btn" @click.native="removeIP(scope.row)">移除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -30,18 +30,18 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'sip'
+      default: 'sip',
     },
     label: {
       type: String,
-      default: '恶意IP'
+      default: '恶意IP',
     },
-    tableData: {}
+    tableData: {},
   },
   watch: {
     tableData(val) {
       this.tableDataList = val[this.type]
-    }
+    },
   },
   data() {
     return {
@@ -49,7 +49,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       tableDataList: [],
-      total: 0
+      total: 0,
     }
   },
   methods: {
@@ -66,16 +66,16 @@ export default {
       this.$confirm('您确定要移除此IP?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         this.$emit('removeIP', row)
       })
-    }
+    },
   },
   mounted() {
     this.tableDataList = this.tableData[this.type]
     this.total = this.tableDataList
-  }
+  },
 }
 </script>
 

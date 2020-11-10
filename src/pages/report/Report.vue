@@ -36,10 +36,10 @@
         <el-table-column prop="type" label="报告类型"></el-table-column>
         <el-table-column prop="tongji_riqi" label="统计日期"></el-table-column>
         <el-table-column prop="created_time" label="创建时间"></el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="140">
           <template slot-scope="scope">
-            <el-button type="text" @click.native="downloadReport(scope.row)">下载</el-button>
-            <el-button type="text" @click.native="deleteReport(scope.row)">删除</el-button>
+            <el-button class="my-elem-btn" @click.native="downloadReport(scope.row)">下载</el-button>
+            <el-button class="my-elem-btn" @click.native="deleteReport(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -72,6 +72,7 @@
           type="primary"
           @command="exportFile"
           class="ml10 my-elem-drop-btn"
+          trigger="click"
         >
           导出
           <el-dropdown-menu slot="dropdown">
@@ -223,14 +224,14 @@
             </template>
           </el-table-column>
           <el-table-column prop="protocol" width="120" label="协议" align="center"></el-table-column>
-          <el-table-column label="操作" width="150" align="center">
+          <el-table-column label="操作" width="250" align="center">
             <template slot-scope="scope">
-              <el-button type="text" class="mr10" @click.native="blocked(scope.row)">一键封禁</el-button>
+              <el-button class="mr10 my-elem-btn" @click.native="blocked(scope.row)">一键封禁</el-button>
               <el-dropdown>
-                <span class="el-dropdown-link el-button--lightblue dropbutton">
+                <el-button class="el-dropdown-link el-button--lightblue dropbutton my-elem-btn">
                   操 作
                   <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
+                </el-button>
 
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item @click.native="operation(scope.row, 'detail')">详情</el-dropdown-item>

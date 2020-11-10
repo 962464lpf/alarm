@@ -12,10 +12,10 @@
         <el-table-column prop="name" label="防火墙名称"></el-table-column>
         <el-table-column prop="url" label="地址"></el-table-column>
         <el-table-column prop="created_time" label="创建时间"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="140">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="openEditFireWall( scope.row)">修改</el-button>
-            <el-button type="text" size="small" @click="deleteFireWall(scope.row)">删除</el-button>
+            <el-button class="my-elem-btn" size="small" @click="openEditFireWall( scope.row)">修改</el-button>
+            <el-button class="my-elem-btn" size="small" @click="deleteFireWall(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

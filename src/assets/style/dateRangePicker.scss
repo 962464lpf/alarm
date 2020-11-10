@@ -26,6 +26,13 @@
   .el-date-table td.in-range div {
     background-color: #273852 !important;
   }
+  .el-date-table td.available:hover {
+    color: #97e402;
+  }
+  .el-date-table td.start-date span,
+  .el-date-table td.end-date span {
+    background: #5a8615;
+  }
   .el-time-panel {
     background: #0d1119 !important;
     border: 1px solid #97e402;

@@ -12,10 +12,10 @@
           <template slot-scope="scope">{{getLevel(scope)}}</template>
         </el-table-column>
         <el-table-column prop="iplst" label="当前分配设备"></el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="220">
           <template slot-scope="scope">
-            <el-button @click="deleteUser(scope.row)" type="text" size="small">删除用户</el-button>
-            <el-button type="text" size="small" @click="allotEquip(scope.row)">分配设备</el-button>
+            <el-button @click="deleteUser(scope.row)" class="my-elem-btn" size="small">删除用户</el-button>
+            <el-button class="my-elem-btn" size="small" @click="allotEquip(scope.row)">分配设备</el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -148,10 +148,10 @@
           <el-table-column label="操作" width="100" align="center">
             <template slot-scope="scope">
               <el-dropdown>
-                <span class="el-dropdown-link el-button--lightblue dropbutton">
+                <el-button class="el-dropdown-link el-button--lightblue dropbutton my-elem-btn">
                   操 作
                   <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
+                </el-button>
 
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item @click.native="operation(scope.row, 'detail')">详情</el-dropdown-item>

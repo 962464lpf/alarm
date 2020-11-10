@@ -70,10 +70,10 @@
         <el-table-column label="是否在线" width="180">
           <template slot-scope="scope">{{scope.row.online ? '在线' : '离线'}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="140">
           <template slot-scope="scope">
-            <el-button @click="deleteEquip(scope.row)" type="text" size="small">删除</el-button>
-            <el-button @click="modify(scope.row)" type="text" size="small">修改</el-button>
+            <el-button @click="deleteEquip(scope.row)" class="my-elem-btn" size="small">删除</el-button>
+            <el-button @click="modify(scope.row)" class="my-elem-btn" size="small">修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -124,7 +124,7 @@ export default {
       total: 0,
       currentPage: 1,
       tableLoading: false,
-      insideEquipData: [],
+      insideEquipData: [{}],
       addInsideEquipStatus: false,
       addInsideEquipType: '',
       currentRow: null,

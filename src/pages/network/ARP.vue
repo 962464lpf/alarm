@@ -8,9 +8,9 @@
       <el-table-column prop="iface" label="物理接口"></el-table-column>
       <el-table-column prop="hwtype" label="类型"></el-table-column>
 
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="80">
         <template slot-scope="scope">
-          <el-button type="text" @click="deleteArp(scope.row)">删除</el-button>
+          <el-button class="my-elem-btn" @click="deleteArp(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

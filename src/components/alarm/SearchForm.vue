@@ -201,6 +201,13 @@ export default {
   .el-date-table td.in-range div {
     background-color: #273852 !important;
   }
+  .el-date-table td.available:hover {
+    color: #97e402;
+  }
+  .el-date-table td.start-date span,
+  .el-date-table td.end-date span {
+    background: #5a8615;
+  }
   .el-time-panel {
     background: #0d1119 !important;
     border: 1px solid #97e402;
@@ -232,6 +239,17 @@ export default {
 
   .el-button--text {
     padding: 7px 15px;
+  }
+}
+.el-dropdown-menu {
+  background: #141d2b;
+  border: 1px solid #97e402;
+  .el-dropdown-menu__item {
+    color: white;
+  }
+  .el-dropdown-menu__item:hover {
+    background: transparent;
+    color: #97e402;
   }
 }
 </style>
