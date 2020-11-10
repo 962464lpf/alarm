@@ -372,4 +372,18 @@ export default {
     }
   }
 }
+.el-dropdown-menu {
+  background: #141d2b;
+  border: 1px solid #97e402;
+  .el-dropdown-menu__item {
+    color: white;
+  }
+  .el-dropdown-menu__item:hover {
+    background: transparent;
+    color: #97e402;
+  }
+  .popper__arrow::after {
+    border-bottom-color: #97e402 !important;
+  }
+}
 </style>

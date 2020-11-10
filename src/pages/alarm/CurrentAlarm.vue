@@ -72,7 +72,6 @@
           type="primary"
           @command="exportFile"
           class="ml10 my-elem-drop-btn"
-          trigger="click"
         >
           导出
           <el-dropdown-menu slot="dropdown">

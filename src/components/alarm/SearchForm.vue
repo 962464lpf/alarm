@@ -251,5 +251,8 @@ export default {
     background: transparent;
     color: #97e402;
   }
+  .popper__arrow::after {
+    border-bottom-color: #97e402 !important;
+  }
 }
 </style>

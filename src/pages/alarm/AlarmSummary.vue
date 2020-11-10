@@ -70,10 +70,12 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.wuli_addr"
+                :content="scope.row.wuli_addr === '无数据' ? '未知' : scope.row.wuli_addr"
                 placement="bottom"
               >
-                <span class="curp omit">{{ scope.row.wuli_addr }}</span>
+                <span
+                  class="curp omit"
+                >{{ scope.row.wuli_addr === '无数据' ? '未知' : scope.row.wuli_addr }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -112,6 +114,7 @@
               </el-tooltip>
             </template>
           </el-table-column>
+          <el-table-column prop="summary_num" width="80" label="次数" align="center"></el-table-column>
           <el-table-column label="描述" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
@@ -144,7 +147,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="protocol" width="80" label="协议" align="center"></el-table-column>
-          <el-table-column prop="summary_num" width="80" label="次数" align="center"></el-table-column>
+
           <el-table-column label="操作" width="100" align="center">
             <template slot-scope="scope">
               <el-dropdown>

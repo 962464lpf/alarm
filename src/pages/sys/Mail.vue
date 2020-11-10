@@ -297,10 +297,12 @@ export default {
         margin-top: 3px;
         background: transparent;
         border: 1px solid #8bc34a;
+        color: white;
       }
       .el-textarea__inner {
         background: transparent;
         border: 1px solid #8bc34a;
+        color: white;
       }
       .prompt {
         span {
@@ -338,7 +340,7 @@ export default {
     width: 70%;
     text-align: center;
     button {
-      padding: 15px 30px;
+      padding: 8px 16px;
       background: #9fef00;
       border: none;
       color: #141d2b;
