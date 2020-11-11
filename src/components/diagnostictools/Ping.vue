@@ -78,9 +78,16 @@ export default {
           fd.append('ip', this.ipv6)
         }
         this.textarea = '请等待...'
-        pingStart(fd).then(() => {
-          this.endPing(false)
-        })
+        pingStart(fd)
+          .then((res) => {
+            if (res.state === -999) {
+              this.textarea = res.info
+            }
+            this.endPing(false)
+          })
+          .catch(() => {
+            this.endPing(false)
+          })
         setTimeout(() => {
           this.continueReceive()
         }, 1000)
@@ -93,21 +100,26 @@ export default {
     },
     continueReceive() {
       let continueInterval = setInterval(() => {
-        pingContinue().then((res) => {
-          if (res.length > 20) {
-            this.endPing()
-          } else {
-            this.textarea = ''
-            res.forEach((item) => {
-              this.textarea += item
-            })
-          }
-        })
+        pingContinue()
+          .then((res) => {
+            if (res.length > 20) {
+              this.endPing()
+            } else {
+              this.textarea = ''
+              res.forEach((item) => {
+                this.textarea += item
+              })
+            }
+          })
+          .catch(() => {
+            this.endPing(false)
+          })
       }, 1000)
       this.$emit('getContinueInterval', continueInterval)
     },
     endPing(isClean = true) {
       this.pingDisable = false
+      window.clearInterval(this.continueInterval)
       pingEnd().then(() => {
         pingContinueStop().then((res) => {
           if (isClean) {
@@ -117,7 +129,6 @@ export default {
             })
           }
         })
-        window.clearInterval(this.continueInterval)
       })
     },
   },
