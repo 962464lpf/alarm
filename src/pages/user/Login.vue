@@ -5,7 +5,7 @@
         <img src="../../assets/images/logo.png" alt />
         <div>
           <img src="../../assets/images/logo1.png" alt />
-          <p>TURING SAFETY MANAGEMENT CENTEER</p>
+          <p>TURING NETWORK SECURITY MANAGEMENT CENTER</p>
         </div>
       </div>
       <div class="form-box">
@@ -173,7 +173,7 @@ export default {
   .login-content {
     position: absolute;
     bottom: calc(50% - 100px);
-    left: calc(50% - 200px);
+    left: calc(50% - 215px);
     .title {
       width: 100%;
       text-align: center;

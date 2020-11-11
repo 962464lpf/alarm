@@ -153,10 +153,39 @@ export default {
           color: 'white',
         },
         xAxis: {
-          show: false,
+          // show: false,
+          splitLine: { show: false },
+          axisLine: {
+            lineStyle: {
+              color: '#fff',
+            },
+          },
+          axisLabel: {
+            color: '#fff',
+          },
+          axisTick: {
+            lineStyle: {
+              color: '#fff',
+            },
+          },
         },
         yAxis: {
-          show: false,
+          // show: false,
+          // splitLine: {
+          //   show: true,
+          //   lineStyle: {
+          //     color: ['#97e402'],
+          //   },
+          // },
+          axisLabel: {
+            color: '#ccc',
+            fontSize: 14,
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#555',
+            },
+          },
         },
       },
 
@@ -231,33 +260,7 @@ export default {
       redIpTop5: {},
       chartData: {
         columns: ['名称', '攻击次数', '高危'],
-        rows: [
-          {
-            名称: '192.168.1.3',
-            攻击次数: 1393,
-            高危: 1200,
-          },
-          {
-            名称: '192.168.1.4',
-            攻击次数: 1000,
-            高危: 1221,
-          },
-          {
-            名称: '192.168.1.5',
-            攻击次数: 800,
-            高危: 1235,
-          },
-          {
-            名称: '192.168.1.6',
-            攻击次数: 600,
-            高危: 1278,
-          },
-          {
-            名称: '192.168.1.7',
-            攻击次数: 400,
-            高危: 1212,
-          },
-        ],
+        rows: [],
       },
     }
   },
@@ -510,6 +513,7 @@ export default {
     box-shadow: 0 0 5px rgba(159, 239, 0, 0.3);
     box-sizing: border-box;
     margin-bottom: 15px;
+    background-color: #141d2b !important;
     .trend-title {
       line-height: 50px;
       text-align: center;

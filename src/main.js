@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
     let userLevel
     let pageLevel
     try {
-      userLevel = JSON.parse(sessionStorage.getItem('userInfo')).level
+      userLevel = JSON.parse(sessionStorage.getItem('userInfo'))
         ? JSON.parse(sessionStorage.getItem('userInfo')).level
         : ''
       pageLevel = to.meta.level

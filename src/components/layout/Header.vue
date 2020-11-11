@@ -383,13 +383,13 @@ export default {
   }
 }
 .el-dropdown-menu {
-  background: #141d2b;
-  border: 1px solid #97e402;
+  background: #141d2b !important;
+  border: 1px solid #97e402 !important;
   .el-dropdown-menu__item {
     color: white;
   }
   .el-dropdown-menu__item:hover {
-    background: transparent;
+    background: transparent !important;
     color: #97e402;
   }
   .popper__arrow::after {
