@@ -131,7 +131,7 @@ export default {
   beforeMount() {
     verifyLoginApi().then((res) => {
       if (res.state !== -1) {
-        // this.$router.push('/index')
+        this.$router.push('/index')
       } else {
         this.$store.dispatch('disconnectEventSource')
       }

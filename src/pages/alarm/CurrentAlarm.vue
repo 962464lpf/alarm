@@ -100,7 +100,7 @@
           width="100%"
         >
           <el-table-column type="selection" reserve-selection width="45"></el-table-column>
-          <el-table-column label="恶意IP" width="160" align="center">
+          <el-table-column label="恶意IP" width="150" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="bottom">
                 <div v-if="scope.row.sip_show" slot="content">
@@ -152,7 +152,7 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="dip" label="目的IP" width="150" align="center">
+          <el-table-column prop="dip" label="目的IP" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="bottom">
                 <div v-if="scope.row.dip_show" slot="content">
@@ -197,19 +197,8 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column label="攻击时间" prop="attack_time" align="center">
-            <template slot-scope="scope">
-              <el-tooltip
-                class="item"
-                effect="dark"
-                :content="scope.row.attack_time"
-                placement="bottom"
-              >
-                <span class="curp omit">{{ scope.row.attack_time }}</span>
-              </el-tooltip>
-            </template>
-          </el-table-column>
-          <el-table-column prop="attack_type" label="攻击类型" width="70" align="center">
+
+          <el-table-column prop="attack_type" label="攻击类型" align="center">
             <template slot-scope="scope">
               <el-tooltip
                 class="item"
@@ -221,6 +210,7 @@
               </el-tooltip>
             </template>
           </el-table-column>
+
           <el-table-column label="攻击等级" width="70" align="center">
             <template slot-scope="scope">
               <span v-if="scope.row.level == 0" class="high">高</span>
@@ -229,6 +219,18 @@
             </template>
           </el-table-column>
           <el-table-column prop="protocol" width="120" label="协议" align="center"></el-table-column>
+          <el-table-column label="攻击时间" prop="attack_time" width="150" align="center">
+            <template slot-scope="scope">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="scope.row.attack_time"
+                placement="bottom"
+              >
+                <span class="curp omit">{{ scope.row.attack_time }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" width="100" align="left">
             <template slot-scope="scope">
               <!-- <p> -->
@@ -653,6 +655,7 @@ export default {
         duration: 3000,
         showClose: false,
         customClass,
+        position: 'bottom-right',
       })
     },
     handleSizeChange(val) {

@@ -32,7 +32,7 @@
           row-key="id"
         >
           <el-table-column type="selection" reserve-selection width="45" align="center"></el-table-column>
-          <el-table-column label="恶意IP" width="150" align="center">
+          <el-table-column label="恶意IP" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="bottom">
                 <div v-if="scope.row.sip_show" slot="content">
@@ -79,7 +79,7 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="dip" label="目的IP" width="150" align="center">
+          <el-table-column prop="dip" label="目的IP" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="bottom">
                 <div v-if="scope.row.dip_show" slot="content">
@@ -109,18 +109,30 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.device_ip"
+                :content="scope.row.device_ip.split(' ') [0]"
                 placement="bottom"
               >
-                <span class="curp omit">{{ scope.row.device_ip }}</span>
+                <span class="curp omit1 box">{{ scope.row.device_ip.split(' ') [1] }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="summary_num" width="80" label="次数" align="center"></el-table-column>
           <el-table-column label="描述" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
                 <span class="curp omit">{{ scope.row.con }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="attack_type" label="攻击类型" align="center">
+            <template slot-scope="scope">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
+                placement="bottom"
+              >
+                <span class="curp omit">{{ scope.row.attack_type ? scope.row.attack_type : '未知' }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -136,19 +148,8 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="attack_type" label="攻击类型" align="center">
-            <template slot-scope="scope">
-              <el-tooltip
-                class="item"
-                effect="dark"
-                :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
-                placement="bottom"
-              >
-                <span class="curp omit">{{ scope.row.attack_type ? scope.row.attack_type : '未知' }}</span>
-              </el-tooltip>
-            </template>
-          </el-table-column>
           <el-table-column prop="protocol" width="80" label="协议" align="center"></el-table-column>
+          <el-table-column prop="summary_num" width="80" label="次数" align="center"></el-table-column>
 
           <el-table-column label="操作" width="100" align="center">
             <template slot-scope="scope">
@@ -271,7 +272,7 @@ export default {
         time: [],
       },
       tableLoading: false,
-      summaryAlarmList: [{}],
+      summaryAlarmList: [],
       attack_total: 0,
       attack_total_high: 0,
       attack_total_low: 0,
@@ -581,6 +582,13 @@ export default {
 
 <style lang="scss">
 .alarm-summary {
+  .box {
+    background: #42561b99;
+    margin-top: 2px;
+    padding: 2px 3px;
+    color: white;
+    border-radius: 2px;
+  }
   .statistic {
     color: #606266;
     line-height: 32px;

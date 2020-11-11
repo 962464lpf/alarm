@@ -1,4 +1,7 @@
 // 表格
+body .el-table th.gutter {
+  display: table-cell !important;
+}
 .my-elem-table {
   .el-table {
     thead {
