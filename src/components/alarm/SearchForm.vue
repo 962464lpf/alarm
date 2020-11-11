@@ -16,8 +16,17 @@
             <el-input v-model="searchForm.dip" placeholder="目的地IP"></el-input>
           </el-form-item>
           <el-form-item label="告警来源">
-            <el-input v-model="searchForm.device_ip" placeholder="告警来源"></el-input>
+            <!-- <el-input v-model="searchForm.device_ip" placeholder="告警来源"></el-input> -->
+            <el-select v-model="searchForm.device_ip" placeholder="请选择">
+              <el-option
+                v-for="item in deviceIpList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </el-form-item>
+
           <el-form-item label="攻击类型">
             <el-input v-model="searchForm.attack_type" placeholder="攻击类型"></el-input>
           </el-form-item>
@@ -43,8 +52,8 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="onSearch(true)">查询</el-button>
-        <el-button type="primary" @click="onSearch(false)">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="onSearch(true)"></el-button>
+        <el-button type="primary" @click="onSearch(false)" icon="el-icon-refresh"></el-button>
       </el-form-item>
 
       <slot class="my-slot"></slot>
@@ -53,6 +62,7 @@
 </template>
 
 <script>
+import { getSafeEquipListApi } from '../../tools/api'
 export default {
   props: {
     levelStatus: {
@@ -70,6 +80,7 @@ export default {
         time: [],
         level: '',
       },
+      deviceIpList: [],
     }
   },
   computed: {
@@ -100,7 +111,20 @@ export default {
       this.$emit('getSearchForm', this.searchForm)
     },
   },
-  mounted() {},
+  mounted() {
+    let fd = new FormData()
+    fd.append('page', 1)
+    fd.append('per_page', 100)
+    getSafeEquipListApi(fd).then((res) => {
+      let list = res.data
+      list.forEach((item) => {
+        let obj = {}
+        obj.value = item.ip
+        obj.label = item.ip
+        this.deviceIpList.push(obj)
+      })
+    })
+  },
 }
 </script>
 
@@ -253,6 +277,23 @@ export default {
   }
   .popper__arrow::after {
     border-bottom-color: #97e402 !important;
+  }
+}
+
+.el-select-dropdown {
+  border: none;
+  .el-scrollbar {
+    background: #2b2c2d !important;
+    color: white !important;
+    border: none !important;
+    .el-select-dropdown__item {
+      color: white !important;
+    }
+    .el-select-dropdown__item:hover,
+    .el-select-dropdown__item.hover {
+      color: #97e402 !important;
+      background: transparent !important;
+    }
   }
 }
 </style>

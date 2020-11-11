@@ -45,8 +45,20 @@
         ></el-switch>
       </el-form-item>-->
       <el-form-item>
-        <el-button @click="getInsideEquip" type="primary" size="small" class="my-elem-btn">查询</el-button>
-        <el-button @click="reset" type="primary" size="small" class="my-elem-btn">重置</el-button>
+        <el-button
+          @click="getInsideEquip"
+          type="primary"
+          size="small"
+          class="my-elem-btn"
+          icon="el-icon-search"
+        ></el-button>
+        <el-button
+          @click="reset"
+          type="primary"
+          size="small"
+          class="my-elem-btn"
+          icon="el-icon-refresh"
+        ></el-button>
         <el-button @click="entryInsideEquip('single')" type="primary" class="my-elem-btn">资产录入</el-button>
         <el-button @click="entryInsideEquip('more')" type="primary" class="my-elem-btn">批量录入</el-button>
         <el-button type="primary" @click="downloadInsideFile" class="my-elem-btn">下载录入模板</el-button>

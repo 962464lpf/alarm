@@ -148,7 +148,12 @@
 
           <el-table-column label="操作" width="100" align="center">
             <template slot-scope="scope">
-              <el-dropdown>
+              <el-button
+                style="width: 78px;"
+                class="my-elem-btn"
+                @click.native="blocked(scope.row)"
+              >封禁</el-button>
+              <el-dropdown class="mt10">
                 <el-button class="el-dropdown-link el-button--lightblue dropbutton my-elem-btn">
                   操 作
                   <i class="el-icon-arrow-down el-icon--right"></i>
@@ -159,7 +164,7 @@
                   <el-dropdown-item @click.native="operation(scope.row, 'white')">添加至白名单</el-dropdown-item>
                   <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
                   <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
-                  <el-dropdown-item @click.native="blocked(scope.row)">一键封禁</el-dropdown-item>
+                  <!-- <el-dropdown-item @click.native="blocked(scope.row)">一键封禁</el-dropdown-item> -->
                   <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
                 </el-dropdown-menu>
               </el-dropdown>
@@ -225,6 +230,14 @@
         @getFirewall="batchBannedOperation"
       ></ChooseFirewall>
     </div>
+
+    <div v-if="addWhiteIpStatus">
+      <AddWhiteIP
+        v-model="addWhiteIpStatus"
+        :row="rowAlarmData"
+        @getCurrentAlarmList="getAlarmList"
+      ></AddWhiteIP>
+    </div>
   </div>
 </template>
 
@@ -244,6 +257,7 @@ import ChooseBlackType from '../../components/alarm/ChooseBlackType'
 import AddSelectType from '../../components/alarm/AddSelectType'
 import SearchForm from '../../components/alarm/SearchForm'
 import ChooseFirewall from '../../components/common/ChooseFirewall'
+import AddWhiteIP from '../../components/alarm/AddWhiteIPDialog'
 
 export default {
   components: {
@@ -252,6 +266,7 @@ export default {
     AddSelectType,
     SearchForm,
     ChooseFirewall,
+    AddWhiteIP,
   },
   data() {
     return {
@@ -283,6 +298,7 @@ export default {
       selectRowData: [],
       chooseFirewallStatus: false,
       selectBlockedType: '',
+      addWhiteIpStatus: false,
     }
   },
   computed: {
@@ -299,6 +315,10 @@ export default {
       this.selectRowData = val
     },
     batchBannedOperation(firewall) {
+      let ids = []
+      firewall.forEach((item) => {
+        ids.push(item.id)
+      })
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
@@ -308,7 +328,7 @@ export default {
       if (this.selectBlockedType === 'Akey') {
         let fd = new FormData()
         fd.append('ip', this.rowAlarmData.sip)
-        fd.append('fid', firewall.id)
+        fd.append('fid', ids.join(','))
         aKeyBlockedApi(fd).then((res) => {
           loading.close()
           let type = 'success'
@@ -326,7 +346,8 @@ export default {
         })
         let fd = new FormData()
         fd.append('ipstr', sipArr.join(','))
-        fd.append('fid', firewall.id)
+
+        fd.append('fid', ids.join(','))
         batchBannedApi(fd).then((res) => {
           loading.close()
           let type = 'success'
@@ -483,6 +504,8 @@ export default {
         if (type === 'white') {
           IpName = '白名单'
           fd.append('type', 'white')
+          this.addWhiteIpStatus = true
+          return
         } else if (type === 'red') {
           IpName = '红队IP'
           fd.append('type', 'black')

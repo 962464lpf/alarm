@@ -1,6 +1,6 @@
 <template>
-  <div class="order">
-    <el-form :inline="true" v-model="searchForm" ref="searchForm" class="my-elem-form">
+  <div class="order my-elem-form">
+    <el-form :inline="true" v-model="searchForm" ref="searchForm">
       <el-form-item label="源IP">
         <el-input v-model="searchForm.sip" placeholder="请输入IP地址">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
@@ -12,8 +12,8 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="getOrderList" class="my-elem-btn">查询</el-button>
-        <el-button type="primary" @click="onReset" class="my-elem-btn">重置</el-button>
+        <el-button type="primary" @click="getOrderList" class="my-elem-btn" icon="el-icon-search"></el-button>
+        <el-button type="primary" @click="onReset" class="my-elem-btn" icon="el-icon-refresh"></el-button>
         <el-button type="primary" @click="selectTimeStatus=true" class="my-elem-btn">导出</el-button>
       </el-form-item>
     </el-form>
@@ -192,5 +192,13 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss">
+.order {
+  .el-input__inner,
+  .el-textarea__inner {
+    color: white !important;
+    background: #111927 !important;
+    border: none;
+  }
+}
 </style>

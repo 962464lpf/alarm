@@ -11,8 +11,13 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button @click="getReportList" type="primary" class="my-elem-btn">查询</el-button>
-          <el-button @click="resetData" class="my-elem-btn">重置</el-button>
+          <el-button
+            @click="getReportList"
+            type="primary"
+            class="my-elem-btn"
+            icon="el-icon-search"
+          ></el-button>
+          <el-button @click="resetData" class="my-elem-btn" icon="el-icon-refresh"></el-button>
         </el-form-item>
         <el-form-item>
           <el-button @click="reportDialog('day')" type="primary" class="my-elem-btn">生成日报</el-button>

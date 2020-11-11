@@ -1,5 +1,5 @@
 <template>
-  <div class="blocked-ip">
+  <div class="blocked-ip my-elem-form">
     <el-form :inline="true" :model="form" class="my-elem-form">
       <el-form-item label="IP地址">
         <el-input v-model="form.ip" placeholder="请输入IP地址">
@@ -18,8 +18,8 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="onSearch" class="my-elem-btn">查询</el-button>
-        <el-button type="primary" @click="onReset" class="my-elem-btn">重置</el-button>
+        <el-button type="primary" @click="onSearch" class="my-elem-btn" icon="el-icon-search"></el-button>
+        <el-button type="primary" @click="onReset" class="my-elem-btn" icon="el-icon-refresh"></el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onAdd" class="my-elem-btn">新增</el-button>

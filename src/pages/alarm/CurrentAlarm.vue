@@ -112,12 +112,12 @@
     </SearchForm>
     <div class="current-table">
       <div class="my-elem-table">
+        <!-- :row-class-name="addClass" -->
         <el-table
           class="mfsfs"
           v-loading="tableLoading"
           :data="currentAlarmList"
           style="width: 100%"
-          :row-class-name="addClass"
           @row-click="rowClick"
           @selection-change="handleSelectionChange"
           row-key="id"
@@ -142,15 +142,18 @@
                   <span>{{ scope.row.sip }}</span>
                 </div>
                 <div>
-                  <!-- <el-badge value="new" class="item">
-                    <el-button size="small">评论</el-button>
-                  </el-badge>-->
                   <!-- 0 为新告警 -->
-                  <!-- <span>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span> -->
                   <span class="triangle" v-if="scope.row.is_new === 0"></span>
                   <span v-if="scope.row.is_new === 0">{{ scope.row.sip }}</span>
                   <span class="no-triangle" v-else>{{ scope.row.sip }}</span>
                   <span class="high" v-if="scope.row.forbidden" style="margin-left: 5px;">已封禁</span>
+                  <!-- <p :class="addClass(row)>fsfdsf</p> -->
+                  <p
+                    class="curp"
+                    v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type || scope.row.sip_type === 'white') && scope.row.sip_black_type !==2 "
+                  >
+                    <b v-html="getToolTipContetn(scope.row)"></b>
+                  </p>
                 </div>
               </el-tooltip>
             </template>
@@ -406,6 +409,20 @@ export default {
     },
   },
   methods: {
+    getToolTipContetn(row) {
+      let type = row.sip_black_type
+      let content = ''
+      if (type === 0) {
+        content = '<a class="red-team">红队IP</a>'
+      } else if (type === 1) {
+        content = '<a class="blue-team">蓝队IP</a>'
+      } else if (type === 2) {
+        content = ''
+      } else if (row.sip_type === 'white') {
+        content = '<a class="white-team">白名单</a>'
+      }
+      return content
+    },
     alarmSettingChange() {
       let data = {}
       this.settingItems.forEach((item) => {
@@ -417,6 +434,10 @@ export default {
       this.selectRowData = val
     },
     batchBannedOperation(firewall) {
+      let ids = []
+      firewall.forEach((item) => {
+        ids.push(item.id)
+      })
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
@@ -426,7 +447,7 @@ export default {
       if (this.selectBlockedType === 'Akey') {
         let fd = new FormData()
         fd.append('ip', this.rowAlarmData.sip)
-        fd.append('fid', firewall.id)
+        fd.append('fid', ids.join(','))
         aKeyBlockedApi(fd).then((res) => {
           loading.close()
           let type = 'success'
@@ -444,7 +465,7 @@ export default {
         })
         let fd = new FormData()
         fd.append('ipstr', sipArr.join(','))
-        fd.append('fid', firewall.id)
+        fd.append('fid', ids.join(','))
         batchBannedApi(fd).then((res) => {
           loading.close()
           let type = 'success'
@@ -883,6 +904,24 @@ export default {
   }
   .current-table {
     // color: black;
+    .red-team,
+    .blue-team,
+    white-team {
+      display: inline-block;
+      padding: 3px 5px;
+      border-radius: 3px;
+      font-size: 12px;
+      transform: scale(0.8);
+    }
+    .red-team {
+      background: #ca4c4c;
+    }
+    .blue-team {
+      background: #488fd8;
+    }
+    .white-team {
+      background: #fff9f0;
+    }
     .cell-blue > td {
       background: rgb(198, 226, 255);
       .cell {

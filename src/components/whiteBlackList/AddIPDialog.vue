@@ -30,19 +30,19 @@ export default {
   props: {
     value: {
       type: Boolean,
-      default: false
+      default: false,
     },
     title: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
       dialogVisible: this.value,
       form: {
-        ip: ''
-      }
+        ip: '',
+      },
     }
   },
   methods: {
@@ -52,9 +52,9 @@ export default {
     onConfirm() {
       this.$emit('getIP', this.form)
       this.handleClose()
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 }
 </script>
 
@@ -65,6 +65,21 @@ export default {
     .ip-rules {
       text-indent: 130px;
       line-height: 24px;
+    }
+  }
+}
+.add-red-blue-dialog {
+  .el-input__inner,
+  .el-textarea__inner {
+    color: white !important;
+    background: #111927 !important;
+    border: none;
+  }
+  .el-date-editor {
+    .el-range-input {
+      background: #111927 !important;
+      color: white !important;
+      border: none !important;
     }
   }
 }
