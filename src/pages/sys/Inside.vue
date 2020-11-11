@@ -56,7 +56,6 @@
       <el-table
         v-loading="tableLoading"
         :data="insideEquipData"
-        stripe
         border
         style="width: 100%"
         class="mt10"
@@ -252,7 +251,7 @@ export default {
     },
   },
   mounted() {
-    // this.getInsideEquip()
+    this.getInsideEquip()
   },
 }
 </script>

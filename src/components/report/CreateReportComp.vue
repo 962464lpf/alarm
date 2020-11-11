@@ -45,7 +45,7 @@
       :total="total"
     ></el-pagination>
     <div class="clearfloat"></div>
-    <div v-if="reportType==='day'">
+    <!-- <div v-if="reportType==='day'">
       <p>报告统计人员值班选择</p>
       <el-row class="mt10">
         <el-switch
@@ -65,7 +65,7 @@
           <el-transfer v-model="nightData" v-else :titles="['值班人员', '夜班人员']" :data="peopleData"></el-transfer>
         </el-col>
       </el-row>
-    </div>
+    </div>-->
 
     <span slot="footer" class="dialog-footer">
       <el-button @click="handleClose">取 消</el-button>
@@ -153,8 +153,8 @@ export default {
           obj = {
             dateTime: this.dateTime,
             equipIds: ids.join(','),
-            baiban: this.dayData.join(','),
-            yeban: this.nightData.join(','),
+            // baiban: this.dayData.join(','),
+            // yeban: this.nightData.join(','),
           }
         } else {
           obj = {
