@@ -100,6 +100,7 @@ export default {
 
 .nav {
   height: 100%;
+  user-select: none;
   .scaling {
     height: 30px;
     i {

@@ -177,11 +177,10 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.device_ip"
+                :content="scope.row.device_ip.split(' ') [0]"
                 placement="bottom"
               >
                 <div>
-                  <p class="curp omit1 box">{{ scope.row.device_ip.split(' ') [0] }}</p>
                   <p class="curp omit1 box">{{ scope.row.device_ip.split(' ') [1] }}</p>
                 </div>
               </el-tooltip>
@@ -864,16 +863,16 @@ export default {
     }
     tbody {
       .box {
-        background: rgba(151, 228, 2, 0.6);
+        background: #42561b99;
         margin-top: 2px;
         padding: 2px 3px;
         color: white;
         border-radius: 2px;
       }
       tr:hover {
-        background: #141d2b !important;
+        background: #1a2332 !important;
         .cell {
-          color: white !important;
+          color: #8bc34a !important;
         }
         td:nth-child(1) {
           background: #141d2b !important;
@@ -893,6 +892,7 @@ export default {
               font-size: 12px;
               padding: 0 6px;
               line-height: 18px;
+              margin-right: 5px;
             }
             .triangle::before {
               content: 'new';
