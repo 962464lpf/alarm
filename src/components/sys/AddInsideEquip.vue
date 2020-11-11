@@ -30,15 +30,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="公网IP：" prop="ip">
+          <el-form-item label="IP：" prop="ip">
             <el-input v-model="form.ip"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <!-- <el-col :span="12">
           <el-form-item label="私网IP：" prop="ip_private">
             <el-input v-model="form.ip_private"></el-input>
           </el-form-item>
-        </el-col>
+        </el-col>-->
         <el-col :span="12">
           <el-form-item label="安全域：" prop="anquanyu">
             <el-input v-model="form.anquanyu"></el-input>
@@ -65,7 +65,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="是否在线：" prop="online">
+          <!-- <el-form-item label="是否在线：" prop="online">
             <el-switch
               class="my-switch"
               v-model="form.online"
@@ -73,8 +73,8 @@
               inactive-text="离线"
               active-color="#95d214"
             ></el-switch>
-          </el-form-item>
-          <el-form-item label="服务器区：" prop="phone">
+          </el-form-item>-->
+          <!-- <el-form-item label="服务器区：" prop="phone">
             <el-switch
               class="my-switch"
               v-model="form.is_server"
@@ -82,7 +82,7 @@
               inactive-text="否"
               active-color="#95d214"
             ></el-switch>
-          </el-form-item>
+          </el-form-item>-->
         </el-col>
       </el-row>
     </el-form>
@@ -118,15 +118,15 @@ export default {
       dialogVisible: this.value,
       form: {
         ip: '',
-        ip_private: '',
+        // ip_private: '',
         name: '',
         phone: '',
         anquanyu: '',
         cat: '',
         staff: '',
         com_dep: '',
-        online: true,
-        is_server: false,
+        // online: true,
+        // is_server: false,
       },
       fileList: [],
       uploadStatus: false,

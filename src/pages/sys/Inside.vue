@@ -1,16 +1,21 @@
 <template>
   <div class="inside">
     <el-form :inline="true" :model="form" class="demo-form-inline my-elem-form">
-      <el-form-item label="公网IP">
+      <!-- <el-form-item label="公网IP">
+        <el-input v-model="form.ip">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+      </el-form-item>-->
+      <el-form-item label="IP">
         <el-input v-model="form.ip">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
       </el-form-item>
-      <el-form-item label="私网IP">
+      <!-- <el-form-item label="私网IP">
         <el-input v-model="form.ip_private">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="资产名称">
         <el-input v-model="form.name">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
@@ -30,7 +35,7 @@
           active-color="#95d214"
         ></el-switch>
       </el-form-item>
-      <el-form-item label="服务器区">
+      <!-- <el-form-item label="服务器区">
         <el-switch
           class="my-switch"
           v-model="form.is_server"
@@ -38,7 +43,7 @@
           inactive-text="否"
           active-color="#95d214"
         ></el-switch>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item>
         <el-button @click="getInsideEquip" type="primary" size="small" class="my-elem-btn">查询</el-button>
         <el-button @click="reset" type="primary" size="small" class="my-elem-btn">重置</el-button>

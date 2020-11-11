@@ -91,7 +91,7 @@
           ></el-switch>
         </span>
       </div>
-      <div class="mt10">
+      <!-- <div class="mt10">
         <span>
           <a style="font-size:12px;">只看服务器区：</a>
           <el-switch
@@ -102,7 +102,7 @@
             class="my-switch"
           ></el-switch>
         </span>
-      </div>
+      </div>-->
     </el-dialog>
     <div v-if="resetPasswordStatus">
       <ResetPassword v-model="resetPasswordStatus" @getResetform="getResetform"></ResetPassword>

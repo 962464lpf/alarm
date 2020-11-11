@@ -131,7 +131,7 @@ export default {
   beforeMount() {
     verifyLoginApi().then((res) => {
       if (res.state !== -1) {
-        this.$router.push('/index')
+        // this.$router.push('/index')
       } else {
         this.$store.dispatch('disconnectEventSource')
       }
@@ -208,7 +208,7 @@ export default {
       margin-top: 35px;
       z-index: 999;
       .form {
-        width: 400px;
+        width: 430px;
 
         border-radius: 20px;
         padding: 35px;
