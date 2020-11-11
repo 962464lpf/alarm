@@ -97,6 +97,7 @@
           @row-click="rowClick"
           @selection-change="handleSelectionChange"
           row-key="id"
+          width="100%"
         >
           <el-table-column type="selection" reserve-selection width="45"></el-table-column>
           <el-table-column label="恶意IP" width="160" align="center">
@@ -186,6 +187,7 @@
               </el-tooltip>
             </template>
           </el-table-column>
+          <el-table-column prop="num" label="告警次数" align="center"></el-table-column>
           <el-table-column label="描述" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
@@ -210,10 +212,10 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
+                :content="scope.row.attack_type "
                 placement="bottom"
               >
-                <span class="curp omit">{{ scope.row.attack_type ? scope.row.attack_type : '未知' }}</span>
+                <span class="curp omit">{{ scope.row.attack_type }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -225,10 +227,13 @@
             </template>
           </el-table-column>
           <el-table-column prop="protocol" width="120" label="协议" align="center"></el-table-column>
-          <el-table-column label="操作" width="250" align="center">
+          <el-table-column label="操作" width="100" align="left">
             <template slot-scope="scope">
-              <el-button class="mr10 my-elem-btn" @click.native="blocked(scope.row)">一键封禁</el-button>
-              <el-dropdown>
+              <!-- <p> -->
+              <el-button class="mr10 my-elem-btn" @click.native="blocked(scope.row)">封禁</el-button>
+              <!-- </p> -->
+
+              <el-dropdown class="mt10">
                 <el-button class="el-dropdown-link el-button--lightblue dropbutton my-elem-btn">
                   操 作
                   <i class="el-icon-arrow-down el-icon--right"></i>
@@ -887,7 +892,7 @@ export default {
             overflow: inherit !important;
             .triangle {
               float: left;
-              background-color: #97e402;
+              background-color: #e8133a;
               border-radius: 10px;
               font-size: 12px;
               padding: 0 6px;

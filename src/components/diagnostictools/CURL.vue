@@ -40,7 +40,17 @@ export default {
         fd.append('url_addr', this.curl.ip)
         this.textarea = '请等待...'
         getCurl(fd).then((res) => {
-          this.textarea = res
+          this.textarea = ''
+          if (res.state === 1) {
+            res.data.forEach((item) => {
+              this.textarea += item
+            })
+          } else {
+            this.$message({
+              type: 'warning',
+              message: res.data,
+            })
+          }
         })
       } else {
         this.$message({

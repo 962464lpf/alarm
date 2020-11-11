@@ -70,12 +70,10 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.wuli_addr === '无数据' ? '未知' : scope.row.wuli_addr"
+                :content="scope.row.wuli_addr "
                 placement="bottom"
               >
-                <span
-                  class="curp omit"
-                >{{ scope.row.wuli_addr === '无数据' ? '未知' : scope.row.wuli_addr }}</span>
+                <span class="curp omit">{{ scope.row.wuli_addr }}</span>
               </el-tooltip>
             </template>
           </el-table-column>

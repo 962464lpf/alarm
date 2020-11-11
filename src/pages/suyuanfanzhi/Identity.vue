@@ -1,9 +1,15 @@
 <template>
-  <div>身份溯源</div>
+  <div>
+    <Weishouquan></Weishouquan>
+  </div>
 </template>
 
 <script>
+import Weishouquan from '../../components/common/Weishouquan'
 export default {
+  components: {
+    Weishouquan,
+  },
   data() {
     return {}
   },
