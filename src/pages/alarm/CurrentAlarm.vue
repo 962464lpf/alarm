@@ -139,7 +139,7 @@
                   <p>联系电话：{{scope.row.sip_show.phone}}</p>
                 </div>
                 <div v-else slot="content">
-                  <span>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
+                  <span>{{ scope.row.sip }}</span>
                 </div>
                 <div>
                   <!-- <el-badge value="new" class="item">
@@ -148,13 +148,8 @@
                   <!-- 0 为新告警 -->
                   <!-- <span>{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span> -->
                   <span class="triangle" v-if="scope.row.is_new === 0"></span>
-                  <span
-                    v-if="scope.row.is_new === 0"
-                  >{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
-                  <span
-                    class="no-triangle"
-                    v-else
-                  >{{ scope.row.sip }} {{scope.row.sport ? ':' + scope.row.sport : ''}}</span>
+                  <span v-if="scope.row.is_new === 0">{{ scope.row.sip }}</span>
+                  <span class="no-triangle" v-else>{{ scope.row.sip }}</span>
                   <span class="high" v-if="scope.row.forbidden" style="margin-left: 5px;">已封禁</span>
                 </div>
               </el-tooltip>
