@@ -230,10 +230,14 @@
           <el-table-column label="操作" width="100" align="left">
             <template slot-scope="scope">
               <!-- <p> -->
-              <el-button class="mr10 my-elem-btn" @click.native="blocked(scope.row)">封禁</el-button>
+              <el-button
+                style="width: 76px;"
+                class="my-elem-btn"
+                @click.native="blocked(scope.row)"
+              >封禁</el-button>
               <!-- </p> -->
 
-              <el-dropdown class="mt10">
+              <el-dropdown class="mt10" style="width: 76px;">
                 <el-button class="el-dropdown-link el-button--lightblue dropbutton my-elem-btn">
                   操 作
                   <i class="el-icon-arrow-down el-icon--right"></i>
