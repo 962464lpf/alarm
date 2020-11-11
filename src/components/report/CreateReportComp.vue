@@ -197,13 +197,81 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss">
 .my-switch {
   .el-switch__label {
     color: #8e8a8a !important;
   }
   .is-active {
     color: #95d214 !important;
+  }
+}
+.el-date-range-picker {
+  background: #141d2b;
+  border: 1px solid #97e402;
+  color: #d5d8de;
+  .popper__arrow::after {
+    border-bottom-color: #97e402 !important;
+  }
+  .el-date-range-picker__time-header {
+    border-bottom: 1px solid #97e402;
+  }
+  .el-date-range-picker__editor {
+    .el-input__inner {
+      background-color: transparent;
+      border: none;
+    }
+  }
+  .el-picker-panel__footer {
+    background-color: #141d2b !important;
+  }
+  .el-picker-panel__footer {
+    border-top: 1px solid #97e402;
+  }
+  .el-date-range-picker__content.is-left {
+    border-right: 1px solid #97e402;
+  }
+  .el-date-table td.in-range div {
+    background-color: #273852 !important;
+  }
+  .el-date-table td.available:hover {
+    color: #97e402;
+  }
+  .el-date-table td.start-date span,
+  .el-date-table td.end-date span {
+    background: #5a8615;
+  }
+  .el-time-panel {
+    background: #0d1119 !important;
+    border: 1px solid #97e402;
+    .el-time-panel__footer {
+      border-top-color: #97e402;
+      button {
+        background-color: rgba(159, 239, 0, 0.1) !important;
+        border: none !important;
+        color: #97e402 !important;
+      }
+    }
+    .el-time-spinner__item {
+      color: white;
+    }
+    .el-time-spinner__item:hover {
+      color: #97e402;
+      background: transparent;
+    }
+  }
+
+  .el-button,
+  .el-button.is-disabled,
+  .el-button.is-disabled.is-plain,
+  .el-button.is-disabled.is-plain:hover {
+    background-color: rgba(159, 239, 0, 0.1) !important;
+    border: none !important;
+    color: #97e402 !important;
+  }
+
+  .el-button--text {
+    padding: 7px 15px;
   }
 }
 </style>
