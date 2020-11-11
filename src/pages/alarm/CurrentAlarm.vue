@@ -21,20 +21,32 @@
             </span>
 
             <a></a>
-            <el-switch v-model="bellStatus" class="fr"></el-switch>
+            <el-switch v-model="bellStatus" class="fr" @change="alarmSettingChange"></el-switch>
           </div>
           <div class="content" v-if="bellStatus">
             <p>
               <span>高危：</span>
-              <el-switch v-model="highBellStatus" active-color="#f56c6c"></el-switch>
+              <el-switch
+                v-model="highBellStatus"
+                active-color="#f56c6c"
+                @change="alarmSettingChange"
+              ></el-switch>
             </p>
             <p>
               <span>中危：</span>
-              <el-switch v-model="middleBellStatus" active-color="#e6a23c"></el-switch>
+              <el-switch
+                v-model="middleBellStatus"
+                active-color="#e6a23c"
+                @change="alarmSettingChange"
+              ></el-switch>
             </p>
             <p>
               <span>低危：</span>
-              <el-switch v-model="lowBellStatus" active-color="#67c23a"></el-switch>
+              <el-switch
+                v-model="lowBellStatus"
+                active-color="#67c23a"
+                @change="alarmSettingChange"
+              ></el-switch>
             </p>
           </div>
         </div>
@@ -46,20 +58,32 @@
             </span>
 
             <a></a>
-            <el-switch v-model="characterStatus"></el-switch>
+            <el-switch v-model="characterStatus" @change="alarmSettingChange"></el-switch>
           </div>
           <div class="content" v-if="characterStatus">
             <p>
               <span>高危：</span>
-              <el-switch v-model="highCharacterStatus" active-color="#f56c6c"></el-switch>
+              <el-switch
+                v-model="highCharacterStatus"
+                active-color="#f56c6c"
+                @change="alarmSettingChange"
+              ></el-switch>
             </p>
             <p>
               <span>中危：</span>
-              <el-switch v-model="middleCharacterStatus" active-color="#e6a23c"></el-switch>
+              <el-switch
+                v-model="middleCharacterStatus"
+                active-color="#e6a23c"
+                @change="alarmSettingChange"
+              ></el-switch>
             </p>
             <p>
               <span>低危：</span>
-              <el-switch v-model="lowCharacterStatus" active-color="#67c23a"></el-switch>
+              <el-switch
+                v-model="lowCharacterStatus"
+                active-color="#67c23a"
+                @change="alarmSettingChange"
+              ></el-switch>
             </p>
           </div>
         </div>
@@ -362,6 +386,16 @@ export default {
       chooseFirewallStatus: false,
       selectBlockedType: '',
       totalAttackNum: 0,
+      settingItems: [
+        'bellStatus',
+        'highBellStatus',
+        'middleBellStatus',
+        'lowBellStatus',
+        'characterStatus',
+        'highCharacterStatus',
+        'middleCharacterStatus',
+        'lowCharacterStatus',
+      ],
     }
   },
   computed: {
@@ -377,6 +411,13 @@ export default {
     },
   },
   methods: {
+    alarmSettingChange() {
+      let data = {}
+      this.settingItems.forEach((item) => {
+        data[item] = this[item]
+      })
+      localStorage.setItem('currentAlarm', JSON.stringify(data))
+    },
     handleSelectionChange(val) {
       this.selectRowData = val
     },
@@ -769,6 +810,12 @@ export default {
   },
   mounted() {
     this.getCurrentAlarmList()
+    let localStorageData = JSON.parse(localStorage.getItem('currentAlarm'))
+    if (localStorageData) {
+      this.settingItems.forEach((item) => {
+        this[item] = localStorageData[item]
+      })
+    }
   },
   beforeDestroy() {
     clearInterval(this.interval)
