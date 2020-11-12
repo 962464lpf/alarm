@@ -59,15 +59,15 @@ export default {
   props: {
     value: {
       type: Boolean,
-      default: false
+      default: false,
     },
     rowId: {
-      type: Number
+      type: Number,
     },
     searchForm: {
-      type: Object
+      type: Object,
     },
-    rowSip: {}
+    rowSip: {},
   },
   data() {
     return {
@@ -76,13 +76,13 @@ export default {
       currentPage: 1,
       pageSize: 10,
       total: 0,
-      currentPageData: []
+      currentPageData: [],
     }
   },
   computed: {
     title() {
       return this.rowSip + '告警详情'
-    }
+    },
   },
   methods: {
     handleClose() {
@@ -111,15 +111,15 @@ export default {
       fd.append('id', this.rowId)
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
-      getSumAlarmDetailListApi(fd).then(res => {
+      getSumAlarmDetailListApi(fd).then((res) => {
         this.currentPageData = res.data
         this.total = res.total
       })
-    }
+    },
   },
   mounted() {
     this.getDetailData()
-  }
+  },
 }
 </script>
 

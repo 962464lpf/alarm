@@ -24,7 +24,20 @@
     <div class="my-elem-table my-elem-pagination">
       <el-table v-loading="tableLoading" :data="orderList" border style="width: 100%">
         <el-table-column type="index" width="50"></el-table-column>
-        <el-table-column prop="sip" label="源IP"></el-table-column>
+        <el-table-column prop="sip" label="源IP">
+          <template slot-scope="scope">
+            <div>
+              <span class="triangle" v-if="scope.row.state === 0"></span>
+
+              <span>{{ scope.row.sip }}</span>
+              <p
+                v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 "
+              >
+                <b v-html="getToolTipContetn(scope.row)"></b>
+              </p>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column prop="dip" label="目的IP"></el-table-column>
         <el-table-column prop="dip" label="时间">
           <template slot-scope="scope">
@@ -33,12 +46,13 @@
         </el-table-column>
         <el-table-column prop="dip" label="状态">
           <template slot-scope="scope">
-            <span v-html="getStatus(scope.row)">{{getStatus(scope.row)}}</span>
+            <span v-html="getStatus(scope.row)"></span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <el-button class="my-elem-btn" size="small" @click="getDetail(scope.row)">详情</el-button>
+            <el-button class="my-elem-btn" size="small" @click="getDetail(scope.row)">分析处置</el-button>
+
             <el-button class="my-elem-btn" size="small" @click="blocked(scope.row)">一键封禁</el-button>
           </template>
         </el-table-column>
@@ -105,19 +119,34 @@ export default {
     SelectTime,
   },
   methods: {
+    getToolTipContetn(row) {
+      let type = row.sip_black_type
+      let content = ''
+      if (type === 0) {
+        content = '<a class="red-team">红队IP</a>'
+      } else if (type === 1) {
+        content = '<a class="blue-team">蓝队IP</a>'
+      } else if (type === 2) {
+        content = ''
+      } else if (row.sip_type === 'white') {
+        content = '<a class="white-team">白名单</a>'
+      }
+      return content
+    },
     getStatus(row) {
       switch (row.state) {
         case 0:
-          return '<span class="misstate">未分析</span>'
+          return '<span class="not-analy">未分析</span>'
         case 1:
           return '<span class="misstate">误报</span>'
         case 2:
-          return '<span class="issue">已下发</span>'
+          return '<span class="ban">封禁</span>'
         case 3:
-          return '<span class="ban">已封禁</span>'
+          return '<span class="trace">溯源</span>'
         case 4:
+          return '<span class="attack">反制</span>'
         default:
-          return '<span class="misstate">未分析</span>'
+          return '<span class="not-analy">未分析</span>'
       }
     },
     getTime(row) {
@@ -211,10 +240,11 @@ export default {
     background: #111927 !important;
     border: none;
   }
+  .not-analy,
   .misstate,
-  .misstate,
-  .issue,
-  .ban {
+  .trace,
+  .ban,
+  .attack {
     width: 86px;
     text-align: center;
     display: inline-block;
@@ -223,17 +253,50 @@ export default {
     font-size: 12px;
     transform: scale(0.8);
   }
+  .not-analy {
+    background: #e6758a;
+  }
   .misstate {
     background: #e6a23c;
   }
-  .misstate {
+  .trace {
     background: #67c23a;
   }
-  .issue {
+  .ban {
     background: #409eff;
   }
-  .ban {
+  .attack {
     background: #8e6cf5;
+  }
+  .red-team,
+  .blue-team,
+  .white-team {
+    display: inline-block;
+    padding: 3px 30px;
+    border-radius: 3px;
+    font-size: 12px;
+    transform: scale(0.8);
+  }
+  .red-team {
+    background: #ca4c4c;
+  }
+  .blue-team {
+    background: #488fd8;
+  }
+  .white-team {
+    background: #fff9f0;
+  }
+  .triangle {
+    float: left;
+    background-color: #e8133a;
+    border-radius: 10px;
+    font-size: 12px;
+    padding: 0 6px;
+    line-height: 18px;
+    margin-right: 5px;
+  }
+  .triangle::before {
+    content: 'new';
   }
 }
 </style>

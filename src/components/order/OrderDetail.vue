@@ -48,10 +48,10 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer" v-if="currentRow.state === 0">
-        <el-button type="primary" @click="falseReport">误报</el-button>
-        <el-button type="primary">封禁</el-button>
-        <el-button type="primary">溯源</el-button>
-        <el-button type="primary">反制</el-button>
+        <el-button type="primary" @click="handle(1)">误报</el-button>
+        <el-button type="primary" @click="handle(2)">封禁</el-button>
+        <el-button type="primary" @click="handle(3)">溯源</el-button>
+        <el-button type="primary" @click="handle(4)">反制</el-button>
         <!-- <el-button type="primary" @click="issueDisposal">下发处置</el-button> -->
       </span>
     </el-dialog>
@@ -62,7 +62,7 @@
 import {
   getOrderDetailApi,
   orderIssueDisposalApi,
-  orderWuBaoApi,
+  analyze,
 } from '../../tools/api'
 export default {
   props: {
@@ -82,10 +82,12 @@ export default {
     handleClose() {
       this.$emit('input', false)
     },
-    falseReport() {
+    handle(type) {
+      // misreport ban trace counterAttack
       let fd = new FormData()
       fd.append('id', this.currentRow.id)
-      orderWuBaoApi(fd).then((res) => {
+      fd.append('state', type)
+      analyze(fd).then((res) => {
         let type = 'success'
         if (res.state !== this.successFlag) {
           type = 'warning'

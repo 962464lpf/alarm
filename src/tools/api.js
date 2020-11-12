@@ -409,8 +409,8 @@ function getOrderDetailApi(params) {
   return POST(url, params)
 }
 
-function orderWuBaoApi(params) {
-  let url = BASE_URL + '/jump/gongdan/wubao'
+function analyze(params) {
+  let url = BASE_URL + '/jump/gongdan/analyze'
   return POST(url, params)
 }
 
@@ -602,7 +602,7 @@ export {
   editInsideEquipApi,
   getOrderListApi,
   getOrderDetailApi,
-  orderWuBaoApi,
+  analyze,
   orderIssueDisposalApi,
   orderBlockApi,
   downloadOrderApi,

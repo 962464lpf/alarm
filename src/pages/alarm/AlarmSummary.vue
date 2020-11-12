@@ -62,6 +62,7 @@
                     <b v-html="getToolTipContetn(scope.row)"></b>
                   </span>
                   <span class="curp" v-else>{{ scope.row.sip }}</span>
+                  <p v-if="scope.row.forbidden" v-html="getToolTipContetn(scope.row)"></p>
                 </div>
               </el-tooltip>
             </template>
@@ -294,7 +295,7 @@ export default {
       attack_total_middle: 0,
       currentPage: 1,
       total: 0,
-      pageSize: 20,
+      pageSize: 10,
       alarmListDialogStatus: false,
       blackTypeDialogStatus: false,
       rowAlarmData: {},
@@ -394,6 +395,8 @@ export default {
         content = ''
       } else if (row.sip_type === 'white') {
         content = '<a class="white-team">白名单</a>'
+      } else if (row.sip.forbidden === 1) {
+        content = '<a class="ban">已封禁</a>'
       }
       return content
     },
@@ -640,6 +643,9 @@ export default {
   }
   .white-team {
     background: #fff9f0;
+  }
+  .ban {
+    background: #b70637;
   }
 }
 </style>

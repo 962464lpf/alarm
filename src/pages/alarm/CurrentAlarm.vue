@@ -129,7 +129,7 @@
           width="100%"
         >
           <el-table-column type="selection" reserve-selection width="45"></el-table-column>
-          <el-table-column label="恶意IP" width="150" align="center">
+          <el-table-column label="恶意IP" width="120" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="bottom">
                 <div v-if="scope.row.sip_show" slot="content">
@@ -245,7 +245,7 @@
               <span v-if="scope.row.level == 2" class="low">低</span>
             </template>
           </el-table-column>
-          <el-table-column prop="protocol" width="120" label="协议" align="center"></el-table-column>
+          <el-table-column prop="protocol" label="协议" align="center"></el-table-column>
           <el-table-column label="攻击时间" prop="attack_time" width="150" align="center">
             <template slot-scope="scope">
               <el-tooltip
@@ -256,6 +256,11 @@
               >
                 <span class="curp omit">{{ scope.row.attack_time }}</span>
               </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="工单状态" prop="state" width="80" align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.state === 1 ? '已转入' : '未转入'}}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="100" align="left">
@@ -279,7 +284,10 @@
                   <el-dropdown-item @click.native="operation(scope.row, 'white')">添加至白名单</el-dropdown-item>
                   <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
                   <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
-                  <el-dropdown-item @click.native="repairOrder(scope.row)">一键转工单</el-dropdown-item>
+                  <el-dropdown-item
+                    :disabled="scope.row.state === 1"
+                    @click.native="repairOrder(scope.row)"
+                  >一键转工单</el-dropdown-item>
                   <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
                 </el-dropdown-menu>
               </el-dropdown>
