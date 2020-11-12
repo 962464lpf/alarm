@@ -6,7 +6,7 @@
           slot="append"
           class="more-search-btn"
           icon="el-icon-caret-bottom"
-          @click="moreSearch = !moreSearch"
+          @click.stop="changeMoreSearchStatus"
         >全部</el-button>
         <div class="search-box" v-if="moreSearch">
           <el-form-item label="恶意IP">
@@ -68,10 +68,16 @@ export default {
     levelStatus: {
       default: false,
     },
+    moreSearchStatus: {},
+  },
+  watch: {
+    moreSearchStatus(val) {
+      this.moreSearch = val
+    },
   },
   data() {
     return {
-      moreSearch: false,
+      moreSearch: this.moreSearchStatus,
       searchForm: {
         sip: '',
         dip: '',
@@ -97,6 +103,9 @@ export default {
     },
   },
   methods: {
+    changeMoreSearchStatus() {
+      this.$emit('getMoreSearchStatus')
+    },
     onSearch(type) {
       if (!type) {
         this.searchForm = {

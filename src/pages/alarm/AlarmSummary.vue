@@ -1,6 +1,10 @@
 <template>
-  <div class="alarm-summary">
-    <SearchForm @getSearchForm="getSearchForm">
+  <div class="alarm-summary" @click="moreSearchStatus=false">
+    <SearchForm
+      @getSearchForm="getSearchForm"
+      :moreSearchStatus="moreSearchStatus"
+      @getMoreSearchStatus="moreSearchStatus = !moreSearchStatus"
+    >
       <span>
         <!-- <span class="ml10">
           <el-checkbox v-model="notsee_white" @change="getAlarmList">
@@ -270,6 +274,7 @@ export default {
   },
   data() {
     return {
+      moreSearchStatus: false,
       notsee_white: true,
       moreSearch: false,
       selectType: '',

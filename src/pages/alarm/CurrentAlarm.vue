@@ -1,5 +1,5 @@
 <template>
-  <div class="current-alarm">
+  <div class="current-alarm" @click="moreSearchStatus=false">
     <audio
       v-if="bellSrc === 'general'"
       src="../../assets/audio/general.wav"
@@ -89,7 +89,12 @@
         </div>
       </div>
     </transition>
-    <SearchForm :levelStatus="true" @getSearchForm="getSearchForm">
+    <SearchForm
+      :levelStatus="true"
+      @getSearchForm="getSearchForm"
+      :moreSearchStatus="moreSearchStatus"
+      @getMoreSearchStatus="moreSearchStatus = !moreSearchStatus"
+    >
       <span class="more-operation">
         <el-dropdown
           split-button
@@ -349,6 +354,7 @@ export default {
   },
   data() {
     return {
+      moreSearchStatus: false,
       interval: null,
       alarmSettingShow: false,
       bellStatus: true,
