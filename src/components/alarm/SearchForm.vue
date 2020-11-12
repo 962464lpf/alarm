@@ -1,5 +1,5 @@
 <template>
-  <div class="alarm-summary-search">
+  <div class="alarm-summary-search" id>
     <el-form :inline="true" label-width="75px" :model="searchForm" ref="searchForm">
       <div class="more-search">
         <el-button
@@ -8,7 +8,7 @@
           icon="el-icon-caret-bottom"
           @click.stop="changeMoreSearchStatus"
         >全部</el-button>
-        <div class="search-box" v-if="moreSearch">
+        <div class="search-box" v-show="moreSearch">
           <el-form-item label="恶意IP">
             <el-input v-model="searchForm.sip" placeholder="恶意IP"></el-input>
           </el-form-item>
@@ -75,6 +75,7 @@ export default {
       this.moreSearch = val
     },
   },
+
   data() {
     return {
       moreSearch: this.moreSearchStatus,
@@ -133,6 +134,22 @@ export default {
         this.deviceIpList.push(obj)
       })
     })
+    document.getElementsByClassName('search-box')[0].addEventListener(
+      'click',
+      (e) => {
+        e.stopPropagation()
+      },
+      false
+    )
+  },
+  beforeDestroy() {
+    document.getElementsByClassName('search-box')[0].removeEventListener(
+      'click',
+      (e) => {
+        e.stopPropagation()
+      },
+      false
+    )
   },
 }
 </script>
