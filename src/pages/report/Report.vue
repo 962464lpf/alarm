@@ -3,21 +3,34 @@
     <el-row>
       <el-form :inline="true" :model="searchForm" class="demo-form-inline my-elem-form">
         <el-form-item label="统计日期">
-          <el-date-picker
+          <!-- <el-date-picker
             v-model="searchForm.date"
             type="date"
             range-separator="至"
             value-format="yyyy-MM-dd"
+          ></el-date-picker>-->
+          <el-date-picker
+            :clearable="false"
+            v-model="searchForm.date"
+            type="datetimerange"
+            value-format="yyyy-MM-dd HH-mm-ss"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button
-            @click="getReportList"
-            type="primary"
-            class="my-elem-btn"
-            icon="el-icon-search"
-          ></el-button>
-          <el-button @click="resetData" class="my-elem-btn" icon="el-icon-refresh"></el-button>
+          <el-tooltip class="item" effect="dark" content="查询" placement="bottom">
+            <el-button
+              @click="getReportList"
+              type="primary"
+              class="my-elem-btn"
+              icon="el-icon-search"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="重置" placement="bottom">
+            <el-button @click="resetData" class="my-elem-btn" icon="el-icon-refresh"></el-button>
+          </el-tooltip>
         </el-form-item>
         <el-form-item>
           <el-button @click="reportDialog('day')" type="primary" class="my-elem-btn">生成日报</el-button>
@@ -104,7 +117,7 @@ export default {
   data() {
     return {
       searchForm: {
-        date: '',
+        date: [],
       },
       notsee_white: false,
       tableLoading: false,
@@ -219,7 +232,15 @@ export default {
       // page,  per_page
       fd.append('page', this.currentPage)
       fd.append('per_page', this.pageSize)
-      fd.append('tongji_riqi', this.searchForm.date)
+      // fd.append('tongji_riqi', this.searchForm.date)
+      fd.append(
+        'start_time',
+        this.searchForm.date[0] ? this.searchForm.date[0] : ''
+      )
+      fd.append(
+        'end_time',
+        this.searchForm.date[1] ? this.searchForm.date[1] : ''
+      )
       getReportListApi(fd).then((res) => {
         this.total = res.total
         this.reportData = res.data

@@ -18,8 +18,12 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="onSearch" class="my-elem-btn" icon="el-icon-search"></el-button>
-        <el-button type="primary" @click="onReset" class="my-elem-btn" icon="el-icon-refresh"></el-button>
+        <el-tooltip class="item" effect="dark" content="查询" placement="bottom">
+          <el-button type="primary" @click="onSearch" class="my-elem-btn" icon="el-icon-search"></el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="重置" placement="bottom">
+          <el-button type="primary" @click="onReset" class="my-elem-btn" icon="el-icon-refresh"></el-button>
+        </el-tooltip>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onAdd" class="my-elem-btn">新增</el-button>

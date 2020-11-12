@@ -12,8 +12,12 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="getOrderList" class="my-elem-btn" icon="el-icon-search"></el-button>
-        <el-button type="primary" @click="onReset" class="my-elem-btn" icon="el-icon-refresh"></el-button>
+        <el-tooltip class="item" effect="dark" content="查询" placement="bottom">
+          <el-button type="primary" @click="getOrderList" class="my-elem-btn" icon="el-icon-search"></el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="重置" placement="bottom">
+          <el-button type="primary" @click="onReset" class="my-elem-btn" icon="el-icon-refresh"></el-button>
+        </el-tooltip>
         <el-button type="primary" @click="selectTimeStatus=true" class="my-elem-btn">导出</el-button>
       </el-form-item>
     </el-form>
@@ -29,7 +33,7 @@
         </el-table-column>
         <el-table-column prop="dip" label="状态">
           <template slot-scope="scope">
-            <span>{{getStatus(scope.row)}}</span>
+            <span v-html="getStatus(scope.row)">{{getStatus(scope.row)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
@@ -104,15 +108,16 @@ export default {
     getStatus(row) {
       switch (row.state) {
         case 0:
-          return '未分析'
+          return '<span class="misstate">未分析</span>'
         case 1:
-          return '误报'
+          return '<span class="misstate">误报</span>'
         case 2:
-          return '已下发'
+          return '<span class="issue">已下发</span>'
         case 3:
-          return '已封禁'
+          return '<span class="ban">已封禁</span>'
+        case 4:
         default:
-          return '未分析'
+          return '<span class="misstate">未分析</span>'
       }
     },
     getTime(row) {
@@ -129,7 +134,13 @@ export default {
           return row.zhuanru_time
       }
     },
-    onReset() {},
+    onReset() {
+      this.searchForm = {
+        sip: '',
+        dip: '',
+      }
+      this.getOrderList()
+    },
     handleSizeChange(val) {
       this.pageSize = val
       this.getOrderList()
@@ -199,6 +210,30 @@ export default {
     color: white !important;
     background: #111927 !important;
     border: none;
+  }
+  .misstate,
+  .misstate,
+  .issue,
+  .ban {
+    width: 86px;
+    text-align: center;
+    display: inline-block;
+    padding: 3px 0;
+    border-radius: 3px;
+    font-size: 12px;
+    transform: scale(0.8);
+  }
+  .misstate {
+    background: #e6a23c;
+  }
+  .misstate {
+    background: #67c23a;
+  }
+  .issue {
+    background: #409eff;
+  }
+  .ban {
+    background: #8e6cf5;
   }
 }
 </style>

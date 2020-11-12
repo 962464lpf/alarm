@@ -69,9 +69,9 @@
           <div class="title">
             <span>{{item.title}}</span>
             <div class="setting fr">
-              <span class="curp" @click="settingCycleTop(item.fun)">
+              <!-- <span class="curp" @click="settingCycleTop(item.fun)">
                 <i class="el-icon-setting"></i>
-              </span>
+              </span>-->
               <span class="ml10 curp" @click="refreshTop(item.fun, item.dataKey)">
                 <i class="el-icon-refresh"></i>
               </span>
@@ -288,7 +288,7 @@ export default {
     },
     settingCycleTop(top) {
       this.selectSettingTop = top
-      this.topSettingDialogStatus = true
+      // this.topSettingDialogStatus = true
     },
     refreshTop(method, dataKey) {
       this[dataKey] = {}
@@ -322,6 +322,12 @@ export default {
     },
     changeCycle(type) {
       this.cycle = type
+      this.getMaliciousSourceIPTop(type)
+      this.getAttackedIPTop5(type)
+      this.getDeviceIPTop5(type)
+      this.getPhysicalIPTop5(type)
+      this.getAttackedTypeTop5(type)
+      this.getRedIPTop5(type)
       if (type === 'day') {
         this.getAttackTrend('hour')
       } else if (type === 'week') {

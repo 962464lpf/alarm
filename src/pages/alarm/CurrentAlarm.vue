@@ -912,9 +912,9 @@ export default {
     // color: black;
     .red-team,
     .blue-team,
-    white-team {
+    .white-team {
       display: inline-block;
-      padding: 3px 5px;
+      padding: 3px 30px;
       border-radius: 3px;
       font-size: 12px;
       transform: scale(0.8);
@@ -1001,7 +1001,7 @@ export default {
 
             .no-triangle {
               display: inline-block;
-              text-indent: 20px;
+              // text-indent: 20px;
             }
             .item {
               .is-fixed {

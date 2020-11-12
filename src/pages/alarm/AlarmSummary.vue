@@ -59,7 +59,7 @@
                     v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 "
                   >
                     {{ scope.row.sip }}
-                    <b v-html="getToolTipContetn(scope.row.sip_black_type)"></b>
+                    <b v-html="getToolTipContetn(scope.row)"></b>
                   </span>
                   <span class="curp" v-else>{{ scope.row.sip }}</span>
                 </div>
@@ -82,8 +82,8 @@
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="bottom">
                 <div v-if="scope.row.dip_show" slot="content">
-                  <!-- <p>私网IP：{{scope.row.dip_show.ip_private}}</p> -->
-                  <!-- <p>公网IP：{{scope.row.dip_show.ip}}</p> -->
+                  <p>私网IP：{{scope.row.dip_show.ip_private}}</p>
+                  <p>公网IP：{{scope.row.dip_show.ip}}</p>
                   <p>IP：{{scope.row.dip_show.ip}}</p>
 
                   <p>安全域：{{scope.row.dip_show.anquanyu}}</p>
@@ -135,6 +135,9 @@
               </el-tooltip>
             </template>
           </el-table-column>
+          <el-table-column prop="summary_num" width="80" label="次数" align="center"></el-table-column>
+
+          <el-table-column prop="protocol" width="80" label="协议" align="center"></el-table-column>
           <el-table-column label="最后攻击时间" prop="attack_time" align="center">
             <template slot-scope="scope">
               <el-tooltip
@@ -147,9 +150,6 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="protocol" width="80" label="协议" align="center"></el-table-column>
-          <el-table-column prop="summary_num" width="80" label="次数" align="center"></el-table-column>
-
           <el-table-column label="操作" width="100" align="center">
             <template slot-scope="scope">
               <el-button
@@ -383,14 +383,17 @@ export default {
       this.searchForm = form
       this.getAlarmList()
     },
-    getToolTipContetn(type) {
+    getToolTipContetn(row) {
+      let type = row.sip_black_type
       let content = ''
       if (type === 0) {
-        content = '<a class="red-team">红队</a>'
+        content = '<a class="red-team">红队IP</a>'
       } else if (type === 1) {
-        content = '<a class="blue-team">蓝队</a>'
+        content = '<a class="blue-team">蓝队IP</a>'
       } else if (type === 2) {
         content = ''
+      } else if (row.sip_type === 'white') {
+        content = '<a class="white-team">白名单</a>'
       }
       return content
     },
@@ -621,16 +624,22 @@ export default {
     }
   }
   .red-team,
-  .blue-team {
-    color: white;
-    padding: 2px;
-    border-radius: 2px;
+  .blue-team,
+  .white-team {
+    display: inline-block;
+    padding: 3px 30px;
+    border-radius: 3px;
+    font-size: 12px;
+    transform: scale(0.8);
   }
   .red-team {
-    background: rgb(245, 108, 108);
+    background: #ca4c4c;
   }
   .blue-team {
-    background: rgb(102, 177, 255);
+    background: #488fd8;
+  }
+  .white-team {
+    background: #fff9f0;
   }
 }
 </style>

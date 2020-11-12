@@ -52,8 +52,12 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="onSearch(true)"></el-button>
-        <el-button type="primary" @click="onSearch(false)" icon="el-icon-refresh"></el-button>
+        <el-tooltip class="item" effect="dark" content="查询" placement="bottom">
+          <el-button type="primary" icon="el-icon-search" @click="onSearch(true)"></el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="重置" placement="bottom">
+          <el-button type="primary" @click="onSearch(false)" icon="el-icon-refresh"></el-button>
+        </el-tooltip>
       </el-form-item>
 
       <slot class="my-slot"></slot>
@@ -130,7 +134,7 @@ export default {
       list.forEach((item) => {
         let obj = {}
         obj.value = item.ip
-        obj.label = item.ip
+        obj.label = item.name
         this.deviceIpList.push(obj)
       })
     })

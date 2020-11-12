@@ -7,13 +7,17 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button
-          type="primary"
-          class="my-elem-btn"
-          icon="el-icon-search"
-          @click="getSateEquipList"
-        ></el-button>
-        <el-button type="primary" class="my-elem-btn" @click="onReset" icon="el-icon-refresh"></el-button>
+        <el-tooltip class="item" effect="dark" content="查询" placement="bottom">
+          <el-button
+            type="primary"
+            class="my-elem-btn"
+            icon="el-icon-search"
+            @click="getSateEquipList"
+          ></el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="重置" placement="bottom">
+          <el-button type="primary" class="my-elem-btn" @click="onReset" icon="el-icon-refresh"></el-button>
+        </el-tooltip>
         <el-button type="success" class="my-elem-btn" @click="updateEqp('add')">新增</el-button>
       </el-form-item>
     </el-form>

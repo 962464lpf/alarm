@@ -49,7 +49,10 @@
       </el-row>
       <span slot="footer" class="dialog-footer" v-if="currentRow.state === 0">
         <el-button type="primary" @click="falseReport">误报</el-button>
-        <el-button type="primary" @click="issueDisposal">下发处置</el-button>
+        <el-button type="primary">封禁</el-button>
+        <el-button type="primary">溯源</el-button>
+        <el-button type="primary">反制</el-button>
+        <!-- <el-button type="primary" @click="issueDisposal">下发处置</el-button> -->
       </span>
     </el-dialog>
   </div>
