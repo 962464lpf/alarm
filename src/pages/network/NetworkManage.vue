@@ -43,7 +43,7 @@
       </el-row>
     </el-form>
     <div class="mt10 btn" style="text-align: center;">
-      <el-button type="primary" :loading="submitBtnLoading" @click="submitForm('networkForm')">更改网卡</el-button>
+      <el-button type="primary" :loading="submitBtnLoading" @click="submitForm('networkForm')">保存设置</el-button>
       <el-button type="primary" :loading="resetBtnLoading" @click="resetNetWork">重置网卡</el-button>
       <el-button type="primary" :loading="resetBtnLoading" @click="factoryDataReset">恢复出厂设置</el-button>
     </div>
