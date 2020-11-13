@@ -26,7 +26,7 @@
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
       </el-form-item>
-      <el-form-item label="是否在线">
+      <!-- <el-form-item label="是否在线">
         <el-switch
           v-model="form.online"
           class="my-switch"
@@ -34,7 +34,7 @@
           inactive-text="离线"
           active-color="#95d214"
         ></el-switch>
-      </el-form-item>
+      </el-form-item>-->
       <!-- <el-form-item label="服务器区">
         <el-switch
           class="my-switch"
