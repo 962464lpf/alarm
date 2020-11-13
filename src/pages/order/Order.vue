@@ -26,15 +26,17 @@
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column prop="sip" label="源IP">
           <template slot-scope="scope">
-            <div>
-              <span class="triangle" v-if="scope.row.state === 0"></span>
-
-              <span>{{ scope.row.sip }}</span>
-              <p
-                v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 "
-              >
-                <b v-html="getToolTipContetn(scope.row)"></b>
-              </p>
+            <div style="display: flex; align-items: center;">
+              <p class="triangle" v-if="scope.row.state === 0"></p>
+              <p v-else style="width: 35px"></p>
+              <div>
+                <p style="margin-left: 8px;">{{ scope.row.sip }}</p>
+                <p
+                  v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 "
+                  v-html="getToolTipContetn(scope.row)"
+                ></p>
+                <p v-if="scope.row.white === 'yes'" v-html="getToolTipContetn(scope.row, 'white')"></p>
+              </div>
             </div>
           </template>
         </el-table-column>
@@ -119,16 +121,16 @@ export default {
     SelectTime,
   },
   methods: {
-    getToolTipContetn(row) {
+    getToolTipContetn(row, white) {
       let type = row.sip_black_type
       let content = ''
-      if (type === 0) {
+      if (type === 0 && !white) {
         content = '<a class="red-team">红队IP</a>'
-      } else if (type === 1) {
+      } else if (type === 1 && !white) {
         content = '<a class="blue-team">蓝队IP</a>'
-      } else if (type === 2) {
+      } else if (type === 2 && !white) {
         content = ''
-      } else if (row.sip_type === 'white') {
+      } else if (row.white === 'yes' && white) {
         content = '<a class="white-team">白名单</a>'
       }
       return content
@@ -272,7 +274,7 @@ export default {
   .blue-team,
   .white-team {
     display: inline-block;
-    padding: 3px 30px;
+    padding: 0px 33px;
     border-radius: 3px;
     font-size: 12px;
     transform: scale(0.8);
@@ -285,6 +287,7 @@ export default {
   }
   .white-team {
     background: #fff9f0;
+    color: black;
   }
   .triangle {
     float: left;
@@ -293,7 +296,7 @@ export default {
     font-size: 12px;
     padding: 0 6px;
     line-height: 18px;
-    margin-right: 5px;
+    height: 18px;
   }
   .triangle::before {
     content: 'new';

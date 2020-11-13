@@ -62,6 +62,10 @@
                     <b v-html="getToolTipContetn(scope.row)"></b>
                   </span>
                   <span class="curp" v-else>{{ scope.row.sip }}</span>
+                  <p
+                    v-if="scope.row.white === 'yes'"
+                    v-html="getToolTipContetn(scope.row, 'white')"
+                  ></p>
                   <p v-if="scope.row.forbidden" v-html="getToolTipContetn(scope.row)"></p>
                 </div>
               </el-tooltip>
@@ -384,19 +388,17 @@ export default {
       this.searchForm = form
       this.getAlarmList()
     },
-    getToolTipContetn(row) {
+    getToolTipContetn(row, white) {
       let type = row.sip_black_type
       let content = ''
-      if (type === 0) {
+      if (type === 0 && !white) {
         content = '<a class="red-team">红队IP</a>'
-      } else if (type === 1) {
+      } else if (type === 1 && !white) {
         content = '<a class="blue-team">蓝队IP</a>'
-      } else if (type === 2) {
+      } else if (type === 2 && !white) {
         content = ''
-      } else if (row.sip_type === 'white') {
+      } else if (row.white === 'yes' && white) {
         content = '<a class="white-team">白名单</a>'
-      } else if (row.sip.forbidden === 1) {
-        content = '<a class="ban">已封禁</a>'
       }
       return content
     },
@@ -630,7 +632,7 @@ export default {
   .blue-team,
   .white-team {
     display: inline-block;
-    padding: 3px 30px;
+    padding: 0 30px;
     border-radius: 3px;
     font-size: 12px;
     transform: scale(0.8);
@@ -643,6 +645,7 @@ export default {
   }
   .white-team {
     background: #fff9f0;
+    color: black;
   }
   .ban {
     background: #b70637;
