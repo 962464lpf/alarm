@@ -1,5 +1,10 @@
 <template>
-  <el-dialog title="请选择导出内容" :visible.sync="dialogVisible" width="35%" :before-close="handleClose">
+  <el-dialog
+    title="请选择导出内容"
+    :visible.sync="dialogVisible"
+    width="35%"
+    :before-close="handleClose"
+  >
     <!-- 恶意IP sip 位置 wuli_addr 目的IP dip 描述 con 攻击时间 协议 protocol attack_time 告警来源 device_ip 攻击类型 attack_type -->
     <el-form :inline="true">
       <el-form-item label>
@@ -7,7 +12,8 @@
           :indeterminate="isIndeterminate"
           v-model="checkAll"
           @change="handleCheckAllChange"
-        >全选</el-checkbox>
+          >全选</el-checkbox
+        >
         <el-checkbox-group
           v-model="selectType"
           @change="handleCheckedCitiesChange"
@@ -17,7 +23,8 @@
             v-for="item in selectItems"
             :label="item.label"
             :key="item.label"
-          >{{item.name}}</el-checkbox>
+            >{{ item.name }}</el-checkbox
+          >
         </el-checkbox-group>
       </el-form-item>
     </el-form>
@@ -117,7 +124,7 @@ export default {
 }
 </script>
 
-<style  lang="scss">
+<style lang="scss">
 .checkbox-group {
   .el-checkbox {
     width: 80px;
