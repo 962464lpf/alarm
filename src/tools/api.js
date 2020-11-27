@@ -538,7 +538,7 @@ function clearInsideApi () {
 }
 
 function unMarkApi (params) {
-  let url = BASE_URL + '/jump/zichan/delete_all'
+  let url = BASE_URL + '/jump/warning/cancel_report'
   return POST(url, params)
 }
 

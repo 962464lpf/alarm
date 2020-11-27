@@ -1,6 +1,12 @@
 <template>
   <div class="alarm-summary"
        @click="moreSearchStatus=false">
+    <audio v-if="bellSrc === 'general'"
+           src="../../assets/audio/general.wav"
+           autoplay
+           loop>
+      您的浏览器不支持 audio 标签。
+    </audio>
     <SearchForm @getSearchForm="getSearchForm"
                 :moreSearchStatus="moreSearchStatus"
                 @getMoreSearchStatus="moreSearchStatus = !moreSearchStatus">
@@ -65,7 +71,7 @@
                 </div>
                 <div>
                   <div class="curp"
-                        v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 ">
+                       v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 ">
                     <p v-if="scope.row.sip_show">{{scope.row.sip_show.ip}}</p>
                     <p>{{scope.row.sip}}</p>
                     <b v-html="getToolTipContetn(scope.row)"></b>
@@ -119,7 +125,7 @@
                   <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
                   <span v-else>{{ scope.row.dip }}</span>
                 </div>
-                 <div class="curp omit">
+                <div class="curp omit">
                   <p v-if="scope.row.dip_show">{{scope.row.dip_show.ip}}</p>
                   <span>{{ scope.row.dip }}</span>
                 </div>
@@ -268,6 +274,10 @@
                   :row="rowAlarmData"
                   @getCurrentAlarmList="getAlarmList"></AddWhiteIP>
     </div>
+
+    <div v-if="newAlarmDeatilStatus">
+      <NewAlarmDeatil v-model="newAlarmDeatilStatus" :alarmData='newAlarmDeatilData'></NewAlarmDeatil>
+    </div>
   </div>
 </template>
 
@@ -282,7 +292,7 @@ import {
   aKeyBlockedApi,
   batchBannedApi,
   setBlockedLable,
-  unMarkApi
+  unMarkApi,
 } from '../../tools/api'
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -290,6 +300,7 @@ import AddSelectType from '../../components/alarm/AddSelectType'
 import SearchForm from '../../components/alarm/SearchForm'
 import ChooseFirewall from '../../components/common/ChooseFirewall'
 import AddWhiteIP from '../../components/alarm/AddWhiteIPDialog'
+import NewAlarmDeatil from '../../components/alarm/NewAlarmDeatil'
 
 export default {
   components: {
@@ -299,9 +310,11 @@ export default {
     SearchForm,
     ChooseFirewall,
     AddWhiteIP,
+    NewAlarmDeatil
   },
   data() {
     return {
+      bellSrc: '',
       moreSearchStatus: false,
       notsee_white: true,
       moreSearch: false,
@@ -332,6 +345,8 @@ export default {
       chooseFirewallStatus: false,
       selectBlockedType: '',
       addWhiteIpStatus: false,
+      newAlarmDeatilStatus: false,
+      newAlarmDeatilData: ''
     }
   },
   computed: {
@@ -339,16 +354,76 @@ export default {
   },
   watch: {
     // 有新的告警数据
-    newAlarmData() {
-      // this.getAlarmList()
+    newAlarmData(val) {
+      this.getAlarmList()
+      let length = val.length
+      if (length) {
+        this.hasAlarm(val[length - 1])
+      }
     },
   },
   methods: {
+     hasAlarm(val) {
+      // sip_black_type: null 黑名单 0:红，1:蓝，2:重点监控
+      // sip_type: "black" 黑。白
+      // bell无用
+      // let bellSrc = 'general'
+      // if (val.sip_black_type === 0) bellSrc = 'red'
+      // if (val.sip_type === 'white') bellSrc = ''
+      // level : 0 1 2 高 中 低
+      let level = parseInt(val.level)
+      let attack_type = val.attack_type ? val.attack_type : '未知'
+
+      let customClass
+      let levelTile = ''
+      if (level === 0) {
+        levelTile = '高危'
+        customClass = 'notify-red'
+      }
+      if (level === 1) {
+        levelTile = '中危'
+        customClass = 'notify-yellow'
+      }
+      if (level === 2) {
+        levelTile = '低危'
+        customClass = 'notify-green'
+      }
+      // level
+      // 是否是新的提示
+      if (val.isRepeat) {
+        this.showNotify(levelTile, attack_type, customClass, val)
+        // 铃声一直响，没有判断
+        this.ringBell('general')
+      }
+    },
+    pushBellSrc(bellSrc) {
+      this.bellSrcArr.push(bellSrc)
+      this.ringBell()
+    },
+    ringBell(src = '') {
+      this.bellSrc = src
+    },
+    showAlarmDetail (val){
+      console.log(val)
+      this.newAlarmDeatilData = val
+      this.newAlarmDeatilStatus = true
+    },
+    showNotify(levelTile, attack_type, customClass, val) {
+      this.$notify({
+        title: `发现${levelTile}攻击`,
+        message: `攻击类型：${attack_type}`,
+        duration: 0,
+        customClass,
+        position: 'bottom-right',
+        onClose: this.ringBell,
+        onClick: () => this.showAlarmDetail(val)
+      })
+    },
     unMark(row) {
       let fd = new FormData()
       fd.append('id', row.id)
-      unMarkApi(fd).then(res => {
-        this.mixinPrompt(res, this.getCurrentAlarmList)
+      unMarkApi(fd).then((res) => {
+        this.mixinPrompt(res, this.getAlarmList)
       })
     },
     handleSelectionChange(val) {
