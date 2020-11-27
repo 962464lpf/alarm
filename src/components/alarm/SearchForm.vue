@@ -98,7 +98,7 @@ export default {
   data() {
     let now = new Date()
       var year = now.getFullYear()
-      var month = now.getMonth() + 1
+      var month = now.getMonth()
       var date = now.getDate()
       var hour = now.getHours()
       var minute = now.getMinutes()
