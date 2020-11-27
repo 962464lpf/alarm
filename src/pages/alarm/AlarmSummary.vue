@@ -260,6 +260,7 @@ import {
   downloadFileApi,
   aKeyBlockedApi,
   batchBannedApi,
+  setBlockedLable
 } from '../../tools/api'
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -376,7 +377,17 @@ export default {
     batchBanned() {
       if (this.selectRowData.length > 0) {
         this.selectBlockedType = 'batch'
-        this.chooseFirewallStatus = true
+         // this.chooseFirewallStatus = true
+        // 沈阳定义
+        let sipArr = []
+        this.selectRowData.forEach((item) => {
+          sipArr.push(item.id)
+        })
+        let fd = new FormData()
+        fd.append('ids', sipArr.join(','))
+        setBlockedLable(fd, 'more').then((res)=> {
+          this.mixinPrompt(res, this.getAlarmList)
+        }) 
       } else {
         this.$message({
           type: 'warning',
@@ -558,7 +569,12 @@ export default {
         }).then(() => {
           this.rowAlarmData = row
           this.selectBlockedType = 'Akey'
-          this.chooseFirewallStatus = true
+          // this.chooseFirewallStatus = true
+           let fd = new FormData()
+          fd.append('id', row.id)
+          setBlockedLable(fd).then((res)=> {
+            this.mixinPrompt(res, this.getAlarmList)
+          }) 
         })
       } else {
         this.$message({

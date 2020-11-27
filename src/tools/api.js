@@ -523,6 +523,15 @@ function getDns(params) {
   return POST(url, params)
 }
 
+// 沈阳实时告警添加封禁标签
+function setBlockedLable (params, type) {
+  let url = BASE_URL + '/jump/warning/write_report'
+  if (type === 'more') {
+    url = BASE_URL + '/jump/warning/write_report_batch'
+  }
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   closeBackend,
@@ -624,4 +633,5 @@ export {
   tracerouteContinueStop,
   getCurl,
   getDns,
+  setBlockedLable
 }

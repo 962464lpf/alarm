@@ -2,28 +2,33 @@
   <div class="new-alarm">
     <p class="title">告警信息</p>
     <el-row :gutter="20">
-      <el-col :span="6" class="data-card-col">
-        <div class="data-card first curp" @click="jumpTo()">
+      <el-col :span="6"
+              class="data-card-col">
+        <div class="data-card first curp"
+             @click="jumpTo()">
           <p>攻击总数</p>
           <p>{{attackNumDesc}}</p>
           <p>{{attackNum}}</p>
         </div>
       </el-col>
-      <el-col :span="6" class="data-card-col">
+      <el-col :span="6"
+              class="data-card-col">
         <div class="data-card second">
           <p>高危次数</p>
           <p>{{attackNumHighDesc}}</p>
           <p>{{attackNumHigh}}</p>
         </div>
       </el-col>
-      <el-col :span="6" class="data-card-col">
+      <el-col :span="6"
+              class="data-card-col">
         <div class="data-card third">
           <p>中危次数</p>
           <p>{{attackNumMiddleDesc}}</p>
           <p>{{attackNumMiddle}}</p>
         </div>
       </el-col>
-      <el-col :span="6" class="data-card-col">
+      <el-col :span="6"
+              class="data-card-col">
         <div class="data-card forth">
           <p>低危次数</p>
           <p>{{attackNumLowDesc}}</p>
@@ -33,69 +38,66 @@
     </el-row>
     <p class="title">趋势统计</p>
     <div class="chart-box">
-      <div class="trend-title" style="height: 34px;">
+      <div class="trend-title"
+           style="height: 34px;">
         <div>
-          <el-button
-            v-bind:class="[cycle === 'day' ? 'my-elem-btn-active' : 'my-elem-btn']"
-            size="mini"
-            @click="changeCycle('day')"
-          >日</el-button>
-          <el-button
-            v-bind:class="[cycle === 'week' ? 'my-elem-btn-active' : 'my-elem-btn']"
-            size="mini"
-            @click="changeCycle('week')"
-          >周</el-button>
-          <el-button
-            v-bind:class="[cycle === 'month' ? 'my-elem-btn-active' : 'my-elem-btn']"
-            size="mini"
-            @click="changeCycle('month')"
-          >月</el-button>
-          <el-button
-            v-bind:class="[cycle === 'year' ? 'my-elem-btn-active' : 'my-elem-btn']"
-            @click="changeCycle('year')"
-          >年</el-button>
+          <el-button v-bind:class="[cycle === 'day' ? 'my-elem-btn-active' : 'my-elem-btn']"
+                     size="mini"
+                     @click="changeCycle('day')">日</el-button>
+          <el-button v-bind:class="[cycle === 'week' ? 'my-elem-btn-active' : 'my-elem-btn']"
+                     size="mini"
+                     @click="changeCycle('week')">周</el-button>
+          <el-button v-bind:class="[cycle === 'month' ? 'my-elem-btn-active' : 'my-elem-btn']"
+                     size="mini"
+                     @click="changeCycle('month')">月</el-button>
+          <el-button v-bind:class="[cycle === 'year' ? 'my-elem-btn-active' : 'my-elem-btn']"
+                     @click="changeCycle('year')">年</el-button>
         </div>
       </div>
-      <ve-line
-        :data="attackTrend"
-        height="300px"
-        :settings="attackTrendSettings"
-        :extend="attackTrendExtend"
-      ></ve-line>
+      <ve-line :data="attackTrend"
+               height="300px"
+               :settings="attackTrendSettings"
+               :extend="attackTrendExtend"></ve-line>
     </div>
-    <el-row :gutter="20" class="mt10">
-      <el-col :span="8" v-for="(item, index) in top5ChartsList" :key="index">
-        <div class="chart-box" :id="item.id">
+    <el-row :gutter="20"
+            class="mt10">
+      <el-col :span="8"
+              v-for="(item, index) in top5ChartsList"
+              :key="index">
+        <div class="chart-box"
+             :id="item.id">
           <div class="title">
             <span>{{item.title}}</span>
             <div class="setting fr">
               <!-- <span class="curp" @click="settingCycleTop(item.fun)">
                 <i class="el-icon-setting"></i>
               </span>-->
-              <span class="ml10 curp" @click="refreshTop(item.fun, item.dataKey)">
+              <span class="ml10 curp"
+                    @click="refreshTop(item.fun, item.dataKey)">
                 <i class="el-icon-refresh"></i>
               </span>
-              <span class="ml10 curp" @click="fullScreenTop(item.id)">
+              <span class="ml10 curp"
+                    @click="fullScreenTop(item.id)">
                 <i class="el-icon-full-screen"></i>
               </span>
-              <span class="ml10 curp" @click="toTop(index)">
+              <span class="ml10 curp"
+                    @click="toTop(index)">
                 <i class="el-icon-top"></i>
               </span>
             </div>
           </div>
-          <ve-histogram
-            :data="item.data()"
-            :colors="item.colors"
-            height="300px"
-            :legend-visible="false"
-            :data-empty="item.dataEmpty"
-            :extend="topExtend"
-          ></ve-histogram>
+          <ve-histogram :data="item.data()"
+                        :colors="item.colors"
+                        height="300px"
+                        :legend-visible="false"
+                        :data-empty="item.dataEmpty"
+                        :extend="topExtend"></ve-histogram>
         </div>
       </el-col>
     </el-row>
     <div v-if="topSettingDialogStatus">
-      <TopSettingDialog v-model="topSettingDialogStatus" @getTopSetting="getTopSetting"></TopSettingDialog>
+      <TopSettingDialog v-model="topSettingDialogStatus"
+                        @getTopSetting="getTopSetting"></TopSettingDialog>
     </div>
   </div>
 </template>
@@ -162,6 +164,27 @@ export default {
           },
           axisLabel: {
             color: '#fff',
+            interval: 0,
+            formatter: function (value) {
+              var ret = '' //拼接加\n返回的类目项
+              var maxLength = 4 //每项显示文字个数
+              var valLength = value.length //X轴类目项的文字个数
+              var rowN = Math.ceil(valLength / maxLength) //类目项需要换行的行数
+              if (rowN > 1) {
+                //如果类目项的文字大于3,
+                for (var i = 0; i < rowN; i++) {
+                  var temp = '' //每次截取的字符串
+                  var start = i * maxLength //开始截取的位置
+                  var end = start + maxLength //结束截取的位置
+                  //这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
+                  temp = value.substring(start, end) + '\n'
+                  ret += temp //凭借最终的字符串
+                }
+                return ret
+              } else {
+                return value
+              }
+            },
           },
           axisTick: {
             lineStyle: {

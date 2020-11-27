@@ -85,16 +85,16 @@ const routes = [
   //   }
   // },
 
-  {
-    path: '/redblue',
-    name: 'redblue',
-    component: () => import('../pages/redblue/RedBlue.vue'),
-    meta: {
-      title: '红蓝对抗',
-      icon: 'duikang',
-      level: 1,
-    },
-  },
+  // {
+  //   path: '/redblue',
+  //   name: 'redblue',
+  //   component: () => import('../pages/redblue/RedBlue.vue'),
+  //   meta: {
+  //     title: '红蓝对抗',
+  //     icon: 'duikang',
+  //     level: 1,
+  //   },
+  // },
   {
     path: '/order',
     name: 'order',
@@ -105,82 +105,82 @@ const routes = [
       level: 1,
     },
   },
-  {
-    path: '/retcoun',
-    name: 'retcoun',
-    component: () => import('../components/layout/RouterView.vue'),
-    meta: {
-      title: '溯源反制',
-      icon: 'suyuan',
-      level: 1,
-    },
-    children: [
-      {
-        path: '/retcoun/beef',
-        name: 'beef',
-        component: () => import('../pages/suyuanfanzhi/Beef.vue'),
-        meta: {
-          title: 'Beef',
-          icon: 'el-icon-document',
-          level: 1,
-        },
-      },
-      {
-        path: '/retcoun/identity',
-        name: 'beef',
-        component: () => import('../pages/suyuanfanzhi/Identity.vue'),
-        meta: {
-          title: '身份溯源',
-          icon: 'el-icon-document',
-          level: 1,
-        },
-      },
-      {
-        path: '/retcoun/counterattack',
-        name: '攻击者反制',
-        component: () => import('../pages/suyuanfanzhi/Counterattack.vue'),
-        meta: {
-          title: '攻击者反制',
-          icon: 'el-icon-document',
-          level: 1,
-        },
-      },
-    ],
-  },
+  // {
+  //   path: '/retcoun',
+  //   name: 'retcoun',
+  //   component: () => import('../components/layout/RouterView.vue'),
+  //   meta: {
+  //     title: '溯源反制',
+  //     icon: 'suyuan',
+  //     level: 1,
+  //   },
+  //   children: [
+  //     {
+  //       path: '/retcoun/beef',
+  //       name: 'beef',
+  //       component: () => import('../pages/suyuanfanzhi/Beef.vue'),
+  //       meta: {
+  //         title: 'Beef',
+  //         icon: 'el-icon-document',
+  //         level: 1,
+  //       },
+  //     },
+  //     {
+  //       path: '/retcoun/identity',
+  //       name: 'beef',
+  //       component: () => import('../pages/suyuanfanzhi/Identity.vue'),
+  //       meta: {
+  //         title: '身份溯源',
+  //         icon: 'el-icon-document',
+  //         level: 1,
+  //       },
+  //     },
+  //     {
+  //       path: '/retcoun/counterattack',
+  //       name: '攻击者反制',
+  //       component: () => import('../pages/suyuanfanzhi/Counterattack.vue'),
+  //       meta: {
+  //         title: '攻击者反制',
+  //         icon: 'el-icon-document',
+  //         level: 1,
+  //       },
+  //     },
+  //   ],
+  // },
 
-  {
-    path: '/blocked',
-    name: 'blocked',
-    // component: () => import('../pages/blockedIP/BlockedIP.vue'),
-    component: () => import('../components/layout/RouterView.vue'),
-    meta: {
-      title: '封禁管理',
-      icon: 'fengjin',
-      level: 1,
-    },
-    children: [
-      {
-        path: '/blocked/list',
-        name: 'list',
-        component: () => import('../pages/blockedIP/BlockedIP.vue'),
-        meta: {
-          title: '封禁列表',
-          icon: 'fengjin',
-          level: 1,
-        },
-      },
-      {
-        path: '/blocked/firewall',
-        name: 'list',
-        component: () => import('../pages/blockedIP/Firewall.vue'),
-        meta: {
-          title: '防火墙管理',
-          icon: 'fengjin',
-          level: 1,
-        },
-      },
-    ],
-  },
+  // {
+  //   path: '/blocked',
+  //   name: 'blocked',
+  //   // component: () => import('../pages/blockedIP/BlockedIP.vue'),
+  //   component: () => import('../components/layout/RouterView.vue'),
+  //   meta: {
+  //     title: '封禁管理',
+  //     icon: 'fengjin',
+  //     level: 1,
+  //   },
+  //   children: [
+  //     {
+  //       path: '/blocked/list',
+  //       name: 'list',
+  //       component: () => import('../pages/blockedIP/BlockedIP.vue'),
+  //       meta: {
+  //         title: '封禁列表',
+  //         icon: 'fengjin',
+  //         level: 1,
+  //       },
+  //     },
+  //     {
+  //       path: '/blocked/firewall',
+  //       name: 'list',
+  //       component: () => import('../pages/blockedIP/Firewall.vue'),
+  //       meta: {
+  //         title: '防火墙管理',
+  //         icon: 'fengjin',
+  //         level: 1,
+  //       },
+  //     },
+  //   ],
+  // },
   {
     path: '/report',
     name: 'report',
