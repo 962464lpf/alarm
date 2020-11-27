@@ -1,36 +1,42 @@
 <template>
-  <div class="alarm-summary-search" id>
-    <el-form :inline="true" label-width="75px" :model="searchForm" ref="searchForm">
+  <div class="alarm-summary-search"
+       id>
+    <el-form :inline="true"
+             label-width="75px"
+             :model="searchForm"
+             ref="searchForm">
       <div class="more-search">
-        <el-button
-          slot="append"
-          class="more-search-btn"
-          icon="el-icon-caret-bottom"
-          @click.stop="changeMoreSearchStatus"
-        >全部</el-button>
-        <div class="search-box" v-show="moreSearch">
+        <el-button slot="append"
+                   class="more-search-btn"
+                   icon="el-icon-caret-bottom"
+                   @click.stop="changeMoreSearchStatus">全部</el-button>
+        <div class="search-box"
+             v-show="moreSearch">
           <el-form-item label="恶意IP">
-            <el-input v-model="searchForm.sip" placeholder="恶意IP"></el-input>
+            <el-input v-model="searchForm.sip"
+                      placeholder="恶意IP"></el-input>
           </el-form-item>
           <el-form-item label="目的IP">
-            <el-input v-model="searchForm.dip" placeholder="目的地IP"></el-input>
+            <el-input v-model="searchForm.dip"
+                      placeholder="目的地IP"></el-input>
           </el-form-item>
           <el-form-item label="告警来源">
             <!-- <el-input v-model="searchForm.device_ip" placeholder="告警来源"></el-input> -->
-            <el-select v-model="searchForm.device_ip" placeholder="请选择">
-              <el-option
-                v-for="item in deviceIpList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
+            <el-select v-model="searchForm.device_ip"
+                       placeholder="请选择">
+              <el-option v-for="item in deviceIpList"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item label="攻击类型">
-            <el-input v-model="searchForm.attack_type" placeholder="攻击类型"></el-input>
+            <el-input v-model="searchForm.attack_type"
+                      placeholder="攻击类型"></el-input>
           </el-form-item>
-          <el-form-item label="攻击等级" v-if="levelStatus">
+          <el-form-item label="攻击等级"
+                        v-if="levelStatus">
             <el-radio-group v-model="searchForm.level">
               <el-radio :label="0">高</el-radio>
               <el-radio :label="1">中</el-radio>
@@ -39,24 +45,33 @@
           </el-form-item>
         </div>
       </div>
-      <el-form-item label="时间" class="date-range">
-        <el-date-picker
-          :clearable="false"
-          v-model="searchForm.time"
-          type="datetimerange"
-          value-format="yyyy-MM-dd HH-mm-ss"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        ></el-date-picker>
+      <el-form-item label="时间"
+                    class="date-range">
+        <el-date-picker :clearable="false"
+                        v-model="searchForm.time"
+                        type="datetimerange"
+                        value-format="yyyy-MM-dd HH-mm-ss"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"></el-date-picker>
       </el-form-item>
 
       <el-form-item>
-        <el-tooltip class="item" effect="dark" content="查询" placement="bottom">
-          <el-button type="primary" icon="el-icon-search" @click="onSearch(true)"></el-button>
+        <el-tooltip class="item"
+                    effect="dark"
+                    content="查询"
+                    placement="bottom">
+          <el-button type="primary"
+                     icon="el-icon-search"
+                     @click="onSearch(true)"></el-button>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="重置" placement="bottom">
-          <el-button type="primary" @click="onSearch(false)" icon="el-icon-refresh"></el-button>
+        <el-tooltip class="item"
+                    effect="dark"
+                    content="重置"
+                    placement="bottom">
+          <el-button type="primary"
+                     @click="onSearch(false)"
+                     icon="el-icon-refresh"></el-button>
         </el-tooltip>
       </el-form-item>
 
@@ -81,6 +96,13 @@ export default {
   },
 
   data() {
+    let now = new Date()
+      var year = now.getFullYear()
+      var month = now.getMonth() + 1
+      var date = now.getDate()
+      var hour = now.getHours()
+      var minute = now.getMinutes()
+     
     return {
       moreSearch: this.moreSearchStatus,
       searchForm: {
@@ -88,7 +110,7 @@ export default {
         dip: '',
         device_ip: '',
         attack_type: '',
-        time: [],
+        time: [new Date(year, month, date,), new Date(year, month, date, hour, minute)],
         level: '',
       },
       deviceIpList: [],

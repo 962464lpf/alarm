@@ -1,22 +1,22 @@
 <template>
   <el-dialog :title="title"
              :visible.sync="dialogVisible"
-             width="35%"
+             width="45%"
              :before-close="handleClose">
     <el-row class="newalarm-detail">
-      <el-col :span="6">
+      <el-col :span="12">
         <span>恶意IP：{{alarmData.sip}}</span>
 
       </el-col>
-      <el-col :span="6">
+      <el-col :span="12">
         <span>位置：{{alarmData.wuli_addr}}</span>
       </el-col>
-      <el-col :span="6"><span>目的IP：{{alarmData.dip}}</span></el-col>
-      <el-col :span="6"> <span>告警来源：{{alarmData.device_ip}}</span></el-col>
-      <el-col :span="6"><span>描述：{{alarmData.con}}</span></el-col>
-      <el-col :span="6"><span>攻击类型：{{alarmData.attack_type ? alarmData.attack_type : '未知'}}</span></el-col>
-      <el-col :span="6"><span>协议：{{alarmData.protocol}}</span></el-col>
-      <el-col :span="6"> <span>攻击时间：{{alarmData.attack_time}}</span></el-col>
+      <el-col :span="12"><span>目的IP：{{alarmData.dip}}</span></el-col>
+      <el-col :span="12"> <span>告警来源：{{alarmData.device_ip}}</span></el-col>
+      <el-col :span="12"><span>描述：{{alarmData.con}}</span></el-col>
+      <el-col :span="12"><span>攻击类型：{{alarmData.attack_type ? alarmData.attack_type : '未知'}}</span></el-col>
+      <el-col :span="12"><span>协议：{{alarmData.protocol}}</span></el-col>
+      <el-col :span="12"> <span>攻击时间：{{alarmData.attack_time}}</span></el-col>
     </el-row>
   </el-dialog>
 </template>

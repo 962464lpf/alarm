@@ -276,7 +276,8 @@
     </div>
 
     <div v-if="newAlarmDeatilStatus">
-      <NewAlarmDeatil v-model="newAlarmDeatilStatus" :alarmData='newAlarmDeatilData'></NewAlarmDeatil>
+      <NewAlarmDeatil v-model="newAlarmDeatilStatus"
+                      :alarmData='newAlarmDeatilData'></NewAlarmDeatil>
     </div>
   </div>
 </template>
@@ -346,7 +347,8 @@ export default {
       selectBlockedType: '',
       addWhiteIpStatus: false,
       newAlarmDeatilStatus: false,
-      newAlarmDeatilData: ''
+      newAlarmDeatilData: '',
+      notifyNum: 0
     }
   },
   computed: {
@@ -371,6 +373,7 @@ export default {
       // if (val.sip_black_type === 0) bellSrc = 'red'
       // if (val.sip_type === 'white') bellSrc = ''
       // level : 0 1 2 高 中 低
+      this.notifyNum++
       let level = parseInt(val.level)
       let attack_type = val.attack_type ? val.attack_type : '未知'
 
@@ -401,17 +404,21 @@ export default {
       this.ringBell()
     },
     ringBell(src = '') {
+      this.notifyNum--
       this.bellSrc = src
+      if (this.notifyNum <= 0) {
+        this.bellSrc = ''
+      }
     },
     showAlarmDetail (val){
-      console.log(val)
       this.newAlarmDeatilData = val
       this.newAlarmDeatilStatus = true
     },
     showNotify(levelTile, attack_type, customClass, val) {
       this.$notify({
         title: `发现${levelTile}攻击`,
-        message: `攻击类型：${attack_type}`,
+         dangerouslyUseHTMLString: true,
+        message: `<div><p>恶意IP：${val.sip}</p><p>攻击类型：${attack_type}</p></div>`,
         duration: 0,
         customClass,
         position: 'bottom-right',
@@ -696,7 +703,7 @@ export default {
       this.getAlarmList()
     },
     getAlarmList() {
-      this.tableLoading = false
+      this.tableLoading = true
       let fd = new FormData()
       fd.append('page', this.currentPage)
       // fd.append('notsee_white', this.notsee_white ? 1 : 0)
@@ -706,13 +713,20 @@ export default {
         if (key !== 'level' && key !== 'time')
           fd.append(key, this.searchForm[key])
       }
+      let now = new Date()
+      var year = now.getFullYear()
+      var month = now.getMonth() + 1
+      var date = now.getDate()
+      let hour= now.getHours()
+      let min = now.getMinutes()
+      let sec = now.getSeconds()
       fd.append(
         'start_time',
-        this.searchForm.time[0] ? this.searchForm.time[0] : ''
+        this.searchForm.time[0] ? this.searchForm.time[0] : `${year}-${month}-${date} 00-00-00`
       )
       fd.append(
         'end_time',
-        this.searchForm.time[1] ? this.searchForm.time[1] : ''
+        this.searchForm.time[1] ? this.searchForm.time[1] : `${year}-${month}-${date} ${hour}-${min}-${sec}`
       )
       getSumAlarmListApi(fd).then((res) => {
         this.tableLoading = false

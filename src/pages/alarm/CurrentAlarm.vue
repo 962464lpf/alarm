@@ -164,7 +164,6 @@
                     <p>{{ scope.row.sip }}</p>
                   </div>
 
-                  
                   <div class="no-triangle"
                        v-if="scope.row.is_new !== 0">
                     <p v-if="scope.row.sip_show">{{scope.row.sip_show.ip}}</p>
@@ -173,7 +172,7 @@
 
                   <span class="high"
                         v-if="scope.row.is_report == 1"
-                        style="margin-left: 5px;">已标准</span>
+                        style="margin-left: 5px;">已标注</span>
                   <!-- <p :class="addClass(row)>fsfdsf</p> -->
                   <p class="curp"
                      v-if="
@@ -380,6 +379,11 @@
                       v-model="chooseFirewallStatus"
                       @getFirewall="batchBannedOperation"></ChooseFirewall>
     </div>
+
+    <div v-if="newAlarmDeatilStatus">
+      <NewAlarmDeatil v-model="newAlarmDeatilStatus"
+                      :alarmData='newAlarmDeatilData'></NewAlarmDeatil>
+    </div>
   </div>
 </template>
 
@@ -397,13 +401,14 @@ import {
   BASE_URL,
   downloadFileApi,
   setBlockedLable,
-  unMarkApi
+  unMarkApi,
 } from '../../tools/api'
 import { mapState } from 'vuex'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
 import SearchForm from '../../components/alarm/SearchForm'
 import AddWhiteIP from '../../components/alarm/AddWhiteIPDialog'
 import ChooseFirewall from '../../components/common/ChooseFirewall'
+import NewAlarmDeatil from '../../components/alarm/NewAlarmDeatil'
 
 export default {
   components: {
@@ -411,6 +416,7 @@ export default {
     SearchForm,
     AddWhiteIP,
     ChooseFirewall,
+    NewAlarmDeatil,
   },
   data() {
     return {
@@ -460,6 +466,9 @@ export default {
         'middleCharacterStatus',
         'lowCharacterStatus',
       ],
+      notifyNum: 0,
+      newAlarmDeatilStatus: false,
+      newAlarmDeatilData: {},
     }
   },
   computed: {
@@ -478,7 +487,7 @@ export default {
     unMark(row) {
       let fd = new FormData()
       fd.append('id', row.id)
-      unMarkApi(fd).then(res => {
+      unMarkApi(fd).then((res) => {
         this.mixinPrompt(res, this.getCurrentAlarmList)
       })
     },
@@ -741,6 +750,7 @@ export default {
       }
     },
     hasAlarm(val) {
+      this.notifyNum++
       // sip_black_type: null 黑名单 0:红，1:蓝，2:重点监控
       // sip_type: "black" 黑。白
       // bell无用
@@ -773,7 +783,7 @@ export default {
         // if (this.characterStatus && level === 1 && this.middleCharacterStatus)
         //   this.showNotify(levelTile, attack_type, customClass)
         // if (this.characterStatus && level === 2 && this.lowCharacterStatus)
-        this.showNotify(levelTile, attack_type, customClass)
+        this.showNotify(levelTile, attack_type, customClass, val)
         // 铃声一直响，没有判断
         this.ringBell('general')
         // if (this.bellStatus && level === 0 && this.highBellStatus)
@@ -789,7 +799,12 @@ export default {
       this.ringBell()
     },
     ringBell(src = '') {
+      this.notifyNum--
+
       this.bellSrc = src
+      if (this.notifyNum <= 0) {
+        this.bellSrc = ''
+      }
 
       // this.bellSrc = this.bellSrcArr[0]
       // this.bellSrcArr.forEach((item) => {
@@ -800,15 +815,20 @@ export default {
       //   }, 1000)
       // })
     },
-
-    showNotify(levelTile, attack_type, customClass) {
+    showAlarmDetail(val) {
+      this.newAlarmDeatilData = val
+      this.newAlarmDeatilStatus = true
+    },
+    showNotify(levelTile, attack_type, customClass, val) {
       this.$notify({
         title: `发现${levelTile}攻击`,
-        message: `攻击类型：${attack_type}`,
+        dangerouslyUseHTMLString: true,
+        message: `<div><p>恶意IP：${val.sip}</p><p>攻击类型：${attack_type}</p></div>`,
         duration: 0,
         customClass,
         position: 'bottom-right',
         onClose: this.ringBell,
+        onClick: () => this.showAlarmDetail(val)
       })
     },
     handleSizeChange(val) {
@@ -928,6 +948,7 @@ export default {
         this[item] = localStorageData[item]
       })
     }
+    
   },
   beforeDestroy() {
     clearInterval(this.interval)
