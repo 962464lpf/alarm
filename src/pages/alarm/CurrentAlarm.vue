@@ -184,10 +184,9 @@
                   <span class="no-triangle" v-else>{{ scope.row.sip }}</span>
                   <span
                     class="high"
-                    v-if="scope.row.forbidden"
+                    v-if="scope.row.is_report == 1"
                     style="margin-left: 5px;"
-                    >已封禁</span
-                  >
+                    >已封禁</span>
                   <!-- <p :class="addClass(row)>fsfdsf</p> -->
                   <p
                     class="curp"

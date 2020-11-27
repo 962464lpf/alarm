@@ -1,6 +1,8 @@
 <template>
   <div class="inside">
-    <el-form :inline="true" :model="form" class="demo-form-inline my-elem-form">
+    <el-form :inline="true"
+             :model="form"
+             class="demo-form-inline my-elem-form">
       <!-- <el-form-item label="公网IP">
         <el-input v-model="form.ip">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
@@ -8,7 +10,8 @@
       </el-form-item>-->
       <el-form-item label="IP">
         <el-input v-model="form.ip">
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          <i slot="prefix"
+             class="el-input__icon el-icon-search"></i>
         </el-input>
       </el-form-item>
       <!-- <el-form-item label="私网IP">
@@ -18,12 +21,14 @@
       </el-form-item>-->
       <el-form-item label="资产名称">
         <el-input v-model="form.name">
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          <i slot="prefix"
+             class="el-input__icon el-icon-search"></i>
         </el-input>
       </el-form-item>
       <el-form-item label="责任人">
         <el-input v-model="form.staff">
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          <i slot="prefix"
+             class="el-input__icon el-icon-search"></i>
         </el-input>
       </el-form-item>
       <!-- <el-form-item label="是否在线">
@@ -45,93 +50,109 @@
         ></el-switch>
       </el-form-item>-->
       <el-form-item>
-        <el-tooltip class="item" effect="dark" content="查询" placement="bottom">
-          <el-button
-            @click="getInsideEquip"
-            type="primary"
-            size="small"
-            class="my-elem-btn"
-            icon="el-icon-search"
-          ></el-button>
+        <el-tooltip class="item"
+                    effect="dark"
+                    content="查询"
+                    placement="bottom">
+          <el-button @click="getInsideEquip"
+                     type="primary"
+                     size="small"
+                     class="my-elem-btn"
+                     icon="el-icon-search"></el-button>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="重置" placement="bottom">
-          <el-button
-            @click="reset"
-            type="primary"
-            size="small"
-            class="my-elem-btn"
-            icon="el-icon-refresh"
-          ></el-button>
+        <el-tooltip class="item"
+                    effect="dark"
+                    content="重置"
+                    placement="bottom">
+          <el-button @click="reset"
+                     type="primary"
+                     size="small"
+                     class="my-elem-btn"
+                     icon="el-icon-refresh"></el-button>
         </el-tooltip>
-        <el-button @click="entryInsideEquip('single')" type="primary" class="my-elem-btn">资产录入</el-button>
-        <el-button @click="entryInsideEquip('more')" type="primary" class="my-elem-btn">批量录入</el-button>
-        <el-button type="primary" @click="downloadInsideFile" class="my-elem-btn">下载录入模板</el-button>
+        <el-button @click="entryInsideEquip('single')"
+                   type="primary"
+                   class="my-elem-btn">资产录入</el-button>
+        <el-button @click="entryInsideEquip('more')"
+                   type="primary"
+                   class="my-elem-btn">批量录入</el-button>
+        <el-button type="primary"
+                   @click="downloadInsideFile"
+                   class="my-elem-btn">下载录入模板</el-button>
+        <el-button type="primary"
+                   @click="clearInside"
+                   class="my-elem-btn">清空资产</el-button>
       </el-form-item>
     </el-form>
     <div class="my-elem-table my-elem-pagination">
-      <el-table
-        v-loading="tableLoading"
-        :data="insideEquipData"
-        border
-        style="width: 100%"
-        class="mt10"
-      >
-        <el-table-column prop="name" label="资产名称"></el-table-column>
-        <el-table-column prop="ip" label="公网IP"></el-table-column>
-        <el-table-column prop="ip_private" label="私网IP"></el-table-column>
-        <el-table-column prop="anquanyu" label="安全域"></el-table-column>
-        <el-table-column prop="com_dep" label="单位-部门"></el-table-column>
-        <el-table-column prop="cat" label="类型"></el-table-column>
-        <el-table-column prop="staff" label="责任人"></el-table-column>
-        <el-table-column prop="phone" label="联系电话"></el-table-column>
-        <el-table-column prop="is_server" label="服务器区">
+      <el-table v-loading="tableLoading"
+                :data="insideEquipData"
+                border
+                style="width: 100%"
+                class="mt10">
+        <el-table-column prop="name"
+                         label="资产名称"></el-table-column>
+        <el-table-column prop="ip_private"
+                         label="公网IP"></el-table-column>
+        <el-table-column prop="ip"
+                         label="私网IP"></el-table-column>
+        <el-table-column prop="anquanyu"
+                         label="安全域"></el-table-column>
+        <el-table-column prop="com_dep"
+                         label="单位-部门"></el-table-column>
+        <el-table-column prop="cat"
+                         label="类型"></el-table-column>
+        <el-table-column prop="staff"
+                         label="责任人"></el-table-column>
+        <el-table-column prop="phone"
+                         label="联系电话"></el-table-column>
+        <!-- <el-table-column prop="is_server" label="服务器区">
           <template slot-scope="scope">{{scope.row.is_server === 0 ? '否' : '是'}}</template>
         </el-table-column>
         <el-table-column label="是否在线" width="180">
           <template slot-scope="scope">{{scope.row.online ? '在线' : '离线'}}</template>
-        </el-table-column>
-        <el-table-column label="操作" width="140">
+        </el-table-column> -->
+        <el-table-column label="操作"
+                         width="140">
           <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" content="编辑" placement="bottom">
-              <el-button
-                class="my-elem-btn"
-                icon="el-icon-edit"
-                size="small"
-                @click="modify(scope.row)"
-              ></el-button>
+            <el-tooltip class="item"
+                        effect="dark"
+                        content="编辑"
+                        placement="bottom">
+              <el-button class="my-elem-btn"
+                         icon="el-icon-edit"
+                         size="small"
+                         @click="modify(scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="bottom">
-              <el-button
-                class="my-elem-btn"
-                icon="el-icon-delete"
-                size="small"
-                @click="deleteEquip(scope.row)"
-              ></el-button>
+            <el-tooltip class="item"
+                        effect="dark"
+                        content="删除"
+                        placement="bottom">
+              <el-button class="my-elem-btn"
+                         icon="el-icon-delete"
+                         size="small"
+                         @click="deleteEquip(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        class="fr mt10"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
+      <el-pagination class="fr mt10"
+                     background
+                     @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="currentPage"
+                     :page-sizes="[10, 20, 30, 40]"
+                     :page-size="pageSize"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="total"></el-pagination>
     </div>
     <div class="clearfloat"></div>
     <div v-if="addInsideEquipStatus">
-      <AddInsideEquip
-        v-model="addInsideEquipStatus"
-        :addInsideEquipType="addInsideEquipType"
-        :currentRow="currentRow"
-        @postRequest="postRequest"
-        @showNotify="showNotify"
-      ></AddInsideEquip>
+      <AddInsideEquip v-model="addInsideEquipStatus"
+                      :addInsideEquipType="addInsideEquipType"
+                      :currentRow="currentRow"
+                      @postRequest="postRequest"
+                      @showNotify="showNotify"></AddInsideEquip>
     </div>
   </div>
 </template>
@@ -142,6 +163,7 @@ import {
   getInsideEquipApi,
   deleteInsideEquipApi,
   BASE_URL,
+  clearInsideApi,
 } from '../../tools/api'
 export default {
   data() {
@@ -169,6 +191,17 @@ export default {
     AddInsideEquip,
   },
   methods: {
+    clearInside() {
+      this.$confirm('您确定要清空所有数据吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        clearInsideApi().then((res) => {
+          this.mixinPrompt(res, this.getInsideEquip)
+        })
+      })
+    },
     showNotify() {
       this.duration = 0
       this.notify = this.$notify({

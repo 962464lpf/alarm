@@ -1,17 +1,19 @@
 <template>
-  <div class="alarm-summary" @click="moreSearchStatus=false">
-    <SearchForm
-      @getSearchForm="getSearchForm"
-      :moreSearchStatus="moreSearchStatus"
-      @getMoreSearchStatus="moreSearchStatus = !moreSearchStatus"
-    >
+  <div class="alarm-summary"
+       @click="moreSearchStatus=false">
+    <SearchForm @getSearchForm="getSearchForm"
+                :moreSearchStatus="moreSearchStatus"
+                @getMoreSearchStatus="moreSearchStatus = !moreSearchStatus">
       <span>
         <!-- <span class="ml10">
           <el-checkbox v-model="notsee_white" @change="getAlarmList">
             <span style="font-size: 12px;">不显示白名单数据</span>
           </el-checkbox>
         </span>-->
-        <el-dropdown split-button type="primary" @command="exportFile" class="my-elem-drop-btn">
+        <el-dropdown split-button
+                     type="primary"
+                     @command="exportFile"
+                     class="my-elem-drop-btn">
           导出
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="csv">csv</el-dropdown-item>
@@ -21,25 +23,32 @@
             <el-dropdown-item command="html">html</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button type="primary" class="ml10 my-elem-btn" @click="batchBanned">批量封禁</el-button>
+        <el-button type="primary"
+                   class="ml10 my-elem-btn"
+                   @click="batchBanned">批量封禁</el-button>
       </span>
     </SearchForm>
 
     <div class="alarm-summary-table">
       <div class="my-elem-table">
-        <el-table
-          v-loading="tableLoading"
-          :data="summaryAlarmList"
-          style="width: 100%"
-          border
-          @selection-change="handleSelectionChange"
-          row-key="id"
-        >
-          <el-table-column type="selection" reserve-selection width="45" align="center"></el-table-column>
-          <el-table-column label="恶意IP" align="center">
+        <el-table v-loading="tableLoading"
+                  :data="summaryAlarmList"
+                  style="width: 100%"
+                  border
+                  @selection-change="handleSelectionChange"
+                  row-key="id">
+          <el-table-column type="selection"
+                           reserve-selection
+                           width="45"
+                           align="center"></el-table-column>
+          <el-table-column label="恶意IP"
+                           align="center">
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" placement="bottom">
-                <div v-if="scope.row.sip_show" slot="content">
+              <el-tooltip class="item"
+                          effect="dark"
+                          placement="bottom">
+                <div v-if="scope.row.sip_show"
+                     slot="content">
                   <!-- <p>私网IP：{{scope.row.sip_show.ip_private}}</p> -->
                   <!-- <p>公网IP：{{scope.row.sip_show.ip}}</p> -->
                   <p>IP：{{scope.row.sip_show.ip}}</p>
@@ -50,43 +59,50 @@
                   <p>责任人：{{scope.row.sip_show.staff}}</p>
                   <p>联系电话：{{scope.row.sip_show.phone}}</p>
                 </div>
-                <div v-else slot="content">
+                <div v-else
+                     slot="content">
                   <span>{{ scope.row.sip }}</span>
                 </div>
                 <div>
-                  <span
-                    class="curp"
-                    v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 "
-                  >
+                  <span class="curp"
+                        v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 ">
                     {{ scope.row.sip }}
                     <b v-html="getToolTipContetn(scope.row)"></b>
                   </span>
-                  <span class="curp" v-else>{{ scope.row.sip }}</span>
-                  <p
-                    v-if="scope.row.white === 'yes'"
-                    v-html="getToolTipContetn(scope.row, 'white')"
-                  ></p>
-                  <p v-if="scope.row.forbidden" v-html="getToolTipContetn(scope.row)"></p>
+                  <span class="curp"
+                        v-else>{{ scope.row.sip }}</span>
+                  <span class="high"
+                        v-if="scope.row.is_report == 1"
+                        style="margin-left: 5px;">已封禁</span>
+                  <p v-if="scope.row.white === 'yes'"
+                     v-html="getToolTipContetn(scope.row, 'white')"></p>
+                  <p v-if="scope.row.forbidden"
+                     v-html="getToolTipContetn(scope.row)"></p>
                 </div>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="wuli_addr" label="位置" align="center">
+          <el-table-column prop="wuli_addr"
+                           label="位置"
+                           align="center">
             <template slot-scope="scope">
-              <el-tooltip
-                class="item"
-                effect="dark"
-                :content="scope.row.wuli_addr "
-                placement="bottom"
-              >
+              <el-tooltip class="item"
+                          effect="dark"
+                          :content="scope.row.wuli_addr "
+                          placement="bottom">
                 <span class="curp omit">{{ scope.row.wuli_addr }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="dip" label="目的IP" align="center">
+          <el-table-column prop="dip"
+                           label="目的IP"
+                           align="center">
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" placement="bottom">
-                <div v-if="scope.row.dip_show" slot="content">
+              <el-tooltip class="item"
+                          effect="dark"
+                          placement="bottom">
+                <div v-if="scope.row.dip_show"
+                     slot="content">
                   <p>私网IP：{{scope.row.dip_show.ip_private}}</p>
                   <p>公网IP：{{scope.row.dip_show.ip}}</p>
                   <p>IP：{{scope.row.dip_show.ip}}</p>
@@ -97,7 +113,8 @@
                   <p>责任人：{{scope.row.dip_show.staff}}</p>
                   <p>联系电话：{{scope.row.dip_show.phone}}</p>
                 </div>
-                <div v-else slot="content">
+                <div v-else
+                     slot="content">
                   <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
                   <span v-else>{{ scope.row.dip }}</span>
                 </div>
@@ -108,60 +125,69 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column label="告警来源" align="center">
+          <el-table-column label="告警来源"
+                           align="center">
             <template slot-scope="scope">
-              <el-tooltip
-                class="item"
-                effect="dark"
-                :content="scope.row.device_ip.split(' ') [0]"
-                placement="bottom"
-              >
+              <el-tooltip class="item"
+                          effect="dark"
+                          :content="scope.row.device_ip.split(' ') [0]"
+                          placement="bottom">
                 <span class="curp omit1 box">{{ scope.row.device_ip.split(' ') [1] }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column label="描述" align="center">
+          <el-table-column label="描述"
+                           align="center">
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
+              <el-tooltip class="item"
+                          effect="dark"
+                          :content="scope.row.con"
+                          placement="bottom">
                 <span class="curp omit">{{ scope.row.con }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
 
-          <el-table-column prop="attack_type" label="攻击类型" align="center">
+          <el-table-column prop="attack_type"
+                           label="攻击类型"
+                           align="center">
             <template slot-scope="scope">
-              <el-tooltip
-                class="item"
-                effect="dark"
-                :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
-                placement="bottom"
-              >
+              <el-tooltip class="item"
+                          effect="dark"
+                          :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
+                          placement="bottom">
                 <span class="curp omit">{{ scope.row.attack_type ? scope.row.attack_type : '未知' }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="summary_num" width="80" label="次数" align="center"></el-table-column>
+          <el-table-column prop="summary_num"
+                           width="80"
+                           label="次数"
+                           align="center"></el-table-column>
 
-          <el-table-column prop="protocol" width="80" label="协议" align="center"></el-table-column>
-          <el-table-column label="最后攻击时间" prop="attack_time" align="center">
+          <el-table-column prop="protocol"
+                           width="80"
+                           label="协议"
+                           align="center"></el-table-column>
+          <el-table-column label="最后攻击时间"
+                           prop="attack_time"
+                           align="center">
             <template slot-scope="scope">
-              <el-tooltip
-                class="item"
-                effect="dark"
-                :content="scope.row.attack_time"
-                placement="bottom"
-              >
+              <el-tooltip class="item"
+                          effect="dark"
+                          :content="scope.row.attack_time"
+                          placement="bottom">
                 <span class="curp omit">{{ scope.row.attack_time }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="100" align="center">
+          <el-table-column label="操作"
+                           width="100"
+                           align="center">
             <template slot-scope="scope">
-              <el-button
-                style="width: 78px;"
-                class="my-elem-btn"
-                @click.native="blocked(scope.row)"
-              >封禁</el-button>
+              <el-button style="width: 78px;"
+                         class="my-elem-btn"
+                         @click.native="blocked(scope.row)">封禁</el-button>
               <el-dropdown class="mt10">
                 <el-button class="el-dropdown-link el-button--lightblue dropbutton my-elem-btn">
                   操 作
@@ -182,17 +208,15 @@
         </el-table>
       </div>
       <div class="my-elem-pagination">
-        <el-pagination
-          class="fr clearfix"
-          background
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[10, 20, 30, 40]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
+        <el-pagination class="fr clearfix"
+                       background
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="[10, 20, 30, 40]"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total"></el-pagination>
       </div>
 
       <div class="clearfloat"></div>
@@ -217,35 +241,31 @@
       <div class="clearfloat"></div>
     </div>
     <div v-if="alarmListDialogStatus">
-      <AlarmListDialog
-        v-model="alarmListDialogStatus"
-        :rowSip="rowSip"
-        :rowId="rowId"
-        :searchForm="searchForm"
-        class="my-elem-table my-elem-pagination"
-      ></AlarmListDialog>
+      <AlarmListDialog v-model="alarmListDialogStatus"
+                       :rowSip="rowSip"
+                       :rowId="rowId"
+                       :searchForm="searchForm"
+                       class="my-elem-table my-elem-pagination"></AlarmListDialog>
     </div>
     <div v-if="blackTypeDialogStatus">
-      <ChooseBlackType v-model="blackTypeDialogStatus" @emitChooseType="emitChooseType"></ChooseBlackType>
+      <ChooseBlackType v-model="blackTypeDialogStatus"
+                       @emitChooseType="emitChooseType"></ChooseBlackType>
     </div>
     <div v-if="selectTypeDialogStatus">
-      <AddSelectType v-model="selectTypeDialogStatus" @emitSelectTyepe="emitSelectTyepe"></AddSelectType>
+      <AddSelectType v-model="selectTypeDialogStatus"
+                     @emitSelectTyepe="emitSelectTyepe"></AddSelectType>
     </div>
 
     <div v-if="chooseFirewallStatus">
-      <ChooseFirewall
-        v-model="chooseFirewallStatus"
-        class="my-elem-table my-elem-pagination"
-        @getFirewall="batchBannedOperation"
-      ></ChooseFirewall>
+      <ChooseFirewall v-model="chooseFirewallStatus"
+                      class="my-elem-table my-elem-pagination"
+                      @getFirewall="batchBannedOperation"></ChooseFirewall>
     </div>
 
     <div v-if="addWhiteIpStatus">
-      <AddWhiteIP
-        v-model="addWhiteIpStatus"
-        :row="rowAlarmData"
-        @getCurrentAlarmList="getAlarmList"
-      ></AddWhiteIP>
+      <AddWhiteIP v-model="addWhiteIpStatus"
+                  :row="rowAlarmData"
+                  @getCurrentAlarmList="getAlarmList"></AddWhiteIP>
     </div>
   </div>
 </template>
@@ -260,7 +280,7 @@ import {
   downloadFileApi,
   aKeyBlockedApi,
   batchBannedApi,
-  setBlockedLable
+  setBlockedLable,
 } from '../../tools/api'
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -377,7 +397,7 @@ export default {
     batchBanned() {
       if (this.selectRowData.length > 0) {
         this.selectBlockedType = 'batch'
-         // this.chooseFirewallStatus = true
+        // this.chooseFirewallStatus = true
         // 沈阳定义
         let sipArr = []
         this.selectRowData.forEach((item) => {
@@ -385,9 +405,9 @@ export default {
         })
         let fd = new FormData()
         fd.append('ids', sipArr.join(','))
-        setBlockedLable(fd, 'more').then((res)=> {
+        setBlockedLable(fd, 'more').then((res) => {
           this.mixinPrompt(res, this.getAlarmList)
-        }) 
+        })
       } else {
         this.$message({
           type: 'warning',
@@ -570,11 +590,11 @@ export default {
           this.rowAlarmData = row
           this.selectBlockedType = 'Akey'
           // this.chooseFirewallStatus = true
-           let fd = new FormData()
+          let fd = new FormData()
           fd.append('id', row.id)
-          setBlockedLable(fd).then((res)=> {
+          setBlockedLable(fd).then((res) => {
             this.mixinPrompt(res, this.getAlarmList)
-          }) 
+          })
         })
       } else {
         this.$message({
@@ -665,6 +685,33 @@ export default {
   }
   .ban {
     background: #b70637;
+  }
+  tbody {
+    .cell {
+      .high,
+      .middle,
+      .low {
+        display: inline-block;
+        // padding: 0px 10px;
+        text-align-last: center;
+        width: 40px;
+        height: 25px;
+        line-height: 25px;
+        border-radius: 2px;
+      }
+      .high {
+        background: #ed3f14;
+        color: white;
+      }
+      .middle {
+        background: #ff9900;
+        color: white;
+      }
+      .low {
+        background: #19be6b;
+        color: white;
+      }
+    }
   }
 }
 </style>

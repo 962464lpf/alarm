@@ -532,6 +532,11 @@ function setBlockedLable (params, type) {
   return POST(url, params)
 }
 
+function clearInsideApi () {
+  let url = BASE_URL + '/jump/zichan/delete_all'
+  return POST(url)
+}
+
 export {
   BASE_URL,
   closeBackend,
@@ -633,5 +638,6 @@ export {
   tracerouteContinueStop,
   getCurl,
   getDns,
-  setBlockedLable
+  setBlockedLable,
+  clearInsideApi
 }
