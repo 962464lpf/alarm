@@ -92,7 +92,7 @@
                 class="mt10">
         <el-table-column prop="name"
                          label="资产名称"></el-table-column>
-        <el-table-column prop="ip_private"
+        <el-table-column prop="public_ip"
                          label="公网IP"></el-table-column>
         <el-table-column prop="ip"
                          label="私网IP"></el-table-column>

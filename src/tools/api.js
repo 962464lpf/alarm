@@ -537,6 +537,11 @@ function clearInsideApi () {
   return POST(url)
 }
 
+function unMarkApi (params) {
+  let url = BASE_URL + '/jump/zichan/delete_all'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   closeBackend,
@@ -639,5 +644,6 @@ export {
   getCurl,
   getDns,
   setBlockedLable,
-  clearInsideApi
+  clearInsideApi,
+  unMarkApi
 }

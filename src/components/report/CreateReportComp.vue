@@ -190,7 +190,7 @@ export default {
   mounted() {
     this.reportType === 'day'
       ? (this.title = '生成日报')
-      : (this.title = '生成周报')
+      : (this.title = '生成监测汇总表')
     this.getSateEquipList()
     this.getScheduleData()
   },

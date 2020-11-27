@@ -36,7 +36,7 @@
           <el-button @click="reportDialog('day')" type="primary" class="my-elem-btn">生成日报</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="reportDialog('week')" type="primary" class="my-elem-btn">生成周报</el-button>
+          <el-button @click="reportDialog('week')" type="primary" class="my-elem-btn">生成监测汇总表</el-button>
         </el-form-item>
       </el-form>
     </el-row>

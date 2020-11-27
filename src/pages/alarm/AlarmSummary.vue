@@ -25,7 +25,7 @@
         </el-dropdown>
         <el-button type="primary"
                    class="ml10 my-elem-btn"
-                   @click="batchBanned">批量封禁</el-button>
+                   @click="batchBanned">批量标注</el-button>
       </span>
     </SearchForm>
 
@@ -49,9 +49,9 @@
                           placement="bottom">
                 <div v-if="scope.row.sip_show"
                      slot="content">
-                  <!-- <p>私网IP：{{scope.row.sip_show.ip_private}}</p> -->
-                  <!-- <p>公网IP：{{scope.row.sip_show.ip}}</p> -->
-                  <p>IP：{{scope.row.sip_show.ip}}</p>
+                  <p>私网IP：{{scope.row.sip_show.ip}}</p> -->
+                  <p>公网IP：{{scope.row.sip_show.public_ip}}</p>
+                  <!-- <p>IP：{{scope.row.sip_show.ip}}</p> -->
 
                   <p>安全域：{{scope.row.sip_show.anquanyu}}</p>
                   <p>单位-部门：{{scope.row.sip_show.com_dep}}</p>
@@ -64,16 +64,17 @@
                   <span>{{ scope.row.sip }}</span>
                 </div>
                 <div>
-                  <span class="curp"
+                  <div class="curp"
                         v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 ">
-                    {{ scope.row.sip }}
+                    <p v-if="scope.row.sip_show">{{scope.row.sip_show.ip}}</p>
+                    <p>{{scope.row.sip}}</p>
                     <b v-html="getToolTipContetn(scope.row)"></b>
-                  </span>
+                  </div>
                   <span class="curp"
                         v-else>{{ scope.row.sip }}</span>
                   <span class="high"
                         v-if="scope.row.is_report == 1"
-                        style="margin-left: 5px;">已封禁</span>
+                        style="margin-left: 5px;">已标注</span>
                   <p v-if="scope.row.white === 'yes'"
                      v-html="getToolTipContetn(scope.row, 'white')"></p>
                   <p v-if="scope.row.forbidden"
@@ -103,9 +104,9 @@
                           placement="bottom">
                 <div v-if="scope.row.dip_show"
                      slot="content">
-                  <p>私网IP：{{scope.row.dip_show.ip_private}}</p>
-                  <p>公网IP：{{scope.row.dip_show.ip}}</p>
-                  <p>IP：{{scope.row.dip_show.ip}}</p>
+                  <p>私网IP：{{scope.row.dip_show.ip}}</p>
+                  <p>公网IP：{{scope.row.dip_show.public_ip}}</p>
+                  <!-- <p>IP：{{scope.row.dip_show.ip}}</p> -->
 
                   <p>安全域：{{scope.row.dip_show.anquanyu}}</p>
                   <p>单位-部门：{{scope.row.dip_show.com_dep}}</p>
@@ -118,9 +119,9 @@
                   <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
                   <span v-else>{{ scope.row.dip }}</span>
                 </div>
-                <div class="curp omit">
-                  <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
-                  <span v-else>{{ scope.row.dip }}</span>
+                 <div class="curp omit">
+                  <p v-if="scope.row.dip_show">{{scope.row.dip_show.ip}}</p>
+                  <span>{{ scope.row.dip }}</span>
                 </div>
               </el-tooltip>
             </template>
@@ -187,7 +188,7 @@
             <template slot-scope="scope">
               <el-button style="width: 78px;"
                          class="my-elem-btn"
-                         @click.native="blocked(scope.row)">封禁</el-button>
+                         @click.native="blocked(scope.row)">标注</el-button>
               <el-dropdown class="mt10">
                 <el-button class="el-dropdown-link el-button--lightblue dropbutton my-elem-btn">
                   操 作
@@ -200,7 +201,7 @@
                   <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
                   <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
                   <!-- <el-dropdown-item @click.native="blocked(scope.row)">一键封禁</el-dropdown-item> -->
-                  <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
+                  <el-dropdown-item @click.native="unMark(scope.row)">取消标注</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
@@ -281,6 +282,7 @@ import {
   aKeyBlockedApi,
   batchBannedApi,
   setBlockedLable,
+  unMarkApi
 } from '../../tools/api'
 import AlarmListDialog from '../../components/alarm/AlarmListDialog'
 import ChooseBlackType from '../../components/alarm/ChooseBlackType'
@@ -342,6 +344,13 @@ export default {
     },
   },
   methods: {
+    unMark(row) {
+      let fd = new FormData()
+      fd.append('id', row.id)
+      unMarkApi(fd).then(res => {
+        this.mixinPrompt(res, this.getCurrentAlarmList)
+      })
+    },
     handleSelectionChange(val) {
       this.selectRowData = val
     },
@@ -411,7 +420,7 @@ export default {
       } else {
         this.$message({
           type: 'warning',
-          message: '请选择您要封禁的IP.',
+          message: '请选择您要标注的IP.',
         })
       }
     },
@@ -582,7 +591,7 @@ export default {
     },
     blocked(row) {
       if (this.userInfo.level === 0 || this.userInfo.level === 2) {
-        this.$confirm(`您确定要将恶意IP:${row.sip}封禁吗?`, '提示', {
+        this.$confirm(`您确定要将恶意IP:${row.sip}标注吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
