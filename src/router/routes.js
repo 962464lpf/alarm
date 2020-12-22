@@ -288,21 +288,31 @@ const routes = [
     },
     children: [
       {
-        path: '/sys/mail',
-        name: 'mail',
-        component: () => import('../pages/sys/Mail.vue'),
+        path: '/sys/account',
+        name: 'account',
+        component: () => import('../pages/sys/Account.vue'),
         meta: {
-          title: '邮件管理',
+          title: '账号管理',
           icon: 'el-icon-document',
           level: 0,
         },
       },
       {
-        path: '/sys/user',
-        name: 'user',
-        component: () => import('../pages/sys/User.vue'),
+        path: '/sys/role',
+        name: 'role',
+        component: () => import('../pages/sys/Role.vue'),
         meta: {
-          title: '用户管理',
+          title: '角色管理',
+          icon: 'el-icon-document',
+          level: 0,
+        },
+      },
+      {
+        path: '/sys/mail',
+        name: 'mail',
+        component: () => import('../pages/sys/Mail.vue'),
+        meta: {
+          title: '邮件管理',
           icon: 'el-icon-document',
           level: 0,
         },

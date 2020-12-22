@@ -1,20 +1,32 @@
 <template>
   <div class="user-manage">
     <el-row>
-      <el-button type="primary" @click="addUser" class="my-elem-btn">添加用户</el-button>
+      <el-button type="primary" @click="addUser" class="my-elem-btn"
+        >新增账号</el-button
+      >
     </el-row>
     <div class="my-elem-table">
-      <el-table v-loading="tableLoading" :data="userData" style="width: 100%" class="mt10">
+      <el-table
+        v-loading="tableLoading"
+        :data="userData"
+        style="width: 100%"
+        class="mt10"
+      >
         <el-table-column prop="name" label="用户名"></el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column label="权限">
-          <template slot-scope="scope">{{getLevel(scope)}}</template>
+          <template slot-scope="scope">{{ getLevel(scope) }}</template>
         </el-table-column>
         <el-table-column prop="iplst" label="当前分配设备"></el-table-column>
-        <el-table-column label="操作" width="220">
+        <el-table-column label="操作" width="260">
           <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" content="删除用户" placement="bottom">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="删除账号"
+              placement="bottom"
+            >
               <el-button
                 class="my-elem-btn"
                 icon="el-icon-delete"
@@ -22,13 +34,24 @@
                 @click="deleteUser(scope.row)"
               ></el-button>
             </el-tooltip>
-            <el-button class="my-elem-btn" size="small" @click="allotEquip(scope.row)">分配设备</el-button>
+
+            <el-button
+              class="my-elem-btn"
+              size="small"
+              @click="allotEquip(scope.row)"
+              >分配设备</el-button
+            >
+            <el-button class="my-elem-btn" size="small">分配角色</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div v-if="addUserStatus">
-      <Adduser class="my-elem-form" v-model="addUserStatus" @getUserForm="getUserForm"></Adduser>
+      <Adduser
+        class="my-elem-form"
+        v-model="addUserStatus"
+        @getUserForm="getUserForm"
+      ></Adduser>
     </div>
     <div v-if="allotEquipStatus">
       <AllotEquip
@@ -149,5 +172,4 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

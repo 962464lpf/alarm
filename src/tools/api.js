@@ -2,7 +2,7 @@ import { POST, GET, downloadFile } from './request'
 
 let BASE_URL = ''
 if (process.env.NODE_ENV == 'development') {
-  BASE_URL = 'http://192.168.10.200:2020'
+  BASE_URL = 'http://192.168.10.242:2020'
 } else {
   BASE_URL = window.location.origin
 }
@@ -523,6 +523,36 @@ function getDns(params) {
   return POST(url, params)
 }
 
+function getRoleDataApi(params) {
+  let url = BASE_URL + '/jump/qx_role/index'
+  return POST(url, params)
+}
+
+function addRoleApi(params) {
+  let url = BASE_URL + '/jump/qx_role/add'
+  return POST(url, params)
+}
+
+function deleteRoleApi(params) {
+  let url = BASE_URL + '/jump/qx_role/delete'
+  return POST(url, params)
+}
+
+function editRoleApi(params) {
+  let url = BASE_URL + '/jump/qx_role/edit'
+  return POST(url, params)
+}
+
+function getPermissionList() {
+  let url = BASE_URL + '/jump/qx_role/node_lst'
+  return POST(url)
+}
+
+function addPermissionApi(params) {
+  let url = BASE_URL + '/jump/qx_role/role_update_node'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   closeBackend,
@@ -624,4 +654,10 @@ export {
   tracerouteContinueStop,
   getCurl,
   getDns,
+  getRoleDataApi,
+  addRoleApi,
+  deleteRoleApi,
+  editRoleApi,
+  getPermissionList,
+  addPermissionApi,
 }
