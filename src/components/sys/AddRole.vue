@@ -11,7 +11,7 @@
         <el-input v-model="form.name"></el-input>
       </el-form-item>
       <el-form-item label="角色描述">
-        <el-input v-model="form.dis" type="textarea" :rows="3"></el-input>
+        <el-input v-model="form.desc" type="textarea" :rows="3"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -39,7 +39,7 @@ export default {
       title: '',
       form: {
         name: '',
-        dis: '',
+        desc: '',
       },
       rules: {
         name: [

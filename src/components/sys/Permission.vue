@@ -32,71 +32,16 @@ export default {
       type: Boolean,
       default: false,
     },
-    role: {
-      type: String,
-      default: '管理员',
+    rowData: {
+      type: Object,
     },
   },
   data() {
     return {
       title: '',
       dialogVisible: this.value,
-      defaultChecked: [4],
-      data: [
-        {
-          id: 1,
-          label: '导航',
-          children: [
-            {
-              id: 4,
-              label: '趋势统计',
-            },
-            {
-              id: 2,
-              label: '系统设置',
-              children: [
-                {
-                  id: 5,
-                  label: '邮件管理',
-                },
-                {
-                  id: 6,
-                  label: '账号管理',
-                },
-              ],
-            },
-          ],
-        },
-
-        {
-          id: 3,
-          label: '告警汇总页面',
-          children: [
-            {
-              id: 7,
-              label: '封禁',
-            },
-            {
-              id: 8,
-              label: '添加至红队IP',
-            },
-          ],
-        },
-        {
-          id: 4,
-          label: '账号管理页面',
-          children: [
-            {
-              id: 41,
-              label: '新增',
-            },
-            {
-              id: 42,
-              label: '删除',
-            },
-          ],
-        },
-      ],
+      defaultChecked: [],
+      data: [],
       defaultProps: {
         children: 'children',
         label: 'label',
@@ -118,8 +63,9 @@ export default {
     },
   },
   mounted() {
-    this.title = `[${this.role}]权限分配`
+    this.title = `[${this.rowData.name}]权限分配`
     this.getPermission()
+    this.defaultChecked = this.rowData.role_node
   },
 }
 </script>

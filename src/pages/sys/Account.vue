@@ -16,7 +16,7 @@
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column label="权限">
-          <template slot-scope="scope">{{ getLevel(scope) }}</template>
+          <template slot-scope="scope">{{ getLevel(scope.row) }}</template>
         </el-table-column>
         <el-table-column prop="iplst" label="当前分配设备"></el-table-column>
         <el-table-column label="操作" width="260">
@@ -41,7 +41,12 @@
               @click="allotEquip(scope.row)"
               >分配设备</el-button
             >
-            <el-button class="my-elem-btn" size="small">分配角色</el-button>
+            <el-button
+              class="my-elem-btn"
+              size="small"
+              @click="assignRole(scope.row)"
+              >分配角色</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -60,22 +65,32 @@
         @getSelectEquip="getSelectEquip"
       ></AllotEquip>
     </div>
+    <div v-if="assignRoleStatus">
+      <AccountAssignRole
+        v-model="assignRoleStatus"
+        :selectRowUser="selectRowUser"
+        @getSelectRole="getSelectRole"
+      ></AccountAssignRole>
+    </div>
   </div>
 </template>
 
 <script>
 import AllotEquip from '../../components/sys/AllotEquip'
 import Adduser from '../../components/sys/AddUser'
+import AccountAssignRole from '../../components/sys/AccountAssignRole'
 import {
   getUserListApi,
   userAllotEquipApi,
   registerApi,
   deleteUserApi,
+  assignRoleApi,
 } from '../../tools/api'
 export default {
   components: {
     AllotEquip,
     Adduser,
+    AccountAssignRole,
   },
   data() {
     return {
@@ -84,6 +99,7 @@ export default {
       allotEquipStatus: false,
       selectRowUser: '',
       addUserStatus: false,
+      assignRoleStatus: false,
     }
   },
   methods: {
@@ -108,11 +124,13 @@ export default {
       })
     },
     getLevel(scope) {
-      if (scope.row.level === 0) {
-        return '超级管理员'
-      } else if (scope.row.level === 1) {
-        return '普通用户'
+      let roleName = []
+      if (scope.user_role) {
+        scope.user_role.forEach((data) => {
+          roleName.push(data.role_name)
+        })
       }
+      return roleName.length ? roleName.join(',') : ''
     },
     deleteUser(row) {
       this.$confirm('您确定删除此用户吗?', '提示', {
@@ -156,6 +174,22 @@ export default {
           message: res.info,
         })
         this.getUserList()
+      })
+    },
+    assignRole(row) {
+      this.selectRowUser = row
+      this.assignRoleStatus = true
+    },
+    getSelectRole(roles) {
+      let rolesId = []
+      roles.forEach((item) => {
+        rolesId.push(item.id)
+      })
+      let fd = new FormData()
+      fd.append('roles', rolesId.join(','))
+      fd.append('id', this.selectRowUser.id)
+      assignRoleApi(fd).then((res) => {
+        this.mixinPrompt(res, this.getUserList)
       })
     },
     getUserList() {

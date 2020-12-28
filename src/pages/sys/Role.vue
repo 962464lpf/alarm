@@ -11,7 +11,7 @@
         class="mt10"
       >
         <el-table-column prop="name" label="角色名称"></el-table-column>
-        <el-table-column prop="name" label="角色描述"></el-table-column>
+        <el-table-column prop="desc" label="角色描述"></el-table-column>
         <el-table-column label="操作" width="260">
           <template slot-scope="scope">
             <el-tooltip
@@ -62,6 +62,7 @@
       <Permission
         v-model="permissionStatus"
         @getCheckedKey="getCheckedKey"
+        :rowData="rowData"
       ></Permission>
     </div>
 
@@ -117,6 +118,7 @@ export default {
     getRoleForm(form) {
       let fd = new FormData()
       fd.append('name', form.name)
+      fd.append('desc', form.desc)
       if (this.type === 'add') {
         addRoleApi(fd).then((res) => {
           this.mixinPrompt(res, this.getRoleData())

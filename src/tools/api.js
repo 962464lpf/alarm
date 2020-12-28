@@ -553,6 +553,11 @@ function addPermissionApi(params) {
   return POST(url, params)
 }
 
+function assignRoleApi(params) {
+  let url = BASE_URL + '/jump/user/update_role'
+  return POST(url, params)
+}
+
 export {
   BASE_URL,
   closeBackend,
@@ -660,4 +665,5 @@ export {
   editRoleApi,
   getPermissionList,
   addPermissionApi,
+  assignRoleApi,
 }
