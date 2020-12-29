@@ -22,6 +22,7 @@ const routes = [
       title: '趋势统计',
       icon: 'qushitongji',
       level: 1,
+      id: 0,
     },
   },
   // {
@@ -42,6 +43,7 @@ const routes = [
       title: '告警汇总',
       icon: 'huizong',
       level: 1,
+      id: 62,
     },
   },
   {
@@ -52,6 +54,7 @@ const routes = [
       title: '实时告警',
       icon: 'shishi',
       level: 1,
+      id: 68,
     },
   },
 
@@ -63,6 +66,7 @@ const routes = [
       title: '设备录入',
       icon: 'luru',
       level: 1,
+      id: 77,
     },
   },
   {
@@ -73,18 +77,9 @@ const routes = [
       title: '白名单',
       icon: 'baimingdan',
       level: 1,
+      id: 81,
     },
   },
-  // {
-  //   path: '/objmgt/black',
-  //   name: 'objmgt',
-  //   component: () => import('../pages/objmgt/BlackList.vue'),
-  //   meta: {
-  //     title: '重点监控',
-  //     icon: 'el-icon-document'
-  //   }
-  // },
-
   {
     path: '/redblue',
     name: 'redblue',
@@ -93,6 +88,7 @@ const routes = [
       title: '红蓝对抗',
       icon: 'duikang',
       level: 1,
+      id: 82,
     },
   },
   {
@@ -103,6 +99,7 @@ const routes = [
       title: '工单管理',
       icon: 'el-icon-s-order',
       level: 1,
+      id: 84,
     },
   },
   {
@@ -113,6 +110,7 @@ const routes = [
       title: '溯源反制',
       icon: 'suyuan',
       level: 1,
+      id: 0,
     },
     children: [
       {
@@ -123,6 +121,7 @@ const routes = [
           title: 'Beef',
           icon: 'el-icon-document',
           level: 1,
+          id: 0,
         },
       },
       {
@@ -133,6 +132,7 @@ const routes = [
           title: '身份溯源',
           icon: 'el-icon-document',
           level: 1,
+          id: 0,
         },
       },
       {
@@ -143,6 +143,7 @@ const routes = [
           title: '攻击者反制',
           icon: 'el-icon-document',
           level: 1,
+          id: 0,
         },
       },
     ],
@@ -157,6 +158,7 @@ const routes = [
       title: '封禁管理',
       icon: 'fengjin',
       level: 1,
+      id: [87, 89],
     },
     children: [
       {
@@ -167,6 +169,7 @@ const routes = [
           title: '封禁列表',
           icon: 'fengjin',
           level: 1,
+          id: 87,
         },
       },
       {
@@ -177,6 +180,7 @@ const routes = [
           title: '防火墙管理',
           icon: 'fengjin',
           level: 1,
+          id: 89,
         },
       },
     ],
@@ -189,6 +193,7 @@ const routes = [
       title: '报告管理',
       icon: 'el-icon-document',
       level: 1,
+      id: [93],
     },
     children: [
       {
@@ -199,6 +204,7 @@ const routes = [
           title: '日报周报',
           icon: '',
           level: 1,
+          id: 93,
         },
       },
       // {
@@ -222,6 +228,7 @@ const routes = [
       title: '网络配置',
       icon: 'wangluo',
       level: 0,
+      id: [97, 101, 102, 103],
     },
     children: [
       {
@@ -232,6 +239,7 @@ const routes = [
           title: '网络管理',
           icon: 'el-icon-document',
           level: 0,
+          id: 97,
         },
       },
       {
@@ -242,6 +250,7 @@ const routes = [
           title: '物理接口',
           icon: 'el-icon-document',
           level: 0,
+          id: 101,
         },
       },
       {
@@ -252,6 +261,7 @@ const routes = [
           title: '静态路由',
           icon: 'el-icon-document',
           level: 0,
+          id: 102,
         },
       },
       {
@@ -262,6 +272,7 @@ const routes = [
           title: 'ARP表',
           icon: 'el-icon-document',
           level: 0,
+          id: 103,
         },
       },
       {
@@ -279,12 +290,13 @@ const routes = [
 
   {
     path: '/sys',
-    name: 'sux',
+    name: 'sys',
     component: () => import('../components/layout/RouterView.vue'),
     meta: {
       title: '系统设置',
       icon: 'el-icon-setting',
       level: 0,
+      id: [110, 115, 106, 72, 108],
     },
     children: [
       {
@@ -295,6 +307,7 @@ const routes = [
           title: '账号管理',
           icon: 'el-icon-document',
           level: 0,
+          id: 110,
         },
       },
       {
@@ -305,6 +318,7 @@ const routes = [
           title: '角色管理',
           icon: 'el-icon-document',
           level: 0,
+          id: 115,
         },
       },
       {
@@ -315,6 +329,7 @@ const routes = [
           title: '邮件管理',
           icon: 'el-icon-document',
           level: 0,
+          id: 106,
         },
       },
       {
@@ -325,6 +340,7 @@ const routes = [
           title: '资产管理',
           icon: 'el-icon-document',
           level: 0,
+          id: 72,
         },
       },
       {
@@ -335,18 +351,9 @@ const routes = [
           title: '排班管理',
           icon: 'el-icon-document',
           level: 0,
+          id: 108,
         },
       },
-      // {
-      //   path: '/sys/setting',
-      //   name: 'setting',
-      //   component: () => import('../pages/sys/SysSetting.vue'),
-      //   meta: {
-      //     title: '系统配置',
-      //     icon: 'el-icon-document',
-      //     level: 0
-      //   }
-      // }
     ],
   },
 ]

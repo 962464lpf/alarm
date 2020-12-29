@@ -41,7 +41,7 @@
               :key="todo.path"
               :index="todo.path"
               v-for="todo in route.children"
-              v-show="isPermission"
+              v-show="isPermission(todo)"
               >{{ todo.meta.title }}</el-menu-item
             >
           </el-menu-item-group>
@@ -81,16 +81,30 @@ export default {
     },
   },
   methods: {
-    isPermission() {
-      return true
+    isPermission(page) {
+      // return true
       // 超级管理员为0  普通用户为1
-      // let permission = this.userInfo.level
-      // let pagePermission = page.meta.level
-      // if (permission <= pagePermission) {
-      //   return true
-      // } else {
-      //   return false
-      // }
+      let permission = this.userInfo.nodes
+      // let permission = [110, 115, 106]
+
+      let pagePermission = page.meta.id
+      if (pagePermission === 0) {
+        return true
+      } else if (typeof pagePermission === 'number') {
+        if (permission.indexOf(pagePermission) > -1) {
+          return true
+        } else {
+          return false
+        }
+      } else if (typeof pagePermission === 'object') {
+        for (let i = 0; i < pagePermission.length; i++) {
+          if (permission.indexOf(pagePermission[i]) > -1) {
+            return true
+          } else {
+            return false
+          }
+        }
+      }
     },
     handleScaling() {
       this.isCollapse = !this.isCollapse
