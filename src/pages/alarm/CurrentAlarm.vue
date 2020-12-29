@@ -720,22 +720,15 @@ export default {
       }
     },
     blocked(row) {
-      if (this.userInfo.level === 0 || this.userInfo.level === 2) {
-        this.$confirm(`您确定要将恶意IP:${row.sip}封禁吗?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }).then(() => {
-          this.rowAlarmData = row
-          this.selectBlockedType = 'Akey'
-          this.chooseFirewallStatus = true
-        })
-      } else {
-        this.$message({
-          type: 'warning',
-          message: '您没有权限执行此操作，请与管理员联系。',
-        })
-      }
+      this.$confirm(`您确定要将恶意IP:${row.sip}封禁吗?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        this.rowAlarmData = row
+        this.selectBlockedType = 'Akey'
+        this.chooseFirewallStatus = true
+      })
     },
     repairOrder(row) {
       let fd = new FormData()

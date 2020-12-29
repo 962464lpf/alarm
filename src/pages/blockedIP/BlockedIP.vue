@@ -18,35 +18,79 @@
       </el-form-item>
 
       <el-form-item>
-        <el-tooltip class="item" effect="dark" content="查询" placement="bottom">
-          <el-button type="primary" @click="onSearch" class="my-elem-btn" icon="el-icon-search"></el-button>
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="查询"
+          placement="bottom"
+        >
+          <el-button
+            type="primary"
+            @click="onSearch"
+            class="my-elem-btn"
+            icon="el-icon-search"
+          ></el-button>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="重置" placement="bottom">
-          <el-button type="primary" @click="onReset" class="my-elem-btn" icon="el-icon-refresh"></el-button>
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="重置"
+          placement="bottom"
+        >
+          <el-button
+            type="primary"
+            @click="onReset"
+            class="my-elem-btn"
+            icon="el-icon-refresh"
+          ></el-button>
         </el-tooltip>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onAdd" class="my-elem-btn">新增</el-button>
+        <el-button type="primary" @click="onAdd" class="my-elem-btn"
+          >新增</el-button
+        >
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="exportFlie" class="my-elem-btn">导出</el-button>
+        <el-button type="primary" @click="exportFlie" class="my-elem-btn"
+          >导出</el-button
+        >
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="batchBlockedIPStatus = true" class="my-elem-btn">批量封禁</el-button>
+        <el-button
+          type="primary"
+          @click="batchBlockedIPStatus = true"
+          class="my-elem-btn"
+          >批量封禁</el-button
+        >
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="downloadBlockedFile" class="my-elem-btn">下载封禁模板</el-button>
+        <el-button
+          type="primary"
+          @click="downloadBlockedFile"
+          class="my-elem-btn"
+          >下载封禁模板</el-button
+        >
       </el-form-item>
     </el-form>
     <div class="my-elem-table my-elem-pagination">
-      <el-table v-loading="tableLoading" :data="blockedIP" border style="width: 100%">
+      <el-table
+        v-loading="tableLoading"
+        :data="blockedIP"
+        border
+        style="width: 100%"
+      >
         <el-table-column prop="ip" label="IP地址"></el-table-column>
         <el-table-column prop="fname" label="封禁防火墙"></el-table-column>
         <el-table-column prop="created_time" label="封禁时间"></el-table-column>
         <el-table-column prop="uname" label="封禁人"></el-table-column>
         <el-table-column label="操作" width="80">
           <template slot-scope="scope">
-            <el-button class="my-elem-btn" size="small" @click="unBlockedIP(scope.row)">解封</el-button>
+            <el-button
+              class="my-elem-btn"
+              size="small"
+              @click="unBlockedIP(scope.row)"
+              >解封</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -191,33 +235,26 @@ export default {
       })
     },
     unBlockedIP(row) {
-      if (this.userInfo.level === 0) {
-        this.$confirm('您确定要将此IP进行解封吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }).then(() => {
-          let fd = new FormData()
-          fd.append('ip', row.ip)
-          unBlockedIPApi(fd).then((res) => {
-            let type = 'success'
-            if (res.state !== this.successFlag) {
-              type = 'warning'
-            } else {
-              this.getBlockedIP()
-            }
-            this.$message({
-              type,
-              message: res.info,
-            })
+      this.$confirm('您确定要将此IP进行解封吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        let fd = new FormData()
+        fd.append('ip', row.ip)
+        unBlockedIPApi(fd).then((res) => {
+          let type = 'success'
+          if (res.state !== this.successFlag) {
+            type = 'warning'
+          } else {
+            this.getBlockedIP()
+          }
+          this.$message({
+            type,
+            message: res.info,
           })
         })
-      } else {
-        this.$message({
-          type: 'warning',
-          message: '您没有权限执行此操作，请与管理员联系。',
-        })
-      }
+      })
     },
     handleSizeChange(val) {
       this.pageSize = val
@@ -248,7 +285,7 @@ export default {
 }
 </script>
 
-<style  lang="scss">
+<style lang="scss">
 .blocked-ip {
   .el-date-editor--datetimerange.el-input,
   .el-date-editor--datetimerange.el-input__inner {

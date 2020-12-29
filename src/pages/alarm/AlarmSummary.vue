@@ -1,5 +1,5 @@
 <template>
-  <div class="alarm-summary" @click="moreSearchStatus=false">
+  <div class="alarm-summary" @click="moreSearchStatus = false">
     <SearchForm
       @getSearchForm="getSearchForm"
       :moreSearchStatus="moreSearchStatus"
@@ -11,7 +11,12 @@
             <span style="font-size: 12px;">不显示白名单数据</span>
           </el-checkbox>
         </span>-->
-        <el-dropdown split-button type="primary" @command="exportFile" class="my-elem-drop-btn">
+        <el-dropdown
+          split-button
+          type="primary"
+          @command="exportFile"
+          class="my-elem-drop-btn"
+        >
           导出
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="csv">csv</el-dropdown-item>
@@ -21,7 +26,9 @@
             <el-dropdown-item command="html">html</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button type="primary" class="ml10 my-elem-btn" @click="batchBanned">批量封禁</el-button>
+        <el-button type="primary" class="ml10 my-elem-btn" @click="batchBanned"
+          >批量封禁</el-button
+        >
       </span>
     </SearchForm>
 
@@ -35,20 +42,25 @@
           @selection-change="handleSelectionChange"
           row-key="id"
         >
-          <el-table-column type="selection" reserve-selection width="45" align="center"></el-table-column>
+          <el-table-column
+            type="selection"
+            reserve-selection
+            width="45"
+            align="center"
+          ></el-table-column>
           <el-table-column label="恶意IP" align="center">
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="bottom">
                 <div v-if="scope.row.sip_show" slot="content">
                   <!-- <p>私网IP：{{scope.row.sip_show.ip_private}}</p> -->
                   <!-- <p>公网IP：{{scope.row.sip_show.ip}}</p> -->
-                  <p>IP：{{scope.row.sip_show.ip}}</p>
+                  <p>IP：{{ scope.row.sip_show.ip }}</p>
 
-                  <p>安全域：{{scope.row.sip_show.anquanyu}}</p>
-                  <p>单位-部门：{{scope.row.sip_show.com_dep}}</p>
-                  <p>类型：{{scope.row.sip_show.cat}}</p>
-                  <p>责任人：{{scope.row.sip_show.staff}}</p>
-                  <p>联系电话：{{scope.row.sip_show.phone}}</p>
+                  <p>安全域：{{ scope.row.sip_show.anquanyu }}</p>
+                  <p>单位-部门：{{ scope.row.sip_show.com_dep }}</p>
+                  <p>类型：{{ scope.row.sip_show.cat }}</p>
+                  <p>责任人：{{ scope.row.sip_show.staff }}</p>
+                  <p>联系电话：{{ scope.row.sip_show.phone }}</p>
                 </div>
                 <div v-else slot="content">
                   <span>{{ scope.row.sip }}</span>
@@ -56,7 +68,11 @@
                 <div>
                   <span
                     class="curp"
-                    v-if="(scope.row.sip_black_type=== 0 || scope.row.sip_black_type) && scope.row.sip_black_type !==2 "
+                    v-if="
+                      (scope.row.sip_black_type === 0 ||
+                        scope.row.sip_black_type) &&
+                        scope.row.sip_black_type !== 2
+                    "
                   >
                     {{ scope.row.sip }}
                     <b v-html="getToolTipContetn(scope.row)"></b>
@@ -66,7 +82,10 @@
                     v-if="scope.row.white === 'yes'"
                     v-html="getToolTipContetn(scope.row, 'white')"
                   ></p>
-                  <p v-if="scope.row.forbidden" v-html="getToolTipContetn(scope.row)"></p>
+                  <p
+                    v-if="scope.row.forbidden"
+                    v-html="getToolTipContetn(scope.row)"
+                  ></p>
                 </div>
               </el-tooltip>
             </template>
@@ -76,7 +95,7 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.wuli_addr "
+                :content="scope.row.wuli_addr"
                 placement="bottom"
               >
                 <span class="curp omit">{{ scope.row.wuli_addr }}</span>
@@ -87,22 +106,26 @@
             <template slot-scope="scope">
               <el-tooltip class="item" effect="dark" placement="bottom">
                 <div v-if="scope.row.dip_show" slot="content">
-                  <p>私网IP：{{scope.row.dip_show.ip_private}}</p>
-                  <p>公网IP：{{scope.row.dip_show.ip}}</p>
-                  <p>IP：{{scope.row.dip_show.ip}}</p>
+                  <p>私网IP：{{ scope.row.dip_show.ip_private }}</p>
+                  <p>公网IP：{{ scope.row.dip_show.ip }}</p>
+                  <p>IP：{{ scope.row.dip_show.ip }}</p>
 
-                  <p>安全域：{{scope.row.dip_show.anquanyu}}</p>
-                  <p>单位-部门：{{scope.row.dip_show.com_dep}}</p>
-                  <p>类型：{{scope.row.dip_show.cat}}</p>
-                  <p>责任人：{{scope.row.dip_show.staff}}</p>
-                  <p>联系电话：{{scope.row.dip_show.phone}}</p>
+                  <p>安全域：{{ scope.row.dip_show.anquanyu }}</p>
+                  <p>单位-部门：{{ scope.row.dip_show.com_dep }}</p>
+                  <p>类型：{{ scope.row.dip_show.cat }}</p>
+                  <p>责任人：{{ scope.row.dip_show.staff }}</p>
+                  <p>联系电话：{{ scope.row.dip_show.phone }}</p>
                 </div>
                 <div v-else slot="content">
-                  <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
+                  <span v-if="scope.row.dport"
+                    >{{ scope.row.dip }}: {{ scope.row.dport }}</span
+                  >
                   <span v-else>{{ scope.row.dip }}</span>
                 </div>
                 <div class="curp omit">
-                  <span v-if="scope.row.dport">{{ scope.row.dip }}: {{scope.row.dport}}</span>
+                  <span v-if="scope.row.dport"
+                    >{{ scope.row.dip }}: {{ scope.row.dport }}</span
+                  >
                   <span v-else>{{ scope.row.dip }}</span>
                 </div>
               </el-tooltip>
@@ -113,16 +136,23 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.device_ip.split(' ') [0]"
+                :content="scope.row.device_ip.split(' ')[0]"
                 placement="bottom"
               >
-                <span class="curp omit1 box">{{ scope.row.device_ip.split(' ') [1] }}</span>
+                <span class="curp omit1 box">{{
+                  scope.row.device_ip.split(' ')[1]
+                }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="描述" align="center">
             <template slot-scope="scope">
-              <el-tooltip class="item" effect="dark" :content="scope.row.con" placement="bottom">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="scope.row.con"
+                placement="bottom"
+              >
                 <span class="curp omit">{{ scope.row.con }}</span>
               </el-tooltip>
             </template>
@@ -133,17 +163,35 @@
               <el-tooltip
                 class="item"
                 effect="dark"
-                :content="scope.row.attack_type ? scope.row.attack_type : '未知'"
+                :content="
+                  scope.row.attack_type ? scope.row.attack_type : '未知'
+                "
                 placement="bottom"
               >
-                <span class="curp omit">{{ scope.row.attack_type ? scope.row.attack_type : '未知' }}</span>
+                <span class="curp omit">{{
+                  scope.row.attack_type ? scope.row.attack_type : '未知'
+                }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="summary_num" width="80" label="次数" align="center"></el-table-column>
+          <el-table-column
+            prop="summary_num"
+            width="80"
+            label="次数"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column prop="protocol" width="80" label="协议" align="center"></el-table-column>
-          <el-table-column label="最后攻击时间" prop="attack_time" align="center">
+          <el-table-column
+            prop="protocol"
+            width="80"
+            label="协议"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            label="最后攻击时间"
+            prop="attack_time"
+            align="center"
+          >
             <template slot-scope="scope">
               <el-tooltip
                 class="item"
@@ -161,18 +209,31 @@
                 style="width: 78px;"
                 class="my-elem-btn"
                 @click.native="blocked(scope.row)"
-              >封禁</el-button>
+                >封禁</el-button
+              >
               <el-dropdown class="mt10">
-                <el-button class="el-dropdown-link el-button--lightblue dropbutton my-elem-btn">
+                <el-button
+                  class="el-dropdown-link el-button--lightblue dropbutton my-elem-btn"
+                >
                   操 作
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
 
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item @click.native="operation(scope.row, 'detail')">详情</el-dropdown-item>
-                  <el-dropdown-item @click.native="operation(scope.row, 'white')">添加至白名单</el-dropdown-item>
-                  <el-dropdown-item @click.native="operation(scope.row, 'red')">添加至红队IP</el-dropdown-item>
-                  <el-dropdown-item @click.native="operation(scope.row, 'blue')">添加至蓝队IP</el-dropdown-item>
+                  <el-dropdown-item
+                    @click.native="operation(scope.row, 'detail')"
+                    >详情</el-dropdown-item
+                  >
+                  <el-dropdown-item
+                    @click.native="operation(scope.row, 'white')"
+                    >添加至白名单</el-dropdown-item
+                  >
+                  <el-dropdown-item @click.native="operation(scope.row, 'red')"
+                    >添加至红队IP</el-dropdown-item
+                  >
+                  <el-dropdown-item @click.native="operation(scope.row, 'blue')"
+                    >添加至蓝队IP</el-dropdown-item
+                  >
                   <!-- <el-dropdown-item @click.native="blocked(scope.row)">一键封禁</el-dropdown-item> -->
                   <!-- <el-dropdown-item @click.native="operation(scope.row, 'black')">添加黑名单</el-dropdown-item> -->
                 </el-dropdown-menu>
@@ -226,10 +287,16 @@
       ></AlarmListDialog>
     </div>
     <div v-if="blackTypeDialogStatus">
-      <ChooseBlackType v-model="blackTypeDialogStatus" @emitChooseType="emitChooseType"></ChooseBlackType>
+      <ChooseBlackType
+        v-model="blackTypeDialogStatus"
+        @emitChooseType="emitChooseType"
+      ></ChooseBlackType>
     </div>
     <div v-if="selectTypeDialogStatus">
-      <AddSelectType v-model="selectTypeDialogStatus" @emitSelectTyepe="emitSelectTyepe"></AddSelectType>
+      <AddSelectType
+        v-model="selectTypeDialogStatus"
+        @emitSelectTyepe="emitSelectTyepe"
+      ></AddSelectType>
     </div>
 
     <div v-if="chooseFirewallStatus">
@@ -550,22 +617,15 @@ export default {
       }
     },
     blocked(row) {
-      if (this.userInfo.level === 0 || this.userInfo.level === 2) {
-        this.$confirm(`您确定要将恶意IP:${row.sip}封禁吗?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }).then(() => {
-          this.rowAlarmData = row
-          this.selectBlockedType = 'Akey'
-          this.chooseFirewallStatus = true
-        })
-      } else {
-        this.$message({
-          type: 'warning',
-          message: '您没有权限执行此操作，请与管理员联系。',
-        })
-      }
+      this.$confirm(`您确定要将恶意IP:${row.sip}封禁吗?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        this.rowAlarmData = row
+        this.selectBlockedType = 'Akey'
+        this.chooseFirewallStatus = true
+      })
     },
     handleSizeChange(val) {
       this.pageSize = val
