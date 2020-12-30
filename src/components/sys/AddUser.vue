@@ -13,15 +13,11 @@
       <el-form-item label="密码：" prop="password">
         <el-input v-model="form.password" type="password"></el-input>
       </el-form-item>
-      <el-form-item label="角色：">
-        <el-select v-model="form.level" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+      <el-form-item label="电话：" prop="phone">
+        <el-input v-model="form.phone" type="phone"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱：" prop="email">
+        <el-input v-model="form.email" type="email"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -36,31 +32,50 @@ export default {
   props: {
     value: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
+    var checkPhone = (rule, value, callback) => {
+      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/
+      if (value && !myreg.test(value)) {
+        return callback(new Error('请输入正确的电话号码！'))
+      } else {
+        callback()
+      }
+    }
+    var checkEmail = (rule, value, callback) => {
+      var myreg = /^\w+@[a-zA-Z0-9]{2,10}(?:\.[a-z]{2,4}){1,3}$/
+      if (value && !myreg.test(value)) {
+        return callback(new Error('请输入正确的邮箱！'))
+      } else {
+        callback()
+      }
+    }
     return {
       dialogVisible: this.value,
       options: [
         {
           label: '管理员',
-          value: 2
+          value: 2,
         },
         {
           label: '普通用户',
-          value: 1
-        }
+          value: 1,
+        },
       ],
       form: {
         name: '',
         password: '',
-        level: 1
+        email: '',
+        phone: '',
       },
       rules: {
         name: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-      }
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        phone: [{ validator: checkPhone, trigger: 'blur' }],
+        email: [{ validator: checkEmail, trigger: 'blur' }],
+      },
     }
   },
   methods: {
@@ -68,7 +83,7 @@ export default {
       this.$emit('input', false)
     },
     confirm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$emit('getUserForm', this.form)
           this.handleClose()
@@ -76,13 +91,13 @@ export default {
           return false
         }
       })
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 }
 </script>
 
-<style  lang="scss">
+<style lang="scss">
 .top-setting-dialog {
   .el-dialog {
     // height: 40% !important;
