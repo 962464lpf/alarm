@@ -631,6 +631,7 @@
           // 参数1 容器
           // 参数2 真假
           // 参数3 深浅  值越小越签
+          console.log(Object(G.a))
           Object(G.a)('#waves', true, 6, 4)
         },
       },

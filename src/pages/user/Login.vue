@@ -142,6 +142,8 @@ export default {
     let s1 = document.createElement('script')
     s1.src = '/waves.js'
     document.body.appendChild(s1)
+
+    
   },
   mounted() {
     window.addEventListener('keydown', this.keyDown)
